@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+  ~ The MIT License (MIT)
+  ~ Copyright © 2018 NBCO Yandex.Money LLC
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+  ~ associated documentation files (the “Software”), to deal in the Software without restriction, including
+  ~ without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+  ~ of the Software, and to permit persons to whom the Software is furnished to do so, subject to the
+  ~ following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all copies or substantial
+  ~ portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+  ~ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+  ~ PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+  ~ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+  ~ OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+  ~ OTHER DEALINGS IN THE SOFTWARE.
+  -->
+
+<resources>
+    <string name="ym_payment_option_new_card">Банковская карта</string>
+    <string name="ym_payment_option_yamoney">Яндекс.Деньги</string>
+    <string name="ym_payment_options_title">Способ оплаты</string>
+    <string name="ym_payment_options_error_message">Проблема с интернетом. Попробуйте ещё раз, когда будете онлайн</string>
+    <string name="ym_payment_options_error_button">Повторить попытку</string>
+    <string name="ym_bank_card_expiry_hint">Действует до</string>
+    <string name="ym_bank_card_cvc_hint">CVC</string>
+    <string name="ym_bank_card_number_hint">Номер карты</string>
+    <string name="ym_bank_card_pay">Заплатить</string>
+    <string name="ym_bank_card_title_existing">Банковская карта</string>
+    <string name="ym_bank_card_title_new">Банковская карта</string>
+    <string name="ym_bank_card_title_edit">Привязанная карта</string>
+    <string name="ym_payment_options_yamoney">Яндекс.Деньги</string>
+    <string name="ym_payment_options_android_pay">Google Pay</string>
+    <string name="ym_contract_amount">К оплате</string>
+    <string name="ym_payment_options_bank_card">Банковская карта</string>
+    <string name="ym_contract_continue">Продолжить</string>
+    <string name="ym_contract_change_payment_option">Изменить</string>
+    <string name="ym_payment_auth_repeat">Отправить снова</string>
+    <string name="ym_allow_wallet_linking">Сохранить кошелёк в приложении ^1?</string>
+    <string name="ym_allow_recurring_payments">Разрешить повтор платежей?</string>
+    <string name="ym_auth_hint_sms">Введите пароль из смс</string>
+    <string name="ym_auth_hint_totp">Введите одноразовый пароль</string>
+    <string name="ym_auth_hint_password">Введите код доступа</string>
+    <string name="ym_auth_hint_emergency">Введите аварийный код</string>
+    <string name="ym_logout_dialog_button_positive">ОК</string>
+    <string name="ym_logout_dialog_button_negative">Отмена</string>
+    <string name="ym_logout_dialog_message">Уверены, что хотите выйти из аккаунта %1$s?</string>
+    <string name="ym_retry">Попробовать ещё раз</string>
+    <string name="ym_no_wallet_dialog_message">%1$s, у вас нет кошелька на Яндексе</string>
+    <string name="ym_no_wallet_dialog_shoose_payment_option">Выбрать способ оплаты</string>
+    <!-- errors -->
+    <string name="ym_error_something_went_wrong">Похоже, это техническая ошибка</string>
+    <string name="ym_error_no_internet">Проблема с интернетом. Попробуйте ещё раз, когда будете онлайн</string>
+    <string name="ym_no_payment_options_error">Нет доступных способов оплаты</string>
+    <string name="ym_wrong_passcode_error">Неправильный пароль</string>
+    <string name="ym_login_error">Что-то не так с логином в сервисе Яндекс.Деньги</string>
+    <string name="ym_server_error">Похоже, это техническая ошибка</string>
+    <string name="ym_unknown_error">Похоже, это техническая ошибка</string>
+    <string name="ym_unhandled_error">Что-то пошло не так, мы чиним, можете попробовать еще раз</string>
+    <string name="ym_verify_attempts_exceeded">Вы слишком много раз ввели неправильный пароль. Попробуйте позже</string>
+    <string name="ym_sms_retry_time">Можно повторить через: %1$s с</string>
+    <string name="ym_error_empty_payment_auth_code">Надо заполнить</string>
+    <string name="ym_sberbank">Сбербанк Онлайн</string>
+    <string name="ym_payment_option_google_pay">Google Pay</string>
+</resources>

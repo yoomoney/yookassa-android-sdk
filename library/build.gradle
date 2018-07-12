@@ -1,0 +1,118 @@
+/*
+ * The MIT License (MIT)
+ * Copyright © 2018 NBCO Yandex.Money LLC
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the “Software”), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+ * of the Software, and to permit persons to whom the Software is furnished to do so, subject to the
+ * following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ * PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+ * OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+apply from: rootProject.file('common.gradle')
+
+android {
+    compileSdkVersion targetSdkVersion
+    resourcePrefix 'ym_'
+
+    defaultConfig {
+        minSdkVersion 14
+        versionCode project.ext.versionCode
+        versionName project.ext.versionName
+
+        multiDexEnabled true
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        manifestPlaceholders = [YANDEX_CLIENT_ID: "INVALID"]
+
+        buildConfigField "String", "DEFAULT_YANDEX_AUTH_TOKEN", "${optionalProperty('defaultYandexAuthToken')}"
+
+        buildConfigField "String", "THREAT_METRIX_ORIG_ID", "${optionalProperty('threatMetrixOrigId')}"
+        buildConfigField "String", "THREAT_METRIX_FP_SERVER", "${optionalProperty('threatMetrixFPServer')}"
+        buildConfigField "String", "THREAT_METRIX_CERTIFICATE_HASHES", "${optionalProperty('threatMetrixCertificateHashes')}"
+
+        buildConfigField "String", "HOST", "\"https://payment.yandex.net/frontend-api/v3\""
+        buildConfigField "String", "PAYMENT_AUTHORIZATION_HOST", "\"https://money.yandex.ru/api/wallet-auth/v1\""
+        buildConfigField "String", "API_V1_HOST", "\"https://money.yandex.ru/api\""
+
+        buildConfigField "String", "APP_METRICA_KEY", "${optionalProperty('metricaKey')}"
+
+        vectorDrawables.useSupportLibrary = true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
+    useLibrary 'org.apache.http.legacy'
+
+    libraryVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "${generateFileName(project, variant)}.aar"
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+}
+
+repositories {
+    maven { url "http://artifactory.yandex.net/jcenter" }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.google.android.gms:play-services-wallet:15.0.1'
+    implementation "com.android.support:support-v4:$support_version"
+    implementation "com.android.support:appcompat-v7:$support_version"
+    implementation "com.android.support:design:$support_version"
+    implementation "com.android.support.constraint:constraint-layout:$constraint_layout_version"
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+    implementation 'com.yandex.android:authsdk:2.1.0'
+    implementation 'com.yandex.android:mobmetricalib:3.0.0'
+    implementation 'ru.tinkoff.decoro:decoro:1.3.4'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:2.17.0'
+    testImplementation 'org.robolectric:robolectric:3.8'
+    androidTestImplementation "com.android.support.test:runner:$support_test_version"
+    androidTestImplementation "com.android.support.test:rules:$support_test_version"
+    androidTestImplementation 'org.mockito:mockito-core:2.17.0'
+    androidTestImplementation 'org.mockito:mockito-android:2.7.22'
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:$espresso_version"
+    androidTestImplementation "com.android.support.test.espresso:espresso-intents:$espresso_version"
+    androidTestImplementation "com.android.support.test.espresso:espresso-web:$espresso_version"
+}
+
+task copyTestClasses(type: Copy) {
+    from "build/tmp/kotlin-classes/devDebugUnitTest"
+    into "build/intermediates/classes/devDebug"
+    exclude '*/META-INF/library_devDebug.kotlin_module'
+}
+

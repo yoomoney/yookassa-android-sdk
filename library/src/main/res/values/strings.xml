@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+  ~ The MIT License (MIT)
+  ~ Copyright © 2018 NBCO Yandex.Money LLC
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+  ~ associated documentation files (the “Software”), to deal in the Software without restriction, including
+  ~ without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+  ~ of the Software, and to permit persons to whom the Software is furnished to do so, subject to the
+  ~ following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all copies or substantial
+  ~ portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+  ~ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+  ~ PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+  ~ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+  ~ OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+  ~ OTHER DEALINGS IN THE SOFTWARE.
+  -->
+
+<resources>
+    <!--TranslatorComment:-->
+    <!--TranslatorComment:Translation source key: https://tanker.yandex-team.ru/?project=music&keyset=donate&key=%D0%91%D0%B0%D0%BD%D0%BA%D0%BE%D0%B2%D1%81%D0%BA%D0%B0%D1%8F+%D0%BA%D0%B0%D1%80%D1%82%D0%B0&branch=master-->
+    <string name="ym_payment_option_new_card">Bank card</string>
+    <string name="ym_payment_option_yamoney">Yandex.Money</string>
+    <string name="ym_payment_options_title">Payment methods</string>
+    <!--TranslatorComment:-->
+    <!--TranslatorComment:Translation source key: https://tanker.yandex-team.ru/?project=ym_ios_msdk&keyset=General&key=Common.PlaceholderView.title&branch=master-->
+    <string name="ym_payment_options_error_message">Connection error. Try again once you\'re online.</string>
+    <string name="ym_payment_options_error_button">Try again</string>
+    <!--TranslatorComment:-->
+    <!--TranslatorComment:Translation source key: https://tanker.yandex-team.ru/?project=apikeys&keyset=desktop.blocks%3Acontract-info&key=expire&branch=master-->
+    <string name="ym_bank_card_expiry_hint">Expires</string>
+    <string name="ym_bank_card_cvc_hint">CVC</string>
+    <!--TranslatorComment:-->
+    <!--TranslatorComment:Translation source key: https://tanker.yandex-team.ru/?project=mobile-money-client&keyset=app&key=card_number_input_hint&branch=dev-->
+    <string name="ym_bank_card_number_hint">Card number</string>
+    <string name="ym_bank_card_pay">Pay</string>
+    <string name="ym_bank_card_title_existing">Bank card</string>
+    <!--TranslatorComment:-->
+    <!--TranslatorComment:Translation source key: https://tanker.yandex-team.ru/?project=yamoney-frontend-lk-client&keyset=src%2Fclient%2Fcomponents%2Fpayments%3AHistoryTable&key=payment-description-AC&branch=master-->
+    <string name="ym_bank_card_title_new">Bank card</string>
+    <!--TranslatorComment:-->
+    <!--TranslatorComment:Translation source key: https://tanker.yandex-team.ru/?project=yamoney-portal-bem-components&keyset=common.blocks%3Abalance&key=gateline-single-title&branch=master-->
+    <string name="ym_bank_card_title_edit">Linked bank card</string>
+    <string name="ym_payment_options_yamoney">Yandex.Money</string>
+    <string name="ym_payment_options_android_pay">Google Pay</string>
+    <string name="ym_contract_amount">Amount to be paid</string>
+    <string name="ym_payment_options_bank_card">Bank card</string>
+    <string name="ym_contract_continue">Next</string>
+    <string name="ym_contract_change_payment_option">Change</string>
+    <string name="ym_payment_auth_repeat">Send again</string>
+    <string name="ym_allow_wallet_linking">Save the Wallet in app ^1?</string>
+    <string name="ym_allow_recurring_payments">Allow recurring payments?</string>
+    <!--TranslatorComment:-->
+    <!--TranslatorComment:Translation source key: https://tanker.yandex-team.ru/?project=yamoney-lk&keyset=blocks%2Fcommon.blocks%3Asecure-auth&key=secure-auth-empty-sms&branch=master-->
+    <string name="ym_auth_hint_sms">Enter the password from the text message</string>
+    <!--TranslatorComment:-->
+    <!--TranslatorComment:Translation source key: https://tanker.yandex-team.ru/?project=passport&keyset=Frontend&key=profile.access.2fa-disable.otp&branch=master-->
+    <string name="ym_auth_hint_totp">Enter a one-time password</string>
+    <string name="ym_auth_hint_password">Enter the password</string>
+    <!--TranslatorComment:-->
+    <!--TranslatorComment:Translation source key: https://tanker.yandex-team.ru/?project=yamoney-lk&keyset=blocks%2Fcommon.blocks%3Asecure-auth&key=secure-auth-empty-emergency&branch=master-->
+    <string name="ym_auth_hint_emergency">Enter the emergency code</string>
+    <!--TranslatorComment:-->
+    <!--TranslatorComment:Translation source key: https://tanker.yandex-team.ru/?project=direct2&keyset=b-online-set-phrases-prices&key=ok&branch=iget2-test-->
+    <string name="ym_logout_dialog_button_positive">OK</string>
+    <!--TranslatorComment:-->
+    <!--TranslatorComment:Translation source key: https://tanker.yandex-team.ru/?project=abro&keyset=yandex_browser_strings&key=bro_firstscreen_welcome_cancel&branch=master-->
+    <string name="ym_logout_dialog_button_negative">Cancel</string>
+    <string name="ym_logout_dialog_message">Are you sure you want to log out of account %1$s?</string>
+    <!--TranslatorComment:-->
+    <!--TranslatorComment:Translation source key: https://tanker.yandex-team.ru/?project=suburbantrains&keyset=iOS_v3&key=retryKey&branch=iOS_3.20.0_dev36-->
+    <string name="ym_retry">Try again</string>
+    <string name="ym_no_wallet_dialog_message">%1$s, you do not have a Yandex.Money Wallet</string>
+    <string name="ym_no_wallet_dialog_shoose_payment_option">Select payment method</string>
+    <!-- errors -->
+    <string name="ym_error_something_went_wrong">Seems we\'ve had a technical error</string>
+    <!--TranslatorComment:-->
+    <!--TranslatorComment:Translation source key: https://tanker.yandex-team.ru/?project=ym_ios_msdk&keyset=General&key=Common.PlaceholderView.title&branch=master-->
+    <string name="ym_error_no_internet">Connection error. Try again once you\'re online.</string>
+    <!--TranslatorComment:-->
+    <!--TranslatorComment:Translation source key: https://tanker.yandex-team.ru/?project=direct-app-android&keyset=Glossary&key=payment_fragment_no_way&branch=master-->
+    <string name="ym_no_payment_options_error">No available payment methods</string>
+    <!--TranslatorComment:-->
+    <!--TranslatorComment:Translation source key: https://tanker.yandex-team.ru/?project=home&keyset=auth&key=password-invalid&branch=feedback-->
+    <string name="ym_wrong_passcode_error">Incorrect password</string>
+    <string name="ym_login_error">Something is wrong with the Yandex.Money service login</string>
+    <string name="ym_server_error">Seems we\'ve had a technical error</string>
+    <string name="ym_unknown_error">Seems we\'ve had a technical error</string>
+    <string name="ym_unhandled_error">Something went wrong. We\'re already working on it—please try again</string>
+    <string name="ym_verify_attempts_exceeded">Too many attempts to log in with an incorrect password. Try again later</string>
+    <string name="ym_sms_retry_time">Try again in: %1$s s</string>
+    <string name="ym_error_empty_payment_auth_code">Should not be empty</string>
+    <string name="ym_sberbank">Sberbank Online</string>
+    <string name="ym_payment_option_google_pay">Google Pay</string>
+</resources>

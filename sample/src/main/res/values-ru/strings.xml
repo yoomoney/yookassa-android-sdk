@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+  ~ The MIT License (MIT)
+  ~ Copyright © 2018 NBCO Yandex.Money LLC
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+  ~ associated documentation files (the “Software”), to deal in the Software without restriction, including
+  ~ without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+  ~ of the Software, and to permit persons to whom the Software is furnished to do so, subject to the
+  ~ following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all copies or substantial
+  ~ portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+  ~ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+  ~ PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+  ~ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+  ~ OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+  ~ OTHER DEALINGS IN THE SOFTWARE.
+  -->
+
+<resources>
+    <string name="app_name">Демо mSDK</string>
+    <string name="start_payment">Начать платёж</string>
+    <string name="settings">Настройки</string>
+    <string name="yandex_checkout_logo">Логотип Яндекс Кассы</string>
+    <string name="test_mode">Тестовый режим</string>
+    <string name="payment_authorized">Вход в кошелёк выполнен</string>
+    <string name="linked_cards">Привязанные карты</string>
+    <string name="complete_payment_with_error">Завершить платёж ошибкой</string>
+    <string name="payment_type">Способы оплаты</string>
+    <string name="main_buy">Купить</string>
+    <string name="main_toolbar_title">Оформление заказа</string>
+    <string name="main_product_name">Комета</string>
+    <string name="main_product_description">Очень яркая, период обращения — 112 лет</string>
+    <string name="main_price">Цена</string>
+    <string name="save">Сохранить</string>
+    <string name="binded_cards_max_cards">Максимум 5 привязанных карт</string>
+    <string name="linked_cards_toolbar_title">Привязанные карты</string>
+    <string name="success_screen_token_is_ready">Токен готов</string>
+    <string name="success_screen_token_instructions">Создайте платёж по API Яндекс.Кассы, передайте этот токен в параметре payment_token</string>
+    <string name="success_screen_open_documentation">Посмотреть документацию</string>
+    <string name="success_screen_show_token">Показать токен</string>
+    <string name="token_copy">Скопировать</string>
+    <string name="token_cancel">Отмена</string>
+    <string name="checkout_documentation_link">https://kassa.yandex.ru/docs/client-sdks/#mobil-nye-sdk</string>
+    <string name="version_template">Версия %1$s мобильного SDK\nот %2$td.%2$tm.%2$tY, сборка %3$d</string>
+    <string name="google_pay">Google Pay</string>
+    <string name="google_pay_available">Google Pay доступен</string>
+    <string name="pay_with_token">Провести оплату по токену</string>
+    <string name="button_close">Закрыть</string>
+</resources>

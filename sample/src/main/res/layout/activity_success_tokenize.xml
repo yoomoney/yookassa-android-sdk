@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ The MIT License (MIT)
+  ~ Copyright © 2018 NBCO Yandex.Money LLC
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+  ~ associated documentation files (the “Software”), to deal in the Software without restriction, including
+  ~ without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+  ~ of the Software, and to permit persons to whom the Software is furnished to do so, subject to the
+  ~ following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all copies or substantial
+  ~ portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+  ~ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+  ~ PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+  ~ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+  ~ OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+  ~ OTHER DEALINGS IN THE SOFTWARE.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
+
+    <ImageButton
+        android:id="@+id/close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/ym_space_m"
+        android:background="@android:color/transparent"
+        android:contentDescription="@null"
+        app:srcCompat="@drawable/ym_ic_close" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/ym_decor_marginBottom_m"
+        android:contentDescription="@null"
+        app:srcCompat="@drawable/ic_success" />
+
+    <TextView
+        style="@style/SuccessScreenTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/ym_decor_marginTop_xs"
+        android:gravity="center_horizontal"
+        android:text="@string/success_screen_token_is_ready" />
+
+    <TextView
+        style="@style/SuccessScreenInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/ym_decor_marginBottom_xs"
+        android:layout_marginEnd="@dimen/ym_decor_marginEnd_3xl"
+        android:layout_marginLeft="@dimen/ym_decor_marginStart_3xl"
+        android:layout_marginRight="@dimen/ym_decor_marginEnd_3xl"
+        android:layout_marginStart="@dimen/ym_decor_marginStart_3xl"
+        android:gravity="center_horizontal"
+        android:text="@string/success_screen_token_instructions" />
+
+    <Button
+        style="@style/FlatButton.Small"
+        android:id="@+id/showDocumentation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/success_screen_open_documentation" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <Button
+        style="@style/FlatButton.Big"
+        android:id="@+id/showToken"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/ym_decor_marginBottom_m"
+        android:text="@string/success_screen_show_token" />
+</LinearLayout>

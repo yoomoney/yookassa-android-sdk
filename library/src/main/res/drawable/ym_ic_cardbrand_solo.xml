@@ -1,0 +1,69 @@
+<!--
+  ~ The MIT License (MIT)
+  ~ Copyright © 2018 NBCO Yandex.Money LLC
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+  ~ associated documentation files (the “Software”), to deal in the Software without restriction, including
+  ~ without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+  ~ of the Software, and to permit persons to whom the Software is furnished to do so, subject to the
+  ~ following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all copies or substantial
+  ~ portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+  ~ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+  ~ PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+  ~ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+  ~ OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+  ~ OTHER DEALINGS IN THE SOFTWARE.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="40dp"
+    android:height="40dp"
+    android:viewportWidth="40"
+    android:viewportHeight="40">
+  <path
+      android:pathData="M22.045,15.2602C23.7247,17.7948 22.9957,21.188 20.417,22.8376C17.8394,24.4883 14.3884,23.7729 12.7087,21.2383L14.3093,20.1808C15.3998,21.8257 17.6408,22.2916 19.3152,21.2196C20.9896,20.1475 21.4629,17.9444 20.3724,16.2989L22.045,15.2602Z"
+      android:strokeWidth="1"
+      android:fillColor="#A5A5A5"
+      android:fillType="nonZero"
+      android:strokeColor="#00000000"/>
+  <path
+      android:pathData="M25.7708,12.9345C24.0881,10.4011 20.6358,9.6897 18.0601,11.3428C15.4843,12.9971 14.7595,16.3915 16.4422,18.9237L18.0714,17.909C16.9791,16.2647 17.4494,14.0615 19.122,12.9871C20.7952,11.9128 23.0362,12.3763 24.1297,14.02L25.7708,12.9345Z"
+      android:strokeWidth="1"
+      android:fillColor="#A5A5A5"
+      android:fillType="nonZero"
+      android:strokeColor="#00000000"/>
+  <path
+      android:pathData="M19.1275,26.5446C24.5621,26.5446 28.9662,22.2131 28.9662,16.871C28.9662,11.5289 24.5621,7.1986 19.1275,7.1986C13.6929,7.1986 9.2881,11.5289 9.2881,16.871C9.2881,22.2131 13.6929,26.5446 19.1275,26.5446M8.5479,16.871C8.5479,11.1273 13.2838,6.4703 19.1275,6.4703C24.9706,6.4703 29.7077,11.1273 29.7077,16.871C29.7077,22.6159 24.9706,27.2717 19.1275,27.2717C13.2838,27.2717 8.5479,22.6159 8.5479,16.871"
+      android:strokeWidth="1"
+      android:fillColor="#A5A5A5"
+      android:fillType="nonZero"
+      android:strokeColor="#00000000"/>
+  <path
+      android:pathData="M20.3434,29.4843l0.6766,0l-0.5577,2.4638l1.8206,0l-0.1278,0.5547l-2.4967,0z"
+      android:strokeWidth="1"
+      android:fillColor="#A5A5A5"
+      android:fillType="nonZero"
+      android:strokeColor="#00000000"/>
+  <path
+      android:pathData="M12.7199,31.5828C12.8543,31.8382 13.409,32.1527 13.9543,32.1352C14.5298,32.1182 14.7368,31.9563 14.776,31.6857C14.7909,31.5781 14.8355,31.3326 14.3562,31.2771L13.5797,31.1923C12.755,31.0848 12.6218,30.7562 12.6402,30.3523C12.6664,29.797 13.3722,29.368 14.1309,29.3586C14.7992,29.3498 15.3658,29.4948 15.6304,29.8485L15.1607,30.1273C14.773,29.8245 14.4234,29.8017 14.0072,29.8268C13.717,29.8449 13.3264,29.9595 13.2657,30.2354C13.2241,30.4307 13.2336,30.5528 13.6498,30.6008L14.6333,30.7276C15.0858,30.779 15.4645,31.1982 15.4295,31.5565C15.3754,32.0797 14.9116,32.6981 13.7991,32.6443C12.9476,32.6046 12.4494,32.2778 12.221,31.8692L12.7199,31.5828Z"
+      android:strokeWidth="1"
+      android:fillColor="#A5A5A5"
+      android:fillType="nonZero"
+      android:strokeColor="#00000000"/>
+  <path
+      android:pathData="M17.5214,32.0509C18.1237,32.0509 18.6802,31.5716 18.767,30.9788C18.8521,30.3885 18.4341,29.908 17.8317,29.908C17.2306,29.908 16.6735,30.3885 16.5873,30.9788C16.5016,31.5716 16.9196,32.0509 17.5214,32.0509M16.001,30.9788C16.1324,30.0699 16.9904,29.3316 17.9156,29.3316C18.842,29.3316 19.4853,30.0699 19.3533,30.9788C19.2213,31.8901 18.3639,32.6284 17.4369,32.6284C16.5117,32.6284 15.869,31.8901 16.001,30.9788"
+      android:strokeWidth="1"
+      android:fillColor="#A5A5A5"
+      android:fillType="nonZero"
+      android:strokeColor="#00000000"/>
+  <path
+      android:pathData="M24.2024,32.0509C24.8041,32.0509 25.3607,31.5716 25.4469,30.9788C25.5331,30.3885 25.1145,29.908 24.5134,29.908C23.9105,29.908 23.3539,30.3885 23.2677,30.9788C23.1821,31.5716 23.6001,32.0509 24.2024,32.0509M22.6814,30.9788C22.8128,30.0699 23.6702,29.3316 24.5966,29.3316C25.5224,29.3316 26.1652,30.0699 26.0338,30.9788C25.9012,31.8901 25.0449,32.6284 24.1186,32.6284C23.1928,32.6284 22.5488,31.8901 22.6814,30.9788"
+      android:strokeWidth="1"
+      android:fillColor="#A5A5A5"
+      android:fillType="nonZero"
+      android:strokeColor="#00000000"/>
+</vector>

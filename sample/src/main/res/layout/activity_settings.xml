@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ The MIT License (MIT)
+  ~ Copyright © 2018 NBCO Yandex.Money LLC
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+  ~ associated documentation files (the “Software”), to deal in the Software without restriction, including
+  ~ without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+  ~ of the Software, and to permit persons to whom the Software is furnished to do so, subject to the
+  ~ following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all copies or substantial
+  ~ portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+  ~ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+  ~ PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+  ~ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+  ~ OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+  ~ OTHER DEALINGS IN THE SOFTWARE.
+  -->
+
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:elevation="0dp">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:title="@string/settings" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:theme="@style/AppTheme.Settings">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Ym_ListHeader"
+                android:id="@+id/payment_methods_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="bottom"
+                android:text="@string/payment_type" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/payment_option_yamoney"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/ym_payment_option_yamoney"
+                tools:checked="true" />
+
+            <View style="@style/Divider" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/payment_option_sberbank_online"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/ym_sberbank"
+                tools:checked="true" />
+
+            <View style="@style/Divider" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/payment_option_google_pay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/google_pay"
+                tools:checked="true" />
+
+            <View style="@style/Divider" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/payment_option_new_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/ym_payment_option_new_card"
+                tools:checked="true" />
+
+            <View style="@style/Divider" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/enable_yandex_checkout_logo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/yandex_checkout_logo"
+                tools:checked="true" />
+
+            <View style="@style/Divider" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/enable_test_mode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/test_mode"
+                tools:checked="true" />
+
+            <View style="@style/Divider" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/payment_auth_passed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/payment_authorized"
+                tools:checked="true" />
+
+            <View
+                style="@style/Divider"
+                android:id="@+id/payment_auth_passed_divider" />
+
+            <Button
+                style="?attr/borderlessButtonStyle"
+                android:id="@+id/linked_cards"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/linked_cards" />
+
+            <View
+                style="@style/Divider"
+                android:id="@+id/linked_cards_divider" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/complete_with_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/complete_payment_with_error"
+                tools:checked="true" />
+
+            <View
+                style="@style/Divider"
+                android:id="@+id/google_pay_available_divider" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/google_pay_available"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/google_pay_available"
+                tools:checked="true" />
+
+            <View
+                style="@style/Divider"
+                android:id="@+id/complete_with_error_divider" />
+
+            <TextView
+                android:id="@+id/version_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="40dp"
+                android:layout_marginTop="40dp"
+                android:gravity="center"
+                tools:text="Версия 1.0 мобильного SDK \nот 19.01.2018 г., сборка 123" />
+
+            <Button
+                android:id="@id/open3ds"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginStart="16dp"
+                android:text="3ds"
+                android:visibility="gone"
+                tools:ignore="HardcodedText" />
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+</android.support.design.widget.CoordinatorLayout>

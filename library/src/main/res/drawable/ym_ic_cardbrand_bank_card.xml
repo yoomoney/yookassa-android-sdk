@@ -1,0 +1,45 @@
+<!--
+  ~ The MIT License (MIT)
+  ~ Copyright © 2018 NBCO Yandex.Money LLC
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+  ~ associated documentation files (the “Software”), to deal in the Software without restriction, including
+  ~ without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+  ~ of the Software, and to permit persons to whom the Software is furnished to do so, subject to the
+  ~ following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all copies or substantial
+  ~ portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+  ~ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+  ~ PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+  ~ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+  ~ OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+  ~ OTHER DEALINGS IN THE SOFTWARE.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="40dp"
+    android:height="40dp"
+    android:viewportWidth="40"
+    android:viewportHeight="40">
+  <path
+      android:pathData="M19.063,9.0042C19.2224,8.7274 19.3798,8.4505 19.5373,8.1756C22.905,13.9907 26.2726,19.8039 29.6365,25.6209C27.129,24.989 24.6234,24.3533 22.1158,23.7175C22.9741,19.9032 22.0621,15.9304 20.647,12.3604C20.1862,11.2111 19.6448,10.0962 19.063,9.0042Z"
+      android:strokeWidth="1"
+      android:fillColor="#A5A5A5"
+      android:fillType="nonZero"
+      android:strokeColor="#00000000"/>
+  <path
+      android:pathData="M18.6234,9.7277C19.3011,12.2535 19.9654,14.7849 20.649,17.3106C18.919,17.7211 17.3581,18.6336 15.9526,19.6932C13.1917,21.8085 11.0029,24.5671 9.1405,27.4727C8.8198,27.4727 8.5011,27.4708 8.1824,27.4727C11.6634,21.5584 15.1405,15.6402 18.6234,9.7277Z"
+      android:strokeWidth="1"
+      android:fillColor="#A5A5A5"
+      android:fillType="nonZero"
+      android:strokeColor="#00000000"/>
+  <path
+      android:pathData="M10.5651,27.4727C12.4429,25.5655 14.3302,23.6679 16.2061,21.7607C18.1357,23.8703 20.8083,25.1761 23.5482,25.9073C25.8042,26.5067 28.1523,26.7034 30.4832,26.648C30.6483,26.9229 30.8134,27.1959 30.9824,27.4708C24.176,27.4746 17.3715,27.4727 10.5651,27.4727Z"
+      android:strokeWidth="1"
+      android:fillColor="#A5A5A5"
+      android:fillType="nonZero"
+      android:strokeColor="#00000000"/>
+</vector>

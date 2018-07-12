@@ -1,0 +1,31 @@
+<!--
+  ~ The MIT License (MIT)
+  ~ Copyright © 2018 NBCO Yandex.Money LLC
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+  ~ associated documentation files (the “Software”), to deal in the Software without restriction, including
+  ~ without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+  ~ of the Software, and to permit persons to whom the Software is furnished to do so, subject to the
+  ~ following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all copies or substantial
+  ~ portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+  ~ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+  ~ PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+  ~ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+  ~ OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+  ~ OTHER DEALINGS IN THE SOFTWARE.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="80dp"
+    android:height="80dp"
+    android:viewportHeight="80.0"
+    android:viewportWidth="80.0">
+    <path
+        android:fillAlpha=".3"
+        android:fillColor="#000"
+        android:pathData="M42.67,39.55l6.86,6.86c0.31,0.31 0.31,0.82 0,1.13l-0.98,0.98a0.81,0.81 0,0 1,-1.13 0l-6.86,-6.86 -6.86,6.86a0.81,0.81 0,0 1,-1.13 0l-0.99,-0.98a0.8,0.8 0,0 1,0 -1.13l6.86,-6.86 -6.86,-6.86a0.8,0.8 0,0 1,0 -1.13l0.99,-0.99a0.81,0.81 0,0 1,1.13 0l6.86,6.86 6.86,-6.86a0.81,0.81 0,0 1,1.13 0l0.98,0.99a0.8,0.8 0,0 1,0 1.13l-6.86,6.86zM40,80C17.91,80 0,62.09 0,40S17.91,0 40,0s40,17.91 40,40 -17.91,40 -40,40zM40,77c20.43,0 37,-16.57 37,-37S60.44,3 40,3 3,19.57 3,40s16.57,37 37,37z" />
+</vector>

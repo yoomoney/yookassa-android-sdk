@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ The MIT License (MIT)
+  ~ Copyright © 2018 NBCO Yandex.Money LLC
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+  ~ associated documentation files (the “Software”), to deal in the Software without restriction, including
+  ~ without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+  ~ of the Software, and to permit persons to whom the Software is furnished to do so, subject to the
+  ~ following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all copies or substantial
+  ~ portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+  ~ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+  ~ PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+  ~ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+  ~ OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+  ~ OTHER DEALINGS IN THE SOFTWARE.
+  -->
+
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarContainer"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/ym_appbar_height"
+        android:background="@color/ym_background"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:collapsedTitleTextAppearance="@style/ym_Text.Header"
+            app:expandedTitleMarginStart="@dimen/ym_screen_indentStart"
+            app:expandedTitleTextAppearance="@style/ym_Text.Header2"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?android:attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:navigationIcon="@drawable/ym_ic_close"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <FrameLayout
+        android:id="@+id/cardNumberInputContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/ym_screen_indentEnd"
+        android:layout_marginLeft="@dimen/ym_screen_indentStart"
+        android:layout_marginRight="@dimen/ym_screen_indentEnd"
+        android:layout_marginStart="@dimen/ym_screen_indentStart"
+        app:layout_constraintTop_toBottomOf="@+id/appBarContainer">
+
+        <ru.yandex.money.android.sdk.utils.CustomTextInputLayout
+            android:id="@+id/cardNumberInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintTextAppearance="@style/ym_TextAppearance.TextInputLayout">
+
+            <android.support.design.widget.TextInputEditText
+                style="@style/ym_EditText"
+                android:id="@+id/cardNumberEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/ym_bank_card_number_hint"
+                android:imeOptions="actionNext"
+                android:inputType="text|number"
+                android:maxLength="23"
+                android:nextFocusForward="@+id/card_expiry_edit_text"/>
+
+        </ru.yandex.money.android.sdk.utils.CustomTextInputLayout>
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/ym_space_m"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/cardNumberInputContainer">
+
+        <FrameLayout
+            android:id="@+id/expiryContainer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/ym_decor_marginEnd_2xl"
+            android:layout_marginRight="@dimen/ym_decor_marginEnd_2xl"
+            android:layout_weight="1">
+
+            <ru.yandex.money.android.sdk.utils.CustomTextInputLayout
+                android:id="@+id/expiryInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/ym_TextAppearance.TextInputLayout">
+
+                <android.support.design.widget.TextInputEditText
+                    style="@style/ym_EditText"
+                    android:id="@+id/expiryEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/ym_bank_card_expiry_hint"
+                    android:imeOptions="actionNext"
+                    android:inputType="text|number"
+                    android:maxLength="5"
+                    android:nextFocusForward="@+id/card_csc_edit_text"/>
+
+            </ru.yandex.money.android.sdk.utils.CustomTextInputLayout>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/cscContainer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <ru.yandex.money.android.sdk.utils.CustomTextInputLayout
+                android:id="@+id/cscInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/ym_TextAppearance.TextInputLayout">
+
+                <android.support.design.widget.TextInputEditText
+                    style="@style/ym_EditText"
+                    android:id="@+id/cscEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/ym_bank_card_cvc_hint"
+                    android:imeOptions="actionDone"
+                    android:inputType="numberPassword"
+                    android:maxLength="4"/>
+
+            </ru.yandex.money.android.sdk.utils.CustomTextInputLayout>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <TextView
+        style="@style/ym_Button.Rounded"
+        android:id="@+id/payButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="@dimen/ym_space_m"
+        android:text="@string/ym_bank_card_pay"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</android.support.constraint.ConstraintLayout>

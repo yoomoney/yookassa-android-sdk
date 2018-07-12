@@ -1,0 +1,41 @@
+<!--
+  ~ The MIT License (MIT)
+  ~ Copyright © 2018 NBCO Yandex.Money LLC
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+  ~ associated documentation files (the “Software”), to deal in the Software without restriction, including
+  ~ without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+  ~ of the Software, and to permit persons to whom the Software is furnished to do so, subject to the
+  ~ following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all copies or substantial
+  ~ portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+  ~ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+  ~ PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+  ~ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+  ~ OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+  ~ OTHER DEALINGS IN THE SOFTWARE.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:viewportWidth="40"
+    android:viewportHeight="40"
+    android:width="40dp"
+    android:height="40dp">
+    <group
+        android:translateX="6"
+        android:translateY="5">
+        <path
+            android:pathData="M18.512102 11.763907L18.517333 0 5.4061583 10.213902c0 0 -1.672825 1.261273 -1.672825 3.292202l0 12.517663c0 0 0.020533 1.976233 1.9545167 1.976233l18.578817 0 0 -16.24 -5.754565 0.0039z"
+            android:fillColor="#ffcc00" />
+        <path
+            android:pathData="M13.498842 10.650285c-0.968087 0.39117 -1.7525 1.424435 -1.7525 2.308025 0 0.883589 0.784413 1.282934 1.7525 0.891136 0.968087 -0.391169 1.753191 -1.424435 1.753191 -2.308024 0 -0.88359 -0.784413 -1.282306 -1.753191 -0.891137l0 0z"
+            android:fillColor="#000000" />
+        <path
+            android:pathData="M18.463306 11.733333l0 6.444515 -11.6188616 8.055485 14.5235776 -4.833543 0 -9.666457z"
+            android:fillColor="#000000"
+            android:fillAlpha="0.149" />
+    </group>
+</vector>

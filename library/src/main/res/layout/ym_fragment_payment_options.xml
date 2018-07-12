@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ The MIT License (MIT)
+  ~ Copyright © 2018 NBCO Yandex.Money LLC
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+  ~ associated documentation files (the “Software”), to deal in the Software without restriction, including
+  ~ without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+  ~ of the Software, and to permit persons to whom the Software is furnished to do so, subject to the
+  ~ following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all copies or substantial
+  ~ portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+  ~ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+  ~ PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+  ~ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+  ~ OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+  ~ OTHER DEALINGS IN THE SOFTWARE.
+  -->
+
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/ym_dialogWidth"
+    android:layout_height="@dimen/ym_dialogHeight"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/ym_screen_indentTop">
+
+    <TextView
+        style="@style/ym_Text.Header"
+        android:id="@+id/header"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/ym_icon_size_m"
+        android:layout_marginLeft="@dimen/ym_screen_indentStart"
+        android:layout_marginStart="@dimen/ym_screen_indentStart"
+        android:ellipsize="end"
+        android:gravity="start"
+        android:lines="1"
+        android:text="@string/ym_payment_options_title"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toStartOf="@+id/logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/ym_icon_size_m"
+        android:layout_marginEnd="@dimen/ym_screen_indentEnd"
+        android:layout_marginLeft="@dimen/ym_screen_indentStart"
+        android:layout_marginRight="@dimen/ym_screen_indentEnd"
+        android:layout_marginStart="@dimen/ym_screen_indentStart"
+        android:contentDescription="@null"
+        android:scaleType="fitEnd"
+        app:srcCompat="@drawable/ym_ic_logo_checkout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <FrameLayout
+        android:id="@+id/contentContainer"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/ym_payment_options_container_height"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header"/>
+</android.support.constraint.ConstraintLayout>
