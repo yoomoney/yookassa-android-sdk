@@ -16,10 +16,10 @@ _ссылка на гитхаб_
 
 ```groovy
 repositories {
-    // тут либо mavenCentral() либо jcenter()
+    maven { url 'https://dl.bintray.com/yandex-money/maven' }
 }
 dependencies {
-    implementation 'ru.yandex.money:msdk-android:1.0.0'
+    implementation 'ru.yandex.money:msdk-android:1.3.0'
 }
 ```
 
