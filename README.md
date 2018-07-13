@@ -19,7 +19,7 @@ repositories {
     maven { url 'https://dl.bintray.com/yandex-money/maven' }
 }
 dependencies {
-    implementation 'ru.yandex.money:msdk-android:1.3.0'
+    implementation 'com.yandex.money:checkout:1.3.0'
 }
 ```
 
@@ -45,7 +45,7 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    implementation 'com.yandex.android:authsdk:2.0.0'
+    implementation 'com.yandex.android:authsdk:2.1.0'
 }
 ```
 
