@@ -31,7 +31,7 @@ import ru.yandex.money.android.sdk.payment.loadOptionList.PaymentOptionListOutpu
 
 internal class ChangePaymentOptionController(
     private val paymentOptionListUseCase: UseCase<ChangePaymentOptionInputModel, ChangePaymentOptionOutputModel>,
-    private val paymentOptionListPresenter: Presenter<ChangePaymentOptionOutputModel, PaymentOptionListViewModel>,
+    private val changePaymentOptionsPresenter: Presenter<ChangePaymentOptionOutputModel, PaymentOptionListViewModel>,
     private val progressPresenter: Presenter<Unit, PaymentOptionListProgressViewModel>,
     private val errorPresenter: Presenter<Exception, PaymentOptionListFailViewModel>,
     resultConsumer: (ViewModel) -> Unit,
@@ -46,7 +46,7 @@ internal class ChangePaymentOptionController(
 
     override fun useCase(inputModel: ChangePaymentOptionInputModel) = paymentOptionListUseCase(inputModel)
 
-    override fun presenter(outputModel: PaymentOptionListOutputModel) = paymentOptionListPresenter(outputModel)
+    override fun presenter(outputModel: PaymentOptionListOutputModel) = changePaymentOptionsPresenter(outputModel)
 
     override fun exceptionPresenter(e: Exception) = errorPresenter(e)
 }

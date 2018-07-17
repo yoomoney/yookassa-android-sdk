@@ -64,7 +64,7 @@ internal class ChangePaymentOptionControllerTest {
     fun setUp() {
         controller = ChangePaymentOptionController(
             paymentOptionListUseCase = useCase,
-            paymentOptionListPresenter = { stubSuccess },
+            changePaymentOptionsPresenter = { stubSuccess },
             progressPresenter = { stubProgress },
             errorPresenter = { stubFail },
             resultConsumer = resultConsumer::put,

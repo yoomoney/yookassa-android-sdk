@@ -87,7 +87,7 @@ internal class PaymentOptionListFragment : Fragment(), PaymentOptionListRecycler
     }
 
     private val showAuthCancelledViewModel: (UserAuthCancelledViewModel) -> Unit = {
-        AppModel.loadPaymentOptionListController.retry()
+        AppModel.changePaymentOptionController(Unit)
     }
 
     private val unhandledExceptionListener: (UnhandledException) -> Unit = {
