@@ -49,6 +49,7 @@ import ru.yandex.money.android.sdk.impl.logout.LogoutSuccessViewModel
 import ru.yandex.money.android.sdk.impl.logout.LogoutViewModel
 import ru.yandex.money.android.sdk.impl.payment.tokenize.BankCardDialogFragment
 import ru.yandex.money.android.sdk.impl.paymentOptionInfo.PaymentOptionInfoViewModel
+import ru.yandex.money.android.sdk.impl.paymentOptionList.PaymentOptionListCloseViewModel
 import ru.yandex.money.android.sdk.impl.paymentOptionList.PaymentOptionListFragment
 import ru.yandex.money.android.sdk.impl.paymentOptionList.PaymentOptionListViewModel
 import ru.yandex.money.android.sdk.impl.userAuth.UserAuthFailViewModel
@@ -74,10 +75,14 @@ internal class MainDialogFragment : BottomSheetDialogFragment() {
     }
 
     private val paymentOptionListListener: (PaymentOptionListViewModel) -> Unit = {
-        if (isHidden) {
-            fragmentManager?.takeIf { isAdded }?.popBackStack()
+        if (it === PaymentOptionListCloseViewModel) {
+            dismiss()
         } else {
-            childFragmentManager.takeIf { isAdded }?.popBackStack()
+            if (isHidden) {
+                fragmentManager?.takeIf { isAdded }?.popBackStack()
+            } else {
+                childFragmentManager.takeIf { isAdded }?.popBackStack()
+            }
         }
     }
 

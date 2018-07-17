@@ -22,26 +22,27 @@
 package ru.yandex.money.android.sdk.impl.metrics
 
 import ru.yandex.money.android.sdk.Presenter
-import ru.yandex.money.android.sdk.impl.paymentOptionList.PaymentOptionListSuccessViewModel
+import ru.yandex.money.android.sdk.impl.paymentOptionList.PaymentOptionListCloseViewModel
+import ru.yandex.money.android.sdk.impl.paymentOptionList.PaymentOptionListViewModel
 import ru.yandex.money.android.sdk.payment.changeOption.ChangePaymentOptionOutputModel
 
 internal class ActionChangePaymentMethodReporter(
-    val presenter: Presenter<ChangePaymentOptionOutputModel, PaymentOptionListSuccessViewModel>,
+    val presenter: Presenter<ChangePaymentOptionOutputModel, PaymentOptionListViewModel>,
     val reporter: Reporter
-) : PresenterReporter<ChangePaymentOptionOutputModel, PaymentOptionListSuccessViewModel>(presenter, reporter) {
+) : PresenterReporter<ChangePaymentOptionOutputModel, PaymentOptionListViewModel>(presenter, reporter) {
     override val name = "actionChangePaymentMethod"
 
     override fun getArgs(
         outputModel: ChangePaymentOptionOutputModel,
-        viewModel: PaymentOptionListSuccessViewModel
+        viewModel: PaymentOptionListViewModel
     ): List<Param>? {
         return null
     }
 
     override fun reportingAllowed(
         outputModel: ChangePaymentOptionOutputModel,
-        viewModel: PaymentOptionListSuccessViewModel
+        viewModel: PaymentOptionListViewModel
     ): Boolean {
-        return true
+        return viewModel != PaymentOptionListCloseViewModel
     }
 }

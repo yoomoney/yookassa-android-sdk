@@ -39,7 +39,27 @@ internal class PaymentOptionListPresenter(
 
     private val context = context.applicationContext
 
-    override fun invoke(output: List<PaymentOption>) = PaymentOptionListSuccessViewModel(
+    override fun invoke(output: List<PaymentOption>) = constructOptionListSuccessViewModel(context, output, showLogo)
+}
+
+internal class ChangePaymentOptionPresenter(
+    context: Context,
+    private val showLogo: Boolean
+) : Presenter<List<PaymentOption>, PaymentOptionListViewModel> {
+
+    private val context = context.applicationContext
+
+    override fun invoke(output: List<PaymentOption>): PaymentOptionListViewModel {
+        if (output.size <= 1) {
+            return PaymentOptionListCloseViewModel
+        } else {
+            return constructOptionListSuccessViewModel(context, output, showLogo)
+        }
+    }
+}
+
+private fun constructOptionListSuccessViewModel(context: Context, output: List<PaymentOption>, showLogo: Boolean) =
+    PaymentOptionListSuccessViewModel(
         paymentOptions = output.map {
             PaymentOptionListItemViewModel(
                 optionId = it.id,
@@ -51,7 +71,6 @@ internal class PaymentOptionListPresenter(
         },
         showLogo = showLogo
     )
-}
 
 internal class PaymentOptionListErrorPresenter(
     context: Context,

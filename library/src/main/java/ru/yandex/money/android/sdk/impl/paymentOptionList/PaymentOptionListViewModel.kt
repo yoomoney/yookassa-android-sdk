@@ -28,23 +28,27 @@ internal sealed class PaymentOptionListViewModel {
 }
 
 internal data class PaymentOptionListProgressViewModel(
-        override val showLogo: Boolean
+    override val showLogo: Boolean
 ) : PaymentOptionListViewModel()
 
 internal data class PaymentOptionListSuccessViewModel(
-        val paymentOptions: List<PaymentOptionListItemViewModel>,
-        override val showLogo: Boolean
+    val paymentOptions: List<PaymentOptionListItemViewModel>,
+    override val showLogo: Boolean
 ) : PaymentOptionListViewModel()
 
 internal data class PaymentOptionListItemViewModel(
-        val optionId: Int,
-        val icon: Drawable,
-        val title: CharSequence,
-        val additionalInfo: CharSequence? = null,
-        val canLogout: Boolean = false
+    val optionId: Int,
+    val icon: Drawable,
+    val title: CharSequence,
+    val additionalInfo: CharSequence? = null,
+    val canLogout: Boolean = false
 )
 
 internal data class PaymentOptionListFailViewModel(
-        val error: CharSequence,
-        override val showLogo: Boolean
+    val error: CharSequence,
+    override val showLogo: Boolean
 ) : PaymentOptionListViewModel()
+
+internal object PaymentOptionListCloseViewModel : PaymentOptionListViewModel() {
+    override val showLogo = false
+}

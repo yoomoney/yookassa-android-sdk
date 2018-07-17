@@ -80,6 +80,7 @@ import ru.yandex.money.android.sdk.impl.paymentAuth.SmsSessionRetryController
 import ru.yandex.money.android.sdk.impl.paymentOptionInfo.PaymentOptionInfoPresenter
 import ru.yandex.money.android.sdk.impl.paymentOptionList.ApiV3PaymentOptionListGateway
 import ru.yandex.money.android.sdk.impl.paymentOptionList.ChangePaymentOptionController
+import ru.yandex.money.android.sdk.impl.paymentOptionList.ChangePaymentOptionPresenter
 import ru.yandex.money.android.sdk.impl.paymentOptionList.GooglePayIntegration
 import ru.yandex.money.android.sdk.impl.paymentOptionList.InternetDependentGateway
 import ru.yandex.money.android.sdk.impl.paymentOptionList.LoadPaymentOptionListController
@@ -322,6 +323,7 @@ internal object AppModel {
         val userAuthTokenTypeParamProvider = UserAuthTokenTypeParamProvider(paymentAuthTokenGateway)
         val tokenizeSchemeParamProvider = TokenizeSchemeParamProvider()
         val paymentOptionListPresenter = PaymentOptionListPresenter(context, shopParameters.showLogo)
+        val changePaymentOptionPresenter = ChangePaymentOptionPresenter(context, shopParameters.showLogo)
         val paymentOptionListProgressPresenter = PaymentOptionListProgressPresenter(shopParameters.showLogo)
         val errorPresenter = ErrorPresenter(context)
         val paymentErrorPresenter = PaymentErrorPresenter(errorPresenter)
@@ -373,8 +375,8 @@ internal object AppModel {
                 useCase = ChangePaymentOptionUseCase(getLoadedPaymentOptionListGateway),
                 setTokenizeScheme = tokenizeSchemeParamProvider::tokenizeScheme::set
             ),
-            paymentOptionListPresenter = ActionChangePaymentMethodReporter(
-                presenter = paymentOptionListPresenter,
+            changePaymentOptionsPresenter = ActionChangePaymentMethodReporter(
+                presenter = changePaymentOptionPresenter,
                 reporter = reporter
             ),
             progressPresenter = paymentOptionListProgressPresenter,
