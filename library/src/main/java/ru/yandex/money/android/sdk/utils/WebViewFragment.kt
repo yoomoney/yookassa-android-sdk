@@ -25,6 +25,7 @@ import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
+import android.support.annotation.Keep
 import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
@@ -40,6 +41,7 @@ private const val KEY_REDIRECT_URL = "redirectUrl"
 
 private val TAG = WebViewFragment::class.java.simpleName
 
+@Keep
 internal class WebViewFragment : Fragment() {
 
     private var listener: Listener? = null
