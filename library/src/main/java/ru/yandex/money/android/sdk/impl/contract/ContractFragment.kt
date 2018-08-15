@@ -55,6 +55,7 @@ import ru.yandex.money.android.sdk.R
 import ru.yandex.money.android.sdk.SbolSmsInvoicingInfo
 import ru.yandex.money.android.sdk.impl.AppModel
 import ru.yandex.money.android.sdk.impl.extensions.configureForPhoneInput
+import ru.yandex.money.android.sdk.impl.extensions.hideSoftKeyboard
 import ru.yandex.money.android.sdk.impl.extensions.isPhoneNumber
 import ru.yandex.money.android.sdk.impl.extensions.showChild
 import ru.yandex.money.android.sdk.impl.extensions.showSoftKeyboard
@@ -111,6 +112,7 @@ internal class ContractFragment : Fragment() {
                 text = context.getString(R.string.ym_contract_change_payment_option)
                 setTextColor(ContextCompat.getColor(context, R.color.ym_button_text_link))
                 setOnClickListener {
+                    hideSoftKeyboard()
                     AppModel.changePaymentOptionController(Unit)
                 }
             }
@@ -291,6 +293,7 @@ internal class ContractFragment : Fragment() {
         AppModel.listeners -= errorListener
         AppModel.listeners -= startGooglePayListener
 
+        view?.hideSoftKeyboard()
         super.onDestroyView()
     }
 

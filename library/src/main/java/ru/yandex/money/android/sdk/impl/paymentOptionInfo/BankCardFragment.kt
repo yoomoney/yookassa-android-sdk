@@ -89,7 +89,7 @@ internal abstract class BankCardFragment : Fragment() {
             filters += PatternInputFilter("\\D")
             setupClearButton(cscContainer, this)
             setOnEditorActionListener { _, actionId, _ ->
-                actionId == IME_ACTION_DONE && proceed?.invoke() != null
+                actionId == IME_ACTION_DONE && isAllFieldsCorrect() && proceed?.invoke() != null
             }
         }
 

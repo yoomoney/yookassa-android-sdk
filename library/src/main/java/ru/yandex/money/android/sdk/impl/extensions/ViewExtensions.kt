@@ -41,7 +41,7 @@ internal fun View.showSoftKeyboard() {
 internal fun View.hideSoftKeyboard() {
     (context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?)?.also { imm ->
         if (imm.isActive) {
-            imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS)
+            imm.hideSoftInputFromWindow(windowToken, 0)
         }
     }
 }
