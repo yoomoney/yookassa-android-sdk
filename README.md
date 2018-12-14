@@ -15,7 +15,7 @@ repositories {
     maven { url 'https://dl.bintray.com/yandex-money/maven' }
 }
 dependencies {
-    implementation 'com.yandex.money:checkout:1.3.0.3'
+    implementation 'com.yandex.money:checkout:1.3.0.4'
 }
 ```
 

@@ -34,14 +34,15 @@ import ru.yandex.money.android.sdk.BuildConfig
 internal class ThreatMetrixProfilingTool : ProfilingTool {
 
     override fun init(context: Context) {
-//        TrustDefender.getInstance().init(Config()
+//        TrustDefender.getInstance().init(
+//            Config()
 //                .setContext(context.applicationContext)
 //                .setOrgId(BuildConfig.THREAT_METRIX_ORIG_ID)
 //                .setTimeout(10)
 //                .setRegisterForLocationServices(false)
 //                .setEnableCallbackOnFailure(true)
 //                .setFPServer(BuildConfig.THREAT_METRIX_FP_SERVER)
-//                .setCertificateHashes(BuildConfig.THREAT_METRIX_CERTIFICATE_HASHES))
+//        )
     }
 
     override fun requestSessionId(listener: ProfilingTool.SessionIdListener) {

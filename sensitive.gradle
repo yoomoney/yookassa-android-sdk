@@ -31,7 +31,6 @@ ext {
 
     threatMetrixOrigId = 'fsymclue'
     threatMetrixFPServer = 's4.money.yandex.net'
-    threatMetrixCertificateHashes = '5A208BCB52EB637F24AD4FF496F6DFD1105DF565'
 
     optionalProperty = { name ->
         if (!project.hasProperty(name)) {

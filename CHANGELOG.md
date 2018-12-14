@@ -1,5 +1,9 @@
 ## Changelog
 
+### 1.3.0.4
+2018-11-23
+- ThreatMetrix fix.
+
 ### 1.3.0.3 
 2018-08-15
 - Fix crash on bank card screen when user clicks "done" without filling in a card number (https://github.com/yandex-money/yandex-checkout-android-sdk/issues/5)
