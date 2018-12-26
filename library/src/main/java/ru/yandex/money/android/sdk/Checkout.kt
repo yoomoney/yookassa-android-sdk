@@ -141,15 +141,19 @@ object Checkout {
      * Set [resultCallback] that will be invoked after successful tokenize
      */
     @[JvmStatic Keep]
-    fun setResultCallback(resultCallback: ResultCallback) {
+    fun setResultCallback(resultCallback: ResultCallback?) {
         resultListener?.also { AppModel.listeners -= it }
 
-        val resultListener: (ContractCompleteViewModel) -> Unit = {
-            resultCallback.onResult(it.token, it.type)
-        }
-        AppModel.listeners += resultListener
+        if (resultCallback != null) {
+            val localResultListener: (ContractCompleteViewModel) -> Unit = {
+                resultCallback.onResult(it.token, it.type)
+            }
+            AppModel.listeners += localResultListener
 
-        this.resultListener = resultListener
+            this.resultListener = localResultListener
+        } else {
+            resultListener = null
+        }
     }
 
     /**

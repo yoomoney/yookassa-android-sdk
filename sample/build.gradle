@@ -68,7 +68,13 @@ dependencies {
     implementation "com.android.support:design:$support_version"
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     implementation 'com.facebook.device.yearclass:yearclass:2.1.0'
-    releaseImplementation "com.yandex.money:checkout:$versionName"
+
+    final leak_canary = '1.6.2'
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leak_canary"
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leak_canary"
+    debugImplementation "com.squareup.leakcanary:leakcanary-support-fragment:$leak_canary"
+
+    releaseImplementation project(':library')
     debugImplementation project(':library')
     implementation 'com.yandex.android:authsdk:2.1.0'
     implementation project(':pay-cards-sdk')

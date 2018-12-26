@@ -32,7 +32,7 @@ import ru.yandex.money.android.sdk.methods.PaymentOptionsRequest
 import ru.yandex.money.android.sdk.payment.loadOptionList.PaymentOptionListGateway
 
 internal class ApiV3PaymentOptionListGateway(
-    private val httpClient: OkHttpClient,
+    private val httpClient: Lazy<OkHttpClient>,
     private val gatewayId: String?,
     private val tokensStorage: TokensStorage,
     private val shopToken: String
@@ -42,7 +42,7 @@ internal class ApiV3PaymentOptionListGateway(
         val paymentRequest =
             PaymentOptionsRequest(amount, currentUser, gatewayId, tokensStorage.userAuthToken, shopToken)
 
-        val response = httpClient.execute(paymentRequest)
+        val response = httpClient.value.execute(paymentRequest)
 
         response.error?.also { throw ApiMethodException(it) }
 

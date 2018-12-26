@@ -34,7 +34,7 @@ import ru.yandex.money.android.sdk.paymentAuth.PaymentAuthTokenGateway
 import java.util.concurrent.Semaphore
 
 internal class ApiV3TokenizeGateway(
-        private val httpClient: OkHttpClient,
+        private val httpClient: Lazy<OkHttpClient>,
         private val shopToken: String,
         private val paymentAuthTokenGateway: PaymentAuthTokenGateway,
         private val tmxProfilingTool: ThreatMetrixProfilingTool
@@ -68,7 +68,7 @@ internal class ApiV3TokenizeGateway(
                 shopToken,
                 paymentAuthToken)
         tmxSessionId = null
-        val response = httpClient.execute(tokenRequest)
+        val response = httpClient.value.execute(tokenRequest)
         when (response.error) {
             null -> return checkNotNull(response.paymentToken)
             else -> throw ApiMethodException(response.error)

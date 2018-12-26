@@ -127,6 +127,8 @@ import ru.yandex.money.android.sdk.userAuth.AuthorizeUserGateway
 import ru.yandex.money.android.sdk.userAuth.UserAuthTokenGateway
 import ru.yandex.money.android.sdk.userAuth.UserAuthUseCase
 import ru.yandex.money.android.sdk.userAuth.WalletCheckGateway
+import com.google.android.gms.security.ProviderInstaller
+import ru.yandex.money.android.sdk.SdkException
 
 private const val USER_STORAGE_TEST_MODE = "userStorageTestMode"
 private const val USER_STORAGE_REAL_MODE = "userStorageRealMode"
@@ -226,6 +228,11 @@ internal object AppModel {
             null
         }
 
+        val reporter: Reporter = ReporterLogger(YandexMetricaReporter(context))
+        val errorReporter = YandexMetricaErrorReporter(context)
+        val exceptionReporter = YandexMetricaExceptionReporter(context)
+        sessionReporter = YandexMetricaSessionReporter(context)
+
         if (configuration?.enableTestMode == true) {
             val mockPaymentOptionListGateway = MockPaymentOptionListGateway(configuration.linkedCardsCount)
             paymentOptionListGateway = mockPaymentOptionListGateway
@@ -261,7 +268,14 @@ internal object AppModel {
             checkGooglePayAvailableGateway = StubCheckGooglePayAvailableGateway(configuration.googlePayAvailable)
         } else {
             currentUserGateway = SharedPreferencesCurrentUserGateway(sharedPreferences)
-            val httpClient = newHttpClient(context)
+            val httpClient = lazy {
+                try {
+                    ProviderInstaller.installIfNeeded(context)
+                } catch (e: Exception) {
+                    errorReporter.report(SdkException(e))
+                }
+                newHttpClient(context)
+            }
             val apiV3PaymentOptionListGateway = ApiV3PaymentOptionListGateway(
                 httpClient = httpClient,
                 gatewayId = shopParameters.gatewayId,
@@ -313,11 +327,6 @@ internal object AppModel {
             saveLoadedPaymentOptionsListGateway = saveLoadedPaymentOptionsListGateway,
             currentUserGateway = currentUserGateway
         )
-
-        val reporter: Reporter = ReporterLogger(YandexMetricaReporter(context))
-        val errorReporter = YandexMetricaErrorReporter(context)
-        val exceptionReporter = YandexMetricaExceptionReporter(context)
-        sessionReporter = YandexMetricaSessionReporter(context)
 
         val userAuthTypeParamProvider = UserAuthTypeParamProvider(currentUserGateway, checkPaymentAuthRequiredGateway)
         val userAuthTokenTypeParamProvider = UserAuthTokenTypeParamProvider(paymentAuthTokenGateway)

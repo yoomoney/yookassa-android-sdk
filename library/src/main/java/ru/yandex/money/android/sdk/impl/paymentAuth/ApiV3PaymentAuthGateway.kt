@@ -48,7 +48,7 @@ import ru.yandex.money.android.sdk.paymentAuth.SmsSessionRetryGateway
 import java.util.concurrent.Semaphore
 
 internal class ApiV3PaymentAuthGateway(
-        private val httpClient: OkHttpClient,
+        private val httpClient: Lazy<OkHttpClient>,
         private val tokensStorage: TokensStorage,
         private val shopToken: String,
         private val tmxProfilingTool: ThreatMetrixProfilingTool,
@@ -87,7 +87,7 @@ internal class ApiV3PaymentAuthGateway(
                 authContextId = currentAuthContextId
         )
 
-        val response = httpClient.execute(request)
+        val response = httpClient.value.execute(request)
 
         return when (response.errorCode) {
             null -> true
@@ -98,7 +98,7 @@ internal class ApiV3PaymentAuthGateway(
 
     private fun tokenIssueExecute(currentProcessId: String, userAuthToken: String): String {
         val request = CheckoutTokenIssueExecuteRequest(currentProcessId, userAuthToken, shopToken)
-        val response = httpClient.execute(request)
+        val response = httpClient.value.execute(request)
 
         if (response.errorCode != null) {
             throw ApiMethodException(response.errorCode)
@@ -144,7 +144,7 @@ internal class ApiV3PaymentAuthGateway(
                 shopToken = shopToken,
                 userAuthToken = userAuthToken
         )
-        val response = httpClient.execute(request)
+        val response = httpClient.value.execute(request)
 
         if (response.errorCode != null) {
             throw ApiMethodException(response.errorCode)
@@ -158,7 +158,7 @@ internal class ApiV3PaymentAuthGateway(
 
     private fun authContextGet(localAuthContextId: String, userAuthToken: String): AuthTypeState {
         val request = CheckoutAuthContextGetRequest(localAuthContextId, userAuthToken, shopToken)
-        val response = httpClient.execute(request)
+        val response = httpClient.value.execute(request)
 
         if (response.errorCode != null) {
             throw ApiMethodException(response.errorCode)
@@ -181,7 +181,7 @@ internal class ApiV3PaymentAuthGateway(
                 userAuthToken = userAuthToken
         )
 
-        val response = httpClient.execute(request)
+        val response = httpClient.value.execute(request)
 
         if (response.errorCode != null) {
             throw ApiMethodException(response.errorCode)

@@ -105,6 +105,8 @@ public final class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         // Detach MSDK from supportFragmentManager
         Checkout.detach();
+        // Detach result callback
+        Checkout.setResultCallback(null);
 
         if (validateAmount()) {
             saveAmount();

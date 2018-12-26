@@ -30,12 +30,12 @@ import ru.yandex.money.android.sdk.methods.WalletCheckRequest
 import ru.yandex.money.android.sdk.userAuth.WalletCheckGateway
 
 internal class YandexWalletCheckGateway(
-        private val httpClient: OkHttpClient
+        private val httpClient: Lazy<OkHttpClient>
 ) : WalletCheckGateway {
 
     override fun checkIfUserHasWallet(userAuthToken: String): Boolean {
         val request = WalletCheckRequest(userAuthToken)
-        val response = httpClient.execute(request)
+        val response = httpClient.value.execute(request)
 
         if (response.status == Status.SUCCESS) {
             return response.hasWallet ?: throw ApiMethodException(ErrorCode.TECHNICAL_ERROR)

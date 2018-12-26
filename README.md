@@ -15,7 +15,7 @@ repositories {
     maven { url 'https://dl.bintray.com/yandex-money/maven' }
 }
 dependencies {
-    implementation 'com.yandex.money:checkout:1.3.0.4'
+    implementation 'com.yandex.money:checkout:1.3.0.5'
 }
 ```
 
@@ -40,7 +40,7 @@ dependencies {
 Вся работа с библиотекой происходит через обращения к классу `ru.yandex.money.android.sdk.Checkout`
 
 # Авторизация в Яндексе (для платежей из кошелька)
-Можно не подключать, если планируется использовать оплату только новыми банковскими картами: 
+Можно не подключать, если планируется использовать оплату только новыми банковскими картами:
 ```
 new ShopParameters("...", "...", "...", Collections.singleton(PaymentMethodType.BANK_CARD))
 ```
@@ -75,17 +75,17 @@ dependencies {
 **Пример**
 ```java
 public final class MainActivity extends AppCompatActivity {
-    
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Checkout.attach(getSupportFragmentManager());
     }
-    
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         Checkout.detach();
-    }    
+    }
 }
 ```
 
@@ -122,9 +122,9 @@ public final class MainActivity extends AppCompatActivity {
 **Пример:**
 ```java
 class MyActivity extends android.support.v7.app.AppCompatActivity {
-    
+
     //other code
-    
+
     void timeToStartCheckout() {
         Checkout.tokenize(
              this,
@@ -141,6 +141,7 @@ class MyActivity extends android.support.v7.app.AppCompatActivity {
 
 Для получения результата токенизации используется метод `Checkout.setResultCallback()`
 В случае успешной токенизации MSDK вернёт токен и платежный инструмент, с помощью которого он был получен.
+Во время уничтожения фрагмента/активити в метод нужно передать null для избежания утечки памяти.
 
 Входные параметры метода:
 * resultCallback (Checkout.ResultCallback) - колбэк, который будет вызван после успешной токенизации.
@@ -158,7 +159,7 @@ Checkout.ResultCallback возвращает:
 **Пример:**
 ```java
 class MyActivity extends android.support.v7.app.AppCompatActivity {
-    
+
     @Override
     protected void onCreate(android.os.Bundle savedInstanceState) {
         Checkout.setResultCallback(new Checkout.ResultCallback() {
@@ -167,6 +168,13 @@ class MyActivity extends android.support.v7.app.AppCompatActivity {
                 //result handling
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        // Detach result callback
+        Checkout.setResultCallback(null);
+        super.onDestroy();
     }
 }
 ```

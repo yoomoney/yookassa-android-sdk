@@ -1,10 +1,15 @@
 ## Changelog
 
+### 1.3.0.5
+2018-12-18
+- Fix memory leak
+- Fix SSL handshake problem on Android 4
+
 ### 1.3.0.4
 2018-11-23
-- ThreatMetrix fix.
+- ThreatMetrix fix
 
-### 1.3.0.3 
+### 1.3.0.3
 2018-08-15
 - Fix crash on bank card screen when user clicks "done" without filling in a card number (https://github.com/yandex-money/yandex-checkout-android-sdk/issues/5)
 - Fix keyboard opening automatically after MSDK dismiss (https://github.com/yandex-money/yandex-checkout-android-sdk/issues/3)
