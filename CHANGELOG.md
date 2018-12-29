@@ -1,5 +1,9 @@
 ## Changelog
 
+### 1.3.0.6
+2018-12-27
+- Fix 3ds for test payments (https://github.com/yandex-money/yandex-checkout-android-sdk/issues/9)
+
 ### 1.3.0.5
 2018-12-18
 - Fix memory leak

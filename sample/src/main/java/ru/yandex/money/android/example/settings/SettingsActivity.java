@@ -135,7 +135,7 @@ public final class SettingsActivity extends AppCompatActivity implements View.On
                             startActivityForResult(
                                     Checkout.create3dsIntent(
                                             this,
-                                            new URL("file:///android_asset/test.html"),
+                                            new URL("https://money.yandex.ru/api-pages/v3/3ds?acsUri=https%3A%2F%2Fdemo-scrat.yamoney.ru%3A8443%2Fmerchant-test-card-stub%2F3ds%3Ftes11%3D1%26amp%3Btest2%3D2&MD=1536663442128-3079210364026365123&PaReq=Q1VSUkVOQ1k9UlVSJlRFUk1JTkFMPTk5OTk5OCZFWFBfWUVBUj0yNSZQX1NJR049M2E3MmM2MGNhMjIyNjU4MTJhOTgwNmUzMjFmMTQyZTQ1NzVjMmQ0OCZSRVNQT05TRV9SUk49MjEwMzYzOTA5MzExJkVNQUlMPW5vcmVwbHklNDBtb25leS55YW5kZXgucnUmTUVSQ0hfTkFNRT1ZTSZERVNDPTIzMjliMzUxLTAwMGYtNTAwMC1hMDAwLTFlYTA0NWQzZjc5MSZSRVNQT05TRV9BVVRIQ09ERT05MDUwNTMmTUVSQ0hBTlQ9NzkwMzY3Njg2MjE5OTk5JkNBUkQ9MTExMTExMTExMTExMTAyNiZOQU1FPSZPUkRFUj01MDk2MzU0MTYyJk1FUkNIX1VSTD1tb25leS55YW5kZXgucnUmQU1PVU5UPTEuMDAmQkFDS1JFRj1odHRwJTNBJTJGJTJGcmVkaXJlY3QudXJsLmNvbSUyRiZUSU1FU1RBTVA9MjAxODA5MTExMDU3MjImVFJUWVBFPTAmRVhQPTEyJkNWQzI9MTIzJk5PTkNFPTEyMzQ1Njc4OTBBQkNERUZlMjNhZGNlNTg4OGE4&TermUrl=https%3A%2F%2Fpaymentcard.yamoney.ru%3A443%2Fgates%2Fmb3dsdemoprovider"),
                                             new URL("http://redirect.url.com/")),
                                     START_CONFIRMATION_REQUEST_CODE);
                         } catch (MalformedURLException e) {

@@ -29,7 +29,7 @@ import ru.yandex.money.android.sdk.impl.AppModel
 internal fun showLogoutDialog(context: Context, accountName: CharSequence) {
     AlertDialog.Builder(context, R.style.ym_DialogLogout).apply {
         setCancelable(true)
-        setMessage(context.getString(R.string.ym_logout_dialog_message, accountName))
+        setMessage(context.getString(R.string.ym_logout_dialog_message, accountName.trim()))
         setPositiveButton(context.getString(R.string.ym_logout_dialog_button_positive)) { _, _ ->
             AppModel.logoutController.invoke(Unit)
         }
