@@ -1,5 +1,9 @@
 ## Changelog
 
+### 1.3.0.7
+2019-01-24
+- Add PAN_ONLY cards from Google Pay as payment option.
+
 ### 1.3.0.6
 2018-12-27
 - Fix 3ds for test payments (https://github.com/yandex-money/yandex-checkout-android-sdk/issues/9)

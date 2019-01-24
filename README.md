@@ -15,7 +15,7 @@ repositories {
     maven { url 'https://dl.bintray.com/yandex-money/maven' }
 }
 dependencies {
-    implementation 'com.yandex.money:checkout:1.3.0.6'
+    implementation 'com.yandex.money:checkout:1.3.0.7'
 }
 ```
 
@@ -57,17 +57,17 @@ dependencies {
 **Пример**
 ```java
 public final class MainActivity extends AppCompatActivity {
-
+    
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Checkout.attach(getSupportFragmentManager());
     }
-
+    
     @Override
     protected void onDestroy() {
         super.onDestroy();
         Checkout.detach();
-    }
+    }    
 }
 ```
 
@@ -104,9 +104,9 @@ public final class MainActivity extends AppCompatActivity {
 **Пример:**
 ```java
 class MyActivity extends android.support.v7.app.AppCompatActivity {
-
+    
     //other code
-
+    
     void timeToStartCheckout() {
         Checkout.tokenize(
              this,
@@ -141,7 +141,7 @@ Checkout.ResultCallback возвращает:
 **Пример:**
 ```java
 class MyActivity extends android.support.v7.app.AppCompatActivity {
-
+    
     @Override
     protected void onCreate(android.os.Bundle savedInstanceState) {
         Checkout.setResultCallback(new Checkout.ResultCallback() {

@@ -105,6 +105,7 @@ internal class GooglePayIntegration(
                     .setCurrencyCode(paymentOption.charge.currency.currencyCode)
                     .build()
             )
+            .addAllowedPaymentMethod(WalletConstants.PAYMENT_METHOD_CARD)
             .addAllowedPaymentMethod(WalletConstants.PAYMENT_METHOD_TOKENIZED_CARD)
             .setCardRequirements(
                 CardRequirements.newBuilder()

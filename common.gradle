@@ -25,7 +25,7 @@ ext {
     versionMajor = 1
     versionMinor = 3
     versionPatch = 0
-    versionAlpha = 6
+    versionAlpha = 7
 
     versionCode = [versionMajor, versionMinor, versionPatch, versionAlpha].inject { result, i -> result * 100 + i }
     versionName = "$versionMajor.$versionMinor.$versionPatch" + (versionAlpha ? ".$versionAlpha" : "")
