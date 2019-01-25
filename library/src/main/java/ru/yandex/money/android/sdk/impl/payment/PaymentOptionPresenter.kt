@@ -26,15 +26,16 @@ import android.graphics.Typeface
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.StyleSpan
-import ru.yandex.money.android.sdk.PaymentOption
-import ru.yandex.money.android.sdk.Presenter
-import ru.yandex.money.android.sdk.Wallet
 import ru.yandex.money.android.sdk.impl.extensions.format
 import ru.yandex.money.android.sdk.impl.extensions.getAdditionalInfo
 import ru.yandex.money.android.sdk.impl.extensions.getIcon
 import ru.yandex.money.android.sdk.impl.extensions.getTitle
+import ru.yandex.money.android.sdk.model.PaymentOption
+import ru.yandex.money.android.sdk.model.Presenter
+import ru.yandex.money.android.sdk.model.Wallet
 
-internal class PaymentOptionPresenter(context: Context) : Presenter<PaymentOption, PaymentOptionViewModel> {
+internal class PaymentOptionPresenter(context: Context) :
+    Presenter<PaymentOption, PaymentOptionViewModel> {
 
     private val context = context.applicationContext
 

@@ -25,7 +25,7 @@ package ru.yandex.money.android.sdk.impl.extensions
 
 import android.util.Base64
 import org.json.JSONObject
-import ru.yandex.money.android.sdk.ErrorCode
+import ru.yandex.money.android.sdk.model.ErrorCode
 
 internal fun String.getJsonPayload(): JSONObject = split('.', limit = 3)[1]
     .also { require(it.isNotEmpty()) { this + " is not valid JWT string" } }

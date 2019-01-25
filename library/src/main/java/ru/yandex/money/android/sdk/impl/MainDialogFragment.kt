@@ -37,8 +37,6 @@ import android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
 import android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
 import android.widget.FrameLayout
 import ru.yandex.money.android.sdk.R
-import ru.yandex.money.android.sdk.UnhandledException
-import ru.yandex.money.android.sdk.ViewModel
 import ru.yandex.money.android.sdk.impl.contract.ContractCompleteViewModel
 import ru.yandex.money.android.sdk.impl.contract.ContractFragment
 import ru.yandex.money.android.sdk.impl.contract.ContractViewModel
@@ -55,6 +53,8 @@ import ru.yandex.money.android.sdk.impl.paymentOptionList.PaymentOptionListViewM
 import ru.yandex.money.android.sdk.impl.userAuth.UserAuthFailViewModel
 import ru.yandex.money.android.sdk.impl.userAuth.UserAuthSuccessViewModel
 import ru.yandex.money.android.sdk.impl.userAuth.YandexAuthFragment
+import ru.yandex.money.android.sdk.model.UnhandledException
+import ru.yandex.money.android.sdk.model.ViewModel
 import ru.yandex.money.android.sdk.payment.changeOption.ChangePaymentOptionInputModel
 
 private const val PAYMENT_OPTION_LIST_FRAGMENT_TAG = "paymentOptionListFragment"

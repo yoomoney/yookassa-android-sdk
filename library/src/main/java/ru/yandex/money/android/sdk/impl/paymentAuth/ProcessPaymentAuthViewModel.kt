@@ -21,6 +21,6 @@
 
 package ru.yandex.money.android.sdk.impl.paymentAuth
 
-import ru.yandex.money.android.sdk.ViewModel
+import ru.yandex.money.android.sdk.model.ViewModel
 
 internal object ProcessPaymentAuthProgressViewModel : ViewModel()

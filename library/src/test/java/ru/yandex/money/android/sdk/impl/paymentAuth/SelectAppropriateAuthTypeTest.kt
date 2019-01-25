@@ -27,15 +27,15 @@ import org.hamcrest.core.IsInstanceOf.instanceOf
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
-import ru.yandex.money.android.sdk.AuthType
-import ru.yandex.money.android.sdk.AuthType.EMERGENCY
-import ru.yandex.money.android.sdk.AuthType.NOT_NEEDED
-import ru.yandex.money.android.sdk.AuthType.OAUTH_TOKEN
-import ru.yandex.money.android.sdk.AuthType.PUSH
-import ru.yandex.money.android.sdk.AuthType.SMS
-import ru.yandex.money.android.sdk.AuthType.TOTP
-import ru.yandex.money.android.sdk.AuthType.UNKNOWN
-import ru.yandex.money.android.sdk.AuthTypeState
+import ru.yandex.money.android.sdk.model.AuthType
+import ru.yandex.money.android.sdk.model.AuthType.EMERGENCY
+import ru.yandex.money.android.sdk.model.AuthType.NOT_NEEDED
+import ru.yandex.money.android.sdk.model.AuthType.OAUTH_TOKEN
+import ru.yandex.money.android.sdk.model.AuthType.PUSH
+import ru.yandex.money.android.sdk.model.AuthType.SMS
+import ru.yandex.money.android.sdk.model.AuthType.TOTP
+import ru.yandex.money.android.sdk.model.AuthType.UNKNOWN
+import ru.yandex.money.android.sdk.model.AuthTypeState
 
 @RunWith(Parameterized::class)
 internal class SelectAppropriateAuthTypeTest(
@@ -63,7 +63,12 @@ internal class SelectAppropriateAuthTypeTest(
     @Test
     fun test() {
         // prepare
-        val authTypeStates = Array(authTypes.size) { AuthTypeState(authTypes[it], null) }
+        val authTypeStates = Array(authTypes.size) {
+            AuthTypeState(
+                authTypes[it],
+                null
+            )
+        }
 
         // invoke
         val result = try {

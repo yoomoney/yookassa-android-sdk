@@ -21,9 +21,9 @@
 
 package ru.yandex.money.android.sdk.impl.contract
 
-import ru.yandex.money.android.sdk.ErrorPresenter
-import ru.yandex.money.android.sdk.Presenter
-import ru.yandex.money.android.sdk.SelectedOptionNotFoundException
+import ru.yandex.money.android.sdk.model.ErrorPresenter
+import ru.yandex.money.android.sdk.model.Presenter
+import ru.yandex.money.android.sdk.model.SelectedOptionNotFoundException
 
 internal class ContractErrorPresenter(
         private val errorPresenter: ErrorPresenter

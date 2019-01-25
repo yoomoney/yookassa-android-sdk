@@ -21,9 +21,9 @@
 
 package ru.yandex.money.android.sdk.impl.payment
 
-import ru.yandex.money.android.sdk.ErrorCode
-import ru.yandex.money.android.sdk.Presenter
 import ru.yandex.money.android.sdk.impl.ApiMethodException
+import ru.yandex.money.android.sdk.model.ErrorCode
+import ru.yandex.money.android.sdk.model.Presenter
 
 internal class PaymentErrorPresenter(
         private val commonErrorPresenter: Presenter<Exception, CharSequence>

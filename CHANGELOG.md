@@ -1,5 +1,12 @@
 ## Changelog
 
+### 2.0.0
+- Change public api. Refactor Checkout methods and public classes.
+- Add javadoc for public classes.
+- Add logging. Logging can be turned on in TestParameters object.
+- Change 3ds process. Built-in 3ds screen now uses an internal redirect url. If you want to use your own 3ds screen, you can specify customReturnUrl in PaymentParameters object.
+- Update README.
+
 ### 1.3.0.7
 2019-01-24
 - Add PAN_ONLY cards from Google Pay as payment option.
@@ -19,17 +26,17 @@
 
 ### 1.3.0.3
 2018-08-15
-- Fix crash on bank card screen when user clicks "done" without filling in a card number (https://github.com/yandex-money/yandex-checkout-android-sdk/issues/5)
-- Fix keyboard opening automatically after MSDK dismiss (https://github.com/yandex-money/yandex-checkout-android-sdk/issues/3)
+- Fix crash on bank card screen when user clicks "done" without filling in a card number (https://github.com/yandex-money/yandex-checkout-android-sdk/issues/5).
+- Fix keyboard opening automatically after MSDK dismiss (https://github.com/yandex-money/yandex-checkout-android-sdk/issues/3).
 
-## 1.3.0.2
+### 1.3.0.2
 2018-08-02
-- Fix 3DS screen crash (https://github.com/yandex-money/yandex-checkout-android-sdk/issues/4)
+- Fix 3ds screen crash (https://github.com/yandex-money/yandex-checkout-android-sdk/issues/4).
 
 ### 1.3.0.1
 2018-07-17
-- Fix typos in README
+- Fix typos in README.
 - Change MSDK behavior when only one payment option is available.
 
 ### 1.3.0
-Initial public version
+Initial public version.

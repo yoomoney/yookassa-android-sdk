@@ -21,19 +21,19 @@
 
 package ru.yandex.money.android.sdk.impl.paymentOptionList
 
-import ru.yandex.money.android.sdk.AbstractWallet
 import ru.yandex.money.android.sdk.Amount
-import ru.yandex.money.android.sdk.AnonymousUser
-import ru.yandex.money.android.sdk.AuthorizedUser
-import ru.yandex.money.android.sdk.CardBrand
-import ru.yandex.money.android.sdk.CurrentUser
-import ru.yandex.money.android.sdk.Fee
-import ru.yandex.money.android.sdk.GooglePay
-import ru.yandex.money.android.sdk.LinkedCard
-import ru.yandex.money.android.sdk.NewCard
-import ru.yandex.money.android.sdk.PaymentOption
-import ru.yandex.money.android.sdk.SbolSmsInvoicing
-import ru.yandex.money.android.sdk.Wallet
+import ru.yandex.money.android.sdk.model.AbstractWallet
+import ru.yandex.money.android.sdk.model.AnonymousUser
+import ru.yandex.money.android.sdk.model.AuthorizedUser
+import ru.yandex.money.android.sdk.model.CardBrand
+import ru.yandex.money.android.sdk.model.CurrentUser
+import ru.yandex.money.android.sdk.model.Fee
+import ru.yandex.money.android.sdk.model.GooglePay
+import ru.yandex.money.android.sdk.model.LinkedCard
+import ru.yandex.money.android.sdk.model.NewCard
+import ru.yandex.money.android.sdk.model.PaymentOption
+import ru.yandex.money.android.sdk.model.SbolSmsInvoicing
+import ru.yandex.money.android.sdk.model.Wallet
 import ru.yandex.money.android.sdk.payment.loadOptionList.PaymentOptionListGateway
 import java.lang.Thread.sleep
 import java.math.BigDecimal
@@ -47,7 +47,10 @@ internal class MockPaymentOptionListGateway(
 
     override fun getPaymentOptions(amount: Amount, currentUser: CurrentUser): List<PaymentOption> {
         sleep(1000L)
-        val fee = Fee(Amount(BigDecimal.ONE, amount.currency), Amount(BigDecimal("0.5"), amount.currency))
+        val fee = Fee(
+            Amount(BigDecimal.ONE, amount.currency),
+            Amount(BigDecimal("0.5"), amount.currency)
+        )
         val id = generateSequence(0, 1::plus).iterator()
         return when (currentUser) {
             is AuthorizedUser -> createAuthorizedList(id, amount, fee, currentUser)

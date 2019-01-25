@@ -25,7 +25,7 @@ package ru.yandex.money.android.sdk.impl
 
 import android.os.Handler
 import android.os.Looper
-import ru.yandex.money.android.sdk.Executor
+import ru.yandex.money.android.sdk.model.Executor
 
 private val mainHandler = Handler(Looper.getMainLooper())
 

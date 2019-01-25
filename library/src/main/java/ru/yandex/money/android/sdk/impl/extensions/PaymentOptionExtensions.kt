@@ -32,19 +32,24 @@ import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.text.style.ImageSpan
 import android.text.style.StyleSpan
-import ru.yandex.money.android.sdk.AbstractWallet
-import ru.yandex.money.android.sdk.GooglePay
-import ru.yandex.money.android.sdk.LinkedCard
-import ru.yandex.money.android.sdk.NewCard
-import ru.yandex.money.android.sdk.PaymentOption
 import ru.yandex.money.android.sdk.R
-import ru.yandex.money.android.sdk.SbolSmsInvoicing
-import ru.yandex.money.android.sdk.Wallet
 import ru.yandex.money.android.sdk.impl.metrics.TokenizeSchemeBankCard
 import ru.yandex.money.android.sdk.impl.metrics.TokenizeSchemeGooglePay
 import ru.yandex.money.android.sdk.impl.metrics.TokenizeSchemeLinkedCard
 import ru.yandex.money.android.sdk.impl.metrics.TokenizeSchemeSbolSms
 import ru.yandex.money.android.sdk.impl.metrics.TokenizeSchemeWallet
+import ru.yandex.money.android.sdk.model.AbstractWallet
+import ru.yandex.money.android.sdk.model.Confirmation
+import ru.yandex.money.android.sdk.model.ExternalConfirmation
+import ru.yandex.money.android.sdk.model.GooglePay
+import ru.yandex.money.android.sdk.model.LinkedCard
+import ru.yandex.money.android.sdk.model.NewCard
+import ru.yandex.money.android.sdk.model.NoConfirmation
+import ru.yandex.money.android.sdk.model.PaymentOption
+import ru.yandex.money.android.sdk.model.RedirectConfirmation
+import ru.yandex.money.android.sdk.model.SbolSmsInvoicing
+import ru.yandex.money.android.sdk.model.Wallet
+import ru.yandex.money.android.sdk.model.YandexMoney
 
 internal fun PaymentOption.getIcon(context: Context) = checkNotNull(
     AppCompatResources.getDrawable(
@@ -65,8 +70,8 @@ internal fun PaymentOption.getTitle(context: Context): CharSequence = when (this
     is LinkedCard -> name.takeUnless(String?::isNullOrEmpty) ?: pan.chunked(4).joinToString(" ")
     is SbolSmsInvoicing -> context.getText(R.string.ym_sberbank)
     is GooglePay -> context.getText(R.string.ym_payment_option_google_pay)
-}.let {
-    it.takeIf { this is Wallet }?.let {
+}.let { title ->
+    title.takeIf { this is Wallet }?.let {
         val drawable = AppCompatResources.getDrawable(context, R.drawable.ym_ic_exit)?.apply {
             setBounds(0, 0, intrinsicWidth, intrinsicHeight)
         }
@@ -76,7 +81,7 @@ internal fun PaymentOption.getTitle(context: Context): CharSequence = when (this
             setSpan(imageSpan, lastIndex - 1, lastIndex, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
             setSpan(colorSpan, 0, lastIndex, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
         }
-    } ?: it
+    } ?: title
 }
 
 internal fun PaymentOption.getAdditionalInfo() = (this as? Wallet)?.balance?.let {
@@ -91,4 +96,14 @@ internal fun PaymentOption.toTokenizeScheme() = when (this) {
     is NewCard -> TokenizeSchemeBankCard()
     is SbolSmsInvoicing -> TokenizeSchemeSbolSms()
     is GooglePay -> TokenizeSchemeGooglePay()
+}
+
+internal fun PaymentOption.toConfirmation(returnUrl: String): Confirmation {
+    return when (this) {
+        is YandexMoney, is NewCard -> RedirectConfirmation(
+            returnUrl
+        )
+        is SbolSmsInvoicing -> ExternalConfirmation
+        else -> NoConfirmation
+    }
 }

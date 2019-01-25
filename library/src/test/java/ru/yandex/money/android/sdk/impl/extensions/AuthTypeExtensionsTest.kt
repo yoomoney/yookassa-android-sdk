@@ -28,13 +28,13 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.ParameterizedRobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
-import ru.yandex.money.android.sdk.AuthType
 import ru.yandex.money.android.sdk.R
+import ru.yandex.money.android.sdk.model.AuthType
 
 @RunWith(ParameterizedRobolectricTestRunner::class)
 internal class AuthTypeExtensionsTest(
-        private val authType: AuthType,
-        private val stringResId: Int?
+    private val authType: AuthType,
+    private val stringResId: Int?
 ) {
 
     companion object {

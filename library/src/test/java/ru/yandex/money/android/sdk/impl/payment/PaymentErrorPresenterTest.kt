@@ -26,8 +26,8 @@ import org.hamcrest.Matchers.instanceOf
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
-import ru.yandex.money.android.sdk.ErrorCode
 import ru.yandex.money.android.sdk.impl.ApiMethodException
+import ru.yandex.money.android.sdk.model.ErrorCode
 
 @RunWith(Parameterized::class)
 class PaymentErrorPresenterTest(

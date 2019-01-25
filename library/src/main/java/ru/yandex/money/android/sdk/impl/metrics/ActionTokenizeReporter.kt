@@ -21,10 +21,10 @@
 
 package ru.yandex.money.android.sdk.impl.metrics
 
-import ru.yandex.money.android.sdk.Presenter
-import ru.yandex.money.android.sdk.ViewModel
 import ru.yandex.money.android.sdk.impl.contract.ContractCompleteViewModel
 import ru.yandex.money.android.sdk.impl.extensions.toTokenizeScheme
+import ru.yandex.money.android.sdk.model.Presenter
+import ru.yandex.money.android.sdk.model.ViewModel
 import ru.yandex.money.android.sdk.payment.tokenize.TokenOutputModel
 import ru.yandex.money.android.sdk.payment.tokenize.TokenizeOutputModel
 

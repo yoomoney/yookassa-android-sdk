@@ -29,8 +29,8 @@ import org.mockito.Mock
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.verifyNoMoreInteractions
 import org.mockito.MockitoAnnotations
-import ru.yandex.money.android.sdk.AnonymousUser
-import ru.yandex.money.android.sdk.AuthorizedUser
+import ru.yandex.money.android.sdk.model.AnonymousUser
+import ru.yandex.money.android.sdk.model.AuthorizedUser
 import ru.yandex.money.android.sdk.on
 import ru.yandex.money.android.sdk.payment.CurrentUserGateway
 

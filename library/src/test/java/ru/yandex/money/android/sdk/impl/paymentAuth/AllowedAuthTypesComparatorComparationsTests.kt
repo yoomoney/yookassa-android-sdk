@@ -26,16 +26,16 @@ import org.hamcrest.core.IsEqual.equalTo
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
-import ru.yandex.money.android.sdk.AuthType
-import ru.yandex.money.android.sdk.AuthType.EMERGENCY
-import ru.yandex.money.android.sdk.AuthType.SECURE_PASSWORD
-import ru.yandex.money.android.sdk.AuthType.SMS
-import ru.yandex.money.android.sdk.AuthType.TOTP
+import ru.yandex.money.android.sdk.model.AuthType
+import ru.yandex.money.android.sdk.model.AuthType.EMERGENCY
+import ru.yandex.money.android.sdk.model.AuthType.SECURE_PASSWORD
+import ru.yandex.money.android.sdk.model.AuthType.SMS
+import ru.yandex.money.android.sdk.model.AuthType.TOTP
 
 @RunWith(Parameterized::class)
 internal class AllowedAuthTypesComparatorComparationsTests(
-        private val input: Array<AuthType>,
-        private val expected: Array<AuthType>
+    private val input: Array<AuthType>,
+    private val expected: Array<AuthType>
 ) {
     companion object {
         @[Parameterized.Parameters() JvmStatic]

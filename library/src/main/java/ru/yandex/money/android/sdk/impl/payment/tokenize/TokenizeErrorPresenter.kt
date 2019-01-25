@@ -21,11 +21,11 @@
 
 package ru.yandex.money.android.sdk.impl.payment.tokenize
 
-import ru.yandex.money.android.sdk.Presenter
-import ru.yandex.money.android.sdk.SelectedOptionNotFoundException
 import ru.yandex.money.android.sdk.impl.contract.ContractErrorViewModel
 import ru.yandex.money.android.sdk.impl.contract.ContractFailViewModel
 import ru.yandex.money.android.sdk.impl.contract.ContractRestartProcessViewModel
+import ru.yandex.money.android.sdk.model.Presenter
+import ru.yandex.money.android.sdk.model.SelectedOptionNotFoundException
 
 internal class TokenizeErrorPresenter(
         private val errorPresenter: Presenter<Exception, CharSequence>

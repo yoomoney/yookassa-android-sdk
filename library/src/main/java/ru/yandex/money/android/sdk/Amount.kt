@@ -21,7 +21,11 @@
 
 package ru.yandex.money.android.sdk
 
+import android.annotation.SuppressLint
+import android.os.Parcelable
 import android.support.annotation.Keep
+import kotlinx.android.parcel.Parcelize
+import java.io.Serializable
 import java.math.BigDecimal
 import java.util.Currency
 
@@ -30,4 +34,6 @@ import java.util.Currency
  * @param value amount value
  * @param currency amount currency
  */
-data class Amount @Keep constructor(@get:Keep val value: BigDecimal, @get:Keep val currency: Currency)
+@Parcelize
+@SuppressLint("ParcelCreator")
+data class Amount @Keep constructor(@get:Keep val value: BigDecimal, @get:Keep val currency: Currency) : Parcelable

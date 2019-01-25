@@ -42,7 +42,6 @@ import ru.yandex.money.android.sdk.Checkout.EXTRA_ERROR_DESCRIPTION
 import ru.yandex.money.android.sdk.Checkout.EXTRA_ERROR_FAILING_URL
 import ru.yandex.money.android.sdk.Checkout.RESULT_ERROR
 import java.lang.Thread.sleep
-import java.net.URL
 
 @RunWith(AndroidJUnit4::class)
 class CheckoutConfirmationActivityTest {
@@ -56,8 +55,7 @@ class CheckoutConfirmationActivityTest {
         val context = InstrumentationRegistry.getContext()
         val intent = Checkout.create3dsIntent(
             context = context,
-            url = URL("file:///android_asset/test.html"),
-            redirectUrl = URL("http://redirect.url.com/")
+            url = "file:///android_asset/test.html"
         )
         checkoutConfirmationActivityRule.launchActivity(intent)
 
@@ -74,12 +72,10 @@ class CheckoutConfirmationActivityTest {
     fun shouldEndsWith_ResultError_When_RequestExecutionFailed() {
         // preapre
         val context = InstrumentationRegistry.getContext()
-        val url = URL("file:///android_asset/test.html")
-        val redirectUrl = URL("http://redirect.url.com/")
+        val url = "file:///android_asset/test.html"
         val intent = Checkout.create3dsIntent(
             context = context,
-            url = url,
-            redirectUrl = redirectUrl
+            url = url
         )
         checkoutConfirmationActivityRule.launchActivity(intent)
 
@@ -92,8 +88,7 @@ class CheckoutConfirmationActivityTest {
         // assert
         assertThat(checkoutConfirmationActivityRule.activityResult.resultCode, equalTo(RESULT_ERROR))
         val resultData = checkoutConfirmationActivityRule.activityResult.resultData
-        assertThat(resultData.getSerializableExtra(EXTRA_URL) as URL, equalTo(url))
-        assertThat(resultData.getSerializableExtra(EXTRA_REDIRECT_URL) as URL, equalTo(redirectUrl))
+        assertThat(resultData.getStringExtra(EXTRA_URL), equalTo(url))
         assertThat(resultData.getIntExtra(EXTRA_ERROR_CODE, 0), equalTo(WebViewClient.ERROR_HOST_LOOKUP))
         assertThat(resultData.getStringExtra(EXTRA_ERROR_DESCRIPTION), notNullValue())
         assertThat(resultData.getStringExtra(EXTRA_ERROR_FAILING_URL), equalTo("https://123.456.789.qwq/"))

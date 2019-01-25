@@ -29,21 +29,7 @@ import org.junit.Test
 import org.junit.rules.Timeout
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import ru.yandex.money.android.sdk.AbstractWallet
 import ru.yandex.money.android.sdk.Amount
-import ru.yandex.money.android.sdk.AuthType
-import ru.yandex.money.android.sdk.AuthTypeState
-import ru.yandex.money.android.sdk.CardBrand
-import ru.yandex.money.android.sdk.Error
-import ru.yandex.money.android.sdk.ErrorCode
-import ru.yandex.money.android.sdk.ExtendedStatus
-import ru.yandex.money.android.sdk.Fee
-import ru.yandex.money.android.sdk.GooglePay
-import ru.yandex.money.android.sdk.LinkedCard
-import ru.yandex.money.android.sdk.NewCard
-import ru.yandex.money.android.sdk.SbolSmsInvoicing
-import ru.yandex.money.android.sdk.Status
-import ru.yandex.money.android.sdk.Wallet
 import ru.yandex.money.android.sdk.impl.extensions.RUB
 import ru.yandex.money.android.sdk.impl.extensions.getStatus
 import ru.yandex.money.android.sdk.impl.extensions.toAmount
@@ -66,6 +52,20 @@ import ru.yandex.money.android.sdk.methods.paymentAuth.CheckoutAuthContextGetRes
 import ru.yandex.money.android.sdk.methods.paymentAuth.CheckoutAuthSessionGenerateResponse
 import ru.yandex.money.android.sdk.methods.paymentAuth.CheckoutTokenIssueExecuteResponse
 import ru.yandex.money.android.sdk.methods.paymentAuth.CheckoutTokenIssueInitResponse
+import ru.yandex.money.android.sdk.model.AbstractWallet
+import ru.yandex.money.android.sdk.model.AuthType
+import ru.yandex.money.android.sdk.model.AuthTypeState
+import ru.yandex.money.android.sdk.model.CardBrand
+import ru.yandex.money.android.sdk.model.Error
+import ru.yandex.money.android.sdk.model.ErrorCode
+import ru.yandex.money.android.sdk.model.ExtendedStatus
+import ru.yandex.money.android.sdk.model.Fee
+import ru.yandex.money.android.sdk.model.GooglePay
+import ru.yandex.money.android.sdk.model.LinkedCard
+import ru.yandex.money.android.sdk.model.NewCard
+import ru.yandex.money.android.sdk.model.SbolSmsInvoicing
+import ru.yandex.money.android.sdk.model.Status
+import ru.yandex.money.android.sdk.model.Wallet
 import java.math.BigDecimal
 import java.util.concurrent.TimeUnit
 
@@ -309,7 +309,13 @@ class JsonDeserializationTest {
             }"""
         )
         val authContextGetResponse =
-            CheckoutAuthContextGetResponse(Status.SUCCESS, null, arrayOf(AuthTypeState(AuthType.SMS, 30)), AuthType.SMS)
+            CheckoutAuthContextGetResponse(
+                Status.SUCCESS, null, arrayOf(
+                    AuthTypeState(
+                        AuthType.SMS,
+                        30
+                    )
+                ), AuthType.SMS)
         assertThat(jsonObject.toAuthContextGetResponse(), equalTo(authContextGetResponse))
     }
 
@@ -355,7 +361,13 @@ class JsonDeserializationTest {
             }"""
         )
         val authContextGetResponse =
-            CheckoutAuthContextGetResponse(Status.SUCCESS, null, arrayOf(AuthTypeState(AuthType.SMS, 30)), AuthType.SMS)
+            CheckoutAuthContextGetResponse(
+                Status.SUCCESS, null, arrayOf(
+                    AuthTypeState(
+                        AuthType.SMS,
+                        30
+                    )
+                ), AuthType.SMS)
         assertThat(jsonObject.toAuthContextGetResponse(), equalTo(authContextGetResponse))
     }
 
@@ -505,7 +517,8 @@ class JsonDeserializationTest {
                     "nextSessionTimeLeft": 30
                   }"""
         )
-        val authTypeState = AuthTypeState(AuthType.SMS, 30)
+        val authTypeState =
+            AuthTypeState(AuthType.SMS, 30)
         assertThat(jsonObject.toAuthTypeState(), equalTo(authTypeState))
     }
 
@@ -542,7 +555,10 @@ class JsonDeserializationTest {
             }"""
         )
         val authSessionGenerateResponse =
-            CheckoutAuthCheckResponse(Status.SUCCESS, null, AuthTypeState(AuthType.TOTP, 30))
+            CheckoutAuthCheckResponse(
+                Status.SUCCESS, null,
+                AuthTypeState(AuthType.TOTP, 30)
+            )
         assertThat(jsonObject.toAuthCheckResponse(), equalTo(authSessionGenerateResponse))
     }
 
@@ -595,7 +611,10 @@ class JsonDeserializationTest {
             }"""
         )
         val authSessionGenerateResponse =
-            CheckoutAuthSessionGenerateResponse(Status.SUCCESS, null, AuthTypeState(AuthType.SMS, 20))
+            CheckoutAuthSessionGenerateResponse(
+                Status.SUCCESS, null,
+                AuthTypeState(AuthType.SMS, 20)
+            )
         assertThat(jsonObject.toAuthSessionGenerateResponse(), equalTo(authSessionGenerateResponse))
     }
 

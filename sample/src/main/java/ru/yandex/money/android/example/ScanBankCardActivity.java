@@ -52,7 +52,7 @@ public class ScanBankCardActivity extends Activity {
 
                 if (expirationDate != null) {
                     final String[] expirationDateParts = expirationDate.split("/");
-                    final Intent scanBankCardResult = Checkout.createScanBankCardResult(
+                    final Intent scanBankCardResult = Checkout.createScanBankCardIntent(
                             card.getCardNumber(),
                             Integer.parseInt(expirationDateParts[0]),
                             Integer.parseInt(expirationDateParts[1]));

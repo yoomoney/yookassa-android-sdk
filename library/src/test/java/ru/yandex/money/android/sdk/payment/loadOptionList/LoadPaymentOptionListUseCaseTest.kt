@@ -31,19 +31,19 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.inOrder
 import org.mockito.junit.MockitoJUnitRunner
-import ru.yandex.money.android.sdk.AbstractWallet
 import ru.yandex.money.android.sdk.Amount
-import ru.yandex.money.android.sdk.AuthorizedUser
-import ru.yandex.money.android.sdk.CardBrand
-import ru.yandex.money.android.sdk.Fee
-import ru.yandex.money.android.sdk.GooglePay
-import ru.yandex.money.android.sdk.LinkedCard
-import ru.yandex.money.android.sdk.NewCard
 import ru.yandex.money.android.sdk.PaymentMethodType
-import ru.yandex.money.android.sdk.SbolSmsInvoicing
-import ru.yandex.money.android.sdk.Wallet
-import ru.yandex.money.android.sdk.YandexMoney
 import ru.yandex.money.android.sdk.impl.extensions.RUB
+import ru.yandex.money.android.sdk.model.AbstractWallet
+import ru.yandex.money.android.sdk.model.AuthorizedUser
+import ru.yandex.money.android.sdk.model.CardBrand
+import ru.yandex.money.android.sdk.model.Fee
+import ru.yandex.money.android.sdk.model.GooglePay
+import ru.yandex.money.android.sdk.model.LinkedCard
+import ru.yandex.money.android.sdk.model.NewCard
+import ru.yandex.money.android.sdk.model.SbolSmsInvoicing
+import ru.yandex.money.android.sdk.model.Wallet
+import ru.yandex.money.android.sdk.model.YandexMoney
 import ru.yandex.money.android.sdk.on
 import ru.yandex.money.android.sdk.payment.CurrentUserGateway
 import ru.yandex.money.android.sdk.payment.SaveLoadedPaymentOptionsListGateway
@@ -61,10 +61,28 @@ internal class LoadPaymentOptionListUseCaseTest {
     )
     private val availableOptions = mutableListOf(
         NewCard(0, testCharge, testFee),
-        Wallet(1, testCharge, testFee, "123456787654321", Amount(BigDecimal.TEN, RUB), "test user"),
+        Wallet(
+            1, testCharge, testFee, "123456787654321",
+            Amount(BigDecimal.TEN, RUB), "test user"
+        ),
         AbstractWallet(2, testCharge, testFee),
-        LinkedCard(3, testCharge, testFee, "1234567887654321", CardBrand.VISA, "123456787654321"),
-        LinkedCard(4, testCharge, testFee, "1234567887654321", CardBrand.VISA, "123456787654321", "test name"),
+        LinkedCard(
+            3,
+            testCharge,
+            testFee,
+            "1234567887654321",
+            CardBrand.VISA,
+            "123456787654321"
+        ),
+        LinkedCard(
+            4,
+            testCharge,
+            testFee,
+            "1234567887654321",
+            CardBrand.VISA,
+            "123456787654321",
+            "test name"
+        ),
         SbolSmsInvoicing(5, testCharge, testFee),
         GooglePay(6, testCharge, testFee)
     )

@@ -25,10 +25,10 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
 import org.junit.Test
 import org.mockito.Mockito.mock
-import ru.yandex.money.android.sdk.AuthorizedUser
 import ru.yandex.money.android.sdk.PaymentMethodType
 import ru.yandex.money.android.sdk.createAmount
 import ru.yandex.money.android.sdk.impl.paymentOptionList.MockPaymentOptionListGateway
+import ru.yandex.money.android.sdk.model.AuthorizedUser
 import ru.yandex.money.android.sdk.on
 import ru.yandex.money.android.sdk.payment.CurrentUserGateway
 import ru.yandex.money.android.sdk.payment.InMemoryPaymentOptionListGateway

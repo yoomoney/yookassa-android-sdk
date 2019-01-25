@@ -35,10 +35,10 @@ import android.view.inputmethod.EditorInfo.IME_ACTION_DONE
 import android.widget.EditText
 import android.widget.ImageView
 import kotlinx.android.synthetic.main.ym_fragment_bank_card.*
-import ru.yandex.money.android.sdk.PaymentOptionInfo
 import ru.yandex.money.android.sdk.R
 import ru.yandex.money.android.sdk.impl.AppModel
 import ru.yandex.money.android.sdk.impl.extensions.clear
+import ru.yandex.money.android.sdk.model.PaymentOptionInfo
 import ru.yandex.money.android.sdk.payment.tokenize.TokenizeInputModel
 import ru.yandex.money.android.sdk.utils.PatternInputFilter
 import ru.yandex.money.android.sdk.utils.SimpleTextWatcher

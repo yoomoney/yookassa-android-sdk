@@ -30,12 +30,12 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.verifyZeroInteractions
 import org.mockito.junit.MockitoJUnitRunner
-import ru.yandex.money.android.sdk.Presenter
 import ru.yandex.money.android.sdk.createWalletPaymentOption
 import ru.yandex.money.android.sdk.impl.contract.ContractSuccessViewModel
 import ru.yandex.money.android.sdk.impl.contract.ContractUserAuthRequiredViewModel
 import ru.yandex.money.android.sdk.impl.contract.ContractViewModel
 import ru.yandex.money.android.sdk.impl.payment.PaymentOptionViewModel
+import ru.yandex.money.android.sdk.model.Presenter
 import ru.yandex.money.android.sdk.on
 import ru.yandex.money.android.sdk.payment.selectOption.SelectPaymentOptionOutputModel
 import ru.yandex.money.android.sdk.payment.selectOption.SelectedPaymentOptionOutputModel

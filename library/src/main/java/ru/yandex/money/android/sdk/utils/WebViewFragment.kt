@@ -36,10 +36,9 @@ import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import ru.yandex.money.android.sdk.BuildConfig
-import java.net.URL
 
 private const val KEY_LOAD_URL = "loadUrl"
-private const val KEY_REDIRECT_URL = "redirectUrl"
+private const val KEY_REDIRECT_URL = "returnUrl"
 
 private val TAG = WebViewFragment::class.java.simpleName
 
@@ -133,17 +132,13 @@ internal class WebViewFragment : Fragment() {
         return canGoBack
     }
 
-    fun load(url: URL, redirectUrl: URL) {
+    fun load(url: String, redirectUrl: String) {
         val webView = checkNotNull(webView) { "load should be called after fragment initialization" }
 
-
-        val urlString = url.toString()
-        val redirectUrlString = redirectUrl.toString()
-
-        if (urlString != loadUrl || redirectUrlString != this.redirectUrl) {
-            loadUrl = urlString
-            this.redirectUrl = redirectUrlString
-            webView.loadUrl(urlString)
+        if (url != loadUrl || redirectUrl != this.redirectUrl) {
+            loadUrl = url
+            this.redirectUrl = redirectUrl
+            webView.loadUrl(url)
         }
     }
 
@@ -167,7 +162,7 @@ internal class WebViewFragment : Fragment() {
 
         @Suppress("OverridingDeprecatedMember")
         override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-            val redirectUrl = checkNotNull(redirectUrl) { "redirectUrl should be present" }
+            val redirectUrl = checkNotNull(redirectUrl) { "returnUrl should be present" }
 
             if (url?.startsWith(redirectUrl) == true) {
                 Log.d(TAG, "success: $url")

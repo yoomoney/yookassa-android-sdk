@@ -22,13 +22,14 @@
 apply from: rootProject.file("sensitive.gradle")
 
 ext {
-    versionMajor = 1
-    versionMinor = 3
+    versionMajor = 2
+    versionMinor = 0
     versionPatch = 0
-    versionAlpha = 7
 
-    versionCode = [versionMajor, versionMinor, versionPatch, versionAlpha].inject { result, i -> result * 100 + i }
-    versionName = "$versionMajor.$versionMinor.$versionPatch" + (versionAlpha ? ".$versionAlpha" : "")
+    versionAlpha = null
+
+    versionCode = [versionMajor, versionMinor, versionPatch, versionAlpha ?: 0].inject { result, i -> result * 100 + i }
+    versionName = "$versionMajor.$versionMinor.$versionPatch" + ( versionAlpha ? "-alpha-$versionAlpha" : "" )
 
     generateFileName = { project, variant ->
         def fileNameParts = [

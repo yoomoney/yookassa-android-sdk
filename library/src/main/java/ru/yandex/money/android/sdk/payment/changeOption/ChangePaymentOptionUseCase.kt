@@ -21,8 +21,8 @@
 
 package ru.yandex.money.android.sdk.payment.changeOption
 
-import ru.yandex.money.android.sdk.PaymentOption
-import ru.yandex.money.android.sdk.UseCase
+import ru.yandex.money.android.sdk.model.PaymentOption
+import ru.yandex.money.android.sdk.model.UseCase
 import ru.yandex.money.android.sdk.payment.GetLoadedPaymentOptionListGateway
 
 internal class ChangePaymentOptionUseCase(

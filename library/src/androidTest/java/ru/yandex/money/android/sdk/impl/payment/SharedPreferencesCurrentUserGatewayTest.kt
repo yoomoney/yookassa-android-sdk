@@ -31,9 +31,9 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import ru.yandex.money.android.sdk.AnonymousUser
-import ru.yandex.money.android.sdk.AuthorizedUser
-import ru.yandex.money.android.sdk.CurrentUser
+import ru.yandex.money.android.sdk.model.AnonymousUser
+import ru.yandex.money.android.sdk.model.AuthorizedUser
+import ru.yandex.money.android.sdk.model.CurrentUser
 
 @RunWith(AndroidJUnit4::class)
 class SharedPreferencesCurrentUserGatewayTest {

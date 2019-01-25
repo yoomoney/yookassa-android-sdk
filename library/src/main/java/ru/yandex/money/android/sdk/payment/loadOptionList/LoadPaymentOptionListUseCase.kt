@@ -22,15 +22,15 @@
 package ru.yandex.money.android.sdk.payment.loadOptionList
 
 import ru.yandex.money.android.sdk.Amount
-import ru.yandex.money.android.sdk.GooglePay
-import ru.yandex.money.android.sdk.LinkedCard
-import ru.yandex.money.android.sdk.NewCard
 import ru.yandex.money.android.sdk.PaymentMethodType
-import ru.yandex.money.android.sdk.PaymentOption
-import ru.yandex.money.android.sdk.SbolSmsInvoicing
-import ru.yandex.money.android.sdk.UseCase
-import ru.yandex.money.android.sdk.Wallet
-import ru.yandex.money.android.sdk.YandexMoney
+import ru.yandex.money.android.sdk.model.GooglePay
+import ru.yandex.money.android.sdk.model.LinkedCard
+import ru.yandex.money.android.sdk.model.NewCard
+import ru.yandex.money.android.sdk.model.PaymentOption
+import ru.yandex.money.android.sdk.model.SbolSmsInvoicing
+import ru.yandex.money.android.sdk.model.UseCase
+import ru.yandex.money.android.sdk.model.Wallet
+import ru.yandex.money.android.sdk.model.YandexMoney
 import ru.yandex.money.android.sdk.payment.CurrentUserGateway
 import ru.yandex.money.android.sdk.payment.SaveLoadedPaymentOptionsListGateway
 

@@ -21,8 +21,8 @@
 
 package ru.yandex.money.android.sdk.impl.metrics
 
-import ru.yandex.money.android.sdk.Presenter
-import ru.yandex.money.android.sdk.SdkException
+import ru.yandex.money.android.sdk.model.Presenter
+import ru.yandex.money.android.sdk.model.SdkException
 
 internal class ErrorScreenOpenedReporter<T>(
     private val getAuthType: () -> AuthType,

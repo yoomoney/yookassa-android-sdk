@@ -21,7 +21,7 @@
 
 package ru.yandex.money.android.sdk.impl.metrics
 
-import ru.yandex.money.android.sdk.AnonymousUser
+import ru.yandex.money.android.sdk.model.AnonymousUser
 import ru.yandex.money.android.sdk.payment.CheckPaymentAuthRequiredGateway
 import ru.yandex.money.android.sdk.payment.CurrentUserGateway
 

@@ -22,10 +22,10 @@
 package ru.yandex.money.android.sdk.impl.payment
 
 import android.content.SharedPreferences
-import ru.yandex.money.android.sdk.AnonymousUser
-import ru.yandex.money.android.sdk.AuthorizedUser
-import ru.yandex.money.android.sdk.CurrentUser
 import ru.yandex.money.android.sdk.impl.extensions.edit
+import ru.yandex.money.android.sdk.model.AnonymousUser
+import ru.yandex.money.android.sdk.model.AuthorizedUser
+import ru.yandex.money.android.sdk.model.CurrentUser
 import ru.yandex.money.android.sdk.payment.CurrentUserGateway
 
 private const val KEY_CURRENT_USER_NAME = "current_user_name"
@@ -37,7 +37,12 @@ internal class SharedPreferencesCurrentUserGateway(
     override var currentUser: CurrentUser
         get() {
             return if (sharedPreferences.contains(KEY_CURRENT_USER_NAME)) {
-                AuthorizedUser(sharedPreferences.getString(KEY_CURRENT_USER_NAME, null))
+                AuthorizedUser(
+                    sharedPreferences.getString(
+                        KEY_CURRENT_USER_NAME,
+                        null
+                    )
+                )
             } else {
                 AnonymousUser
             }

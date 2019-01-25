@@ -21,9 +21,9 @@
 
 package ru.yandex.money.android.sdk.impl.metrics
 
-import ru.yandex.money.android.sdk.Presenter
-import ru.yandex.money.android.sdk.SdkException
-import ru.yandex.money.android.sdk.UnhandledException
+import ru.yandex.money.android.sdk.model.Presenter
+import ru.yandex.money.android.sdk.model.SdkException
+import ru.yandex.money.android.sdk.model.UnhandledException
 
 internal interface Reporter {
     fun report(name: String, args: List<Param>? = null)

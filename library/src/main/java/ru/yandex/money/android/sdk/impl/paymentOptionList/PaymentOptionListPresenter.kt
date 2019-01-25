@@ -22,14 +22,14 @@
 package ru.yandex.money.android.sdk.impl.paymentOptionList
 
 import android.content.Context
-import ru.yandex.money.android.sdk.ErrorPresenter
-import ru.yandex.money.android.sdk.PaymentOption
-import ru.yandex.money.android.sdk.Presenter
 import ru.yandex.money.android.sdk.R
-import ru.yandex.money.android.sdk.Wallet
 import ru.yandex.money.android.sdk.impl.extensions.getAdditionalInfo
 import ru.yandex.money.android.sdk.impl.extensions.getIcon
 import ru.yandex.money.android.sdk.impl.extensions.getTitle
+import ru.yandex.money.android.sdk.model.ErrorPresenter
+import ru.yandex.money.android.sdk.model.PaymentOption
+import ru.yandex.money.android.sdk.model.Presenter
+import ru.yandex.money.android.sdk.model.Wallet
 import ru.yandex.money.android.sdk.payment.loadOptionList.PaymentOptionListIsEmptyException
 
 internal class PaymentOptionListPresenter(

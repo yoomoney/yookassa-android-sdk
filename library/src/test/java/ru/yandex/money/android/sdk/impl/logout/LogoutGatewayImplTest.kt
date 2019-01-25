@@ -32,13 +32,13 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
-import ru.yandex.money.android.sdk.AnonymousUser
-import ru.yandex.money.android.sdk.AuthorizedUser
-import ru.yandex.money.android.sdk.CurrentUser
 import ru.yandex.money.android.sdk.impl.TokensStorage
 import ru.yandex.money.android.sdk.impl.extensions.edit
 import ru.yandex.money.android.sdk.impl.payment.SharedPreferencesCurrentUserGateway
 import ru.yandex.money.android.sdk.logout.LogoutGateway
+import ru.yandex.money.android.sdk.model.AnonymousUser
+import ru.yandex.money.android.sdk.model.AuthorizedUser
+import ru.yandex.money.android.sdk.model.CurrentUser
 
 @RunWith(RobolectricTestRunner::class)
 class LogoutGatewayImplTest {

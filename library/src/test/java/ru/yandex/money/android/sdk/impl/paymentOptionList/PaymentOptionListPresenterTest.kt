@@ -32,12 +32,12 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
-import ru.yandex.money.android.sdk.Wallet
 import ru.yandex.money.android.sdk.createAbstractWalletPaymentOption
 import ru.yandex.money.android.sdk.createLinkedCardPaymentOption
 import ru.yandex.money.android.sdk.createNewCardPaymentOption
 import ru.yandex.money.android.sdk.createWalletPaymentOption
 import ru.yandex.money.android.sdk.impl.extensions.initExtensions
+import ru.yandex.money.android.sdk.model.Wallet
 import ru.yandex.money.android.sdk.payment.loadOptionList.PaymentOptionListOutputModel
 import java.util.concurrent.TimeUnit
 

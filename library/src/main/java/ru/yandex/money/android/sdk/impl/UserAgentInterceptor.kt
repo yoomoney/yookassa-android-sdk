@@ -22,16 +22,20 @@
 package ru.yandex.money.android.sdk.impl
 
 import android.content.Context
+import android.os.Build
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
 import ru.yandex.money.android.sdk.BuildConfig
-import ru.yandex.money.android.sdk.impl.extensions.androidId
 import ru.yandex.money.android.sdk.impl.extensions.isTablet
 
-internal class UserAgentInterceptor(androidId: String, isTablet: Boolean) : Interceptor {
+internal class UserAgentInterceptor(
+    version: String,
+    osVersion: String,
+    isTablet: Boolean
+) : Interceptor {
     private val userAgent =
-        "Yandex.Checkout/Android/${BuildConfig.VERSION_CODE}/$androidId/${getDeviceType(isTablet)}"
+        "Yandex.Checkout.App.Android/$version Android/$osVersion ${getDeviceType(isTablet)}"
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
@@ -48,5 +52,8 @@ internal class UserAgentInterceptor(androidId: String, isTablet: Boolean) : Inte
     }
 }
 
-internal fun OkHttpClient.Builder.addUserAgent(context: Context): OkHttpClient.Builder =
-    addInterceptor(UserAgentInterceptor(context.androidId, context.isTablet))
+internal fun OkHttpClient.Builder.addUserAgent(context: Context): OkHttpClient.Builder {
+    val versionName = BuildConfig.VERSION_NAME
+    val debugSuffix = if (BuildConfig.DEBUG) "-debug" else ""
+    return addInterceptor(UserAgentInterceptor(versionName + debugSuffix, Build.VERSION.RELEASE, context.isTablet))
+}

@@ -24,10 +24,10 @@ package ru.yandex.money.android.sdk.impl.metrics
 import org.junit.Test
 import org.mockito.Mockito.inOrder
 import org.mockito.Mockito.mock
-import ru.yandex.money.android.sdk.Presenter
-import ru.yandex.money.android.sdk.SdkException
 import ru.yandex.money.android.sdk.impl.contract.ContractErrorViewModel
 import ru.yandex.money.android.sdk.impl.contract.ContractFailViewModel
+import ru.yandex.money.android.sdk.model.Presenter
+import ru.yandex.money.android.sdk.model.SdkException
 import ru.yandex.money.android.sdk.on
 
 class ActionPaymentAuthorizationErrorReporterTest {

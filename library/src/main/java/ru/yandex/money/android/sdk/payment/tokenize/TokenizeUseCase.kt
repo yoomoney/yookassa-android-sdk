@@ -21,22 +21,23 @@
 
 package ru.yandex.money.android.sdk.payment.tokenize
 
-import ru.yandex.money.android.sdk.AbstractWallet
 import ru.yandex.money.android.sdk.Amount
-import ru.yandex.money.android.sdk.GooglePay
-import ru.yandex.money.android.sdk.GooglePayInfo
-import ru.yandex.money.android.sdk.LinkedCard
-import ru.yandex.money.android.sdk.LinkedCardInfo
-import ru.yandex.money.android.sdk.NewCard
-import ru.yandex.money.android.sdk.NewCardInfo
-import ru.yandex.money.android.sdk.PaymentOption
-import ru.yandex.money.android.sdk.PaymentOptionInfo
-import ru.yandex.money.android.sdk.SbolSmsInvoicing
-import ru.yandex.money.android.sdk.SbolSmsInvoicingInfo
-import ru.yandex.money.android.sdk.SelectedOptionNotFoundException
-import ru.yandex.money.android.sdk.UseCase
-import ru.yandex.money.android.sdk.WalletInfo
-import ru.yandex.money.android.sdk.YandexMoney
+import ru.yandex.money.android.sdk.model.AbstractWallet
+import ru.yandex.money.android.sdk.model.Confirmation
+import ru.yandex.money.android.sdk.model.GooglePay
+import ru.yandex.money.android.sdk.model.GooglePayInfo
+import ru.yandex.money.android.sdk.model.LinkedCard
+import ru.yandex.money.android.sdk.model.LinkedCardInfo
+import ru.yandex.money.android.sdk.model.NewCard
+import ru.yandex.money.android.sdk.model.NewCardInfo
+import ru.yandex.money.android.sdk.model.PaymentOption
+import ru.yandex.money.android.sdk.model.PaymentOptionInfo
+import ru.yandex.money.android.sdk.model.SbolSmsInvoicing
+import ru.yandex.money.android.sdk.model.SbolSmsInvoicingInfo
+import ru.yandex.money.android.sdk.model.SelectedOptionNotFoundException
+import ru.yandex.money.android.sdk.model.UseCase
+import ru.yandex.money.android.sdk.model.WalletInfo
+import ru.yandex.money.android.sdk.model.YandexMoney
 import ru.yandex.money.android.sdk.payment.CheckPaymentAuthRequiredGateway
 import ru.yandex.money.android.sdk.payment.GetLoadedPaymentOptionListGateway
 
@@ -45,14 +46,15 @@ private const val CANNOT_TOKENIZE_ABSTRACT_WALLET = "can not tokenize abstract w
 internal class TokenizeUseCase(
     private val getLoadedPaymentOptionListGateway: GetLoadedPaymentOptionListGateway,
     private val tokenizeGateway: TokenizeGateway,
-    private val checkPaymentAuthRequiredGateway: CheckPaymentAuthRequiredGateway
+    private val checkPaymentAuthRequiredGateway: CheckPaymentAuthRequiredGateway,
+    private val convertToConfirmation: (PaymentOption) -> Confirmation
 ) : UseCase<TokenizeInputModel, TokenizeOutputModel> {
 
     override fun invoke(inputModel: TokenizeInputModel): TokenizeOutputModel {
         val option = getLoadedPaymentOptionListGateway
             .getLoadedPaymentOptions()
             .find { it.id == inputModel.paymentOptionId }
-                ?: throw SelectedOptionNotFoundException(inputModel.paymentOptionId)
+            ?: throw SelectedOptionNotFoundException(inputModel.paymentOptionId)
 
         check(option !is AbstractWallet) { CANNOT_TOKENIZE_ABSTRACT_WALLET }
 
@@ -66,7 +68,8 @@ internal class TokenizeUseCase(
                 token = tokenizeGateway.getToken(
                     paymentOption = option,
                     paymentOptionInfo = inputModel.paymentOptionInfo ?: WalletInfo(),
-                    allowRecurringPayments = inputModel.allowRecurringPayments
+                    allowRecurringPayments = inputModel.allowRecurringPayments,
+                    confirmation = convertToConfirmation(option)
                 ),
                 option = option
             )

@@ -23,10 +23,10 @@ package ru.yandex.money.android.sdk.methods
 
 import org.json.JSONObject
 import ru.yandex.money.android.sdk.BuildConfig
-import ru.yandex.money.android.sdk.Status
 import ru.yandex.money.android.sdk.impl.extensions.toWalletCheckResponse
 import ru.yandex.money.android.sdk.methods.base.MimeType
 import ru.yandex.money.android.sdk.methods.base.PostRequest
+import ru.yandex.money.android.sdk.model.Status
 
 private const val WALLET_CHECK = "/wallet-check"
 
@@ -46,6 +46,6 @@ internal data class WalletCheckRequest(
 }
 
 internal data class WalletCheckResponse(
-        val status: Status,
-        val hasWallet: Boolean?
+    val status: Status,
+    val hasWallet: Boolean?
 )

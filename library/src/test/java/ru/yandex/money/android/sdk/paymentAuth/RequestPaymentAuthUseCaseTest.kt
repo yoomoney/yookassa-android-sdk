@@ -29,9 +29,9 @@ import org.mockito.Mockito.verify
 import org.mockito.Mockito.verifyNoMoreInteractions
 import org.mockito.MockitoAnnotations
 import ru.yandex.money.android.sdk.Amount
-import ru.yandex.money.android.sdk.AuthType
-import ru.yandex.money.android.sdk.AuthTypeState
 import ru.yandex.money.android.sdk.impl.extensions.RUB
+import ru.yandex.money.android.sdk.model.AuthType
+import ru.yandex.money.android.sdk.model.AuthTypeState
 import ru.yandex.money.android.sdk.payment.CurrentUserGateway
 import java.math.BigDecimal
 
@@ -55,7 +55,12 @@ internal class RequestPaymentAuthUseCaseTest {
         // prepare
         val linkWalletToApp = false
         val amount = Amount(BigDecimal.TEN, RUB)
-        `when`(authTypeGateway.getPaymentAuthType(linkWalletToApp, amount)).thenReturn(AuthTypeState(AuthType.SMS, 1))
+        `when`(authTypeGateway.getPaymentAuthType(linkWalletToApp, amount)).thenReturn(
+            AuthTypeState(
+                AuthType.SMS,
+                1
+            )
+        )
 
         // invoke
         useCase(RequestPaymentAuthInputModel(linkWalletToApp, amount))

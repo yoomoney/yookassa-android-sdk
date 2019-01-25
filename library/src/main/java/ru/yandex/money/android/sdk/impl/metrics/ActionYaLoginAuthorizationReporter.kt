@@ -21,9 +21,9 @@
 
 package ru.yandex.money.android.sdk.impl.metrics
 
-import ru.yandex.money.android.sdk.Presenter
 import ru.yandex.money.android.sdk.impl.userAuth.UserAuthFailViewModel
 import ru.yandex.money.android.sdk.impl.userAuth.UserAuthViewModel
+import ru.yandex.money.android.sdk.model.Presenter
 import ru.yandex.money.android.sdk.userAuth.UserAuthCancelledOutputModel
 import ru.yandex.money.android.sdk.userAuth.UserAuthNoWalletOutputModel
 import ru.yandex.money.android.sdk.userAuth.UserAuthOutputModel

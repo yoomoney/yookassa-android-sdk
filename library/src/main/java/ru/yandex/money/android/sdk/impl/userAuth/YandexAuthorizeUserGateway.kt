@@ -26,18 +26,18 @@ import com.yandex.authsdk.YandexAuthOptions
 import com.yandex.authsdk.YandexAuthSdk
 import com.yandex.authsdk.YandexAuthToken
 import ru.yandex.money.android.sdk.BuildConfig
-import ru.yandex.money.android.sdk.Executor
 import ru.yandex.money.android.sdk.impl.extensions.getDisplayName
 import ru.yandex.money.android.sdk.impl.extensions.getJsonPayload
 import ru.yandex.money.android.sdk.impl.userAuth.YandexAuthorizeUserGateway.State.COLLECTING_USER
 import ru.yandex.money.android.sdk.impl.userAuth.YandexAuthorizeUserGateway.State.HAS_TO_COLLECT_USER
 import ru.yandex.money.android.sdk.impl.userAuth.YandexAuthorizeUserGateway.State.IDLE
+import ru.yandex.money.android.sdk.model.Executor
 import ru.yandex.money.android.sdk.userAuth.AuthorizeUserGateway
 import java.util.concurrent.Semaphore
 
 internal class YandexAuthorizeUserGateway(
-        private val uiExecutor: Executor,
-        private val context: Context
+    private val uiExecutor: Executor,
+    private val context: Context
 ) : AuthorizeUserGateway {
 
     private var listener: Listener? = null

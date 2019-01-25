@@ -27,18 +27,18 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import org.mockito.Mockito.mock
-import ru.yandex.money.android.sdk.AnonymousUser
-import ru.yandex.money.android.sdk.AuthorizedUser
-import ru.yandex.money.android.sdk.CurrentUser
+import ru.yandex.money.android.sdk.model.AnonymousUser
+import ru.yandex.money.android.sdk.model.AuthorizedUser
+import ru.yandex.money.android.sdk.model.CurrentUser
 import ru.yandex.money.android.sdk.on
 import ru.yandex.money.android.sdk.payment.CheckPaymentAuthRequiredGateway
 import ru.yandex.money.android.sdk.payment.CurrentUserGateway
 
 @RunWith(Parameterized::class)
 internal class UserAuthTypeParamProviderTest(
-        private val currentUser: CurrentUser,
-        private val authRequired: Boolean,
-        private val expected: AuthType
+    private val currentUser: CurrentUser,
+    private val authRequired: Boolean,
+    private val expected: AuthType
 ) {
 
     companion object {

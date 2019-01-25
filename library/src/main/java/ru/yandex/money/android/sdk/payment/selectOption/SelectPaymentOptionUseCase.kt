@@ -21,11 +21,11 @@
 
 package ru.yandex.money.android.sdk.payment.selectOption
 
-import ru.yandex.money.android.sdk.AbstractWallet
-import ru.yandex.money.android.sdk.PaymentOption
-import ru.yandex.money.android.sdk.SelectedOptionNotFoundException
-import ru.yandex.money.android.sdk.UseCase
-import ru.yandex.money.android.sdk.YandexMoney
+import ru.yandex.money.android.sdk.model.AbstractWallet
+import ru.yandex.money.android.sdk.model.PaymentOption
+import ru.yandex.money.android.sdk.model.SelectedOptionNotFoundException
+import ru.yandex.money.android.sdk.model.UseCase
+import ru.yandex.money.android.sdk.model.YandexMoney
 import ru.yandex.money.android.sdk.payment.CheckPaymentAuthRequiredGateway
 import ru.yandex.money.android.sdk.payment.GetLoadedPaymentOptionListGateway
 

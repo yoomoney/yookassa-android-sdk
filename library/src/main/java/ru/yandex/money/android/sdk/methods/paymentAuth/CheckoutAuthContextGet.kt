@@ -22,11 +22,11 @@
 package ru.yandex.money.android.sdk.methods.paymentAuth
 
 import org.json.JSONObject
-import ru.yandex.money.android.sdk.AuthType
-import ru.yandex.money.android.sdk.AuthTypeState
-import ru.yandex.money.android.sdk.ErrorCode
-import ru.yandex.money.android.sdk.Status
 import ru.yandex.money.android.sdk.impl.extensions.toAuthContextGetResponse
+import ru.yandex.money.android.sdk.model.AuthType
+import ru.yandex.money.android.sdk.model.AuthTypeState
+import ru.yandex.money.android.sdk.model.ErrorCode
+import ru.yandex.money.android.sdk.model.Status
 import java.util.Arrays
 
 private const val AUTH_CONTEXT_GET_PATH = "/checkout/auth-context-get"
@@ -49,10 +49,10 @@ internal class CheckoutAuthContextGetRequest(
 private const val HASH_SEED = 31
 
 internal data class CheckoutAuthContextGetResponse(
-        val status: Status,
-        val errorCode: ErrorCode?,
-        val authTypeStates: Array<AuthTypeState>,
-        val defaultAuthType: AuthType
+    val status: Status,
+    val errorCode: ErrorCode?,
+    val authTypeStates: Array<AuthTypeState>,
+    val defaultAuthType: AuthType
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

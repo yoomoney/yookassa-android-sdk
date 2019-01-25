@@ -21,9 +21,9 @@
 
 package ru.yandex.money.android.sdk.impl.metrics
 
-import ru.yandex.money.android.sdk.Presenter
 import ru.yandex.money.android.sdk.impl.logout.LogoutSuccessViewModel
 import ru.yandex.money.android.sdk.logout.LogoutOutputModel
+import ru.yandex.money.android.sdk.model.Presenter
 
 internal class ActionLogoutReporter(
     val presenter: Presenter<LogoutOutputModel, LogoutSuccessViewModel>,

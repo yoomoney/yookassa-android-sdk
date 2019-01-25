@@ -32,12 +32,12 @@ import org.mockito.Mockito.verify
 import org.mockito.Mockito.verifyZeroInteractions
 import org.mockito.junit.MockitoJUnitRunner
 import ru.yandex.money.android.sdk.Amount
-import ru.yandex.money.android.sdk.LinkedCard
-import ru.yandex.money.android.sdk.Presenter
-import ru.yandex.money.android.sdk.ViewModel
 import ru.yandex.money.android.sdk.createLinkedCardPaymentOption
 import ru.yandex.money.android.sdk.createNewCardPaymentOption
 import ru.yandex.money.android.sdk.impl.extensions.RUB
+import ru.yandex.money.android.sdk.model.LinkedCard
+import ru.yandex.money.android.sdk.model.Presenter
+import ru.yandex.money.android.sdk.model.ViewModel
 import ru.yandex.money.android.sdk.on
 import ru.yandex.money.android.sdk.payment.tokenize.TokenOutputModel
 import ru.yandex.money.android.sdk.payment.tokenize.TokenizeOutputModel
@@ -74,7 +74,12 @@ class PaymentOptionInfoPresenterTest {
     @Test
     fun `should invoke wrapped presenter if TokenizePaymentAuthRequiredOutputModel`() {
         // prepare
-        val outputMode = TokenizePaymentAuthRequiredOutputModel(Amount(BigDecimal.TEN, RUB))
+        val outputMode = TokenizePaymentAuthRequiredOutputModel(
+            Amount(
+                BigDecimal.TEN,
+                RUB
+            )
+        )
 
         // invoke
         presenter(outputMode)

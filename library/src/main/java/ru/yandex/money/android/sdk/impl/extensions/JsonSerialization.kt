@@ -23,24 +23,28 @@ package ru.yandex.money.android.sdk.impl.extensions
 
 import org.json.JSONObject
 import ru.yandex.money.android.sdk.Amount
-import ru.yandex.money.android.sdk.AuthType
-import ru.yandex.money.android.sdk.AuthType.EMERGENCY
-import ru.yandex.money.android.sdk.AuthType.NOT_NEEDED
-import ru.yandex.money.android.sdk.AuthType.OAUTH_TOKEN
-import ru.yandex.money.android.sdk.AuthType.PUSH
-import ru.yandex.money.android.sdk.AuthType.SECURE_PASSWORD
-import ru.yandex.money.android.sdk.AuthType.SMS
-import ru.yandex.money.android.sdk.AuthType.TOTP
-import ru.yandex.money.android.sdk.AuthType.UNKNOWN
-import ru.yandex.money.android.sdk.GooglePayInfo
-import ru.yandex.money.android.sdk.LinkedCard
-import ru.yandex.money.android.sdk.LinkedCardInfo
-import ru.yandex.money.android.sdk.NewCardInfo
-import ru.yandex.money.android.sdk.PaymentOption
-import ru.yandex.money.android.sdk.PaymentOptionInfo
-import ru.yandex.money.android.sdk.SbolSmsInvoicingInfo
-import ru.yandex.money.android.sdk.Wallet
-import ru.yandex.money.android.sdk.WalletInfo
+import ru.yandex.money.android.sdk.model.AuthType
+import ru.yandex.money.android.sdk.model.AuthType.EMERGENCY
+import ru.yandex.money.android.sdk.model.AuthType.NOT_NEEDED
+import ru.yandex.money.android.sdk.model.AuthType.OAUTH_TOKEN
+import ru.yandex.money.android.sdk.model.AuthType.PUSH
+import ru.yandex.money.android.sdk.model.AuthType.SECURE_PASSWORD
+import ru.yandex.money.android.sdk.model.AuthType.SMS
+import ru.yandex.money.android.sdk.model.AuthType.TOTP
+import ru.yandex.money.android.sdk.model.AuthType.UNKNOWN
+import ru.yandex.money.android.sdk.model.Confirmation
+import ru.yandex.money.android.sdk.model.ExternalConfirmation
+import ru.yandex.money.android.sdk.model.GooglePayInfo
+import ru.yandex.money.android.sdk.model.LinkedCard
+import ru.yandex.money.android.sdk.model.LinkedCardInfo
+import ru.yandex.money.android.sdk.model.NewCardInfo
+import ru.yandex.money.android.sdk.model.NoConfirmation
+import ru.yandex.money.android.sdk.model.PaymentOption
+import ru.yandex.money.android.sdk.model.PaymentOptionInfo
+import ru.yandex.money.android.sdk.model.RedirectConfirmation
+import ru.yandex.money.android.sdk.model.SbolSmsInvoicingInfo
+import ru.yandex.money.android.sdk.model.Wallet
+import ru.yandex.money.android.sdk.model.WalletInfo
 
 internal fun Amount.toJsonObject(): JSONObject = JSONObject()
     .put("value", value.toString())
@@ -83,4 +87,13 @@ internal fun AuthType.toJsonString() = when (this) {
     PUSH -> "Push"
     OAUTH_TOKEN -> "OauthToken"
     NOT_NEEDED, UNKNOWN -> ""
+}
+
+internal fun Confirmation.toJsonObject(): JSONObject? = when (this) {
+    NoConfirmation -> null
+    ExternalConfirmation -> JSONObject()
+        .put("type", "external")
+    is RedirectConfirmation -> JSONObject()
+        .put("type", "redirect")
+        .put("return_url", returnUrl)
 }

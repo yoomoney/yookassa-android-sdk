@@ -25,6 +25,10 @@ import android.util.Log
 
 internal class MsdkLogger : Logger {
     override fun invoke(message: String, error: Exception?) {
-        Log.d("MSDK", message, error)
+        Log.d(TAG, message, error)
+    }
+
+    companion object {
+        const val TAG = "Yandex.Checkout.SDK"
     }
 }

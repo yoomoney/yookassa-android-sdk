@@ -21,11 +21,11 @@
 
 package ru.yandex.money.android.sdk.impl.paymentAuth
 
-import ru.yandex.money.android.sdk.AuthType
-import ru.yandex.money.android.sdk.AuthType.EMERGENCY
-import ru.yandex.money.android.sdk.AuthType.SECURE_PASSWORD
-import ru.yandex.money.android.sdk.AuthType.SMS
-import ru.yandex.money.android.sdk.AuthType.TOTP
+import ru.yandex.money.android.sdk.model.AuthType
+import ru.yandex.money.android.sdk.model.AuthType.EMERGENCY
+import ru.yandex.money.android.sdk.model.AuthType.SECURE_PASSWORD
+import ru.yandex.money.android.sdk.model.AuthType.SMS
+import ru.yandex.money.android.sdk.model.AuthType.TOTP
 
 internal class AllowedAuthTypesComparator : Comparator<AuthType> {
 

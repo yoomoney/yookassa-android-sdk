@@ -32,8 +32,8 @@ import org.junit.runner.RunWith
 import org.mockito.MockitoAnnotations
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
-import ru.yandex.money.android.sdk.ErrorPresenter
 import ru.yandex.money.android.sdk.R
+import ru.yandex.money.android.sdk.model.ErrorPresenter
 import ru.yandex.money.android.sdk.payment.loadOptionList.PaymentOptionListIsEmptyException
 import java.util.concurrent.TimeUnit
 

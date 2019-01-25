@@ -27,12 +27,12 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.inOrder
 import org.mockito.junit.MockitoJUnitRunner
-import ru.yandex.money.android.sdk.AuthorizedUser
-import ru.yandex.money.android.sdk.Presenter
 import ru.yandex.money.android.sdk.impl.userAuth.UserAuthCancelledViewModel
 import ru.yandex.money.android.sdk.impl.userAuth.UserAuthNoWalletViewModel
 import ru.yandex.money.android.sdk.impl.userAuth.UserAuthSuccessViewModel
 import ru.yandex.money.android.sdk.impl.userAuth.UserAuthViewModel
+import ru.yandex.money.android.sdk.model.AuthorizedUser
+import ru.yandex.money.android.sdk.model.Presenter
 import ru.yandex.money.android.sdk.on
 import ru.yandex.money.android.sdk.userAuth.UserAuthCancelledOutputModel
 import ru.yandex.money.android.sdk.userAuth.UserAuthNoWalletOutputModel

@@ -23,14 +23,7 @@ package ru.yandex.money.android.sdk.impl.extensions
 
 import org.json.JSONObject
 import ru.yandex.money.android.sdk.Amount
-import ru.yandex.money.android.sdk.AuthType
-import ru.yandex.money.android.sdk.AuthTypeState
-import ru.yandex.money.android.sdk.CardBrand
-import ru.yandex.money.android.sdk.Error
-import ru.yandex.money.android.sdk.ExtendedStatus
-import ru.yandex.money.android.sdk.Fee
 import ru.yandex.money.android.sdk.PaymentMethodType
-import ru.yandex.money.android.sdk.Status
 import ru.yandex.money.android.sdk.impl.payment.paymentOptionFactory
 import ru.yandex.money.android.sdk.methods.PaymentOptionsResponse
 import ru.yandex.money.android.sdk.methods.TokenResponse
@@ -40,6 +33,13 @@ import ru.yandex.money.android.sdk.methods.paymentAuth.CheckoutAuthContextGetRes
 import ru.yandex.money.android.sdk.methods.paymentAuth.CheckoutAuthSessionGenerateResponse
 import ru.yandex.money.android.sdk.methods.paymentAuth.CheckoutTokenIssueExecuteResponse
 import ru.yandex.money.android.sdk.methods.paymentAuth.CheckoutTokenIssueInitResponse
+import ru.yandex.money.android.sdk.model.AuthType
+import ru.yandex.money.android.sdk.model.AuthTypeState
+import ru.yandex.money.android.sdk.model.CardBrand
+import ru.yandex.money.android.sdk.model.Error
+import ru.yandex.money.android.sdk.model.ExtendedStatus
+import ru.yandex.money.android.sdk.model.Fee
+import ru.yandex.money.android.sdk.model.Status
 import java.math.BigDecimal
 import java.util.Currency
 

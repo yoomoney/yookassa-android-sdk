@@ -39,10 +39,7 @@ import org.junit.rules.Timeout
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
-import ru.yandex.money.android.sdk.LinkedCard
-import ru.yandex.money.android.sdk.PaymentOption
 import ru.yandex.money.android.sdk.R
-import ru.yandex.money.android.sdk.Wallet
 import ru.yandex.money.android.sdk.createAbstractWalletPaymentOption
 import ru.yandex.money.android.sdk.createGooglePayPaymentOption
 import ru.yandex.money.android.sdk.createLinkedCardPaymentOption
@@ -51,9 +48,16 @@ import ru.yandex.money.android.sdk.createSbolSmsInvoicingPaymentOption
 import ru.yandex.money.android.sdk.createWalletPaymentOption
 import ru.yandex.money.android.sdk.equalToDrawable
 import ru.yandex.money.android.sdk.impl.metrics.TokenizeSchemeBankCard
+import ru.yandex.money.android.sdk.impl.metrics.TokenizeSchemeGooglePay
 import ru.yandex.money.android.sdk.impl.metrics.TokenizeSchemeLinkedCard
 import ru.yandex.money.android.sdk.impl.metrics.TokenizeSchemeSbolSms
 import ru.yandex.money.android.sdk.impl.metrics.TokenizeSchemeWallet
+import ru.yandex.money.android.sdk.model.ExternalConfirmation
+import ru.yandex.money.android.sdk.model.LinkedCard
+import ru.yandex.money.android.sdk.model.NoConfirmation
+import ru.yandex.money.android.sdk.model.PaymentOption
+import ru.yandex.money.android.sdk.model.RedirectConfirmation
+import ru.yandex.money.android.sdk.model.Wallet
 import java.util.concurrent.TimeUnit
 
 @RunWith(RobolectricTestRunner::class)
@@ -294,14 +298,16 @@ class PaymentOptionExtensionsTest {
             createWalletPaymentOption(1),
             createLinkedCardPaymentOption(2),
             createNewCardPaymentOption(3),
-            createSbolSmsInvoicingPaymentOption(4)
+            createSbolSmsInvoicingPaymentOption(4),
+            createGooglePayPaymentOption(5)
         )
         val expectedTokenizeSchemes = arrayOf(
             TokenizeSchemeWallet(),
             TokenizeSchemeWallet(),
             TokenizeSchemeLinkedCard(),
             TokenizeSchemeBankCard(),
-            TokenizeSchemeSbolSms()
+            TokenizeSchemeSbolSms(),
+            TokenizeSchemeGooglePay()
         )
 
         // invoke
@@ -309,5 +315,33 @@ class PaymentOptionExtensionsTest {
 
         // assert
         assertThat(actualTokenizeSchemes, contains(*expectedTokenizeSchemes))
+    }
+
+    @Test
+    fun `test toConfirmation`() {
+        // prepare
+        val redirectUrl = "test return url"
+        val paymentOptions = listOf(
+            createAbstractWalletPaymentOption(0),
+            createWalletPaymentOption(1),
+            createLinkedCardPaymentOption(2),
+            createNewCardPaymentOption(3),
+            createSbolSmsInvoicingPaymentOption(4),
+            createGooglePayPaymentOption(5)
+        )
+        val expectedConfirmations = arrayOf(
+            RedirectConfirmation(redirectUrl),
+            RedirectConfirmation(redirectUrl),
+            RedirectConfirmation(redirectUrl),
+            RedirectConfirmation(redirectUrl),
+            ExternalConfirmation,
+            NoConfirmation
+        )
+
+        // invoke
+        val actualConfirmations = paymentOptions.map { it.toConfirmation(redirectUrl) }
+
+        // assert
+        assertThat(actualConfirmations, contains(*expectedConfirmations))
     }
 }

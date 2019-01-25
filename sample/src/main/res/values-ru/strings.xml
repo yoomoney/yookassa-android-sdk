@@ -41,13 +41,14 @@
     <string name="success_screen_token_is_ready">Токен готов</string>
     <string name="success_screen_token_instructions">Создайте платёж по API Яндекс.Кассы, передайте этот токен в параметре payment_token</string>
     <string name="success_screen_open_documentation">Посмотреть документацию</string>
+    <string name="success_screen_open_github">README и исходный код на Github</string>
     <string name="success_screen_show_token">Показать токен</string>
     <string name="token_copy">Скопировать</string>
     <string name="token_cancel">Отмена</string>
     <string name="checkout_documentation_link">https://kassa.yandex.ru/docs/client-sdks/#mobil-nye-sdk</string>
     <string name="version_template">Версия %1$s мобильного SDK\nот %2$td.%2$tm.%2$tY, сборка %3$d</string>
     <string name="google_pay">Google Pay</string>
-    <string name="google_pay_available">Google Pay доступен</string>
     <string name="pay_with_token">Провести оплату по токену</string>
     <string name="button_close">Закрыть</string>
+    <string name="tokenization_canceled">Токенизация отменена</string>
 </resources>

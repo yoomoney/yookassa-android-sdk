@@ -22,9 +22,9 @@
 package ru.yandex.money.android.sdk.methods.paymentAuth
 
 import org.json.JSONObject
-import ru.yandex.money.android.sdk.ErrorCode
-import ru.yandex.money.android.sdk.Status
 import ru.yandex.money.android.sdk.impl.extensions.toCheckoutTokenIssueExecuteResponse
+import ru.yandex.money.android.sdk.model.ErrorCode
+import ru.yandex.money.android.sdk.model.Status
 
 private const val CHECKOUT_TOKEN_ISSUE_EXECUTE_PATH = "/checkout/token-issue-execute"
 
@@ -44,7 +44,7 @@ internal class CheckoutTokenIssueExecuteRequest(
 }
 
 internal data class CheckoutTokenIssueExecuteResponse(
-        val status: Status,
-        val errorCode: ErrorCode?,
-        val accessToken: String?
+    val status: Status,
+    val errorCode: ErrorCode?,
+    val accessToken: String?
 )

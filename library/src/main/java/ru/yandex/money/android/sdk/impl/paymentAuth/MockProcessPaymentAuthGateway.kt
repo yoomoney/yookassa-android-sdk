@@ -21,9 +21,9 @@
 
 package ru.yandex.money.android.sdk.impl.paymentAuth
 
-import ru.yandex.money.android.sdk.CurrentUser
-import ru.yandex.money.android.sdk.ErrorCode
 import ru.yandex.money.android.sdk.impl.ApiMethodException
+import ru.yandex.money.android.sdk.model.CurrentUser
+import ru.yandex.money.android.sdk.model.ErrorCode
 import ru.yandex.money.android.sdk.paymentAuth.PaymentAuthToken
 import ru.yandex.money.android.sdk.paymentAuth.PaymentAuthWrongAnswer
 import ru.yandex.money.android.sdk.paymentAuth.ProcessPaymentAuthGateway

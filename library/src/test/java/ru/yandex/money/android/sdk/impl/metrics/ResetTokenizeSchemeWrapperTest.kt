@@ -27,7 +27,7 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
-import ru.yandex.money.android.sdk.UseCase
+import ru.yandex.money.android.sdk.model.UseCase
 import ru.yandex.money.android.sdk.payment.changeOption.ChangePaymentOptionInputModel
 import ru.yandex.money.android.sdk.payment.changeOption.ChangePaymentOptionOutputModel
 

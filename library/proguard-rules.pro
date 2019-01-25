@@ -20,16 +20,6 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
-# Remove Logging
--assumenosideeffects class android.util.Log {
-    public static boolean isLoggable(java.lang.String, int);
-    public static *** v(...);
-    public static *** i(...);
-    public static *** w(...);
-    public static *** d(...);
-    public static *** e(...);
-}
-
 -keep class com.threatmetrix.TrustDefender.** { *; }
 # Required to suppress warning messages about ThreatMetrix SDK
 -dontwarn com.threatmetrix.TrustDefender.**
@@ -42,3 +32,8 @@
 -dontwarn org.conscrypt.Conscrypt
 -dontwarn javax.annotation.ParametersAreNonnullByDefault
 -dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+
+-dontwarn com.yandex.authsdk.YandexAuthSdk
+-dontwarn com.yandex.authsdk.YandexAuthOptions
+-dontwarn com.yandex.authsdk.YandexAuthException
+-dontwarn com.yandex.authsdk.YandexAuthToken

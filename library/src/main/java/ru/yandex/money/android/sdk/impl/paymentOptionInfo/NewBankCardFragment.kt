@@ -31,12 +31,12 @@ import android.support.design.widget.TextInputLayout
 import android.text.Editable
 import android.view.View
 import kotlinx.android.synthetic.main.ym_fragment_bank_card.*
-import ru.yandex.money.android.sdk.NewCardInfo
-import ru.yandex.money.android.sdk.PaymentOptionInfo
 import ru.yandex.money.android.sdk.R
 import ru.yandex.money.android.sdk.impl.extensions.configureForCardNumberInput
 import ru.yandex.money.android.sdk.impl.extensions.findDefaultLocalActivityForIntent
 import ru.yandex.money.android.sdk.impl.extensions.showSoftKeyboard
+import ru.yandex.money.android.sdk.model.NewCardInfo
+import ru.yandex.money.android.sdk.model.PaymentOptionInfo
 import ru.yandex.money.android.sdk.utils.PatternInputFilter
 import ru.yandex.money.android.sdk.utils.SimpleTextWatcher
 import ru.yandex.money.android.sdk.utils.YearMonthTextWatcher

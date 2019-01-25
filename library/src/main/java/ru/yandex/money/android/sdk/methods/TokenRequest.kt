@@ -24,36 +24,44 @@ package ru.yandex.money.android.sdk.methods
 import okhttp3.Credentials
 import org.json.JSONObject
 import ru.yandex.money.android.sdk.BuildConfig
-import ru.yandex.money.android.sdk.Error
-import ru.yandex.money.android.sdk.PaymentOption
-import ru.yandex.money.android.sdk.PaymentOptionInfo
 import ru.yandex.money.android.sdk.impl.extensions.toJsonObject
 import ru.yandex.money.android.sdk.impl.extensions.toTokenResponse
 import ru.yandex.money.android.sdk.methods.base.MimeType
 import ru.yandex.money.android.sdk.methods.base.PostRequest
+import ru.yandex.money.android.sdk.model.Confirmation
+import ru.yandex.money.android.sdk.model.Error
+import ru.yandex.money.android.sdk.model.PaymentOption
+import ru.yandex.money.android.sdk.model.PaymentOptionInfo
 
 private const val TOKEN_METHOD_PATH = "/tokens"
 private const val PAYMENT_METHOD_DATA = "payment_method_data"
 private const val TMX_SESSION_ID = "tmx_session_id"
 private const val AMOUNT = "amount"
+private const val CONFIRMATION = "confirmation"
 
 internal data class TokenRequest(
     private val paymentOptionInfo: PaymentOptionInfo,
     private val paymentOption: PaymentOption,
     private val tmxSessionId: String,
     private val shopToken: String,
-    private val paymentAuthToken: String?
+    private val paymentAuthToken: String?,
+    private val confirmation: Confirmation
 ) : PostRequest<TokenResponse> {
 
-    override fun getHeaders() = listOf("Authorization" to Credentials.basic(shopToken, "")).let {
-        it.takeIf { paymentAuthTokenPresent() }?.plus("Wallet-Authorization" to "Bearer $paymentAuthToken") ?: it
+    override fun getHeaders() = listOf("Authorization" to Credentials.basic(shopToken, "")).let { headers ->
+        headers.takeIf { paymentAuthTokenPresent() }?.plus("Wallet-Authorization" to "Bearer $paymentAuthToken")
+            ?: headers
     }
 
-    override fun getPayload() = listOf(
-        PAYMENT_METHOD_DATA to paymentOptionInfo.toJsonObject(paymentOption),
-        TMX_SESSION_ID to tmxSessionId,
-        AMOUNT to paymentOption.charge.toJsonObject()
-    )
+    override fun getPayload(): List<Pair<String, Any>> {
+        return listOf(
+            PAYMENT_METHOD_DATA to paymentOptionInfo.toJsonObject(paymentOption),
+            TMX_SESSION_ID to tmxSessionId,
+            AMOUNT to paymentOption.charge.toJsonObject()
+        ).let { payload ->
+            confirmation.toJsonObject()?.let { payload + (CONFIRMATION to it) } ?: payload
+        }
+    }
 
     override fun getMimeType() = MimeType.JSON
 

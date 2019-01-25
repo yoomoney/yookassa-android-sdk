@@ -30,6 +30,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.ViewGroup
+import android.webkit.URLUtil
 import ru.yandex.money.android.sdk.BuildConfig
 import ru.yandex.money.android.sdk.Checkout
 import ru.yandex.money.android.sdk.Checkout.EXTRA_ERROR_CODE
@@ -37,13 +38,12 @@ import ru.yandex.money.android.sdk.Checkout.EXTRA_ERROR_DESCRIPTION
 import ru.yandex.money.android.sdk.Checkout.EXTRA_ERROR_FAILING_URL
 import ru.yandex.money.android.sdk.Checkout.RESULT_ERROR
 import ru.yandex.money.android.sdk.R
+import ru.yandex.money.android.sdk.impl.DEFAULT_REDIRECT_URL
 import ru.yandex.money.android.sdk.impl.extensions.visible
 import ru.yandex.money.android.sdk.impl.logging.ReporterLogger
 import ru.yandex.money.android.sdk.impl.metrics.YandexMetricaReporter
-import java.net.URL
 
 const val EXTRA_URL = "ru.yandex.money.android.extra.URL"
-const val EXTRA_REDIRECT_URL = "ru.yandex.money.android.extra.REDIRECT_URL"
 
 class CheckoutConfirmationActivity : AppCompatActivity(), WebViewFragment.Listener {
 
@@ -56,9 +56,9 @@ class CheckoutConfirmationActivity : AppCompatActivity(), WebViewFragment.Listen
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val url = intent.getSerializableExtra(EXTRA_URL) as URL
+        val url = intent.getStringExtra(EXTRA_URL)
 
-        if (url.protocol == "https" || BuildConfig.DEBUG && url.protocol == "file") {
+        if (checkUrl(url)) {
             if (savedInstanceState == null) {
                 ReporterLogger(YandexMetricaReporter(this)).report("screen3ds")
             }
@@ -66,12 +66,10 @@ class CheckoutConfirmationActivity : AppCompatActivity(), WebViewFragment.Listen
             setContentView(R.layout.ym_activity_web_view)
             title = null
 
-            webViewFragment = supportFragmentManager.findFragmentById(R.id.web_view) as WebViewFragment
-            webViewFragment.attach(this)
-
-            val redirectUrl = intent.getSerializableExtra(EXTRA_REDIRECT_URL) as URL
-
-            webViewFragment.load(url, redirectUrl)
+            webViewFragment = (supportFragmentManager.findFragmentById(R.id.web_view) as WebViewFragment).apply {
+                attach(this@CheckoutConfirmationActivity)
+                load(url, DEFAULT_REDIRECT_URL)
+            }
         } else {
             onError(Checkout.ERROR_NOT_HTTPS_URL, "Not https:// url", url.toString())
         }
@@ -89,9 +87,9 @@ class CheckoutConfirmationActivity : AppCompatActivity(), WebViewFragment.Listen
     }
 
     override fun onContentChanged() {
-        toolbar = findViewById<Toolbar>(R.id.toolbar)?.also {
-            setSupportActionBar(it)
-            it.setNavigationOnClickListener {
+        toolbar = findViewById<Toolbar>(R.id.toolbar)?.also { toolbar ->
+            setSupportActionBar(toolbar)
+            toolbar.setNavigationOnClickListener {
                 setResult(Activity.RESULT_CANCELED)
                 finish()
             }
@@ -175,5 +173,9 @@ class CheckoutConfirmationActivity : AppCompatActivity(), WebViewFragment.Listen
             Intent().putExtras(intent)
         )
         finish()
+    }
+
+    companion object {
+        fun checkUrl(url: String) = URLUtil.isHttpsUrl(url) || BuildConfig.DEBUG && URLUtil.isAssetUrl(url)
     }
 }

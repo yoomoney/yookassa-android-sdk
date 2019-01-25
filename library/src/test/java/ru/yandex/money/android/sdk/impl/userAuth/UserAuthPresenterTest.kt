@@ -24,7 +24,7 @@ package ru.yandex.money.android.sdk.impl.userAuth
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.IsEqual.equalTo
 import org.junit.Test
-import ru.yandex.money.android.sdk.AuthorizedUser
+import ru.yandex.money.android.sdk.model.AuthorizedUser
 import ru.yandex.money.android.sdk.userAuth.UserAuthCancelledOutputModel
 import ru.yandex.money.android.sdk.userAuth.UserAuthNoWalletOutputModel
 import ru.yandex.money.android.sdk.userAuth.UserAuthSuccessOutputModel

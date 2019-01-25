@@ -23,8 +23,8 @@ package ru.yandex.money.android.sdk.impl.contract
 
 import ru.yandex.money.android.sdk.Amount
 import ru.yandex.money.android.sdk.PaymentMethodType
-import ru.yandex.money.android.sdk.ViewModel
 import ru.yandex.money.android.sdk.impl.payment.PaymentOptionViewModel
+import ru.yandex.money.android.sdk.model.ViewModel
 
 internal sealed class ContractViewModel : ViewModel()
 internal object ContractProgressViewModel : ContractViewModel()

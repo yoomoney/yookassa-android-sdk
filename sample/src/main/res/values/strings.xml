@@ -23,15 +23,11 @@
 <resources>
     <string name="app_name">Demo mSDK</string>
     <string name="start_payment">Start the payment process</string>
-    <!--TranslatorComment:-->
-    <!--TranslatorComment:Translation source key: https://tanker.yandex-team.ru/?project=yamoney-makeup&keyset=common&key=nastroiki__2131f35744&branch=WALLET-1322-->
     <string name="settings">Settings</string>
     <string name="yandex_checkout_logo">Yandex.Checkout logo</string>
     <string name="test_mode">Test mode</string>
     <string name="payment_authorized">You\'ve signed into the Wallet</string>
     <string name="linked_cards">Linked cards</string>
-    <!--TranslatorComment:-->
-    <!--TranslatorComment:Translation source key: https://tanker.yandex-team.ru/?project=ym_ios_msdk_demo&keyset=General&key=test_mode.payment_error&branch=master-->
     <string name="complete_payment_with_error">Complete the payment with an error</string>
     <string name="payment_type">Payment methods</string>
     <string name="main_buy">Buy</string>
@@ -45,13 +41,15 @@
     <string name="success_screen_token_is_ready">Token is ready</string>
     <string name="success_screen_token_instructions">Create payment with Yandex.Checkout API, pass this token to the payment_token parameter</string>
     <string name="success_screen_open_documentation">Open documentation</string>
+    <string name="success_screen_open_github">README и исходный код на Github</string>
     <string name="success_screen_show_token">Show token</string>
     <string name="token_copy">Copy</string>
     <string name="token_cancel">Cancel</string>
     <string name="checkout_documentation_link">https://checkout.yandex.com/docs/client-sdks/#mobile-sdk</string>
+    <string name="checkout_github_link" translatable="false">https://github.com/yandex-money/yandex-checkout-android-sdk</string>
     <string name="version_template">Version %1$s of mobile SDK\nfrom %2$tD, build %3$d</string>
     <string name="google_pay">Google Pay</string>
-    <string name="google_pay_available">Google Pay available</string>
     <string name="pay_with_token">Pay with this token</string>
     <string name="button_close">Close</string>
+    <string name="tokenization_canceled">Tokenization canceled</string>
 </resources>

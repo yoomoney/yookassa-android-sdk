@@ -22,8 +22,8 @@
 package ru.yandex.money.android.sdk.impl
 
 import android.content.Context
-import ru.yandex.money.android.sdk.Presenter
 import ru.yandex.money.android.sdk.R
+import ru.yandex.money.android.sdk.model.Presenter
 
 internal class ErrorPresenter(context: Context) : Presenter<Exception, CharSequence> {
 

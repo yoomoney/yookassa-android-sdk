@@ -30,10 +30,10 @@ import org.mockito.Mock
 import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
 import ru.yandex.money.android.sdk.Amount
-import ru.yandex.money.android.sdk.AnonymousUser
 import ru.yandex.money.android.sdk.createGooglePayPaymentOption
 import ru.yandex.money.android.sdk.createNewCardPaymentOption
 import ru.yandex.money.android.sdk.impl.extensions.RUB
+import ru.yandex.money.android.sdk.model.AnonymousUser
 import ru.yandex.money.android.sdk.on
 import java.math.BigDecimal
 

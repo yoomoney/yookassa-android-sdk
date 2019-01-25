@@ -148,17 +148,6 @@
 
             <View
                 style="@style/Divider"
-                android:id="@+id/google_pay_available_divider" />
-
-            <android.support.v7.widget.SwitchCompat
-                android:id="@+id/google_pay_available"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/google_pay_available"
-                tools:checked="true" />
-
-            <View
-                style="@style/Divider"
                 android:id="@+id/complete_with_error_divider" />
 
             <TextView

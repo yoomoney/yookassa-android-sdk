@@ -37,7 +37,6 @@ public final class Settings {
     static final String KEY_TEST_MODE_ENABLED = "test_mode_enabled";
     static final String KEY_PAYMENT_AUTH_PASSED = "payment_auth_passed";
     static final String KEY_SHOULD_COMPLETE_PAYMENT_WITH_ERROR = "should_complete_with_error";
-    static final String KEY_GOOGLE_PAY_AVAILABLE = "google_pay_available";
 
     private SharedPreferences sp;
 
@@ -79,9 +78,5 @@ public final class Settings {
 
     public boolean shouldCompletePaymentWithError() {
         return sp.getBoolean(KEY_SHOULD_COMPLETE_PAYMENT_WITH_ERROR, false);
-    }
-
-    public boolean isGooglePayAvailable() {
-        return sp.getBoolean(KEY_GOOGLE_PAY_AVAILABLE, true);
     }
 }

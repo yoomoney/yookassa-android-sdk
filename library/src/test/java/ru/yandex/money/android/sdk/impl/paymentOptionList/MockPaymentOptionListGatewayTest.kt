@@ -25,16 +25,16 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.contains
 import org.hamcrest.core.IsInstanceOf.instanceOf
 import org.junit.Test
-import ru.yandex.money.android.sdk.AbstractWallet
 import ru.yandex.money.android.sdk.Amount
-import ru.yandex.money.android.sdk.AnonymousUser
-import ru.yandex.money.android.sdk.AuthorizedUser
-import ru.yandex.money.android.sdk.GooglePay
-import ru.yandex.money.android.sdk.LinkedCard
-import ru.yandex.money.android.sdk.NewCard
-import ru.yandex.money.android.sdk.SbolSmsInvoicing
-import ru.yandex.money.android.sdk.Wallet
 import ru.yandex.money.android.sdk.impl.extensions.RUB
+import ru.yandex.money.android.sdk.model.AbstractWallet
+import ru.yandex.money.android.sdk.model.AnonymousUser
+import ru.yandex.money.android.sdk.model.AuthorizedUser
+import ru.yandex.money.android.sdk.model.GooglePay
+import ru.yandex.money.android.sdk.model.LinkedCard
+import ru.yandex.money.android.sdk.model.NewCard
+import ru.yandex.money.android.sdk.model.SbolSmsInvoicing
+import ru.yandex.money.android.sdk.model.Wallet
 import java.math.BigDecimal
 
 class MockPaymentOptionListGatewayTest {
@@ -45,7 +45,10 @@ class MockPaymentOptionListGatewayTest {
         val gateway = MockPaymentOptionListGateway(0)
 
         // invoke
-        val options = gateway.getPaymentOptions(Amount(BigDecimal.TEN, RUB), AuthorizedUser("name"))
+        val options = gateway.getPaymentOptions(
+            Amount(BigDecimal.TEN, RUB),
+            AuthorizedUser("name")
+        )
 
         // assert
         assertThat(
@@ -64,7 +67,10 @@ class MockPaymentOptionListGatewayTest {
         // prepare
         val gateway = MockPaymentOptionListGateway(3)
         // invoke
-        val options = gateway.getPaymentOptions(Amount(BigDecimal.TEN, RUB), AuthorizedUser("name"))
+        val options = gateway.getPaymentOptions(
+            Amount(BigDecimal.TEN, RUB),
+            AuthorizedUser("name")
+        )
 
         // assert
         assertThat(
@@ -86,7 +92,10 @@ class MockPaymentOptionListGatewayTest {
         // prepare
         val gateway = MockPaymentOptionListGateway(3)
         // invoke
-        val options = gateway.getPaymentOptions(Amount(BigDecimal.TEN, RUB), AnonymousUser)
+        val options = gateway.getPaymentOptions(
+            Amount(BigDecimal.TEN, RUB),
+            AnonymousUser
+        )
 
         // assert
         assertThat(

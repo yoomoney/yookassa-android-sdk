@@ -22,8 +22,8 @@
 package ru.yandex.money.android.sdk.payment.loadOptionList
 
 import ru.yandex.money.android.sdk.Amount
-import ru.yandex.money.android.sdk.CurrentUser
-import ru.yandex.money.android.sdk.PaymentOption
+import ru.yandex.money.android.sdk.model.CurrentUser
+import ru.yandex.money.android.sdk.model.PaymentOption
 
 internal interface PaymentOptionListGateway {
     fun getPaymentOptions(amount: Amount, currentUser: CurrentUser): List<PaymentOption>

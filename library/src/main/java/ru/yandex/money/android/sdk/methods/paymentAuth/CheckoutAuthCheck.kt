@@ -22,12 +22,12 @@
 package ru.yandex.money.android.sdk.methods.paymentAuth
 
 import org.json.JSONObject
-import ru.yandex.money.android.sdk.AuthType
-import ru.yandex.money.android.sdk.AuthTypeState
-import ru.yandex.money.android.sdk.ErrorCode
-import ru.yandex.money.android.sdk.Status
 import ru.yandex.money.android.sdk.impl.extensions.toAuthCheckResponse
 import ru.yandex.money.android.sdk.impl.extensions.toJsonString
+import ru.yandex.money.android.sdk.model.AuthType
+import ru.yandex.money.android.sdk.model.AuthTypeState
+import ru.yandex.money.android.sdk.model.ErrorCode
+import ru.yandex.money.android.sdk.model.Status
 
 private const val AUTH_CHECK_PATH = "/checkout/auth-check"
 
@@ -36,11 +36,11 @@ private const val AUTH_TYPE = "authType"
 private const val ANSWER = "answer"
 
 internal class CheckoutAuthCheckRequest(
-        private val authContextId: String,
-        private val authType: AuthType,
-        private val answer: String,
-        userAuthToken: String,
-        shopToken: String
+    private val authContextId: String,
+    private val authType: AuthType,
+    private val answer: String,
+    userAuthToken: String,
+    shopToken: String
 ) : CheckoutRequest<CheckoutAuthCheckResponse>(userAuthToken, shopToken) {
 
     override fun getUrl(): String = host + AUTH_CHECK_PATH
@@ -54,7 +54,7 @@ internal class CheckoutAuthCheckRequest(
 }
 
 internal data class CheckoutAuthCheckResponse(
-        val status: Status,
-        val errorCode: ErrorCode?,
-        val authTypeState: AuthTypeState?
+    val status: Status,
+    val errorCode: ErrorCode?,
+    val authTypeState: AuthTypeState?
 )

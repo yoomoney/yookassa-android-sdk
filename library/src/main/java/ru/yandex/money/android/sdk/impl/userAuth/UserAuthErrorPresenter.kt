@@ -21,7 +21,7 @@
 
 package ru.yandex.money.android.sdk.impl.userAuth
 
-import ru.yandex.money.android.sdk.Presenter
+import ru.yandex.money.android.sdk.model.Presenter
 
 internal class UserAuthErrorPresenter(
     private val errorPresenter: Presenter<Exception, CharSequence>

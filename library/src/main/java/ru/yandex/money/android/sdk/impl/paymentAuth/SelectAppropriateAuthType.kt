@@ -21,8 +21,8 @@
 
 package ru.yandex.money.android.sdk.impl.paymentAuth
 
-import ru.yandex.money.android.sdk.AuthType
-import ru.yandex.money.android.sdk.AuthTypeState
+import ru.yandex.money.android.sdk.model.AuthType
+import ru.yandex.money.android.sdk.model.AuthTypeState
 
 internal class SelectAppropriateAuthType : (AuthType, Array<AuthTypeState>) -> AuthTypeState {
 

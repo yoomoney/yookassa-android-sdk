@@ -28,7 +28,6 @@ import org.mockito.Mock
 import org.mockito.Mockito.inOrder
 import org.mockito.junit.MockitoJUnitRunner
 import ru.yandex.money.android.sdk.PaymentMethodType
-import ru.yandex.money.android.sdk.Presenter
 import ru.yandex.money.android.sdk.createLinkedCardPaymentOption
 import ru.yandex.money.android.sdk.createNewCardPaymentOption
 import ru.yandex.money.android.sdk.createSbolSmsInvoicingPaymentOption
@@ -36,6 +35,7 @@ import ru.yandex.money.android.sdk.createWalletPaymentOption
 import ru.yandex.money.android.sdk.impl.contract.ContractCompleteViewModel
 import ru.yandex.money.android.sdk.impl.contract.ContractErrorViewModel
 import ru.yandex.money.android.sdk.impl.contract.ContractViewModel
+import ru.yandex.money.android.sdk.model.Presenter
 import ru.yandex.money.android.sdk.on
 import ru.yandex.money.android.sdk.payment.tokenize.TokenOutputModel
 import ru.yandex.money.android.sdk.payment.tokenize.TokenizeOutputModel

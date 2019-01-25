@@ -27,7 +27,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,15 +37,12 @@ import ru.yandex.money.android.example.BuildConfig;
 import ru.yandex.money.android.example.R;
 import ru.yandex.money.android.example.linkedcards.LinkedCardsActivity;
 import ru.yandex.money.android.sdk.Checkout;
-import ru.yandex.money.android.sdk.Configuration;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import static ru.yandex.money.android.example.settings.Settings.KEY_GOOGLE_PAY_ALLOWED;
-import static ru.yandex.money.android.example.settings.Settings.KEY_GOOGLE_PAY_AVAILABLE;
 import static ru.yandex.money.android.example.settings.Settings.KEY_NEW_CARD_ALLOWED;
 import static ru.yandex.money.android.example.settings.Settings.KEY_PAYMENT_AUTH_PASSED;
 import static ru.yandex.money.android.example.settings.Settings.KEY_SBERBANK_ONLINE_ALLOWED;
@@ -71,17 +67,14 @@ public final class SettingsActivity extends AppCompatActivity implements View.On
             new Pair<>(KEY_SHOW_YANDEX_CHECKOUT_LOGO, R.id.enable_yandex_checkout_logo),
             new Pair<>(KEY_TEST_MODE_ENABLED, R.id.enable_test_mode),
             new Pair<>(KEY_PAYMENT_AUTH_PASSED, R.id.payment_auth_passed),
-            new Pair<>(KEY_SHOULD_COMPLETE_PAYMENT_WITH_ERROR, R.id.complete_with_error),
-            new Pair<>(KEY_GOOGLE_PAY_AVAILABLE, R.id.google_pay_available)
+            new Pair<>(KEY_SHOULD_COMPLETE_PAYMENT_WITH_ERROR, R.id.complete_with_error)
     );
     private View linkedCardsButton;
     private CompoundButton paymentAuthPassedSwitch;
     private CompoundButton completeWithErrorButton;
-    private CompoundButton googlePayAvailable;
     private View paymentAuthPassedDivider;
     private View linkedCardsDivider;
     private View completeWithErrorDivider;
-    private View googlePayAvailableDivider;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -96,11 +89,9 @@ public final class SettingsActivity extends AppCompatActivity implements View.On
         final CompoundButton enableTestModeSwitch = findViewById(R.id.enable_test_mode);
         paymentAuthPassedSwitch = findViewById(R.id.payment_auth_passed);
         completeWithErrorButton = findViewById(R.id.complete_with_error);
-        googlePayAvailable = findViewById(R.id.google_pay_available);
         paymentAuthPassedDivider = findViewById(R.id.payment_auth_passed_divider);
         linkedCardsDivider = findViewById(R.id.linked_cards_divider);
         completeWithErrorDivider = findViewById(R.id.complete_with_error_divider);
-        googlePayAvailableDivider = findViewById(R.id.google_pay_available_divider);
 
         enableTestModeSwitch.setOnCheckedChangeListener(
                 (v, isChecked) -> setTestGroupVisibility(isChecked ? View.VISIBLE : View.GONE));
@@ -120,10 +111,12 @@ public final class SettingsActivity extends AppCompatActivity implements View.On
         enableTestModeSwitch.setChecked(settings.isTestModeEnabled());
         paymentAuthPassedSwitch.setChecked(settings.isPaymentAuthPassed());
         completeWithErrorButton.setChecked(settings.shouldCompletePaymentWithError());
-        googlePayAvailable.setChecked(settings.isGooglePayAvailable());
+
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(BuildConfig.BUILD_DATE);
 
         final String versionInfo = getString(
-                R.string.version_template, BuildConfig.VERSION_NAME, BuildConfig.BUILD_DATE, BuildConfig.VERSION_CODE);
+                R.string.version_template, BuildConfig.VERSION_NAME, calendar, BuildConfig.VERSION_CODE);
         this.<TextView>findViewById(R.id.version_info).setText(versionInfo);
 
         final View open3dsButton = findViewById(R.id.open3ds);
@@ -133,13 +126,10 @@ public final class SettingsActivity extends AppCompatActivity implements View.On
                     v -> {
                         try {
                             startActivityForResult(
-                                    Checkout.create3dsIntent(
-                                            this,
-                                            new URL("https://money.yandex.ru/api-pages/v3/3ds?acsUri=https%3A%2F%2Fdemo-scrat.yamoney.ru%3A8443%2Fmerchant-test-card-stub%2F3ds%3Ftes11%3D1%26amp%3Btest2%3D2&MD=1536663442128-3079210364026365123&PaReq=Q1VSUkVOQ1k9UlVSJlRFUk1JTkFMPTk5OTk5OCZFWFBfWUVBUj0yNSZQX1NJR049M2E3MmM2MGNhMjIyNjU4MTJhOTgwNmUzMjFmMTQyZTQ1NzVjMmQ0OCZSRVNQT05TRV9SUk49MjEwMzYzOTA5MzExJkVNQUlMPW5vcmVwbHklNDBtb25leS55YW5kZXgucnUmTUVSQ0hfTkFNRT1ZTSZERVNDPTIzMjliMzUxLTAwMGYtNTAwMC1hMDAwLTFlYTA0NWQzZjc5MSZSRVNQT05TRV9BVVRIQ09ERT05MDUwNTMmTUVSQ0hBTlQ9NzkwMzY3Njg2MjE5OTk5JkNBUkQ9MTExMTExMTExMTExMTAyNiZOQU1FPSZPUkRFUj01MDk2MzU0MTYyJk1FUkNIX1VSTD1tb25leS55YW5kZXgucnUmQU1PVU5UPTEuMDAmQkFDS1JFRj1odHRwJTNBJTJGJTJGcmVkaXJlY3QudXJsLmNvbSUyRiZUSU1FU1RBTVA9MjAxODA5MTExMDU3MjImVFJUWVBFPTAmRVhQPTEyJkNWQzI9MTIzJk5PTkNFPTEyMzQ1Njc4OTBBQkNERUZlMjNhZGNlNTg4OGE4&TermUrl=https%3A%2F%2Fpaymentcard.yamoney.ru%3A443%2Fgates%2Fmb3dsdemoprovider"),
-                                            new URL("http://redirect.url.com/")),
+                                    Checkout.create3dsIntent(this, "https://money.yandex.ru/api-pages/v3/3ds?acsUri=https%3A%2F%2Fdemo-scrat.yamoney.ru%3A8443%2Fmerchant-test-card-stub%2F3ds%3Ftes11%3D1%26amp%3Btest2%3D2&MD=1536663442128-3079210364026365123&PaReq=Q1VSUkVOQ1k9UlVSJlRFUk1JTkFMPTk5OTk5OCZFWFBfWUVBUj0yNSZQX1NJR049M2E3MmM2MGNhMjIyNjU4MTJhOTgwNmUzMjFmMTQyZTQ1NzVjMmQ0OCZSRVNQT05TRV9SUk49MjEwMzYzOTA5MzExJkVNQUlMPW5vcmVwbHklNDBtb25leS55YW5kZXgucnUmTUVSQ0hfTkFNRT1ZTSZERVNDPTIzMjliMzUxLTAwMGYtNTAwMC1hMDAwLTFlYTA0NWQzZjc5MSZSRVNQT05TRV9BVVRIQ09ERT05MDUwNTMmTUVSQ0hBTlQ9NzkwMzY3Njg2MjE5OTk5JkNBUkQ9MTExMTExMTExMTExMTAyNiZOQU1FPSZPUkRFUj01MDk2MzU0MTYyJk1FUkNIX1VSTD1tb25leS55YW5kZXgucnUmQU1PVU5UPTEuMDAmQkFDS1JFRj1odHRwJTNBJTJGJTJGcmVkaXJlY3QudXJsLmNvbSUyRiZUSU1FU1RBTVA9MjAxODA5MTExMDU3MjImVFJUWVBFPTAmRVhQPTEyJkNWQzI9MTIzJk5PTkNFPTEyMzQ1Njc4OTBBQkNERUZlMjNhZGNlNTg4OGE4&TermUrl=https%3A%2F%2Fpaymentcard.yamoney.ru%3A443%2Fgates%2Fmb3dsdemoprovider"),
                                     START_CONFIRMATION_REQUEST_CODE);
-                        } catch (MalformedURLException e) {
-                            Log.e("error", "url exception", e);
+                        } catch (IllegalStateException e) {
+                            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
         }
@@ -191,11 +181,9 @@ public final class SettingsActivity extends AppCompatActivity implements View.On
         paymentAuthPassedSwitch.setVisibility(visibility);
         linkedCardsButton.setVisibility(visibility);
         completeWithErrorButton.setVisibility(visibility);
-        googlePayAvailable.setVisibility(visibility);
         paymentAuthPassedDivider.setVisibility(visibility);
         linkedCardsDivider.setVisibility(visibility);
         completeWithErrorDivider.setVisibility(visibility);
-        googlePayAvailableDivider.setVisibility(visibility);
     }
 
     private void savePreferences() {
@@ -206,17 +194,5 @@ public final class SettingsActivity extends AppCompatActivity implements View.On
         }
 
         edit.apply();
-
-        final Settings settings = new Settings(this);
-        final Configuration configuration = new Configuration(
-                settings.isTestModeEnabled(),
-                settings.shouldCompletePaymentWithError(),
-                settings.isPaymentAuthPassed(),
-                settings.getLinkedCardsCount(),
-                settings.isGooglePayAvailable(),
-                settings.isTestModeEnabled()
-        );
-
-        Checkout.configureTestMode(configuration);
     }
 }

@@ -21,8 +21,8 @@
 
 package ru.yandex.money.android.sdk.impl.logout
 
-import ru.yandex.money.android.sdk.AnonymousUser
 import ru.yandex.money.android.sdk.logout.LogoutGateway
+import ru.yandex.money.android.sdk.model.AnonymousUser
 import ru.yandex.money.android.sdk.payment.CurrentUserGateway
 import ru.yandex.money.android.sdk.paymentAuth.PaymentAuthTokenGateway
 import ru.yandex.money.android.sdk.userAuth.UserAuthTokenGateway

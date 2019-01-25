@@ -21,8 +21,8 @@
 
 package ru.yandex.money.android.sdk.payment.tokenize
 
-import ru.yandex.money.android.sdk.PaymentOption
-import ru.yandex.money.android.sdk.PaymentOptionInfo
+import ru.yandex.money.android.sdk.model.PaymentOption
+import ru.yandex.money.android.sdk.model.PaymentOptionInfo
 
 internal interface PaymentOptionInfoGateway {
     fun getPaymentOptionInfo(paymentOption: PaymentOption): PaymentOptionInfo?

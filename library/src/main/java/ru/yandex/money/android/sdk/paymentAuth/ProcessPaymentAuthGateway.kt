@@ -21,7 +21,7 @@
 
 package ru.yandex.money.android.sdk.paymentAuth
 
-import ru.yandex.money.android.sdk.CurrentUser
+import ru.yandex.money.android.sdk.model.CurrentUser
 
 internal interface ProcessPaymentAuthGateway {
     fun getPaymentAuthToken(currentUser: CurrentUser, passphrase: String): ProcessPaymentAuthGatewayResponse

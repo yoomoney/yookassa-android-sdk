@@ -52,7 +52,6 @@
     <string name="ym_retry">Попробовать ещё раз</string>
     <string name="ym_no_wallet_dialog_message">%1$s, у вас нет кошелька на Яндексе</string>
     <string name="ym_no_wallet_dialog_shoose_payment_option">Выбрать способ оплаты</string>
-    <!-- errors -->
     <string name="ym_error_something_went_wrong">Похоже, это техническая ошибка</string>
     <string name="ym_error_no_internet">Проблема с интернетом. Попробуйте ещё раз, когда будете онлайн</string>
     <string name="ym_no_payment_options_error">Нет доступных способов оплаты</string>

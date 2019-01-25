@@ -24,7 +24,7 @@ package ru.yandex.money.android.sdk
 import android.support.annotation.Keep
 
 /**
- * Type of selected payment method
+ * Type of selected payment method.
  */
 enum class PaymentMethodType {
     /**

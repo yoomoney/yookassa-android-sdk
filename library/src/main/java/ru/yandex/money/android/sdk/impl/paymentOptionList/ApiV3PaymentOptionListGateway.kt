@@ -21,14 +21,15 @@
 
 package ru.yandex.money.android.sdk.impl.paymentOptionList
 
+import android.content.Context
 import okhttp3.OkHttpClient
 import ru.yandex.money.android.sdk.Amount
-import ru.yandex.money.android.sdk.CurrentUser
-import ru.yandex.money.android.sdk.PaymentOption
 import ru.yandex.money.android.sdk.impl.ApiMethodException
 import ru.yandex.money.android.sdk.impl.TokensStorage
 import ru.yandex.money.android.sdk.impl.extensions.execute
 import ru.yandex.money.android.sdk.methods.PaymentOptionsRequest
+import ru.yandex.money.android.sdk.model.CurrentUser
+import ru.yandex.money.android.sdk.model.PaymentOption
 import ru.yandex.money.android.sdk.payment.loadOptionList.PaymentOptionListGateway
 
 internal class ApiV3PaymentOptionListGateway(

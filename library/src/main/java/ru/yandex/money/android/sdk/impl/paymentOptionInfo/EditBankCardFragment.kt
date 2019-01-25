@@ -24,9 +24,9 @@ package ru.yandex.money.android.sdk.impl.paymentOptionInfo
 import android.os.Bundle
 import android.view.View
 import kotlinx.android.synthetic.main.ym_fragment_bank_card.*
-import ru.yandex.money.android.sdk.LinkedCardInfo
 import ru.yandex.money.android.sdk.R
 import ru.yandex.money.android.sdk.impl.extensions.showSoftKeyboard
+import ru.yandex.money.android.sdk.model.LinkedCardInfo
 import kotlin.properties.Delegates
 
 internal class EditBankCardFragment : BankCardFragment() {
@@ -68,5 +68,6 @@ internal class EditBankCardFragment : BankCardFragment() {
 
     override fun isExpiryCorrect() = true
 
-    override fun collectPaymentOptionInfo() = LinkedCardInfo(cscEditText.text.toString())
+    override fun collectPaymentOptionInfo() =
+        LinkedCardInfo(cscEditText.text.toString())
 }

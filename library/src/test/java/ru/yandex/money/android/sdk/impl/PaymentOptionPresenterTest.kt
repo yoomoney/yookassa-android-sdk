@@ -29,7 +29,6 @@ import org.junit.runner.RunWith
 import org.robolectric.ParameterizedRobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
-import ru.yandex.money.android.sdk.PaymentOption
 import ru.yandex.money.android.sdk.createAbstractWalletPaymentOption
 import ru.yandex.money.android.sdk.createLinkedCardPaymentOption
 import ru.yandex.money.android.sdk.createNewCardPaymentOption
@@ -38,6 +37,7 @@ import ru.yandex.money.android.sdk.createWalletPaymentOption
 import ru.yandex.money.android.sdk.impl.extensions.format
 import ru.yandex.money.android.sdk.impl.extensions.initExtensions
 import ru.yandex.money.android.sdk.impl.payment.PaymentOptionPresenter
+import ru.yandex.money.android.sdk.model.PaymentOption
 
 private const val TEST_ID = 1
 

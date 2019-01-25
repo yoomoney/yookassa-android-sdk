@@ -22,11 +22,11 @@
 package ru.yandex.money.android.sdk.impl.userAuth
 
 import okhttp3.OkHttpClient
-import ru.yandex.money.android.sdk.ErrorCode
-import ru.yandex.money.android.sdk.Status
 import ru.yandex.money.android.sdk.impl.ApiMethodException
 import ru.yandex.money.android.sdk.impl.extensions.execute
 import ru.yandex.money.android.sdk.methods.WalletCheckRequest
+import ru.yandex.money.android.sdk.model.ErrorCode
+import ru.yandex.money.android.sdk.model.Status
 import ru.yandex.money.android.sdk.userAuth.WalletCheckGateway
 
 internal class YandexWalletCheckGateway(

@@ -25,10 +25,7 @@ import android.app.Application;
 
 import com.squareup.leakcanary.LeakCanary;
 
-import ru.yandex.money.android.example.settings.Settings;
 import ru.yandex.money.android.example.utils.Currencies;
-import ru.yandex.money.android.sdk.Checkout;
-import ru.yandex.money.android.sdk.Configuration;
 
 public class App extends Application {
 
@@ -41,17 +38,5 @@ public class App extends Application {
         LeakCanary.install(this);
 
         Currencies.RoubleTypefaceSpan.init(this);
-
-        final Settings settings = new Settings(this);
-        final Configuration configuration = new Configuration(
-                settings.isTestModeEnabled(),
-                settings.shouldCompletePaymentWithError(),
-                settings.isPaymentAuthPassed(),
-                settings.getLinkedCardsCount(),
-                settings.isGooglePayAvailable(),
-                settings.isTestModeEnabled()
-        );
-
-        Checkout.configureTestMode(configuration);
     }
 }

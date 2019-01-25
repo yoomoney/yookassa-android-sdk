@@ -28,8 +28,8 @@ import org.mockito.Mock
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.verifyZeroInteractions
 import org.mockito.junit.MockitoJUnitRunner
-import ru.yandex.money.android.sdk.Presenter
-import ru.yandex.money.android.sdk.SelectedOptionNotFoundException
+import ru.yandex.money.android.sdk.model.Presenter
+import ru.yandex.money.android.sdk.model.SelectedOptionNotFoundException
 import ru.yandex.money.android.sdk.on
 
 @RunWith(MockitoJUnitRunner.StrictStubs::class)

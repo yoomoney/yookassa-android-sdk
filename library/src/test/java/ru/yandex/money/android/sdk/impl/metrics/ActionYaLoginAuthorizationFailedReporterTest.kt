@@ -27,8 +27,8 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.inOrder
 import org.mockito.junit.MockitoJUnitRunner
-import ru.yandex.money.android.sdk.Presenter
 import ru.yandex.money.android.sdk.impl.userAuth.UserAuthFailViewModel
+import ru.yandex.money.android.sdk.model.Presenter
 import ru.yandex.money.android.sdk.on
 
 @RunWith(MockitoJUnitRunner.StrictStubs::class)

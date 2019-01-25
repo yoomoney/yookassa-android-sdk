@@ -21,8 +21,8 @@
 
 package ru.yandex.money.android.sdk.impl.metrics
 
-import ru.yandex.money.android.sdk.UseCase
 import ru.yandex.money.android.sdk.impl.extensions.toTokenizeScheme
+import ru.yandex.money.android.sdk.model.UseCase
 import ru.yandex.money.android.sdk.payment.selectOption.SelectPaymentOptionInputModel
 import ru.yandex.money.android.sdk.payment.selectOption.SelectPaymentOptionOutputModel
 import ru.yandex.money.android.sdk.payment.selectOption.SelectedPaymentOptionOutputModel

@@ -74,7 +74,7 @@
         android:layout_height="@dimen/ym_button_minHeight"
         android:layout_gravity="bottom"
         android:layout_margin="@dimen/ym_space_m"
-        android:background="@drawable/ym_btn_primary_rounded"
+        android:background="@drawable/btn_primary_rounded"
         android:text="@string/save"
         app:layout_constraintBottom_toBottomOf="parent" />
 

@@ -27,9 +27,9 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.Timeout
 import ru.yandex.money.android.sdk.Amount
-import ru.yandex.money.android.sdk.NewCard
-import ru.yandex.money.android.sdk.PaymentOption
 import ru.yandex.money.android.sdk.impl.extensions.RUB
+import ru.yandex.money.android.sdk.model.NewCard
+import ru.yandex.money.android.sdk.model.PaymentOption
 import ru.yandex.money.android.sdk.payment.GetLoadedPaymentOptionListGateway
 import java.math.BigDecimal
 import java.util.concurrent.TimeUnit

@@ -1,31 +1,51 @@
 # Android Checkout MSDK
 
-Эта библиотека позволяет встроить прием платежей в мобильные приложения на iOS и Android,
-работает как дополнение к API Яндекс.Кассы. В mSDK входят готовые платежные интерфейсы (форма оплаты и всё, что с ней связано).
+Эта библиотека позволяет встроить прием платежей в мобильные приложения на Android.
+Она работает как дополнение к API Яндекс.Кассы.
 
-С помощью mSDK можно получать токены для проведения оплаты с банковской карты, из кошелька
-в Яндекс.Деньгах или с карты, привязанной к кошельку.
+В mSDK входят готовые платежные интерфейсы (форма оплаты и всё, что с ней связано).
 
-# Подключение библиотеки
+С помощью mSDK можно получать токены для проведения оплаты с банковской карты, Google Pay, Сбербанка или из кошелька в Яндекс.Деньгах.
 
-Для подключения библиотеки нужно прописать зависимости в файле build.gradle в вашем проекте:
+В этом репозитории лежит код mSDK и пример приложения, которое его интегрирует.
+* [Код библиотеки](https://github.com/yandex-money/yandex-checkout-android-sdk/tree/master/library)
+* [Код демо-приложения, которое интегрирует mSDK](https://github.com/yandex-money/yandex-checkout-android-sdk/tree/master/sample)
+
+#  Документация
+
+mSDK - версия 2.0.0 ([changelog](https://github.com/yandex-money/yandex-checkout-android-sdk/blob/master/CHANGELOG.md))
+
+* [Подключение зависимостей](#подключение-зависимостей)
+    * [Подключение через Gradle](#подключение-через-gradle)
+    * [Подключение YandexLoginSDK (для платежей из кошелька)](#подключение-yandexloginsdk)
+* [Использование библиотеки](#использование-библиотеки)
+    * [Токенизация](#токенизация)
+        * [Запуск токенизации](#запуск-токенизации)
+        * [Получение результата токенизации](#получение-результата-токенизации)
+        * [Тестовые параметры и отладка](#тестовые-параметры-и-отладка)
+        * [Настройка интерфейса](#настройка-интерфейса])
+    * [3DSecure](#3dsecure)
+    * [Сканирование банковской карты](#сканирование-банковской-карты)
+* [Полезные ссылки](#полезные-ссылки)
+
+# Подключение зависимостей
+
+## Подключение через Gradle
+Для подключения библиотеки пропишите зависимости в build.gradle модуля:
 
 ```groovy
 repositories {
     maven { url 'https://dl.bintray.com/yandex-money/maven' }
 }
+
 dependencies {
-    implementation 'com.yandex.money:checkout:1.3.0.7'
+    implementation 'com.yandex.money:checkout:2.0.0'
 }
 ```
 
-Вся работа с библиотекой происходит через обращения к классу `ru.yandex.money.android.sdk.Checkout`
-
-# Авторизация в Яндексе (для платежей из кошелька)
-Можно не подключать, если планируется использовать оплату только новыми банковскими картами: 
-```
-new ShopParameters("...", "...", "...", Collections.singleton(PaymentMethodType.BANK_CARD))
-```
+## Подключение YandexLoginSDK
+Если среди платёжных методов есть кошелёк Яндекс.Денег, необходимо подключить `YandexLoginSDK`.
+В остальных случаях этот шаг можно пропустить.
 
 На странице [создания приложения](https://oauth.yandex.ru/client/new), в разделе *Платформы* надо выбрать *Android приложение*
 
@@ -34,151 +54,202 @@ new ShopParameters("...", "...", "...", Collections.singleton(PaymentMethodType.
 ```groovy
 android {
     defaultConfig {
-        manifestPlaceholders = [YANDEX_CLIENT_ID:"<идентификатор вашего приложения>"]
+        manifestPlaceholders = [YANDEX_CLIENT_ID:"ваш id приложения в Яндекс.Паспорте"]
     }
 }
 repositories {
     mavenCentral()
 }
 dependencies {
-    implementation 'com.yandex.android:authsdk:2.1.0'
+    implementation "com.yandex.android:authsdk:2.1.0"
 }
 ```
 
-# Подключение библиотеки к фрагменту/активити
-Для подключения интерфейса нужно вызвать метод `Checkout.attach()` до начала токенизации
-(желательно вызвать его сразу после создания фрагмента/активити, из которого будет произведен запуск)
-Во время уничтожения фрагмента/активити нужно вызвать `Checkout.detach()`
+# Использование библиотеки
 
-Входные параметры метода Checkout.attach():
-* supportFragmentManager (FragmentManager) - менеджер фрагментов.
+Вся работа с библиотекой происходит через обращения к классу `ru.yandex.money.android.sdk.Checkout`
 
+## Токенизация
 
-**Пример**
-```java
-public final class MainActivity extends AppCompatActivity {
-    
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        Checkout.attach(getSupportFragmentManager());
-    }
-    
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Checkout.detach();
-    }    
-}
-```
+### Запуск токенизации
 
-# Запуск токенизации
-
-Для запуска процесса токенизации нужно вызвать метод `Checkout.tokenize()`. После этого управление процессом перейдёт в MSDK.
+Для запуска процесса токенизации используется метод `Checkout.createTokenizeIntent()`. Метод отдаёт `Intent`, который нужно запустить в startActivityForResult(). После этого управление процессом перейдёт в mSDK.
+Готовый платёжный токен можно получить в `onActivityResult()` (см. [Получение результата токенизации](#получение-результата-токенизации))
 
 Входные параметры метода:
 * context (Context) - контекст приложения;
-* amount (Amount) - сумма платежа;
-* shopParameters (ShopParameters) - параметры магазина, которые не меняются для разных платежей.
+* paymentParameters (PaymentParameters) - параметры платежа;
+* testParameters (TestParameters) - параметры для дебага, см. [Тестовые параметры и отладка](#тестовые-параметры-и-отладка]);
+* uiParameters (UiParameters) - настройка интерфейса, см. [Настройка интерфейса](#настройка-интерфейса]).
 
-Поля класса ShopParameters:
-* title (String) - название магазина;
-* subtitle (String) - описание магазина;
+Поля `PaymentParameters`:
+
+Обязательные:
+* amount (Amount) - стоимость товара. Допустимые способы оплаты могут меняться в зависимости от этого параметра;
+* title (String) - название товара;
+* subtitle (String) - описание товара;
 * clientApplicationKey (String) - токен магазина, полученный в Яндекс.Кассе;
+* shopId (String) - идентификатор магазина в Яндекс.Кассе.
+
+Необязательные:
 * paymentMethodTypes (PaymentMethodType) - ограничения способов оплаты. Если оставить поле пустым или передать в него null,
 библиотека будет использовать все доступные способы оплаты;
-* enableGooglePay (Boolean) - включить/выключить Google Pay (при включении надо задать поле shopId и пройти процесс подключения Google Pay в Яндекс.Кассе);
-* gatewayId (String) - идентификатор магазина в Яндекс.Кассе в который пойдет платеж (не обязательно);
-* shopId (String) - идентификатор магазина в Яндекс.Кассе (нужен при платеже Google Pay);
-* showLogo (Boolean) - показать/скрыть лого Яндекс.Кассы.
+* gatewayId (String) - gatewayId для магазина;
+* customReturnUrl (String) - url страницы (поддерживается только https), на которую надо вернуться после прохождения 3ds. Должен использоваться только при при использовании своего Activity для 3ds url. При использовании Checkout.create3dsIntent() не задавайте этот параметр.
 
-Поля класса Amount:
+Поля класса `Amount`:
 * value (BigDecimal) - сумма;
 * currency (Currency) - валюта.
 
-Значения PaymentMethodType:
+Значения `PaymentMethodType`:
 * YANDEX_MONEY - оплата произведена с кошелька Яндекс.денег;
 * BANK_CARD - оплата произведена с банковской карты;
 * SBERBANK - оплата произведена через Сбербанк (SMS invoicing или Сбербанк онлайн);
 * GOOGLE_PAY - оплата произведена через Google Pay.
 
-**Пример:**
 ```java
 class MyActivity extends android.support.v7.app.AppCompatActivity {
-    
-    //other code
-    
+
+    ...
+
     void timeToStartCheckout() {
-        Checkout.tokenize(
-             this,
-             new Amount(new BigDecimal("10.0"), Currency.getInstance("RUB")),
-             new ShopParameters(
-                   "Название магазина",
-                   "Описание магазина",
-                   "Токен, полученный в Яндекс.кассе"));
+        PaymentParameters paymentParameters = new PaymentParameters(
+                new Amount(BigDecimal.TEN, Currency.getInstance("RUB")),
+                "Название товара",
+                "Описание товара",
+                "live_AAAAAAAAAAAAAAAAAAAA",
+                "12345"
+        );
+        Intent intent = Checkout.createTokenizeIntent(this, paymentParameters);
+        startActivityForResult(intent, REQUEST_CODE_TOKENIZE);
     }
 }
 ```
 
-# Получение результата токенизации
 
-Для получения результата токенизации используется метод `Checkout.setResultCallback()`
-В случае успешной токенизации MSDK вернёт токен и платежный инструмент, с помощью которого он был получен.
-Во время уничтожения фрагмента/активити в метод нужно передать null для избежания утечки памяти.
+### Получение результата токенизации
+Результат токенизации будет возвращен в `onActivityResult()`.
 
-Входные параметры метода:
-* resultCallback (Checkout.ResultCallback) - колбэк, который будет вызван после успешной токенизации.
+Возможные типы результата:
+* Activity.RESULT_OK - токенизация прошла успешно;
+* Activity.RESULT_CANCELED - пользователь отменил токенизацию;
 
-Checkout.ResultCallback возвращает:
+В случае успешной токенизации MSDK вернёт токен и тип платежного инструмента, с помощью которого он был получен.
+Для получения токена используйте метод Checkout.createTokenizationResult() и передайте туда intent, полученный в `onActivityResult()`.
+
+`Checkout.createTokenizationResult()` возвращает TokenizationResult, который состоит из:
 * paymentToken (String) - платежный токен;
-* paymentMethodType(PaymentMethodType) - тип платежного средства.
+* paymentMethodType (PaymentMethodType) - тип платежного средства.
 
-
-Значения PaymentMethodType:
+Значения `PaymentMethodType`:
 * YANDEX_MONEY - оплата произведена с кошелька Яндекс.денег;
-* BANK_CARD - оплата произведена с банковской карты.
+* BANK_CARD - оплата произведена с банковской карты;
+* SBERBANK - оплата произведена через Сбербанк (SMS invoicing или Сбербанк онлайн);
+* GOOGLE_PAY - оплата произведена через Google Pay.
 
+```java
+public final class MainActivity extends AppCompatActivity {
+    
+    ...
 
-**Пример:**
+     @Override
+        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+            super.onActivityResult(requestCode, resultCode, data);
+
+            if (requestCode == REQUEST_CODE_TOKENIZE) {
+                switch (resultCode) {
+                    case RESULT_OK:
+                        // successful tokenization
+                        TokenizationResult result = Checkout.createTokenizationResult(data);
+                        ...
+                        break;
+                    case RESULT_CANCELED:
+                        // user canceled tokenization
+                        ...
+                        break;
+                }
+            }
+        }
+}
+```
+
+### Тестовые параметры и отладка
+
+Для отладки токенизации в вызов `Checkout.createTokenizeIntent()` можно добавить объект `TestParameters`.
+
+Поля класса `TestParameters:`
+* showLogs (Boolean) - включить отображение логов mSDK. Все логи начинаются с тега 'Yandex.Checkout.SDK'
+* googlePayTestEnvironment (Boolean) - использовать тестовую среду Google Pay - все транзакции, проведенные через Google Pay, будут использовать `WalletConstants.ENVIRONMENT_TEST`. Подробнее см. на https://developers.google.com/pay/api/android/guides/test-and-deploy/integration-checklist#about-the-test-environment.
+* mockConfiguration (MockConfiguration) - использовать моковую конфигурацию. Если этот параметр присутствует, mSDK будет работать в оффлайн режиме и генерировать тестовый токен. Этот токен нельзя использовать для платежей.
+
+`MockConfiguration`
+В библиотеке есть тестовый режим, с помощью которого можно посмотреть, как будет выглядеть работа SDK при различных входных данных.
+Для работы этого режима не нужен доступ в интернет. Полученный токен нельзя использовать для оплаты.
+
+Поля класса `MockConfiguration`:
+* completeWithError (Boolean) - токенизация всегда возвращает ошибку;
+* paymentAuthPassed (Boolean) - пользователь всегда авторизован;
+* linkedCardsCount (Int) - количество карт, привязанных к кошельку пользователя.
+
 ```java
 class MyActivity extends android.support.v7.app.AppCompatActivity {
-    
-    @Override
-    protected void onCreate(android.os.Bundle savedInstanceState) {
-        Checkout.setResultCallback(new Checkout.ResultCallback() {
-            @Override
-            public void onResult(@NonNull String paymentToken, @NonNull PaymentMethodType type) {
-                //result handling
-            }
-        });
-    }
 
-    @Override
-    protected void onDestroy() {
-        // Detach result callback
-        Checkout.setResultCallback(null);
-        super.onDestroy();
+    ...
+
+    void timeToStartCheckout() {
+        PaymentParameters paymentParameters = new PaymentParameters(...);
+        TestParameters testParameters = new TestParameters(true, true, new MockConfiguration(false, true, 5));
+        Intent intent = Checkout.createTokenizeIntent(this, paymentParameters, testParameters);
+        startActivityForResult(intent, REQUEST_CODE_TOKENIZE);
     }
 }
 ```
 
-# 3DSecure
+### Настройка интерфейса
 
-Для упрощения интеграции в MSDK есть Activity для обработки 3DS.
+Для настройки интерфейса mSDK можно использовать объект `UiParameters`
+
+Поля класса `UiParameters`:
+* showLogo (Boolean) - показать/скрыть лого Яндекс.Кассы на экране способов оплаты.
+
+```java
+class MyActivity extends android.support.v7.app.AppCompatActivity {
+
+    ...
+
+    void timeToStartCheckout() {
+        PaymentParameters paymentParameters = new PaymentParameters(...);
+        UiParameters uiParameters = new UiParameters(true);
+        Intent intent = Checkout.createTokenizeIntent(this, paymentParameters, new TestParameters(), uiParameters);
+        startActivityForResult(intent, REQUEST_CODE_TOKENIZE);
+    }
+}
+```
+
+## 3DSecure
+
+Для упрощения интеграции в mSDK есть Activity для обработки 3DS.
+Не указывайте PaymentParameters.customReturnUrl при вызове Checkout.createTokenizeIntent(), если используете это Activity.
 
 Входные параметры для `Checkout.create3dsIntent()`:
-* context (Context) - контекст для создания `Intent`
-* url (URL) - URL для перехода на 3DS
-* redirectUrl (URL) - URL для возврата с 3DS
+* context (Context) - контекст для создания `Intent`;
+* url (String) - URL для перехода на 3DS.
 
-**Пример:**
+Результат работы 3ds можно получить в `onActivityResult()`
+
+Возможные типы результата:
+* Activity.RESULT_OK - 3ds прошёл успешно;
+* Activity.RESULT_CANCELED - прохождение 3ds было отменено (например, пользователь нажал на кнопку "назад" во время процесса);
+* Checkout.RESULT_ERROR - не удалось пройти 3ds.
+
+**Запуск 3ds и получение результата**
 ```java
 class MyActivity extends android.support.v7.app.AppCompatActivity {
     
     void timeToStart3DS() {
         Intent intent = Checkout.create3dsIntent(
                 this,
-                URL("https://3dsurl.com/"),
-                URL("https://3dsend.org/")
+                "https://3dsurl.com/"
         );
         startActivityForResult(intent, 1);
     }
@@ -207,10 +278,11 @@ class MyActivity extends android.support.v7.app.AppCompatActivity {
 }
 ```
 
-# Сканирование банковской карты
+## Сканирование банковской карты
 
 Создайте `Activity`, обрабатывающую action `ru.yandex.money.android.sdk.action.SCAN_BANK_CARD`
 
+***Подключение activity для сканирования***
 ```xml
 <activity android:name=".ScanBankCardActivity">
 
@@ -224,6 +296,8 @@ class MyActivity extends android.support.v7.app.AppCompatActivity {
 В этой `Activity` запустите Вашу библиотеку для сканирования карты.
 Полученный номер карты передайте c помощью `Intent`, как показано в примере ниже.
 Не забудьте поставить `Activity.RESULT_OK`, если сканирование прошло успешно.
+
+***Возвращение результата с activity***
 ```java
 public class ScanBankCardActivity extends Activity {
     
@@ -240,45 +314,8 @@ public class ScanBankCardActivity extends Activity {
 }
 ```
 
-# Тестовый режим
-
-В библиотеке предусмотрен тестовый режим, позволяющий эмулировать действия SDK без использования реальных источников данных.
-Для запуска тестового режима необходимо вызвать метод `Checkout.configureTestMode()` и передать ему объект `Configuration`.
-**Это надо сделать до вызова `Checkout.tokenize()`.**
-
-***Пример***
-```java
-class MyActivity extends android.support.v7.app.AppCompatActivity {
-
-    //other code
-
-    void timeToStartCheckout() {
-
-        Checkout.configureTestMode(
-            new Configuration(
-                // enableTestMode - is test mode enabled,
-                // completeWithError - complete tokenization with error,
-                // paymentAuthPassed - user authenticated,
-                // linkedCardsCount - test linked cards count,
-                // googlePayAvailable - emulate google pay availability,
-                // googlePayTestEnvironment - use google pay test environment
-            )
-        );
-
-        Checkout.tokenize(
-             this,
-             new Amount(new BigDecimal("10.0"), Currency.getInstance("RUB")),
-             new ShopParameters(
-                 "Название магазина",
-                 "Описание магазина",
-                 "Токен, полученный в Яндекс.кассе"
-            )
-        );
-    }
-}
-```
-
 # Полезные ссылки
-* [Подключение Яндекс.Кассы](https://kassa.yandex.ru)
-* [Документация МСДК](https://kassa.yandex.ru/docs/client-sdks/#mobil-nye-sdk)
+* [Сайт Яндекс.Кассы](https://kassa.yandex.ru)
+* [Документация mSDK на сайте Яндекс.Кассы](https://kassa.yandex.ru/docs/client-sdks/#mobil-nye-sdk)
 * [Демо-приложение в Google Play](https://play.google.com/store/apps/details?id=ru.yandex.money.android.example.prod)
+* [mSDK для iOS](https://kassa.yandex.ru)

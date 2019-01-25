@@ -24,9 +24,9 @@ package ru.yandex.money.android.sdk.impl
 import okhttp3.Request
 import okhttp3.Response
 import org.json.JSONException
-import ru.yandex.money.android.sdk.Error
-import ru.yandex.money.android.sdk.ErrorCode
-import ru.yandex.money.android.sdk.SdkException
+import ru.yandex.money.android.sdk.model.Error
+import ru.yandex.money.android.sdk.model.ErrorCode
+import ru.yandex.money.android.sdk.model.SdkException
 import java.io.IOException
 
 internal class NoInternetException : SdkException()
@@ -38,7 +38,11 @@ internal data class ResponseReadingException(val response: Response, val e: IOEx
 internal data class ResponseParsingException(val stringBody: String, val e: JSONException) : SdkException(e)
 
 internal data class ApiMethodException(val error: Error) : SdkException() {
-    constructor(errorCode: ErrorCode) : this(Error(errorCode))
+    constructor(errorCode: ErrorCode) : this(
+        Error(
+            errorCode
+        )
+    )
 }
 
 internal class PassphraseCheckFailedException : SdkException()

@@ -22,12 +22,12 @@
 package ru.yandex.money.android.sdk.methods.paymentAuth
 
 import org.json.JSONObject
-import ru.yandex.money.android.sdk.AuthType
-import ru.yandex.money.android.sdk.AuthTypeState
-import ru.yandex.money.android.sdk.ErrorCode
-import ru.yandex.money.android.sdk.Status
 import ru.yandex.money.android.sdk.impl.extensions.toAuthSessionGenerateResponse
 import ru.yandex.money.android.sdk.impl.extensions.toJsonString
+import ru.yandex.money.android.sdk.model.AuthType
+import ru.yandex.money.android.sdk.model.AuthTypeState
+import ru.yandex.money.android.sdk.model.ErrorCode
+import ru.yandex.money.android.sdk.model.Status
 
 private const val AUTH_SESSION_GENERATE = "/checkout/auth-session-generate"
 
@@ -35,10 +35,10 @@ private const val AUTH_CONTEXT_ID = "authContextId"
 private const val AUTH_TYPE = "authType"
 
 internal class CheckoutAuthSessionGenerateRequest(
-        private val authContextId: String,
-        private val authType: AuthType,
-        userAuthToken: String,
-        shopToken: String
+    private val authContextId: String,
+    private val authType: AuthType,
+    userAuthToken: String,
+    shopToken: String
 ) : CheckoutRequest<CheckoutAuthSessionGenerateResponse>(userAuthToken, shopToken) {
 
     override fun getUrl(): String = host + AUTH_SESSION_GENERATE
@@ -51,7 +51,7 @@ internal class CheckoutAuthSessionGenerateRequest(
 }
 
 internal data class CheckoutAuthSessionGenerateResponse(
-        val status: Status,
-        val errorCode: ErrorCode?,
-        val authTypeState: AuthTypeState?
+    val status: Status,
+    val errorCode: ErrorCode?,
+    val authTypeState: AuthTypeState?
 )

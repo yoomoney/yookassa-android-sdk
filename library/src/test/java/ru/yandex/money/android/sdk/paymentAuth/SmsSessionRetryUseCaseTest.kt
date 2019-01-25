@@ -28,8 +28,8 @@ import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.verifyNoMoreInteractions
 import org.mockito.MockitoAnnotations
-import ru.yandex.money.android.sdk.AuthType
-import ru.yandex.money.android.sdk.AuthTypeState
+import ru.yandex.money.android.sdk.model.AuthType
+import ru.yandex.money.android.sdk.model.AuthTypeState
 
 internal class SmsSessionRetryUseCaseTest {
 
@@ -47,7 +47,12 @@ internal class SmsSessionRetryUseCaseTest {
     @Test
     fun shouldInvokeGateway_Then_ReturnResult() {
         // prepare
-        `when`(smsSessionRetryGateway.retrySmsSession()).thenReturn(AuthTypeState(AuthType.SMS, 1))
+        `when`(smsSessionRetryGateway.retrySmsSession()).thenReturn(
+            AuthTypeState(
+                AuthType.SMS,
+                1
+            )
+        )
 
         // invoke
         useCase(Unit)

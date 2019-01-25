@@ -36,13 +36,18 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ScrollView;
+import android.widget.Toast;
 import ru.yandex.money.android.example.settings.Settings;
 import ru.yandex.money.android.example.settings.SettingsActivity;
 import ru.yandex.money.android.example.utils.AmountFormatter;
 import ru.yandex.money.android.sdk.Amount;
 import ru.yandex.money.android.sdk.Checkout;
 import ru.yandex.money.android.sdk.PaymentMethodType;
-import ru.yandex.money.android.sdk.ShopParameters;
+import ru.yandex.money.android.sdk.PaymentParameters;
+import ru.yandex.money.android.sdk.MockConfiguration;
+import ru.yandex.money.android.sdk.TestParameters;
+import ru.yandex.money.android.sdk.TokenizationResult;
+import ru.yandex.money.android.sdk.UiParameters;
 
 import java.math.BigDecimal;
 import java.util.Currency;
@@ -57,8 +62,9 @@ import java.util.Set;
 public final class MainActivity extends AppCompatActivity {
 
     private static final BigDecimal MAX_AMOUNT = new BigDecimal("99999.99");
-    public static final Currency RUB = Currency.getInstance("RUB");
-    public static final String KEY_AMOUNT = "amount";
+    private static final Currency RUB = Currency.getInstance("RUB");
+    private static final String KEY_AMOUNT = "amount";
+    private static final int REQUEST_CODE_TOKENIZE = 33;
 
     @Nullable
     private View buyButton;
@@ -69,49 +75,35 @@ public final class MainActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initUi();
-
-        // Attach MSDK to supportFragmentManager
-        Checkout.attach(getSupportFragmentManager());
-
-        // Set action on MSDK result
-        Checkout.setResultCallback((paymentToken, type)
-                -> startActivity(SuccessTokenizeActivity.createIntent(this, paymentToken, type.name())));
     }
 
-    private void onBuyClick() {
-        if (validateAmount()) {
-            final Settings settings = new Settings(this);
-            final Set<PaymentMethodType> paymentMethodTypes = getPaymentMethodTypes(settings);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-            // Start MSDK to get payment token
-            Checkout.tokenize(
-                    this,
-                    new Amount(amount, RUB),
-                    new ShopParameters(
-                            getString(R.string.main_product_name),
-                            getString(R.string.main_product_description),
-                            BuildConfig.MERCHANT_TOKEN,
-                            paymentMethodTypes,
-                            paymentMethodTypes.isEmpty() || settings.isGooglePayAllowed(),
-                            BuildConfig.SHOP_ID,
-                            BuildConfig.GATEWAY_ID,
-                            settings.showYandexCheckoutLogo()
-                    )
-            );
+        // Receive token from mSDK
+
+        if (requestCode == REQUEST_CODE_TOKENIZE) {
+            switch (resultCode) {
+                case RESULT_OK:
+                    // successful tokenization
+                    final TokenizationResult result = Checkout.createTokenizationResult(data);
+                    startActivity(SuccessTokenizeActivity.createIntent(
+                            this, result.getPaymentToken(), result.getPaymentMethodType().name()));
+                    break;
+                case RESULT_CANCELED:
+                    // user canceled tokenization
+                    Toast.makeText(this, R.string.tokenization_canceled, Toast.LENGTH_SHORT).show();
+                    break;
+            }
         }
     }
 
     @Override
     protected void onDestroy() {
-        // Detach MSDK from supportFragmentManager
-        Checkout.detach();
-        // Detach result callback
-        Checkout.setResultCallback(null);
-
         if (validateAmount()) {
             saveAmount();
         }
-
         super.onDestroy();
     }
 
@@ -143,7 +135,7 @@ public final class MainActivity extends AppCompatActivity {
         }
 
         buyButton = findViewById(R.id.buy);
-        buyButton.setOnClickListener(v -> onBuyClick());
+        buyButton.setOnClickListener(v -> onPaymentButtonClick());
 
         final EditText priceEdit = findViewById(R.id.price);
         priceEdit.setInputType(InputType.TYPE_CLASS_TEXT);
@@ -152,13 +144,53 @@ public final class MainActivity extends AppCompatActivity {
         priceEdit.setOnEditorActionListener((v, actionId, event) -> {
             final boolean isActionDone = actionId == EditorInfo.IME_ACTION_DONE;
             if (isActionDone) {
-                onBuyClick();
+                onPaymentButtonClick();
             }
             return isActionDone;
         });
 
         final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         priceEdit.setText(sp.getString(KEY_AMOUNT, BigDecimal.ZERO.toString()));
+    }
+
+    private void onPaymentButtonClick() {
+        if (validateAmount()) {
+            final Settings settings = new Settings(this);
+            final Set<PaymentMethodType> paymentMethodTypes = getPaymentMethodTypes(settings);
+
+            final PaymentParameters paymentParameters = new PaymentParameters(
+                    new Amount(amount, RUB),
+                    getString(R.string.main_product_name),
+                    getString(R.string.main_product_description),
+                    BuildConfig.MERCHANT_TOKEN,
+                    BuildConfig.SHOP_ID,
+                    paymentMethodTypes,
+                    BuildConfig.GATEWAY_ID,
+                    "https://custom.redirect.url/"
+            );
+
+            final UiParameters uiParameters = new UiParameters(settings.showYandexCheckoutLogo());
+
+            final MockConfiguration mockConfiguration;
+            if (settings.isTestModeEnabled()) {
+                mockConfiguration = new MockConfiguration(settings.shouldCompletePaymentWithError(),
+                        settings.isPaymentAuthPassed(),
+                        settings.getLinkedCardsCount());
+            } else {
+                mockConfiguration = null;
+            }
+
+            final TestParameters testParameters = new TestParameters(true, false, mockConfiguration);
+
+            // Start MSDK to get payment token
+
+            final Intent intent = Checkout.createTokenizeIntent(this,
+                    paymentParameters,
+                    testParameters,
+                    uiParameters
+            );
+            startActivityForResult(intent, REQUEST_CODE_TOKENIZE);
+        }
     }
 
     private void onAmountChange(@NonNull BigDecimal newAmount) {

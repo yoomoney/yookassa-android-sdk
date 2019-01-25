@@ -29,7 +29,7 @@ import org.mockito.ArgumentMatchers.anyList
 import org.mockito.Mockito.inOrder
 import org.mockito.Mockito.mock
 import org.mockito.junit.MockitoJUnitRunner
-import ru.yandex.money.android.sdk.Presenter
+import ru.yandex.money.android.sdk.model.Presenter
 import ru.yandex.money.android.sdk.on
 
 @RunWith(MockitoJUnitRunner.StrictStubs::class)

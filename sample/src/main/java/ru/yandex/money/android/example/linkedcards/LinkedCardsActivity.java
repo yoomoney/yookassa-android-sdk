@@ -25,6 +25,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.Selection;
 import android.text.TextWatcher;
@@ -37,9 +38,6 @@ public final class LinkedCardsActivity extends AppCompatActivity {
     private static final int MAX_CARDS = 5;
     private static final String KEY_LAST_COUNT = "lastCount";
 
-    static final String TEXT_ZERO = "0";
-    static final String TEXT_MAX = "5";
-
     private int lastCount = 0;
 
     @Override
@@ -47,6 +45,7 @@ public final class LinkedCardsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_linked_cards);
 
+        this.<Toolbar>findViewById(R.id.toolbar).setNavigationOnClickListener(v -> finish());
         this.<TextView>findViewById(R.id.cards_count).addTextChangedListener(new CountTextWatcher());
 
         if (savedInstanceState == null) {

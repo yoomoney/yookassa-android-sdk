@@ -22,7 +22,7 @@
 package ru.yandex.money.android.sdk.paymentAuth
 
 import ru.yandex.money.android.sdk.Amount
-import ru.yandex.money.android.sdk.AuthTypeState
+import ru.yandex.money.android.sdk.model.AuthTypeState
 
 internal interface PaymentAuthTypeGateway {
     fun getPaymentAuthType(linkWalletToApp: Boolean, amount: Amount): AuthTypeState

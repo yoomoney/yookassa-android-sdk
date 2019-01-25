@@ -21,8 +21,8 @@
 
 package ru.yandex.money.android.sdk.paymentAuth
 
-import ru.yandex.money.android.sdk.AuthorizedUser
-import ru.yandex.money.android.sdk.UseCase
+import ru.yandex.money.android.sdk.model.AuthorizedUser
+import ru.yandex.money.android.sdk.model.UseCase
 import ru.yandex.money.android.sdk.payment.CurrentUserGateway
 
 internal class ProcessPaymentAuthUseCase(

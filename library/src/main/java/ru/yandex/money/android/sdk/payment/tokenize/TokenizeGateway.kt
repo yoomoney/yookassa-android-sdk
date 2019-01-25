@@ -21,13 +21,15 @@
 
 package ru.yandex.money.android.sdk.payment.tokenize
 
-import ru.yandex.money.android.sdk.PaymentOption
-import ru.yandex.money.android.sdk.PaymentOptionInfo
+import ru.yandex.money.android.sdk.model.Confirmation
+import ru.yandex.money.android.sdk.model.PaymentOption
+import ru.yandex.money.android.sdk.model.PaymentOptionInfo
 
 internal interface TokenizeGateway {
     fun getToken(
-            paymentOption: PaymentOption,
-            paymentOptionInfo: PaymentOptionInfo,
-            allowRecurringPayments: Boolean
+        paymentOption: PaymentOption,
+        paymentOptionInfo: PaymentOptionInfo,
+        allowRecurringPayments: Boolean,
+        confirmation: Confirmation
     ): String
 }

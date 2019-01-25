@@ -21,40 +21,38 @@
 
 package ru.yandex.money.android.sdk.utils
 
-import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.Matchers.equalTo
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment.application
-import org.robolectric.Shadows
+import org.robolectric.RuntimeEnvironment
+import ru.yandex.money.android.sdk.Amount
 import ru.yandex.money.android.sdk.Checkout
-import java.net.URL
+import ru.yandex.money.android.sdk.PaymentParameters
+import ru.yandex.money.android.sdk.impl.extensions.RUB
+import java.math.BigDecimal
+import java.util.Currency
 
 @RunWith(RobolectricTestRunner::class)
 class CheckoutConfirmationActivityRobolectricTest {
 
-    @Test
-    fun `should end with error if not https url`() {
+    @Test(expected = IllegalArgumentException::class)
+    fun `should throw exception if not https url present`() {
         // prepare
-        val url = URL("http://wrong.scheme.url/")
-        val activityController = Robolectric.buildActivity(
-            CheckoutConfirmationActivity::class.java,
-            Checkout.create3dsIntent(application, url, url)
+        Checkout.createTokenizeIntent(
+            RuntimeEnvironment.application,
+            PaymentParameters(
+                amount = Amount(BigDecimal.ONE, RUB),
+                title = "",
+                subtitle = "",
+                clientApplicationKey = "",
+                shopId = ""
+            )
         )
+        val url = "http://wrong.scheme.url/"
 
         // invoke
-        activityController.create()
+        Checkout.create3dsIntent(RuntimeEnvironment.application, url)
 
-        // assert
-        val shadowActivity = Shadows.shadowOf(activityController.get())
-        assertThat(shadowActivity.resultCode, equalTo(Checkout.RESULT_ERROR))
-
-        with(shadowActivity.resultIntent) {
-            assertThat(getIntExtra(Checkout.EXTRA_ERROR_CODE, 0), equalTo(Checkout.ERROR_NOT_HTTPS_URL))
-            assertThat(getStringExtra(Checkout.EXTRA_ERROR_DESCRIPTION), equalTo("Not https:// url"))
-            assertThat(getStringExtra(Checkout.EXTRA_ERROR_FAILING_URL), equalTo(url.toString()))
-        }
+        // assert that exception thrown
     }
 }

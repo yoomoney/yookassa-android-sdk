@@ -28,8 +28,8 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mock
 import org.mockito.Mockito.inOrder
 import org.mockito.junit.MockitoJUnitRunner
-import ru.yandex.money.android.sdk.Presenter
-import ru.yandex.money.android.sdk.SdkException
+import ru.yandex.money.android.sdk.model.Presenter
+import ru.yandex.money.android.sdk.model.SdkException
 import ru.yandex.money.android.sdk.on
 
 @RunWith(MockitoJUnitRunner.StrictStubs::class)

@@ -21,8 +21,8 @@
 
 package ru.yandex.money.android.sdk.paymentAuth
 
-import ru.yandex.money.android.sdk.AuthTypeState
-import ru.yandex.money.android.sdk.UseCase
+import ru.yandex.money.android.sdk.model.AuthTypeState
+import ru.yandex.money.android.sdk.model.UseCase
 
 internal class SmsSessionRetryUseCase(
         private val smsSessionRetryGateway: SmsSessionRetryGateway

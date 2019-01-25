@@ -24,14 +24,14 @@ package ru.yandex.money.android.sdk.methods
 import okhttp3.Credentials
 import org.json.JSONObject
 import ru.yandex.money.android.sdk.Amount
-import ru.yandex.money.android.sdk.AnonymousUser
-import ru.yandex.money.android.sdk.AuthorizedUser
 import ru.yandex.money.android.sdk.BuildConfig
-import ru.yandex.money.android.sdk.CurrentUser
-import ru.yandex.money.android.sdk.Error
-import ru.yandex.money.android.sdk.PaymentOption
 import ru.yandex.money.android.sdk.impl.extensions.toPaymentOptionResponse
 import ru.yandex.money.android.sdk.methods.base.GetRequest
+import ru.yandex.money.android.sdk.model.AnonymousUser
+import ru.yandex.money.android.sdk.model.AuthorizedUser
+import ru.yandex.money.android.sdk.model.CurrentUser
+import ru.yandex.money.android.sdk.model.Error
+import ru.yandex.money.android.sdk.model.PaymentOption
 
 private const val PAYMENT_OPTIONS_METHOD_PATH = "/payment_options"
 private const val AMOUNT = "amount"
@@ -39,11 +39,11 @@ private const val CURRENCY = "currency"
 private const val GATEWAY_ID = "gateway_id"
 
 internal data class PaymentOptionsRequest(
-        private val amount: Amount,
-        private val currentUser: CurrentUser,
-        private val gatewayId: String?,
-        private val userAuthToken: String?,
-        private val shopToken: String
+    private val amount: Amount,
+    private val currentUser: CurrentUser,
+    private val gatewayId: String?,
+    private val userAuthToken: String?,
+    private val shopToken: String
 ) : GetRequest<PaymentOptionsResponse> {
 
     override fun getHeaders(): List<Pair<String, String>> {
@@ -85,6 +85,6 @@ internal data class PaymentOptionsRequest(
 }
 
 internal data class PaymentOptionsResponse(
-        val paymentOptions: List<PaymentOption>,
-        val error: Error?
+    val paymentOptions: List<PaymentOption>,
+    val error: Error?
 )

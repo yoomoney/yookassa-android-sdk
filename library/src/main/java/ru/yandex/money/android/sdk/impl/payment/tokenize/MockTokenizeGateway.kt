@@ -21,9 +21,10 @@
 
 package ru.yandex.money.android.sdk.impl.payment.tokenize
 
-import ru.yandex.money.android.sdk.PaymentOption
-import ru.yandex.money.android.sdk.PaymentOptionInfo
-import ru.yandex.money.android.sdk.SdkException
+import ru.yandex.money.android.sdk.model.Confirmation
+import ru.yandex.money.android.sdk.model.PaymentOption
+import ru.yandex.money.android.sdk.model.PaymentOptionInfo
+import ru.yandex.money.android.sdk.model.SdkException
 import ru.yandex.money.android.sdk.payment.tokenize.TokenizeGateway
 import java.lang.Thread.sleep
 
@@ -34,13 +35,18 @@ internal class MockTokenizeGateway(
     override fun getToken(
         paymentOption: PaymentOption,
         paymentOptionInfo: PaymentOptionInfo,
-        allowRecurringPayments: Boolean
+        allowRecurringPayments: Boolean,
+        confirmation: Confirmation
     ): String {
         sleep(1000L)
         if (completeWithError) {
             throw SdkException("mock exception")
         } else {
-            return "$paymentOption, $paymentOptionInfo, Allow recurring payments: $allowRecurringPayments"
+            return "THIS IS A TEST TOKEN. \n" +
+                    "To get production token, remove mockConfiguration from your TestParameters object, " +
+                    "that is used in Checkout.createTokenizeIntent()). \n\n" +
+                    "Parameters: $paymentOption, $paymentOptionInfo, \n" +
+                    "Allow recurring payments: $allowRecurringPayments, $confirmation"
         }
     }
 }

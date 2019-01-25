@@ -21,9 +21,9 @@
 
 package ru.yandex.money.android.sdk.impl.metrics
 
-import ru.yandex.money.android.sdk.Presenter
 import ru.yandex.money.android.sdk.impl.contract.ContractFailViewModel
 import ru.yandex.money.android.sdk.impl.contract.ContractSuccessViewModel
+import ru.yandex.money.android.sdk.model.Presenter
 import ru.yandex.money.android.sdk.paymentAuth.ProcessPaymentAuthOutputModel
 import ru.yandex.money.android.sdk.paymentAuth.ProcessPaymentAuthSuccessOutputModel
 import ru.yandex.money.android.sdk.paymentAuth.ProcessPaymentAuthWrongAnswerOutputModel

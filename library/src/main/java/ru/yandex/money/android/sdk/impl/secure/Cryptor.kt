@@ -46,7 +46,7 @@ internal sealed class Cryptor(
 
     private fun init() {
         cipher = lazy {
-            Cipher.getInstance("AES/CBC/PKCS5Padding", "BC").apply { init(opMode, getKey(), IvParameterSpec(getIv())) }
+            Cipher.getInstance("AES/CBC/PKCS5Padding").apply { init(opMode, getKey(), IvParameterSpec(getIv())) }
         }
     }
 }

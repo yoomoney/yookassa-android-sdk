@@ -21,7 +21,7 @@
 
 package ru.yandex.money.android.sdk.impl.metrics
 
-import ru.yandex.money.android.sdk.UseCase
+import ru.yandex.money.android.sdk.model.UseCase
 
 internal class ResetTokenizeSchemeWrapper<in I, out O>(
     private val useCase: UseCase<I, O>,

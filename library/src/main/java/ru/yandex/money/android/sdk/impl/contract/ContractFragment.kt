@@ -52,7 +52,6 @@ import kotlinx.android.synthetic.main.ym_fragment_contract.switchesContainer
 import kotlinx.android.synthetic.main.ym_fragment_contract.title
 import kotlinx.android.synthetic.main.ym_item_common.*
 import ru.yandex.money.android.sdk.R
-import ru.yandex.money.android.sdk.SbolSmsInvoicingInfo
 import ru.yandex.money.android.sdk.impl.AppModel
 import ru.yandex.money.android.sdk.impl.extensions.configureForPhoneInput
 import ru.yandex.money.android.sdk.impl.extensions.hideSoftKeyboard
@@ -64,6 +63,7 @@ import ru.yandex.money.android.sdk.impl.paymentAuth.PaymentAuthView
 import ru.yandex.money.android.sdk.impl.paymentOptionList.GooglePayNotHandled
 import ru.yandex.money.android.sdk.impl.paymentOptionList.GooglePayTokenizationCanceled
 import ru.yandex.money.android.sdk.impl.paymentOptionList.GooglePayTokenizationSuccess
+import ru.yandex.money.android.sdk.model.SbolSmsInvoicingInfo
 import ru.yandex.money.android.sdk.payment.changeOption.ChangePaymentOptionInputModel
 import ru.yandex.money.android.sdk.payment.tokenize.TokenizeInputModel
 import ru.yandex.money.android.sdk.paymentAuth.ProcessPaymentAuthInputModel
@@ -138,7 +138,9 @@ internal class ContractFragment : Fragment() {
                                     TokenizeInputModel(
                                         paymentOptionId = viewModel.paymentOption.optionId,
                                         allowRecurringPayments = viewModel.showAllowRecurringPayments,
-                                        paymentOptionInfo = SbolSmsInvoicingInfo(phoneInput.text.toString())
+                                        paymentOptionInfo = SbolSmsInvoicingInfo(
+                                            phoneInput.text.toString()
+                                        )
                                     )
                                 )
                             } else {

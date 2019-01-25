@@ -27,12 +27,12 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.ParameterizedRobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
-import ru.yandex.money.android.sdk.ErrorCode
 import ru.yandex.money.android.sdk.impl.ApiMethodException
 import ru.yandex.money.android.sdk.impl.contract.ContractErrorViewModel
 import ru.yandex.money.android.sdk.impl.contract.ContractFailViewModel
 import ru.yandex.money.android.sdk.impl.contract.ContractPaymentAuthRequiredViewModel
 import ru.yandex.money.android.sdk.impl.contract.ContractUserAuthRequiredViewModel
+import ru.yandex.money.android.sdk.model.ErrorCode
 import kotlin.reflect.KClass
 
 @RunWith(ParameterizedRobolectricTestRunner::class)

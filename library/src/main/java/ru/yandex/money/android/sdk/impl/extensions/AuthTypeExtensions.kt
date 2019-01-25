@@ -22,8 +22,8 @@
 package ru.yandex.money.android.sdk.impl.extensions
 
 import android.content.Context
-import ru.yandex.money.android.sdk.AuthType
 import ru.yandex.money.android.sdk.R
+import ru.yandex.money.android.sdk.model.AuthType
 
 internal fun AuthType.toHint(context: Context) = context.getText(when (this) {
     AuthType.SMS -> R.string.ym_auth_hint_sms

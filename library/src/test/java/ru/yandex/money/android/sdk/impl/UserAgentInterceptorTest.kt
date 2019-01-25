@@ -32,12 +32,12 @@ import org.junit.Test
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.mock
 import org.robolectric.annotation.Config
-import ru.yandex.money.android.sdk.BuildConfig
 import ru.yandex.money.android.sdk.on
 
 class UserAgentInterceptorTest {
 
-    private val androidId = "testid"
+    private val sdkVersion = "sdkVersion"
+    private val osVersion = "osVersion"
     private val chain = mock(Interceptor.Chain::class.java)
     private val request = Request.Builder()
         .url("http://test/")
@@ -58,7 +58,7 @@ class UserAgentInterceptorTest {
     @Test
     fun `should be with smartphone when on smartphone`() {
         // prepare
-        val userAgentInterceptor = UserAgentInterceptor(androidId, false)
+        val userAgentInterceptor = UserAgentInterceptor(sdkVersion, osVersion, false)
 
         // invoke
         val response = userAgentInterceptor.intercept(chain)
@@ -66,19 +66,16 @@ class UserAgentInterceptorTest {
         // assert
         val userAgent = response.request().header("User-Agent")
         assertThat(userAgent, notNullValue())
-        val userAgentParts = checkNotNull(userAgent).split('/')
-        assertThat(userAgentParts[0], equalTo("Yandex.Checkout"))
-        assertThat(userAgentParts[1], equalTo("Android"))
-        assertThat(userAgentParts[2], equalTo(BuildConfig.VERSION_CODE.toString()))
-        assertThat(userAgentParts[3], equalTo(androidId))
-        assertThat(userAgentParts[4], equalTo("smartphone"))
-        assertThat(userAgentParts.size, equalTo(5))
+        assertThat(
+            userAgent,
+            equalTo("Yandex.Checkout.App.Android/$sdkVersion Android/$osVersion smartphone")
+        )
     }
 
     @[Test Config(qualifiers = "sw600dp")]
     fun `should be with tablet when smallest width more then 320 dp`() {
         // prepare
-        val userAgentInterceptor = UserAgentInterceptor(androidId, true)
+        val userAgentInterceptor = UserAgentInterceptor(sdkVersion, osVersion, true)
 
         // invoke
         val response = userAgentInterceptor.intercept(chain)
@@ -86,12 +83,9 @@ class UserAgentInterceptorTest {
         // assert
         val userAgent = response.request().header("User-Agent")
         assertThat(userAgent, notNullValue())
-        val userAgentParts = checkNotNull(userAgent).split('/')
-        assertThat(userAgentParts[0], equalTo("Yandex.Checkout"))
-        assertThat(userAgentParts[1], equalTo("Android"))
-        assertThat(userAgentParts[2], equalTo(BuildConfig.VERSION_CODE.toString()))
-        assertThat(userAgentParts[3], equalTo(androidId))
-        assertThat(userAgentParts[4], equalTo("tablet"))
-        assertThat(userAgentParts.size, equalTo(5))
+        assertThat(
+            userAgent,
+            equalTo("Yandex.Checkout.App.Android/$sdkVersion Android/$osVersion tablet")
+        )
     }
 }

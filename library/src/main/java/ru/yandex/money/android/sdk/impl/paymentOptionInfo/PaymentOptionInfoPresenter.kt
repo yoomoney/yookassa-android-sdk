@@ -21,10 +21,10 @@
 
 package ru.yandex.money.android.sdk.impl.paymentOptionInfo
 
-import ru.yandex.money.android.sdk.LinkedCard
-import ru.yandex.money.android.sdk.NewCard
-import ru.yandex.money.android.sdk.Presenter
-import ru.yandex.money.android.sdk.ViewModel
+import ru.yandex.money.android.sdk.model.LinkedCard
+import ru.yandex.money.android.sdk.model.NewCard
+import ru.yandex.money.android.sdk.model.Presenter
+import ru.yandex.money.android.sdk.model.ViewModel
 import ru.yandex.money.android.sdk.payment.tokenize.TokenizeOutputModel
 import ru.yandex.money.android.sdk.payment.tokenize.TokenizePaymentOptionInfoRequired
 

@@ -22,22 +22,23 @@
 package ru.yandex.money.android.sdk.impl.payment.tokenize
 
 import okhttp3.OkHttpClient
-import ru.yandex.money.android.sdk.PaymentOption
-import ru.yandex.money.android.sdk.PaymentOptionInfo
 import ru.yandex.money.android.sdk.impl.ApiMethodException
 import ru.yandex.money.android.sdk.impl.ProfilingTool
 import ru.yandex.money.android.sdk.impl.ThreatMetrixProfilingTool
 import ru.yandex.money.android.sdk.impl.extensions.execute
 import ru.yandex.money.android.sdk.methods.TokenRequest
+import ru.yandex.money.android.sdk.model.Confirmation
+import ru.yandex.money.android.sdk.model.PaymentOption
+import ru.yandex.money.android.sdk.model.PaymentOptionInfo
 import ru.yandex.money.android.sdk.payment.tokenize.TokenizeGateway
 import ru.yandex.money.android.sdk.paymentAuth.PaymentAuthTokenGateway
 import java.util.concurrent.Semaphore
 
 internal class ApiV3TokenizeGateway(
-        private val httpClient: Lazy<OkHttpClient>,
-        private val shopToken: String,
-        private val paymentAuthTokenGateway: PaymentAuthTokenGateway,
-        private val tmxProfilingTool: ThreatMetrixProfilingTool
+    private val httpClient: Lazy<OkHttpClient>,
+    private val shopToken: String,
+    private val paymentAuthTokenGateway: PaymentAuthTokenGateway,
+    private val tmxProfilingTool: ThreatMetrixProfilingTool
 ) : TokenizeGateway, ProfilingTool.SessionIdListener {
 
     private var tmxSessionId: String? = null
@@ -53,20 +54,23 @@ internal class ApiV3TokenizeGateway(
     }
 
     override fun getToken(
-            paymentOption: PaymentOption,
-            paymentOptionInfo: PaymentOptionInfo,
-            allowRecurringPayments: Boolean
+        paymentOption: PaymentOption,
+        paymentOptionInfo: PaymentOptionInfo,
+        allowRecurringPayments: Boolean,
+        confirmation: Confirmation
     ): String {
         tmxProfilingTool.requestSessionId(this)
         semaphore.acquire()
         val currentTmxSessionId = tmxSessionId ?: throw TmxProfilingFailedException()
         val paymentAuthToken = paymentAuthTokenGateway.paymentAuthToken
         val tokenRequest = TokenRequest(
-                paymentOptionInfo,
-                paymentOption,
-                currentTmxSessionId,
-                shopToken,
-                paymentAuthToken)
+            paymentOptionInfo,
+            paymentOption,
+            currentTmxSessionId,
+            shopToken,
+            paymentAuthToken,
+            confirmation
+        )
         tmxSessionId = null
         val response = httpClient.value.execute(tokenRequest)
         when (response.error) {

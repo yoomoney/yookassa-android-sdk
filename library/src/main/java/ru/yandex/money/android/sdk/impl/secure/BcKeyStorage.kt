@@ -63,4 +63,4 @@ private fun loadKeyStore(context: Context, path: String, password: CharArray): K
     }
 }
 
-private fun generateKey() = KeyGenerator.getInstance("AES", "BC").generateKey()
+private fun generateKey() = KeyGenerator.getInstance("AES").generateKey()

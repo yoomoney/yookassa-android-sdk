@@ -26,6 +26,8 @@ import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.verifyNoMoreInteractions
+import ru.yandex.money.android.sdk.model.StateHolder
+import ru.yandex.money.android.sdk.model.ViewModel
 
 class StateHolderTest {
 

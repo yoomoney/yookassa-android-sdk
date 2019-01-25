@@ -23,10 +23,10 @@ package ru.yandex.money.android.sdk.methods.paymentAuth
 
 import org.json.JSONObject
 import ru.yandex.money.android.sdk.Amount
-import ru.yandex.money.android.sdk.ErrorCode
-import ru.yandex.money.android.sdk.ExtendedStatus
 import ru.yandex.money.android.sdk.impl.extensions.toCheckoutTokenIssueInitResponse
 import ru.yandex.money.android.sdk.impl.extensions.toJsonObject
+import ru.yandex.money.android.sdk.model.ErrorCode
+import ru.yandex.money.android.sdk.model.ExtendedStatus
 
 private const val CHECKOUT_TOKEN_ISSUE_INIT_PATH = "/checkout/token-issue-init"
 

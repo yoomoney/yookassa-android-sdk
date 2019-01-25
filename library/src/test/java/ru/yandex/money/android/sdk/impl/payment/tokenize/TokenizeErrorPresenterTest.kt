@@ -24,9 +24,9 @@ package ru.yandex.money.android.sdk.impl.payment.tokenize
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.instanceOf
 import org.junit.Test
-import ru.yandex.money.android.sdk.SelectedOptionNotFoundException
 import ru.yandex.money.android.sdk.impl.contract.ContractErrorViewModel
 import ru.yandex.money.android.sdk.impl.contract.ContractRestartProcessViewModel
+import ru.yandex.money.android.sdk.model.SelectedOptionNotFoundException
 
 class TokenizeErrorPresenterTest {
 

@@ -21,8 +21,8 @@
 
 package ru.yandex.money.android.sdk.impl.metrics
 
-import ru.yandex.money.android.sdk.UnhandledException
 import ru.yandex.money.android.sdk.impl.logging.Logger
+import ru.yandex.money.android.sdk.model.UnhandledException
 
 internal class ExceptionReportingLogger(
     private val logger: Logger,

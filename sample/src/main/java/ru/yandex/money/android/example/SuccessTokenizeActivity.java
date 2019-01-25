@@ -31,6 +31,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 public final class SuccessTokenizeActivity extends AppCompatActivity {
 
@@ -50,12 +51,8 @@ public final class SuccessTokenizeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_success_tokenize);
 
         findViewById(R.id.close).setOnClickListener(v -> finish());
-
-        findViewById(R.id.showDocumentation).setOnClickListener(v -> {
-            final Intent showDoc = new Intent(Intent.ACTION_VIEW,
-                    Uri.parse(getString(R.string.checkout_documentation_link)));
-            startActivity(showDoc);
-        });
+        findViewById(R.id.showDocumentation).setOnClickListener(v -> openLink(R.string.checkout_documentation_link));
+        findViewById(R.id.showGithub).setOnClickListener(v -> openLink(R.string.checkout_github_link));
 
         findViewById(R.id.showToken).setOnClickListener(v -> {
             final Intent intent = getIntent();
@@ -75,5 +72,8 @@ public final class SuccessTokenizeActivity extends AppCompatActivity {
                     .show();
         });
     }
-}
 
+    private void openLink(int linkResId) {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(linkResId))));
+    }
+}

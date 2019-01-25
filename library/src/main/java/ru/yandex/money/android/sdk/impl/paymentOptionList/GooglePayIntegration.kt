@@ -37,8 +37,8 @@ import com.google.android.gms.wallet.PaymentsClient
 import com.google.android.gms.wallet.TransactionInfo
 import com.google.android.gms.wallet.Wallet
 import com.google.android.gms.wallet.WalletConstants
-import ru.yandex.money.android.sdk.GooglePayInfo
 import ru.yandex.money.android.sdk.impl.PendingIntentActivity
+import ru.yandex.money.android.sdk.model.GooglePayInfo
 import ru.yandex.money.android.sdk.payment.GetLoadedPaymentOptionListGateway
 import ru.yandex.money.android.sdk.payment.loadOptionList.CheckGooglePayAvailableGateway
 import java.util.concurrent.ArrayBlockingQueue

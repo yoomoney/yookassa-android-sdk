@@ -21,6 +21,6 @@
 
 package ru.yandex.money.android.sdk.payment.loadOptionList
 
-import ru.yandex.money.android.sdk.SdkException
+import ru.yandex.money.android.sdk.model.SdkException
 
 internal class PaymentOptionListIsEmptyException : SdkException()

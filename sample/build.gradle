@@ -21,6 +21,8 @@
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'com.github.triplet.play'
+
 apply from: rootProject.file('common.gradle')
 
 android {
@@ -31,7 +33,8 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
-        buildConfigField "java.util.Calendar", "BUILD_DATE", "java.util.Calendar.getInstance()"
+        def buildDateMillis = Calendar.getInstance().toInstant().toEpochMilli()
+        buildConfigField "long", "BUILD_DATE", "${buildDateMillis}L"
 
         buildConfigField "String", "MERCHANT_TOKEN", "${optionalProperty('merchantToken')}"
         buildConfigField "String", "GATEWAY_ID", "${optionalProperty('gatewayId')}"
@@ -79,7 +82,7 @@ dependencies {
     implementation 'com.yandex.android:authsdk:2.1.0'
     implementation project(':pay-cards-sdk')
     testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-core:2.17.0'
+    testImplementation "org.mockito:mockito-core:$mockito_version"
     testImplementation "org.robolectric:robolectric:3.8"
     androidTestImplementation "com.android.support.test:runner:$support_test_version"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$espresso_version"

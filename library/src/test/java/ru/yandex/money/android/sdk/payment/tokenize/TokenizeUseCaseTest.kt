@@ -21,56 +21,51 @@
 
 package ru.yandex.money.android.sdk.payment.tokenize
 
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.whenever
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.instanceOf
 import org.hamcrest.MatcherAssert.assertThat
-import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers.any
-import org.mockito.Mock
 import org.mockito.Mockito.inOrder
-import org.mockito.junit.MockitoJUnitRunner
-import ru.yandex.money.android.sdk.AbstractWallet
 import ru.yandex.money.android.sdk.Amount
-import ru.yandex.money.android.sdk.SelectedOptionNotFoundException
-import ru.yandex.money.android.sdk.WalletInfo
 import ru.yandex.money.android.sdk.createGooglePayPaymentOption
 import ru.yandex.money.android.sdk.createLinkedCardPaymentOption
 import ru.yandex.money.android.sdk.createNewCardPaymentOption
 import ru.yandex.money.android.sdk.createSbolSmsInvoicingPaymentOption
 import ru.yandex.money.android.sdk.createWalletPaymentOption
 import ru.yandex.money.android.sdk.impl.extensions.RUB
-import ru.yandex.money.android.sdk.on
+import ru.yandex.money.android.sdk.model.AbstractWallet
+import ru.yandex.money.android.sdk.model.Confirmation
+import ru.yandex.money.android.sdk.model.NoConfirmation
+import ru.yandex.money.android.sdk.model.PaymentOption
+import ru.yandex.money.android.sdk.model.SelectedOptionNotFoundException
+import ru.yandex.money.android.sdk.model.WalletInfo
 import ru.yandex.money.android.sdk.payment.CheckPaymentAuthRequiredGateway
 import ru.yandex.money.android.sdk.payment.GetLoadedPaymentOptionListGateway
 import java.math.BigDecimal
 
-@RunWith(MockitoJUnitRunner.StrictStubs::class)
 internal class TokenizeUseCaseTest {
 
-
-    @Mock
-    private lateinit var getLoadedPaymentOptionListGateway: GetLoadedPaymentOptionListGateway
-    @Mock
-    private lateinit var tokenizeGateway: TokenizeGateway
-    @Mock
-    private lateinit var checkPaymentAuthRequiredGateway: CheckPaymentAuthRequiredGateway
-    private lateinit var useCase: TokenizeUseCase
-
-    @Before
-    fun setUp() {
-        useCase = TokenizeUseCase(
-            getLoadedPaymentOptionListGateway = getLoadedPaymentOptionListGateway,
-            tokenizeGateway = tokenizeGateway,
-            checkPaymentAuthRequiredGateway = checkPaymentAuthRequiredGateway
-        )
+    private val getLoadedPaymentOptionListGateway: GetLoadedPaymentOptionListGateway = mock()
+    private val tokenizeGateway: TokenizeGateway = mock()
+    private val checkPaymentAuthRequiredGateway: CheckPaymentAuthRequiredGateway = mock()
+    private val convertToConfirmation: (PaymentOption) -> Confirmation = mock {
+        on { invoke(any()) } doReturn NoConfirmation
     }
+    private var useCase: TokenizeUseCase = TokenizeUseCase(
+        getLoadedPaymentOptionListGateway = getLoadedPaymentOptionListGateway,
+        tokenizeGateway = tokenizeGateway,
+        checkPaymentAuthRequiredGateway = checkPaymentAuthRequiredGateway,
+        convertToConfirmation = convertToConfirmation
+    )
 
     @Test(expected = SelectedOptionNotFoundException::class)
     fun shouldThrowOptionNotFoundException() {
         // prepare
-        on(getLoadedPaymentOptionListGateway.getLoadedPaymentOptions()).thenReturn(emptyList())
+        whenever(getLoadedPaymentOptionListGateway.getLoadedPaymentOptions()).thenReturn(emptyList())
 
         // invoke
         useCase(TokenizeInputModel(1, true))
@@ -83,8 +78,15 @@ internal class TokenizeUseCaseTest {
         // prepare
         val testPaymentOption = createWalletPaymentOption(1)
         val testPaymentOptionInfo = WalletInfo()
-        on(getLoadedPaymentOptionListGateway.getLoadedPaymentOptions()).thenReturn(listOf(testPaymentOption))
-        on(tokenizeGateway.getToken(testPaymentOption, testPaymentOptionInfo, true)).thenReturn("123")
+        whenever(getLoadedPaymentOptionListGateway.getLoadedPaymentOptions()).thenReturn(listOf(testPaymentOption))
+        whenever(
+            tokenizeGateway.getToken(
+                testPaymentOption,
+                testPaymentOptionInfo,
+                true,
+                NoConfirmation
+            )
+        ).thenReturn("123")
 
         // invoke
         useCase(TokenizeInputModel(1, true))
@@ -92,7 +94,9 @@ internal class TokenizeUseCaseTest {
         // assert
         inOrder(getLoadedPaymentOptionListGateway, tokenizeGateway, checkPaymentAuthRequiredGateway).apply {
             verify(getLoadedPaymentOptionListGateway).getLoadedPaymentOptions()
-            verify(tokenizeGateway).getToken(testPaymentOption, testPaymentOptionInfo, true)
+            verify(tokenizeGateway).getToken(testPaymentOption, testPaymentOptionInfo, true,
+                NoConfirmation
+            )
             verifyNoMoreInteractions()
         }
     }
@@ -101,8 +105,8 @@ internal class TokenizeUseCaseTest {
     fun shouldRequestAuthorization() {
         // prepare
         val testPaymentOption = createWalletPaymentOption(1)
-        on(getLoadedPaymentOptionListGateway.getLoadedPaymentOptions()).thenReturn(listOf(testPaymentOption))
-        on(checkPaymentAuthRequiredGateway.checkPaymentAuthRequired()).thenReturn(true)
+        whenever(getLoadedPaymentOptionListGateway.getLoadedPaymentOptions()).thenReturn(listOf(testPaymentOption))
+        whenever(checkPaymentAuthRequiredGateway.checkPaymentAuthRequired()).thenReturn(true)
 
         // invoke
         val outputModel = useCase(TokenizeInputModel(1, true))
@@ -113,7 +117,7 @@ internal class TokenizeUseCaseTest {
     @Test(expected = IllegalStateException::class)
     fun shouldThrow_IllegalStateException_When_TryToTokenizeAbstractWallet() {
         // prepare
-        on(getLoadedPaymentOptionListGateway.getLoadedPaymentOptions()).thenReturn(
+        whenever(getLoadedPaymentOptionListGateway.getLoadedPaymentOptions()).thenReturn(
             listOf(AbstractWallet(1, Amount(BigDecimal.TEN, RUB), null))
         )
 
@@ -127,7 +131,7 @@ internal class TokenizeUseCaseTest {
     fun `should return TokenizePaymentOptionInfoRequired with LinkedCard when LinkedCardOptionInfo not present`() {
         // prepare
         val paymentOption = createLinkedCardPaymentOption(1)
-        on(getLoadedPaymentOptionListGateway.getLoadedPaymentOptions()).thenReturn(listOf(paymentOption))
+        whenever(getLoadedPaymentOptionListGateway.getLoadedPaymentOptions()).thenReturn(listOf(paymentOption))
 
         // invoke
         val outputModel = useCase(TokenizeInputModel(1, false)) as TokenizePaymentOptionInfoRequired
@@ -140,7 +144,7 @@ internal class TokenizeUseCaseTest {
     fun `should return TokenizePaymentOptionInfoRequired with NewCard when BankCardOptionInfo not present`() {
         // prepare
         val paymentOption = createNewCardPaymentOption(1)
-        on(getLoadedPaymentOptionListGateway.getLoadedPaymentOptions()).thenReturn(listOf(paymentOption))
+        whenever(getLoadedPaymentOptionListGateway.getLoadedPaymentOptions()).thenReturn(listOf(paymentOption))
 
         // invoke
         val outputModel = useCase(TokenizeInputModel(1, false)) as TokenizePaymentOptionInfoRequired
@@ -153,7 +157,7 @@ internal class TokenizeUseCaseTest {
     fun `should return TokenizePaymentOptionInfoRequired with SbolSmsInvoicing when SbolSmsInvoicingInfo not present`() {
         // prepare
         val paymentOption = createSbolSmsInvoicingPaymentOption(1)
-        on(getLoadedPaymentOptionListGateway.getLoadedPaymentOptions()).thenReturn(listOf(paymentOption))
+        whenever(getLoadedPaymentOptionListGateway.getLoadedPaymentOptions()).thenReturn(listOf(paymentOption))
 
         // invoke
         val outputModel = useCase(TokenizeInputModel(1, false)) as TokenizePaymentOptionInfoRequired
@@ -166,7 +170,7 @@ internal class TokenizeUseCaseTest {
     fun `should return TokenizePaymentOptionInfoRequired with GooglePay when GooglePayOptionInfo not present`() {
         // prepare
         val paymentOption = createGooglePayPaymentOption(1)
-        on(getLoadedPaymentOptionListGateway.getLoadedPaymentOptions()).thenReturn(listOf(paymentOption))
+        whenever(getLoadedPaymentOptionListGateway.getLoadedPaymentOptions()).thenReturn(listOf(paymentOption))
 
         // invoke
         val outputModel = useCase(TokenizeInputModel(1, false)) as TokenizePaymentOptionInfoRequired
@@ -179,9 +183,8 @@ internal class TokenizeUseCaseTest {
     fun shouldReturn_PaymentOption() {
         // prepare
         val paymentOption = createWalletPaymentOption(1)
-        on(getLoadedPaymentOptionListGateway.getLoadedPaymentOptions()).thenReturn(listOf(paymentOption))
-        on(tokenizeGateway.getToken(any() ?: paymentOption, any() ?: WalletInfo(), any() ?: false))
-            .thenReturn("test token")
+        whenever(getLoadedPaymentOptionListGateway.getLoadedPaymentOptions()).thenReturn(listOf(paymentOption))
+        whenever(tokenizeGateway.getToken(any(), any(), any(), any())).thenReturn("test token")
 
         // invoke
         val outputModel = useCase(TokenizeInputModel(1, false)) as TokenOutputModel

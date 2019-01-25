@@ -27,9 +27,9 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
-import ru.yandex.money.android.sdk.Presenter
 import ru.yandex.money.android.sdk.impl.logout.LogoutSuccessViewModel
 import ru.yandex.money.android.sdk.logout.LogoutOutputModel
+import ru.yandex.money.android.sdk.model.Presenter
 import ru.yandex.money.android.sdk.on
 
 @RunWith(MockitoJUnitRunner.StrictStubs::class)

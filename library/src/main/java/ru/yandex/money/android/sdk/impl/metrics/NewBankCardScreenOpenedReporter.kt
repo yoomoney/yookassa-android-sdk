@@ -21,8 +21,8 @@
 
 package ru.yandex.money.android.sdk.impl.metrics
 
-import ru.yandex.money.android.sdk.Presenter
 import ru.yandex.money.android.sdk.impl.paymentOptionInfo.PaymentOptionInfoBankCardViewModel
+import ru.yandex.money.android.sdk.model.Presenter
 import ru.yandex.money.android.sdk.payment.tokenize.TokenizeOutputModel
 
 internal class NewBankCardScreenOpenedReporter(

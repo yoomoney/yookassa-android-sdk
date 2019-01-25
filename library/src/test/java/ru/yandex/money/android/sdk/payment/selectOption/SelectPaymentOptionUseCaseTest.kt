@@ -30,12 +30,12 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
-import ru.yandex.money.android.sdk.PaymentOption
-import ru.yandex.money.android.sdk.SelectedOptionNotFoundException
 import ru.yandex.money.android.sdk.createAbstractWalletPaymentOption
 import ru.yandex.money.android.sdk.createLinkedCardPaymentOption
 import ru.yandex.money.android.sdk.createNewCardPaymentOption
 import ru.yandex.money.android.sdk.createWalletPaymentOption
+import ru.yandex.money.android.sdk.model.PaymentOption
+import ru.yandex.money.android.sdk.model.SelectedOptionNotFoundException
 import ru.yandex.money.android.sdk.payment.CheckPaymentAuthRequiredGateway
 import ru.yandex.money.android.sdk.payment.GetLoadedPaymentOptionListGateway
 

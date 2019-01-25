@@ -21,7 +21,7 @@
 
 package ru.yandex.money.android.sdk.payment
 
-import ru.yandex.money.android.sdk.CurrentUser
+import ru.yandex.money.android.sdk.model.CurrentUser
 
 internal interface CurrentUserGateway {
     var currentUser: CurrentUser

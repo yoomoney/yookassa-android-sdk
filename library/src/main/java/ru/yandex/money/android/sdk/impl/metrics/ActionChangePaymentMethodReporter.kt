@@ -21,9 +21,9 @@
 
 package ru.yandex.money.android.sdk.impl.metrics
 
-import ru.yandex.money.android.sdk.Presenter
 import ru.yandex.money.android.sdk.impl.paymentOptionList.PaymentOptionListCloseViewModel
 import ru.yandex.money.android.sdk.impl.paymentOptionList.PaymentOptionListViewModel
+import ru.yandex.money.android.sdk.model.Presenter
 import ru.yandex.money.android.sdk.payment.changeOption.ChangePaymentOptionOutputModel
 
 internal class ActionChangePaymentMethodReporter(

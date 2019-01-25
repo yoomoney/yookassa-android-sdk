@@ -22,8 +22,8 @@
 package ru.yandex.money.android.sdk.impl.paymentAuth
 
 import ru.yandex.money.android.sdk.Amount
-import ru.yandex.money.android.sdk.AuthType
-import ru.yandex.money.android.sdk.AuthTypeState
+import ru.yandex.money.android.sdk.model.AuthType
+import ru.yandex.money.android.sdk.model.AuthTypeState
 import ru.yandex.money.android.sdk.paymentAuth.PaymentAuthTypeGateway
 
 internal class MockPaymentAuthTypeGateway : PaymentAuthTypeGateway {

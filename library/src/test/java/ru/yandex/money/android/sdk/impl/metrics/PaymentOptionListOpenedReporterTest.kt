@@ -27,10 +27,10 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
-import ru.yandex.money.android.sdk.PaymentOption
-import ru.yandex.money.android.sdk.Presenter
 import ru.yandex.money.android.sdk.impl.paymentOptionList.PaymentOptionListSuccessViewModel
 import ru.yandex.money.android.sdk.impl.paymentOptionList.PaymentOptionListViewModel
+import ru.yandex.money.android.sdk.model.PaymentOption
+import ru.yandex.money.android.sdk.model.Presenter
 import ru.yandex.money.android.sdk.on
 import ru.yandex.money.android.sdk.payment.loadOptionList.PaymentOptionListOutputModel
 

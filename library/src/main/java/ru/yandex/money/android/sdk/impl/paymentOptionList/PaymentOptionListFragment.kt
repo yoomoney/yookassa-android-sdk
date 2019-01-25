@@ -33,7 +33,6 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
 import kotlinx.android.synthetic.main.ym_fragment_payment_options.*
 import ru.yandex.money.android.sdk.R
-import ru.yandex.money.android.sdk.UnhandledException
 import ru.yandex.money.android.sdk.impl.AppModel
 import ru.yandex.money.android.sdk.impl.ErrorView
 import ru.yandex.money.android.sdk.impl.LoadingView
@@ -42,6 +41,7 @@ import ru.yandex.money.android.sdk.impl.extensions.visible
 import ru.yandex.money.android.sdk.impl.userAuth.UserAuthCancelledViewModel
 import ru.yandex.money.android.sdk.impl.userAuth.UserAuthFailViewModel
 import ru.yandex.money.android.sdk.impl.userAuth.UserAuthNoWalletViewModel
+import ru.yandex.money.android.sdk.model.UnhandledException
 import ru.yandex.money.android.sdk.utils.showNoWalletDialog
 
 internal class PaymentOptionListFragment : Fragment(), PaymentOptionListRecyclerViewAdapter.PaymentOptionClickListener {

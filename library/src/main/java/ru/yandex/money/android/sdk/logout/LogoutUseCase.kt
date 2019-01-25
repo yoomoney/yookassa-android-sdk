@@ -21,7 +21,7 @@
 
 package ru.yandex.money.android.sdk.logout
 
-import ru.yandex.money.android.sdk.UseCase
+import ru.yandex.money.android.sdk.model.UseCase
 
 internal class LogoutUseCase(
         private val logoutGateway: LogoutGateway

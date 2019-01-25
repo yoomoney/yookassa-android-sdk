@@ -36,6 +36,18 @@ import org.mockito.stubbing.OngoingStubbing
 import ru.yandex.money.android.sdk.impl.contract.ContractSuccessViewModel
 import ru.yandex.money.android.sdk.impl.extensions.RUB
 import ru.yandex.money.android.sdk.impl.payment.PaymentOptionViewModel
+import ru.yandex.money.android.sdk.model.AbstractWallet
+import ru.yandex.money.android.sdk.model.CardBrand
+import ru.yandex.money.android.sdk.model.Fee
+import ru.yandex.money.android.sdk.model.GooglePay
+import ru.yandex.money.android.sdk.model.LinkedCard
+import ru.yandex.money.android.sdk.model.LinkedCardInfo
+import ru.yandex.money.android.sdk.model.NewCard
+import ru.yandex.money.android.sdk.model.NewCardInfo
+import ru.yandex.money.android.sdk.model.PaymentOption
+import ru.yandex.money.android.sdk.model.PaymentOptionInfo
+import ru.yandex.money.android.sdk.model.SbolSmsInvoicing
+import ru.yandex.money.android.sdk.model.Wallet
 import java.math.BigDecimal
 import java.util.Arrays
 import java.util.concurrent.BlockingQueue
@@ -47,56 +59,82 @@ fun waitUntilEmpty(queue: BlockingQueue<Any>) {
     while (queue.poll(1, TimeUnit.SECONDS) != null);
 }
 
-internal fun createNewCardPaymentOption(id: Int): PaymentOption = NewCard(
-    id = id,
-    charge = Amount(BigDecimal.TEN, RUB),
-    fee = Fee(Amount(BigDecimal.ONE, RUB), Amount(BigDecimal("0.5"), RUB))
-)
+internal fun createNewCardPaymentOption(id: Int): PaymentOption =
+    NewCard(
+        id = id,
+        charge = Amount(BigDecimal.TEN, RUB),
+        fee = Fee(
+            Amount(BigDecimal.ONE, RUB),
+            Amount(BigDecimal("0.5"), RUB)
+        )
+    )
 
-internal fun createWalletPaymentOption(id: Int): PaymentOption = Wallet(
-    id = id,
-    charge = Amount(BigDecimal.TEN, RUB),
-    fee = Fee(Amount(BigDecimal.ONE, RUB), Amount(BigDecimal("0.5"), RUB)),
-    walletId = "12345654321",
-    balance = Amount(BigDecimal.TEN, RUB),
-    userName = "John Smith"
-)
+internal fun createWalletPaymentOption(id: Int): PaymentOption =
+    Wallet(
+        id = id,
+        charge = Amount(BigDecimal.TEN, RUB),
+        fee = Fee(
+            Amount(BigDecimal.ONE, RUB),
+            Amount(BigDecimal("0.5"), RUB)
+        ),
+        walletId = "12345654321",
+        balance = Amount(BigDecimal.TEN, RUB),
+        userName = "John Smith"
+    )
 
-internal fun createAbstractWalletPaymentOption(id: Int): PaymentOption = AbstractWallet(
-    id = id,
-    charge = Amount(BigDecimal.TEN, RUB),
-    fee = Fee(Amount(BigDecimal.ONE, RUB), Amount(BigDecimal("0.5"), RUB))
-)
+internal fun createAbstractWalletPaymentOption(id: Int): PaymentOption =
+    AbstractWallet(
+        id = id,
+        charge = Amount(BigDecimal.TEN, RUB),
+        fee = Fee(
+            Amount(BigDecimal.ONE, RUB),
+            Amount(BigDecimal("0.5"), RUB)
+        )
+    )
 
-internal fun createSbolSmsInvoicingPaymentOption(id: Int): PaymentOption = SbolSmsInvoicing(
-    id = id,
-    charge = Amount(BigDecimal.TEN, RUB),
-    fee = Fee(Amount(BigDecimal.ONE, RUB), Amount(BigDecimal("0.5"), RUB))
-)
+internal fun createSbolSmsInvoicingPaymentOption(id: Int): PaymentOption =
+    SbolSmsInvoicing(
+        id = id,
+        charge = Amount(BigDecimal.TEN, RUB),
+        fee = Fee(
+            Amount(BigDecimal.ONE, RUB),
+            Amount(BigDecimal("0.5"), RUB)
+        )
+    )
 
-internal fun createLinkedCardPaymentOption(id: Int): PaymentOption = LinkedCard(
-    id = id,
-    charge = Amount(BigDecimal.TEN, RUB),
-    fee = Fee(Amount(BigDecimal.ONE, RUB), Amount(BigDecimal("0.5"), RUB)),
-    cardId = "12345654321",
-    brand = CardBrand.MASTER_CARD,
-    pan = "1234567887654321"
-)
+internal fun createLinkedCardPaymentOption(id: Int): PaymentOption =
+    LinkedCard(
+        id = id,
+        charge = Amount(BigDecimal.TEN, RUB),
+        fee = Fee(
+            Amount(BigDecimal.ONE, RUB),
+            Amount(BigDecimal("0.5"), RUB)
+        ),
+        cardId = "12345654321",
+        brand = CardBrand.MASTER_CARD,
+        pan = "1234567887654321"
+    )
 
-internal fun createGooglePayPaymentOption(id: Int): PaymentOption = GooglePay(
-    id = id,
-    charge = Amount(BigDecimal.TEN, RUB),
-    fee = Fee(Amount(BigDecimal.ONE, RUB), Amount(BigDecimal("0.5"), RUB))
-)
+internal fun createGooglePayPaymentOption(id: Int): PaymentOption =
+    GooglePay(
+        id = id,
+        charge = Amount(BigDecimal.TEN, RUB),
+        fee = Fee(
+            Amount(BigDecimal.ONE, RUB),
+            Amount(BigDecimal("0.5"), RUB)
+        )
+    )
 
-internal fun createNewCardInfo(): PaymentOptionInfo = NewCardInfo(
-    number = "1234567887654321",
-    expirationMonth = "01",
-    expirationYear = "2020",
-    csc = "000"
-)
+internal fun createNewCardInfo(): PaymentOptionInfo =
+    NewCardInfo(
+        number = "1234567887654321",
+        expirationMonth = "01",
+        expirationYear = "2020",
+        csc = "000"
+    )
 
-internal fun createLinkedCardInfo(): PaymentOptionInfo = LinkedCardInfo(csc = "000")
+internal fun createLinkedCardInfo(): PaymentOptionInfo =
+    LinkedCardInfo(csc = "000")
 
 internal fun createAmount() = Amount(BigDecimal.TEN, RUB)
 

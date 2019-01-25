@@ -22,18 +22,18 @@
 package ru.yandex.money.android.sdk.impl.contract
 
 import android.content.Context
-import ru.yandex.money.android.sdk.AuthType
-import ru.yandex.money.android.sdk.GooglePay
-import ru.yandex.money.android.sdk.NewCard
 import ru.yandex.money.android.sdk.PaymentMethodType
 import ru.yandex.money.android.sdk.R
-import ru.yandex.money.android.sdk.SbolSmsInvoicing
-import ru.yandex.money.android.sdk.YandexMoney
 import ru.yandex.money.android.sdk.impl.extensions.toHint
 import ru.yandex.money.android.sdk.impl.payment.PaymentOptionPresenter
 import ru.yandex.money.android.sdk.impl.paymentAuth.ProcessPaymentAuthProgressViewModel
-import ru.yandex.money.android.sdk.impl.paymentAuth.ProgressSmsSessionRetryViewModel
 import ru.yandex.money.android.sdk.impl.paymentAuth.RequestPaymentAuthProgressViewModel
+import ru.yandex.money.android.sdk.impl.paymentAuth.SmsSessionRetryProgressViewModel
+import ru.yandex.money.android.sdk.model.AuthType
+import ru.yandex.money.android.sdk.model.GooglePay
+import ru.yandex.money.android.sdk.model.NewCard
+import ru.yandex.money.android.sdk.model.SbolSmsInvoicing
+import ru.yandex.money.android.sdk.model.YandexMoney
 import ru.yandex.money.android.sdk.payment.selectOption.SelectPaymentOptionOutputModel
 import ru.yandex.money.android.sdk.payment.selectOption.SelectedPaymentOptionOutputModel
 import ru.yandex.money.android.sdk.payment.selectOption.UserAuthRequired
@@ -108,7 +108,7 @@ internal class ContractPresenter(
     )
 
     @Suppress("UNUSED_PARAMETER")
-    operator fun invoke(model: ProgressSmsSessionRetryViewModel) = contract.copy(
+    operator fun invoke(model: SmsSessionRetryProgressViewModel) = contract.copy(
         showAllowRecurringPayments = false,
         showAllowWalletLinking = false,
         paymentAuth = PaymentAuthProgressViewModel()

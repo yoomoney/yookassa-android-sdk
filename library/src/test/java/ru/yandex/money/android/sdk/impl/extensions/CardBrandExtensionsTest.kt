@@ -26,8 +26,8 @@ import org.hamcrest.Matchers.equalTo
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
-import ru.yandex.money.android.sdk.CardBrand
 import ru.yandex.money.android.sdk.R
+import ru.yandex.money.android.sdk.model.CardBrand
 
 @RunWith(Parameterized::class)
 internal class CardBrandExtensionsTest(val args: Pair<CardBrand, Int>) {

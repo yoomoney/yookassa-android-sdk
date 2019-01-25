@@ -28,13 +28,13 @@ import org.junit.runners.Parameterized
 import org.mockito.Mock
 import org.mockito.Mockito.inOrder
 import org.mockito.MockitoAnnotations
-import ru.yandex.money.android.sdk.PaymentOption
-import ru.yandex.money.android.sdk.UseCase
 import ru.yandex.money.android.sdk.createAbstractWalletPaymentOption
 import ru.yandex.money.android.sdk.createLinkedCardPaymentOption
 import ru.yandex.money.android.sdk.createNewCardPaymentOption
 import ru.yandex.money.android.sdk.createSbolSmsInvoicingPaymentOption
 import ru.yandex.money.android.sdk.createWalletPaymentOption
+import ru.yandex.money.android.sdk.model.PaymentOption
+import ru.yandex.money.android.sdk.model.UseCase
 import ru.yandex.money.android.sdk.on
 import ru.yandex.money.android.sdk.payment.selectOption.SelectPaymentOptionInputModel
 import ru.yandex.money.android.sdk.payment.selectOption.SelectedPaymentOptionOutputModel

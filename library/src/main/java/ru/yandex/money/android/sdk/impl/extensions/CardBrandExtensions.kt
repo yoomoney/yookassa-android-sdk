@@ -23,24 +23,24 @@
 
 package ru.yandex.money.android.sdk.impl.extensions
 
-import ru.yandex.money.android.sdk.CardBrand
-import ru.yandex.money.android.sdk.CardBrand.AMERICAN_EXPRESS
-import ru.yandex.money.android.sdk.CardBrand.BANK_CARD
-import ru.yandex.money.android.sdk.CardBrand.CUP
-import ru.yandex.money.android.sdk.CardBrand.DANKORT
-import ru.yandex.money.android.sdk.CardBrand.DINERS_CLUB
-import ru.yandex.money.android.sdk.CardBrand.DISCOVER_CARD
-import ru.yandex.money.android.sdk.CardBrand.INSTA_PAYMENT
-import ru.yandex.money.android.sdk.CardBrand.INSTA_PAYMENT_TM
-import ru.yandex.money.android.sdk.CardBrand.JCB
-import ru.yandex.money.android.sdk.CardBrand.LASER
-import ru.yandex.money.android.sdk.CardBrand.MASTER_CARD
-import ru.yandex.money.android.sdk.CardBrand.MIR
-import ru.yandex.money.android.sdk.CardBrand.SOLO
-import ru.yandex.money.android.sdk.CardBrand.SWITCH
-import ru.yandex.money.android.sdk.CardBrand.UNKNOWN
-import ru.yandex.money.android.sdk.CardBrand.VISA
 import ru.yandex.money.android.sdk.R
+import ru.yandex.money.android.sdk.model.CardBrand
+import ru.yandex.money.android.sdk.model.CardBrand.AMERICAN_EXPRESS
+import ru.yandex.money.android.sdk.model.CardBrand.BANK_CARD
+import ru.yandex.money.android.sdk.model.CardBrand.CUP
+import ru.yandex.money.android.sdk.model.CardBrand.DANKORT
+import ru.yandex.money.android.sdk.model.CardBrand.DINERS_CLUB
+import ru.yandex.money.android.sdk.model.CardBrand.DISCOVER_CARD
+import ru.yandex.money.android.sdk.model.CardBrand.INSTA_PAYMENT
+import ru.yandex.money.android.sdk.model.CardBrand.INSTA_PAYMENT_TM
+import ru.yandex.money.android.sdk.model.CardBrand.JCB
+import ru.yandex.money.android.sdk.model.CardBrand.LASER
+import ru.yandex.money.android.sdk.model.CardBrand.MASTER_CARD
+import ru.yandex.money.android.sdk.model.CardBrand.MIR
+import ru.yandex.money.android.sdk.model.CardBrand.SOLO
+import ru.yandex.money.android.sdk.model.CardBrand.SWITCH
+import ru.yandex.money.android.sdk.model.CardBrand.UNKNOWN
+import ru.yandex.money.android.sdk.model.CardBrand.VISA
 
 internal fun CardBrand.getIconResId(): Int = when (this) {
     MASTER_CARD -> R.drawable.ym_ic_cardbrand_mastercard

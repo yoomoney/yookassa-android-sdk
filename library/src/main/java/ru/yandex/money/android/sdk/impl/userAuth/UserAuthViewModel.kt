@@ -21,8 +21,8 @@
 
 package ru.yandex.money.android.sdk.impl.userAuth
 
-import ru.yandex.money.android.sdk.AuthorizedUser
-import ru.yandex.money.android.sdk.ViewModel
+import ru.yandex.money.android.sdk.model.AuthorizedUser
+import ru.yandex.money.android.sdk.model.ViewModel
 
 internal sealed class UserAuthViewModel : ViewModel()
 
