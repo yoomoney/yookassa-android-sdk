@@ -1,6 +1,12 @@
 ## Changelog
 
+### 2.1.0
+- Add color customization.
+- Add support for AndroidX (https://github.com/yandex-money/yandex-checkout-android-sdk/issues/21).
+- Fix Google Pay disabling from AndroidManifest (https://github.com/yandex-money/yandex-checkout-android-sdk/issues/20).
+
 ### 2.0.0
+2019-01-25
 - Change public api. Refactor Checkout methods and public classes.
 - Add javadoc for public classes.
 - Add logging. Logging can be turned on in TestParameters object.
@@ -13,16 +19,16 @@
 
 ### 1.3.0.6
 2018-12-27
-- Fix 3ds for test payments (https://github.com/yandex-money/yandex-checkout-android-sdk/issues/9)
+- Fix 3ds for test payments (https://github.com/yandex-money/yandex-checkout-android-sdk/issues/9).
 
 ### 1.3.0.5
 2018-12-18
-- Fix memory leak
-- Fix SSL handshake problem on Android 4
+- Fix memory leak.
+- Fix SSL handshake problem on Android 4.
 
 ### 1.3.0.4
 2018-11-23
-- ThreatMetrix fix
+- ThreatMetrix fix.
 
 ### 1.3.0.3
 2018-08-15

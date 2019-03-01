@@ -38,6 +38,7 @@ import com.google.android.gms.wallet.TransactionInfo
 import com.google.android.gms.wallet.Wallet
 import com.google.android.gms.wallet.WalletConstants
 import ru.yandex.money.android.sdk.impl.PendingIntentActivity
+import ru.yandex.money.android.sdk.impl.logging.MsdkLogger
 import ru.yandex.money.android.sdk.model.GooglePayInfo
 import ru.yandex.money.android.sdk.payment.GetLoadedPaymentOptionListGateway
 import ru.yandex.money.android.sdk.payment.loadOptionList.CheckGooglePayAvailableGateway
@@ -78,7 +79,17 @@ internal class GooglePayIntegration(
             .build()
         val result = ArrayBlockingQueue<Boolean?>(1)
         paymentsClient.isReadyToPay(request).addOnCompleteListener { task ->
-            result.offer(task.result)
+            try {
+                result.offer(task.result)
+            } catch (e: Exception) {
+                Log.d(
+                    MsdkLogger.TAG,
+                    """Google Pay payment option is disabled. If you want to use it, remove
+                        |"<meta-data android:name="com.google.android.gms.wallet.api.enabled" tools:node="remove" />
+                        |from your AndroidManifest. """.trimMargin()
+                )
+                result.offer(false)
+            }
         }
         return result.poll(10, TimeUnit.SECONDS) ?: false
     }

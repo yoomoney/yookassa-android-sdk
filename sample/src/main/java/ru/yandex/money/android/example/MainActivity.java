@@ -23,6 +23,7 @@ package ru.yandex.money.android.example;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -42,6 +43,7 @@ import ru.yandex.money.android.example.settings.SettingsActivity;
 import ru.yandex.money.android.example.utils.AmountFormatter;
 import ru.yandex.money.android.sdk.Amount;
 import ru.yandex.money.android.sdk.Checkout;
+import ru.yandex.money.android.sdk.ColorScheme;
 import ru.yandex.money.android.sdk.PaymentMethodType;
 import ru.yandex.money.android.sdk.PaymentParameters;
 import ru.yandex.money.android.sdk.MockConfiguration;
@@ -169,7 +171,8 @@ public final class MainActivity extends AppCompatActivity {
                     "https://custom.redirect.url/"
             );
 
-            final UiParameters uiParameters = new UiParameters(settings.showYandexCheckoutLogo());
+            final UiParameters uiParameters = new UiParameters(
+                    settings.showYandexCheckoutLogo(), new ColorScheme(settings.getPrimaryColor()));
 
             final MockConfiguration mockConfiguration;
             if (settings.isTestModeEnabled()) {

@@ -68,6 +68,31 @@
         android:gravity="center_horizontal"
         android:text="@string/success_screen_token_instructions" />
 
+    <LinearLayout
+        android:id="@+id/container3ds"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/ym_space_m">
+
+        <EditText
+            android:id="@+id/url3ds"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/hint_3ds_input"
+            android:inputType="text" />
+
+        <Button
+            style="@style/ButtonYellow.Small"
+            android:id="@+id/confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/ym_space_2xs"
+            android:text="@string/confirm_3ds" />
+
+    </LinearLayout>
+
     <Button
         style="@style/FlatButton.Small"
         android:id="@+id/showDocumentation"

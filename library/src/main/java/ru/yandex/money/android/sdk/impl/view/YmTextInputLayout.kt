@@ -1,6 +1,6 @@
 /*
  * The MIT License (MIT)
- * Copyright © 2018 NBCO Yandex.Money LLC
+ * Copyright © 2019 NBCO Yandex.Money LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
  * associated documentation files (the “Software”), to deal in the Software without restriction, including
@@ -19,37 +19,41 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package ru.yandex.money.android.sdk.impl
+package ru.yandex.money.android.sdk.impl.view
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
+import android.support.design.widget.TextInputLayout
 import android.util.AttributeSet
-import ru.yandex.money.android.sdk.R
+import android.view.View
+import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.FrameLayout
+import ru.yandex.money.android.sdk.impl.AppModel
 
-internal class MaxHeightRecyclerView @JvmOverloads constructor(
+/**
+ * Custom implementation of [TextInputLayout] that doesn't show error text under an [EditText]. Does not
+ * allow anything to be added apart from [EditText] and [FrameLayout] objects.
+ */
+
+internal class YmTextInputLayout @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : RecyclerView(context, attrs, defStyleAttr) {
+) : TextInputLayout(context, attrs, defStyleAttr) {
 
-    var maxHeight: Int = 0
-
-    init {
-        with(context.theme.obtainStyledAttributes(attrs, R.styleable.ym_MaxHeightRecyclerView, defStyleAttr, 0)) {
-            if (hasValue(R.styleable.ym_MaxHeightRecyclerView_ym_maxHeight)) {
-                maxHeight = getDimensionPixelSize(R.styleable.ym_MaxHeightRecyclerView_ym_maxHeight, 0)
-            }
-            recycle()
+    override fun addView(child: View, index: Int, params: ViewGroup.LayoutParams) {
+        if (child is EditText || child is FrameLayout) {
+            super.addView(child, index, params)
         }
     }
 
-    override fun onMeasure(widthSpec: Int, heightSpec: Int) {
-        val newHeightSpec = maxHeight
-            .takeUnless(0::equals)
-            ?.takeIf { MeasureSpec.getSize(heightSpec) > it }
-            ?.let {
-                MeasureSpec.makeMeasureSpec(it, MeasureSpec.AT_MOST)
-            } ?: heightSpec
-        super.onMeasure(widthSpec, newHeightSpec)
+    override fun drawableStateChanged() {
+        super.drawableStateChanged()
+        if (error == null) {
+            editText?.background?.colorFilter =
+                PorterDuffColorFilter(AppModel.colorScheme.primaryColor, PorterDuff.Mode.SRC_IN)
+        }
     }
 }

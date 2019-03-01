@@ -35,7 +35,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import ru.yandex.money.android.example.BuildConfig;
 import ru.yandex.money.android.example.R;
-import ru.yandex.money.android.example.linkedcards.LinkedCardsActivity;
 import ru.yandex.money.android.sdk.Checkout;
 
 import java.util.Arrays;
@@ -85,6 +84,9 @@ public final class SettingsActivity extends AppCompatActivity implements View.On
 
         linkedCardsButton = findViewById(R.id.linked_cards);
         linkedCardsButton.setOnClickListener(this);
+
+        findViewById(R.id.colorScheme).setOnClickListener(
+                v -> startActivity(new Intent(SettingsActivity.this, ColorSchemeActivity.class)));
 
         final CompoundButton enableTestModeSwitch = findViewById(R.id.enable_test_mode);
         paymentAuthPassedSwitch = findViewById(R.id.payment_auth_passed);

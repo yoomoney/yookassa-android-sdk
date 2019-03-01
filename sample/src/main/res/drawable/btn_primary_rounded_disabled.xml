@@ -20,7 +20,7 @@
   ~ OTHER DEALINGS IN THE SOFTWARE.
   -->
 
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:color="@color/ym_palette_accent" android:state_focused="true" />
-    <item android:color="@color/ym_control_normal" />
-</selector>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/buttonPrimaryDisabled"/>
+    <corners android:radius="@dimen/ym_radius_m" />
+</shape>

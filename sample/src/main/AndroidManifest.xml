@@ -53,7 +53,18 @@
         </activity>
 
         <activity
-            android:name=".linkedcards.LinkedCardsActivity"
+            android:name=".settings.LinkedCardsActivity"
+            android:parentActivityName=".settings.SettingsActivity"
+            android:theme="@style/AppTheme.Settings"
+            android:windowSoftInputMode="adjustResize"
+            tools:ignore="UnusedAttribute">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".settings.SettingsActivity"/>
+        </activity>
+
+        <activity
+            android:name=".settings.ColorSchemeActivity"
             android:parentActivityName=".settings.SettingsActivity"
             android:theme="@style/AppTheme.Settings"
             android:windowSoftInputMode="adjustResize"

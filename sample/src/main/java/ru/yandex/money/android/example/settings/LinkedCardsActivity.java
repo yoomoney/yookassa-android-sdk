@@ -1,6 +1,6 @@
 /*
  * The MIT License (MIT)
- * Copyright © 2018 NBCO Yandex.Money LLC
+ * Copyright © 2019 NBCO Yandex.Money LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
  * associated documentation files (the “Software”), to deal in the Software without restriction, including
@@ -19,7 +19,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package ru.yandex.money.android.example.linkedcards;
+package ru.yandex.money.android.example.settings;
 
 import android.os.Bundle;
 import android.preference.PreferenceManager;

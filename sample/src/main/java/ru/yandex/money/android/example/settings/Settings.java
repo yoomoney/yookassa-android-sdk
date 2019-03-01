@@ -23,12 +23,18 @@ package ru.yandex.money.android.example.settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.preference.PreferenceManager;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+import ru.yandex.money.android.sdk.ColorScheme;
 
 public final class Settings {
 
-    public static final String KEY_LINKED_CARDS_COUNT = "linked_cards_count";
+    static final String KEY_LINKED_CARDS_COUNT = "linked_cards_count";
+    static final String KEY_PRIMARY_COLOR_RED_VALUE = "primary_color_red_value";
+    static final String KEY_PRIMARY_COLOR_GREEN_VALUE = "primary_color_green_value";
+    static final String KEY_PRIMARY_COLOR_BLUE_VALUE = "primary_color_blue_value";
     static final String KEY_YANDEX_MONEY_ALLOWED = "yandex_money_allowed";
     static final String KEY_SBERBANK_ONLINE_ALLOWED = "sberbank_online_allowed";
     static final String KEY_GOOGLE_PAY_ALLOWED = "google_pay_allowed";
@@ -74,6 +80,15 @@ public final class Settings {
 
     public int getLinkedCardsCount() {
         return sp.getInt(KEY_LINKED_CARDS_COUNT, 1);
+    }
+
+    @ColorInt
+    public int getPrimaryColor() {
+        return Color.rgb(
+                sp.getInt(KEY_PRIMARY_COLOR_RED_VALUE, 0),
+                sp.getInt(KEY_PRIMARY_COLOR_GREEN_VALUE, 114),
+                sp.getInt(KEY_PRIMARY_COLOR_BLUE_VALUE, 245)
+        );
     }
 
     public boolean shouldCompletePaymentWithError() {

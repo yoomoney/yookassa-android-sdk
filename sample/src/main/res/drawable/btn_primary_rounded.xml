@@ -20,7 +20,10 @@
   ~ OTHER DEALINGS IN THE SOFTWARE.
   -->
 
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@color/ym_button_primary_enabled"/>
-    <corners android:radius="@dimen/ym_radius_m" />
-</shape>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/btn_primary_rounded_pressed" android:state_pressed="true" />
+    <item android:drawable="@drawable/btn_primary_rounded_pressed" android:state_enabled="true" android:state_focused="true" />
+    <item android:drawable="@drawable/btn_primary_rounded_pressed" android:state_activated="true" />
+    <item android:drawable="@drawable/btn_primary_rounded_enabled" android:state_enabled="true" />
+    <item android:drawable="@drawable/btn_primary_rounded_disabled" />
+</selector>

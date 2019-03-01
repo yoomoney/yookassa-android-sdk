@@ -31,12 +31,22 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.webkit.URLUtil;
+import android.widget.EditText;
+import android.widget.Toast;
+import ru.yandex.money.android.sdk.Checkout;
 
 public final class SuccessTokenizeActivity extends AppCompatActivity {
 
     public static final String TOKEN_EXTRA = "paymentToken";
     public static final String TYPE_EXTRA = "type";
+    public static final int REQUEST_CODE_3DS = 34;
+
+    @NonNull
+    private String url3ds = "";
 
     @NonNull
     public static Intent createIntent(@NonNull Context context, @NonNull String paymentToken, @NonNull String type) {
@@ -53,6 +63,26 @@ public final class SuccessTokenizeActivity extends AppCompatActivity {
         findViewById(R.id.close).setOnClickListener(v -> finish());
         findViewById(R.id.showDocumentation).setOnClickListener(v -> openLink(R.string.checkout_documentation_link));
         findViewById(R.id.showGithub).setOnClickListener(v -> openLink(R.string.checkout_github_link));
+
+        int show3dsContainer = shouldShow3dsContainer();
+        findViewById(R.id.container3ds).setVisibility(show3dsContainer);
+        if (show3dsContainer == View.VISIBLE) {
+            findViewById(R.id.confirm).setOnClickListener(v -> open3dsConfirmation());
+            ((EditText) findViewById(R.id.url3ds)).addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    url3ds = s.toString();
+                }
+            });
+        }
 
         findViewById(R.id.showToken).setOnClickListener(v -> {
             final Intent intent = getIntent();
@@ -73,7 +103,48 @@ public final class SuccessTokenizeActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_3DS) {
+            switch (resultCode) {
+                case RESULT_OK:
+                    show3dsAlertDialog(getString(R.string.success_3ds));
+                    break;
+                case RESULT_CANCELED:
+                    show3dsAlertDialog(getString(R.string.cancel_3ds));
+                    break;
+                case Checkout.RESULT_ERROR:
+                    String error =
+                        getString(R.string.error_code_3ds) + String.valueOf(data.getIntExtra(Checkout.EXTRA_ERROR_CODE, -1)) + "\n" +
+                        getString(R.string.error_description_3ds) + data.getStringExtra(Checkout.EXTRA_ERROR_DESCRIPTION) + "\n" +
+                        getString(R.string.error_failing_url_3ds) + data.getStringExtra(Checkout.EXTRA_ERROR_FAILING_URL);
+                    show3dsAlertDialog(error);
+                    break;
+            }
+        }
+    }
+
     private void openLink(int linkResId) {
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(linkResId))));
+    }
+
+    private void show3dsAlertDialog(@NonNull String message) {
+        new AlertDialog.Builder(this, R.style.DialogToken)
+                .setMessage(message)
+                .setPositiveButton(R.string.token_cancel, (dialog, which) -> { })
+                .show();
+    }
+
+    private void open3dsConfirmation() {
+        if (URLUtil.isHttpsUrl(url3ds) || URLUtil.isAssetUrl(url3ds)) {
+            Intent intent = Checkout.create3dsIntent(this, url3ds);
+            startActivityForResult(intent, REQUEST_CODE_3DS);
+        } else {
+            Toast.makeText(this, getString(R.string.error_wrong_url), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private int shouldShow3dsContainer() {
+        return BuildConfig.DEBUG ? View.VISIBLE : View.GONE;
     }
 }

@@ -32,7 +32,6 @@
 
     <style name="AppTheme.Settings" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/white</item>
-        <item name="colorAccent">@color/ym_palette_accent</item>
         <item name="android:colorBackground">@color/white</item>
         <item name="homeAsUpIndicator">@drawable/ic_back</item>
         <item name="switchStyle">@style/Ym_Switch</item>
@@ -52,7 +51,7 @@
     </style>
 
     <style name="Ym_Button" parent="Base.Widget.AppCompat.Button">
-        <item name="android:background">@drawable/ym_btn_primary_rounded</item>
+        <item name="android:background">@drawable/btn_primary_rounded</item>
         <item name="android:textColor">@color/ym_btn_primary</item>
     </style>
 
@@ -98,13 +97,17 @@
     </style>
 
     <style name="ButtonYellow">
-        <item name="android:background">@drawable/ym_btn_primary_rounded</item>
+        <item name="android:background">@drawable/btn_primary_rounded</item>
         <item name="android:fontFamily" tools:ignore="NewApi">sans-serif</item>
         <item name="android:gravity">center</item>
         <item name="android:lineSpacingExtra">5sp</item>
         <item name="android:textColor">@color/textColor</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ButtonYellow.Small">
+        <item name="android:textSize">11sp</item>
     </style>
 
     <style name="MainPriceValue">

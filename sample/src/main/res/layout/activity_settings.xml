@@ -105,6 +105,13 @@
                 android:text="@string/yandex_checkout_logo"
                 tools:checked="true" />
 
+            <Button
+                style="?attr/borderlessButtonStyle"
+                android:id="@+id/colorScheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/color_scheme_title" />
+
             <View style="@style/Divider" />
 
             <android.support.v7.widget.SwitchCompat

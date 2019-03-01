@@ -277,7 +277,7 @@ internal class MainDialogFragment : BottomSheetDialogFragment() {
             context?.resources?.also {
                 val isTablet = it.getBoolean(R.bool.ym_isTablet)
                 val tokenize = childFragmentManager.findFragmentByTag(BANK_CARD_FRAGMENT_TAG)
-                if (isTablet) {
+                if (isTablet && tokenize != null) {
                     if (tokenize.isHidden) {
                         childFragmentManager.also {
                             it.inTransaction {

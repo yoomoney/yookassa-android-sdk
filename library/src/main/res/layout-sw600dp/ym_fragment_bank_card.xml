@@ -45,13 +45,13 @@
         android:layout_marginStart="@dimen/ym_screen_indentStart"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-        <ru.yandex.money.android.sdk.utils.CustomTextInputLayout
+        <ru.yandex.money.android.sdk.impl.view.YmTextInputLayout
             android:id="@+id/cardNumberInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:hintTextAppearance="@style/ym_TextAppearance.TextInputLayout">
 
-            <android.support.design.widget.TextInputEditText
+            <ru.yandex.money.android.sdk.impl.view.YmEditText
                 style="@style/ym_EditText"
                 android:id="@+id/cardNumberEditText"
                 android:layout_width="match_parent"
@@ -62,7 +62,7 @@
                 android:maxLength="23"
                 android:nextFocusForward="@+id/card_expiry_edit_text"/>
 
-        </ru.yandex.money.android.sdk.utils.CustomTextInputLayout>
+        </ru.yandex.money.android.sdk.impl.view.YmTextInputLayout>
 
     </FrameLayout>
 
@@ -87,13 +87,13 @@
             android:layout_marginRight="@dimen/ym_decor_marginEnd_2xl"
             android:layout_weight="1">
 
-            <ru.yandex.money.android.sdk.utils.CustomTextInputLayout
+            <ru.yandex.money.android.sdk.impl.view.YmTextInputLayout
                 android:id="@+id/expiryInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:hintTextAppearance="@style/ym_TextAppearance.TextInputLayout">
 
-                <android.support.design.widget.TextInputEditText
+                <ru.yandex.money.android.sdk.impl.view.YmEditText
                     style="@style/ym_EditText"
                     android:id="@+id/expiryEditText"
                     android:layout_width="match_parent"
@@ -104,7 +104,7 @@
                     android:maxLength="5"
                     android:nextFocusForward="@+id/card_csc_edit_text"/>
 
-            </ru.yandex.money.android.sdk.utils.CustomTextInputLayout>
+            </ru.yandex.money.android.sdk.impl.view.YmTextInputLayout>
 
         </FrameLayout>
 
@@ -114,13 +114,13 @@
             android:layout_height="wrap_content"
             android:layout_weight="1">
 
-            <ru.yandex.money.android.sdk.utils.CustomTextInputLayout
+            <ru.yandex.money.android.sdk.impl.view.YmTextInputLayout
                 android:id="@+id/cscInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:hintTextAppearance="@style/ym_TextAppearance.TextInputLayout">
 
-                <android.support.design.widget.TextInputEditText
+                <ru.yandex.money.android.sdk.impl.view.YmEditText
                     style="@style/ym_EditText"
                     android:id="@+id/cscEditText"
                     android:layout_width="match_parent"
@@ -130,13 +130,13 @@
                     android:inputType="numberPassword"
                     android:maxLength="4"/>
 
-            </ru.yandex.money.android.sdk.utils.CustomTextInputLayout>
+            </ru.yandex.money.android.sdk.impl.view.YmTextInputLayout>
 
         </FrameLayout>
 
     </LinearLayout>
 
-    <TextView
+    <ru.yandex.money.android.sdk.impl.view.YmButton
         style="@style/ym_Button.Rounded"
         android:id="@+id/payButton"
         android:layout_width="match_parent"

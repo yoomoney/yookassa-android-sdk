@@ -19,7 +19,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package ru.yandex.money.android.sdk.impl
+package ru.yandex.money.android.sdk.impl.view
 
 import android.content.Context
 import android.support.v7.content.res.AppCompatResources

@@ -27,12 +27,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ru.yandex.money.android.sdk.impl.LoadingView
+    <ru.yandex.money.android.sdk.impl.view.LoadingView
         android:id="@+id/progressView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <ru.yandex.money.android.sdk.impl.ErrorView
+    <ru.yandex.money.android.sdk.impl.view.ErrorView
         android:id="@+id/errorView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

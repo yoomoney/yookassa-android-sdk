@@ -37,7 +37,6 @@
     <string name="main_price">Цена</string>
     <string name="save">Сохранить</string>
     <string name="binded_cards_max_cards">Максимум 5 привязанных карт</string>
-    <string name="linked_cards_toolbar_title">Привязанные карты</string>
     <string name="success_screen_token_is_ready">Токен готов</string>
     <string name="success_screen_token_instructions">Создайте платёж по API Яндекс.Кассы, передайте этот токен в параметре payment_token</string>
     <string name="success_screen_open_documentation">Посмотреть документацию</string>
@@ -51,4 +50,17 @@
     <string name="pay_with_token">Провести оплату по токену</string>
     <string name="button_close">Закрыть</string>
     <string name="tokenization_canceled">Токенизация отменена</string>
+    <string name="success_3ds">3ds пройден</string>
+    <string name="cancel_3ds">3ds отменен</string>
+    <string name="error_code_3ds">Код ошибки: </string>
+    <string name="error_description_3ds">Описание ошибки: </string>
+    <string name="error_failing_url_3ds">Ошибочная ссылка: </string>
+    <string name="hint_3ds_input">Введите 3ds ссылку</string>
+    <string name="confirm_3ds">Подтвердить</string>
+    <string name="error_wrong_url">Некорректный url</string>
+    <string name="color_scheme_title">Цвет темы</string>
+    <string name="color_scheme_hint">0–255</string>
+    <string name="color_scheme_red_value_title">Red:</string>
+    <string name="color_scheme_green_value_title">Green:</string>
+    <string name="color_scheme_blue_value_title">Blue:</string>
 </resources>

@@ -19,30 +19,37 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package ru.yandex.money.android.sdk.utils
+package ru.yandex.money.android.sdk.impl.view
 
 import android.content.Context
-import android.support.design.widget.TextInputLayout
+import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
-import android.view.View
-import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.FrameLayout
+import ru.yandex.money.android.sdk.R
 
-/**
- * Custom implementation of [TextInputLayout] that doesn't show error text under an [EditText]. Does not
- * allow anything to be added apart from [EditText] and [FrameLayout] objects.
- */
+internal class MaxHeightRecyclerView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : RecyclerView(context, attrs, defStyleAttr) {
 
-internal class CustomTextInputLayout @JvmOverloads constructor(
-        context: Context,
-        attrs: AttributeSet? = null,
-        defStyleAttr: Int = 0
-) : TextInputLayout(context, attrs, defStyleAttr) {
+    var maxHeight: Int = 0
 
-    override fun addView(child: View, index: Int, params: ViewGroup.LayoutParams) {
-        if (child is EditText || child is FrameLayout) {
-            super.addView(child, index, params)
+    init {
+        with(context.theme.obtainStyledAttributes(attrs, R.styleable.ym_MaxHeightRecyclerView, defStyleAttr, 0)) {
+            if (hasValue(R.styleable.ym_MaxHeightRecyclerView_ym_maxHeight)) {
+                maxHeight = getDimensionPixelSize(R.styleable.ym_MaxHeightRecyclerView_ym_maxHeight, 0)
+            }
+            recycle()
         }
+    }
+
+    override fun onMeasure(widthSpec: Int, heightSpec: Int) {
+        val newHeightSpec = maxHeight
+            .takeUnless(0::equals)
+            ?.takeIf { MeasureSpec.getSize(heightSpec) > it }
+            ?.let {
+                MeasureSpec.makeMeasureSpec(it, MeasureSpec.AT_MOST)
+            } ?: heightSpec
+        super.onMeasure(widthSpec, newHeightSpec)
     }
 }

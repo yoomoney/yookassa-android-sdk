@@ -13,11 +13,12 @@
 
 #  Документация
 
-mSDK - версия 2.0.0 ([changelog](https://github.com/yandex-money/yandex-checkout-android-sdk/blob/master/CHANGELOG.md))
+mSDK - версия 2.1.0 ([changelog](https://github.com/yandex-money/yandex-checkout-android-sdk/blob/master/CHANGELOG.md))
 
 * [Подключение зависимостей](#подключение-зависимостей)
     * [Подключение через Gradle](#подключение-через-gradle)
     * [Подключение YandexLoginSDK (для платежей из кошелька)](#подключение-yandexloginsdk)
+    * [Настройка приложения при продаже цифровых товаров](#настройка-приложения-при-продаже-цифровых-товаров)
 * [Использование библиотеки](#использование-библиотеки)
     * [Токенизация](#токенизация)
         * [Запуск токенизации](#запуск-токенизации)
@@ -39,7 +40,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.yandex.money:checkout:2.0.0'
+    implementation 'com.yandex.money:checkout:2.1.0'
 }
 ```
 
@@ -63,6 +64,16 @@ repositories {
 dependencies {
     implementation "com.yandex.android:authsdk:2.1.0"
 }
+```
+
+## Настройка приложения при продаже цифровых товаров
+Если в вашем приложении продаются цифровые товары, нужно отключить Google Pay из списка платежных опций.
+Для этого добавьте в AndroidManifest следующий код:
+
+```xml
+<meta-data
+    android:name="com.google.android.gms.wallet.api.enabled"
+    tools:node="remove" />
 ```
 
 # Использование библиотеки
@@ -207,10 +218,15 @@ class MyActivity extends android.support.v7.app.AppCompatActivity {
 
 ### Настройка интерфейса
 
-Для настройки интерфейса mSDK можно использовать объект `UiParameters`
+Для настройки интерфейса mSDK можно использовать объект `UiParameters`. Можно настроить цвета интерфейса и показ/скрытие логотипа Яндекс.Кассы.
 
 Поля класса `UiParameters`:
 * showLogo (Boolean) - показать/скрыть лого Яндекс.Кассы на экране способов оплаты.
+* colorScheme (ColorScheme) - цветовая схема mSDK.
+
+Поля класса `ColorScheme`:
+* primaryColor (ColorInt) - основной цвет приложения. В этот цвет будут краситься кнопки, переключатели, поля для ввода и т.д. 
+Не рекомендуется задавать в качестве этого цвета слишком светлые цвета (они будут не видны на белом фоне) и красный цвет (он будет пересекаться с цветом ошибки).
 
 ```java
 class MyActivity extends android.support.v7.app.AppCompatActivity {
@@ -219,7 +235,7 @@ class MyActivity extends android.support.v7.app.AppCompatActivity {
 
     void timeToStartCheckout() {
         PaymentParameters paymentParameters = new PaymentParameters(...);
-        UiParameters uiParameters = new UiParameters(true);
+        UiParameters uiParameters = new UiParameters(true, new ColorScheme(Color.rgb(0, 114, 245)));
         Intent intent = Checkout.createTokenizeIntent(this, paymentParameters, new TestParameters(), uiParameters);
         startActivityForResult(intent, REQUEST_CODE_TOKENIZE);
     }

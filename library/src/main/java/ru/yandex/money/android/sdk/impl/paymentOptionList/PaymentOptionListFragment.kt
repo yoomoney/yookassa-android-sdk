@@ -34,9 +34,9 @@ import android.widget.FrameLayout
 import kotlinx.android.synthetic.main.ym_fragment_payment_options.*
 import ru.yandex.money.android.sdk.R
 import ru.yandex.money.android.sdk.impl.AppModel
-import ru.yandex.money.android.sdk.impl.ErrorView
-import ru.yandex.money.android.sdk.impl.LoadingView
-import ru.yandex.money.android.sdk.impl.MaxHeightRecyclerView
+import ru.yandex.money.android.sdk.impl.view.ErrorView
+import ru.yandex.money.android.sdk.impl.view.LoadingView
+import ru.yandex.money.android.sdk.impl.view.MaxHeightRecyclerView
 import ru.yandex.money.android.sdk.impl.extensions.visible
 import ru.yandex.money.android.sdk.impl.userAuth.UserAuthCancelledViewModel
 import ru.yandex.money.android.sdk.impl.userAuth.UserAuthFailViewModel

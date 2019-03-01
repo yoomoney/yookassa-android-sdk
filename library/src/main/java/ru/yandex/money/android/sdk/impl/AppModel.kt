@@ -24,6 +24,7 @@ package ru.yandex.money.android.sdk.impl
 import android.annotation.SuppressLint
 import android.content.Context
 import com.google.android.gms.security.ProviderInstaller
+import ru.yandex.money.android.sdk.ColorScheme
 import ru.yandex.money.android.sdk.PaymentMethodType
 import ru.yandex.money.android.sdk.PaymentParameters
 import ru.yandex.money.android.sdk.TestParameters
@@ -175,6 +176,8 @@ internal object AppModel {
     var googlePayIntegration: GooglePayIntegration? = null
         private set
 
+    lateinit var colorScheme: ColorScheme
+
     lateinit var loadPaymentOptionListController:
             Controller<PaymentOptionListInputModel, PaymentOptionListOutputModel, PaymentOptionListViewModel>
         private set
@@ -233,6 +236,8 @@ internal object AppModel {
             encrypt = encrypt,
             decrypt = decrypt
         )
+
+        colorScheme = uiParameters.colorScheme
 
         val currentUserGateway: CurrentUserGateway
         val paymentOptionListGateway: PaymentOptionListGateway

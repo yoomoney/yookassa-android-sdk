@@ -34,8 +34,7 @@ internal class UserAgentInterceptor(
     osVersion: String,
     isTablet: Boolean
 ) : Interceptor {
-    private val userAgent =
-        "Yandex.Checkout.App.Android/$version Android/$osVersion ${getDeviceType(isTablet)}"
+    private val userAgent = "Yandex.Checkout.SDK.Android/$version Android/$osVersion ${getDeviceType(isTablet)}"
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()

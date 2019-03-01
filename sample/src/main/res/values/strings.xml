@@ -37,11 +37,10 @@
     <string name="main_price">Price</string>
     <string name="save">Save</string>
     <string name="binded_cards_max_cards">Maximum 5 linked cards</string>
-    <string name="linked_cards_toolbar_title">Linked cards</string>
     <string name="success_screen_token_is_ready">Token is ready</string>
     <string name="success_screen_token_instructions">Create payment with Yandex.Checkout API, pass this token to the payment_token parameter</string>
     <string name="success_screen_open_documentation">Open documentation</string>
-    <string name="success_screen_open_github">README и исходный код на Github</string>
+    <string name="success_screen_open_github">README and source code on Github</string>
     <string name="success_screen_show_token">Show token</string>
     <string name="token_copy">Copy</string>
     <string name="token_cancel">Cancel</string>
@@ -52,4 +51,17 @@
     <string name="pay_with_token">Pay with this token</string>
     <string name="button_close">Close</string>
     <string name="tokenization_canceled">Tokenization canceled</string>
+    <string name="success_3ds">3ds was completed</string>
+    <string name="cancel_3ds">3ds was canceled</string>
+    <string name="error_code_3ds">Error code: </string>
+    <string name="error_description_3ds">Error description: </string>
+    <string name="error_failing_url_3ds">Error url: </string>
+    <string name="hint_3ds_input">Input 3ds url</string>
+    <string name="confirm_3ds">Confirm</string>
+    <string name="error_wrong_url">Wrong url</string>
+    <string name="color_scheme_title">Color scheme</string>
+    <string name="color_scheme_hint">0–255</string>
+    <string name="color_scheme_red_value_title">Red:</string>
+    <string name="color_scheme_green_value_title">Green:</string>
+    <string name="color_scheme_blue_value_title">Blue:</string>
 </resources>

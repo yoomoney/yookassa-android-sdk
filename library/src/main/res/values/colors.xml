@@ -21,27 +21,14 @@
   -->
 
 <resources>
-
-    <color name="ym_palette_accent">#ffdb4d</color>
+    <color name="ym_palette_accent">#b3b3b3</color>
     <color name="ym_loading">#666666</color>
-
     <color name="ym_background">#f7f7f7</color>
-
-    <color name="ym_button_primary_disabled">#ffe1e1e1</color>
-    <color name="ym_button_primary_enabled">@color/ym_palette_accent</color>
-    <color name="ym_button_primary_pressed">#fffee380</color>
-
     <color name="ym_button_text_link">#006cf4</color>
     <color name="ym_button_text_alert">#ff3333</color>
-
+    <color name="ym_button_primary_disabled">#ffe1e1e1</color>
     <color name="ym_hint">#b3b3b3</color>
-
     <color name="ym_control_normal">#ebebeb</color>
-
     <color name="ym_text_primary">#000000</color>
-
     <color name="ym_divider">#ebebeb</color>
-
-    <color name="ym_switch_thumb">#ffdb4d</color>
-    <color name="ym_switch_track">#7fffdb4d</color>
 </resources>

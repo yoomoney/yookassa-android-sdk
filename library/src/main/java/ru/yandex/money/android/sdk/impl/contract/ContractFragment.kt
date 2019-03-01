@@ -32,24 +32,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import kotlinx.android.synthetic.main.ym_fragment_contract.additionalInfoInputViewContainer
-import kotlinx.android.synthetic.main.ym_fragment_contract.allowRecurringPaymentsContainer
-import kotlinx.android.synthetic.main.ym_fragment_contract.allowWalletLinking
-import kotlinx.android.synthetic.main.ym_fragment_contract.allowWalletLinkingContainer
-import kotlinx.android.synthetic.main.ym_fragment_contract.contentView
-import kotlinx.android.synthetic.main.ym_fragment_contract.errorView
-import kotlinx.android.synthetic.main.ym_fragment_contract.loadingView
-import kotlinx.android.synthetic.main.ym_fragment_contract.nextButton
-import kotlinx.android.synthetic.main.ym_fragment_contract.paymentAuth
-import kotlinx.android.synthetic.main.ym_fragment_contract.paymentAuthLoading
-import kotlinx.android.synthetic.main.ym_fragment_contract.phoneInput
-import kotlinx.android.synthetic.main.ym_fragment_contract.phoneInputContainer
-import kotlinx.android.synthetic.main.ym_fragment_contract.rootContainer
-import kotlinx.android.synthetic.main.ym_fragment_contract.subtitle
-import kotlinx.android.synthetic.main.ym_fragment_contract.sum
-import kotlinx.android.synthetic.main.ym_fragment_contract.switchesAndPaymentAuthContainer
-import kotlinx.android.synthetic.main.ym_fragment_contract.switchesContainer
-import kotlinx.android.synthetic.main.ym_fragment_contract.title
+import kotlinx.android.synthetic.main.ym_fragment_contract.*
 import kotlinx.android.synthetic.main.ym_item_common.*
 import ru.yandex.money.android.sdk.R
 import ru.yandex.money.android.sdk.impl.AppModel
@@ -133,14 +116,13 @@ internal class ContractFragment : Fragment() {
                         }
 
                         nextButton.setOnClickListener { _ ->
-                            if (phoneInput.text.isPhoneNumber) {
+                            val text = phoneInput.text
+                            if (text != null && text.isPhoneNumber) {
                                 AppModel.tokenizeController(
                                     TokenizeInputModel(
                                         paymentOptionId = viewModel.paymentOption.optionId,
                                         allowRecurringPayments = viewModel.showAllowRecurringPayments,
-                                        paymentOptionInfo = SbolSmsInvoicingInfo(
-                                            phoneInput.text.toString()
-                                        )
+                                        paymentOptionInfo = SbolSmsInvoicingInfo(text.toString())
                                     )
                                 )
                             } else {

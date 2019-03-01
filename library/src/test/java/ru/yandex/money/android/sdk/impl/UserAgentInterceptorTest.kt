@@ -68,7 +68,7 @@ class UserAgentInterceptorTest {
         assertThat(userAgent, notNullValue())
         assertThat(
             userAgent,
-            equalTo("Yandex.Checkout.App.Android/$sdkVersion Android/$osVersion smartphone")
+            equalTo("Yandex.Checkout.SDK.Android/$sdkVersion Android/$osVersion smartphone")
         )
     }
 
@@ -85,7 +85,7 @@ class UserAgentInterceptorTest {
         assertThat(userAgent, notNullValue())
         assertThat(
             userAgent,
-            equalTo("Yandex.Checkout.App.Android/$sdkVersion Android/$osVersion tablet")
+            equalTo("Yandex.Checkout.SDK.Android/$sdkVersion Android/$osVersion tablet")
         )
     }
 }

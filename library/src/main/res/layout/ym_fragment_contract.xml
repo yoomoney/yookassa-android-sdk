@@ -50,7 +50,7 @@
                 android:layout_marginStart="@dimen/ym_screen_indentStart"
                 android:layout_marginTop="@dimen/ym_screen_indentTop"
                 android:ellipsize="end"
-                tools:text="Aliexpress"/>
+                tools:text="Комета"/>
 
             <TextView
                 style="@style/ym_standardText"
@@ -102,7 +102,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <android.support.v7.widget.SwitchCompat
+                        <ru.yandex.money.android.sdk.impl.view.YmSwitch
                             style="@style/ym_Switch"
                             android:id="@+id/allowWalletLinking"
                             android:layout_width="match_parent"
@@ -124,7 +124,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <android.support.v7.widget.SwitchCompat
+                        <ru.yandex.money.android.sdk.impl.view.YmSwitch
                             style="@style/ym_Switch"
                             android:id="@+id/allowRecurringPayments"
                             android:layout_width="match_parent"
@@ -153,7 +153,8 @@
                     android:layout_marginTop="@dimen/ym_decor_marginTop_m"
                     android:measureAllChildren="false">
 
-                    <ProgressBar
+                    <ru.yandex.money.android.sdk.impl.view.YmProgressBar
+                        style="?android:progressBarStyle"
                         android:id="@+id/paymentAuthLoading"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
@@ -163,14 +164,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
-                    <ru.yandex.money.android.sdk.utils.CustomTextInputLayout
+                    <ru.yandex.money.android.sdk.impl.view.YmTextInputLayout
                         android:id="@+id/phoneInputContainer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:hintEnabled="false"
                         app:hintTextAppearance="@style/ym_TextAppearance.TextInputLayout">
 
-                        <android.support.design.widget.TextInputEditText
+                        <ru.yandex.money.android.sdk.impl.view.YmEditText
                             style="@style/ym_EditText"
                             android:id="@+id/phoneInput"
                             android:layout_width="match_parent"
@@ -179,7 +180,7 @@
                             android:inputType="phone"
                             android:hint="@string/ym_phone_hint"/>
 
-                    </ru.yandex.money.android.sdk.utils.CustomTextInputLayout>
+                    </ru.yandex.money.android.sdk.impl.view.YmTextInputLayout>
                 </ViewAnimator>
             </ViewSwitcher>
 
@@ -210,7 +211,7 @@
                     tools:text="29 675,50 Р"/>
             </LinearLayout>
 
-            <TextView
+            <ru.yandex.money.android.sdk.impl.view.YmButton
                 style="@style/ym_Button.Rounded"
                 android:id="@+id/nextButton"
                 android:layout_width="match_parent"
@@ -224,14 +225,14 @@
         </LinearLayout>
     </ScrollView>
 
-    <ru.yandex.money.android.sdk.impl.LoadingView
+    <ru.yandex.money.android.sdk.impl.view.LoadingView
         android:id="@+id/loadingView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/ym_bottomDialog_maxHeight"
         android:background="@drawable/ym_dialog_background"
         android:visibility="gone"/>
 
-    <ru.yandex.money.android.sdk.impl.ErrorView
+    <ru.yandex.money.android.sdk.impl.view.ErrorView
         android:id="@+id/errorView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/ym_bottomDialog_maxHeight"
