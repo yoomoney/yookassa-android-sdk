@@ -41,6 +41,9 @@ import java.io.Serializable
  * @param gatewayId (optional) your gateway id from Yandex.Money.
  * @param customReturnUrl (optional) redirect url for custom 3ds. This parameter should be used only if you want to use
  * your own 3ds activity. If you are using [Checkout.create3dsIntent], do not set this parameter.
+ * @param userPhoneNumber (optional) phone number of the user. It will be inserted into the form
+ * that is used by "Sberbank online" payment method. Format for this number is "+7XXXXXXXXXX".
+ * @param googlePayParameters (optional) settings for Google Pay (see [GooglePayParameters]).
  */
 @[Parcelize SuppressLint("ParcelCreator")]
 data class PaymentParameters
@@ -52,5 +55,7 @@ data class PaymentParameters
     @Keep val shopId: String,
     @Keep val paymentMethodTypes: Set<PaymentMethodType> = getAllPaymentMethods(),
     @Keep val gatewayId: String? = null,
-    @Keep val customReturnUrl: String? = null
+    @Keep val customReturnUrl: String? = null,
+    @Keep val userPhoneNumber: String? = null,
+    @Keep val googlePayParameters: GooglePayParameters = GooglePayParameters()
 ) : Parcelable

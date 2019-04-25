@@ -27,7 +27,7 @@ import android.graphics.Color
 import android.graphics.Color.LTGRAY
 import android.support.v7.widget.SwitchCompat
 import android.util.AttributeSet
-import ru.yandex.money.android.sdk.impl.AppModel
+import ru.yandex.money.android.sdk.impl.InMemoryColorSchemeRepository.colorScheme
 import ru.yandex.money.android.sdk.impl.extensions.highlight
 
 internal class YmSwitch
@@ -36,7 +36,7 @@ internal class YmSwitch
     attrs: AttributeSet? = null
 ) : SwitchCompat(context, attrs) {
     init {
-        val primaryColor = AppModel.colorScheme.primaryColor
+        val primaryColor = colorScheme.primaryColor
 
         thumbTintList = ColorStateList(
             arrayOf(intArrayOf(android.R.attr.state_checked), intArrayOf()),

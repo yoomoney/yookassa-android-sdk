@@ -63,4 +63,5 @@
     <string name="color_scheme_red_value_title">Red:</string>
     <string name="color_scheme_green_value_title">Green:</string>
     <string name="color_scheme_blue_value_title">Blue:</string>
+    <string name="autofill_user_phone_number">Автоподстановка номера телефона</string>
 </resources>

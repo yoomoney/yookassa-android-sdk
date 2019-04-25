@@ -30,7 +30,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.FrameLayout
-import ru.yandex.money.android.sdk.impl.AppModel
+import ru.yandex.money.android.sdk.impl.InMemoryColorSchemeRepository.colorScheme
 
 /**
  * Custom implementation of [TextInputLayout] that doesn't show error text under an [EditText]. Does not
@@ -53,7 +53,7 @@ internal class YmTextInputLayout @JvmOverloads constructor(
         super.drawableStateChanged()
         if (error == null) {
             editText?.background?.colorFilter =
-                PorterDuffColorFilter(AppModel.colorScheme.primaryColor, PorterDuff.Mode.SRC_IN)
+                PorterDuffColorFilter(colorScheme.primaryColor, PorterDuff.Mode.SRC_IN)
         }
     }
 }

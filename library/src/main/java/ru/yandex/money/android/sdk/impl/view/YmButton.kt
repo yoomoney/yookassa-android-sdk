@@ -32,6 +32,7 @@ import android.util.AttributeSet
 import android.util.StateSet
 import ru.yandex.money.android.sdk.R
 import ru.yandex.money.android.sdk.impl.AppModel
+import ru.yandex.money.android.sdk.impl.InMemoryColorSchemeRepository.colorScheme
 import ru.yandex.money.android.sdk.impl.extensions.highlight
 import ru.yandex.money.android.sdk.impl.extensions.isLightColor
 
@@ -42,7 +43,7 @@ internal class YmButton
     defStyleAttr: Int = 0
 ) : AppCompatTextView(context, attrs, defStyleAttr) {
     init {
-        val primaryColor = AppModel.colorScheme.primaryColor
+        val primaryColor = colorScheme.primaryColor
         setBackgroundDrawable(StateListDrawable().apply {
             addState(intArrayOf(android.R.attr.state_pressed), GradientDrawable().apply {
                 setColor(primaryColor.highlight())

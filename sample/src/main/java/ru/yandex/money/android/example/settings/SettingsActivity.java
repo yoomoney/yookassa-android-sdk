@@ -41,6 +41,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+import static ru.yandex.money.android.example.settings.Settings.KEY_AUTOFILL_USER_PHONE_NUMBER;
 import static ru.yandex.money.android.example.settings.Settings.KEY_GOOGLE_PAY_ALLOWED;
 import static ru.yandex.money.android.example.settings.Settings.KEY_NEW_CARD_ALLOWED;
 import static ru.yandex.money.android.example.settings.Settings.KEY_PAYMENT_AUTH_PASSED;
@@ -64,6 +65,7 @@ public final class SettingsActivity extends AppCompatActivity implements View.On
             new Pair<>(KEY_GOOGLE_PAY_ALLOWED, R.id.payment_option_google_pay),
             new Pair<>(KEY_NEW_CARD_ALLOWED, R.id.payment_option_new_card),
             new Pair<>(KEY_SHOW_YANDEX_CHECKOUT_LOGO, R.id.enable_yandex_checkout_logo),
+            new Pair<>(KEY_AUTOFILL_USER_PHONE_NUMBER, R.id.enable_default_user_phone_number),
             new Pair<>(KEY_TEST_MODE_ENABLED, R.id.enable_test_mode),
             new Pair<>(KEY_PAYMENT_AUTH_PASSED, R.id.payment_auth_passed),
             new Pair<>(KEY_SHOULD_COMPLETE_PAYMENT_WITH_ERROR, R.id.complete_with_error)
@@ -110,6 +112,8 @@ public final class SettingsActivity extends AppCompatActivity implements View.On
                 .setChecked(settings.isGooglePayAllowed());
         this.<CompoundButton>findViewById(R.id.enable_yandex_checkout_logo)
                 .setChecked(settings.showYandexCheckoutLogo());
+        this.<CompoundButton>findViewById(R.id.enable_default_user_phone_number)
+                .setChecked(settings.autofillUserPhoneNumber());
         enableTestModeSwitch.setChecked(settings.isTestModeEnabled());
         paymentAuthPassedSwitch.setChecked(settings.isPaymentAuthPassed());
         completeWithErrorButton.setChecked(settings.shouldCompletePaymentWithError());

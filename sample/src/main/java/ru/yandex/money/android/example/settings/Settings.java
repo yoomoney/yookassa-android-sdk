@@ -27,7 +27,6 @@ import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
-import ru.yandex.money.android.sdk.ColorScheme;
 
 public final class Settings {
 
@@ -40,6 +39,7 @@ public final class Settings {
     static final String KEY_GOOGLE_PAY_ALLOWED = "google_pay_allowed";
     static final String KEY_NEW_CARD_ALLOWED = "new_card_allowed";
     static final String KEY_SHOW_YANDEX_CHECKOUT_LOGO = "show_yandex_checkout_logo";
+    static final String KEY_AUTOFILL_USER_PHONE_NUMBER = "autofill_user_phone_number";
     static final String KEY_TEST_MODE_ENABLED = "test_mode_enabled";
     static final String KEY_PAYMENT_AUTH_PASSED = "payment_auth_passed";
     static final String KEY_SHOULD_COMPLETE_PAYMENT_WITH_ERROR = "should_complete_with_error";
@@ -68,6 +68,10 @@ public final class Settings {
 
     public boolean showYandexCheckoutLogo() {
         return sp.getBoolean(KEY_SHOW_YANDEX_CHECKOUT_LOGO, true);
+    }
+
+    public boolean autofillUserPhoneNumber() {
+        return sp.getBoolean(KEY_AUTOFILL_USER_PHONE_NUMBER, false);
     }
 
     public boolean isTestModeEnabled() {

@@ -105,6 +105,14 @@
                 android:text="@string/yandex_checkout_logo"
                 tools:checked="true" />
 
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/enable_default_user_phone_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/autofill_user_phone_number"
+                tools:checked="true" />
+
             <Button
                 style="?attr/borderlessButtonStyle"
                 android:id="@+id/colorScheme"

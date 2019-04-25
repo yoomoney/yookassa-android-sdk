@@ -33,6 +33,7 @@ import ru.yandex.money.android.sdk.impl.EXTRA_PAYMENT_PARAMETERS
 import ru.yandex.money.android.sdk.impl.EXTRA_PAYMENT_TOKEN
 import ru.yandex.money.android.sdk.impl.EXTRA_TEST_PARAMETERS
 import ru.yandex.money.android.sdk.impl.EXTRA_UI_PARAMETERS
+import ru.yandex.money.android.sdk.impl.InMemoryColorSchemeRepository
 import ru.yandex.money.android.sdk.impl.paymentOptionInfo.EXTRA_CARD_NUMBER
 import ru.yandex.money.android.sdk.impl.paymentOptionInfo.EXTRA_EXPIRY_MONTH
 import ru.yandex.money.android.sdk.impl.paymentOptionInfo.EXTRA_EXPIRY_YEAR
@@ -86,6 +87,7 @@ object Checkout {
      * Create tokenization result from data in onActivityResult().
      *
      * @param data intent, received after tokenization (see [createTokenizeIntent]).
+     * Intents, received from other sources will cause typecast exception.
      */
     @[JvmStatic Keep]
     fun createTokenizationResult(data: Intent): TokenizationResult {
@@ -101,9 +103,14 @@ object Checkout {
      * @param url Url to open 3DS, should be valid https url.
      * @return [Intent] to start 3DS [Activity].
      */
-    @[JvmStatic Keep]
-    fun create3dsIntent(context: Context, url: String): Intent {
+    @[JvmStatic JvmOverloads Keep]
+    fun create3dsIntent(
+        context: Context,
+        url: String,
+        colorScheme: ColorScheme = ColorScheme.getDefaultScheme()
+    ): Intent {
         CheckoutInternal.checkUrl(url)
+        InMemoryColorSchemeRepository.colorScheme = colorScheme
         return Intent(context, CheckoutConfirmationActivity::class.java)
             .putExtra(EXTRA_URL, url)
     }

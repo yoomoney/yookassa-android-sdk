@@ -24,11 +24,11 @@ package ru.yandex.money.android.sdk.impl
 import android.annotation.SuppressLint
 import android.content.Context
 import com.google.android.gms.security.ProviderInstaller
-import ru.yandex.money.android.sdk.ColorScheme
 import ru.yandex.money.android.sdk.PaymentMethodType
 import ru.yandex.money.android.sdk.PaymentParameters
 import ru.yandex.money.android.sdk.TestParameters
 import ru.yandex.money.android.sdk.UiParameters
+import ru.yandex.money.android.sdk.impl.InMemoryColorSchemeRepository.colorScheme
 import ru.yandex.money.android.sdk.impl.contract.ContractErrorPresenter
 import ru.yandex.money.android.sdk.impl.contract.ContractPresenter
 import ru.yandex.money.android.sdk.impl.contract.ContractProgressViewModel
@@ -176,7 +176,7 @@ internal object AppModel {
     var googlePayIntegration: GooglePayIntegration? = null
         private set
 
-    lateinit var colorScheme: ColorScheme
+    var userPhoneNumber: String? = null
 
     lateinit var loadPaymentOptionListController:
             Controller<PaymentOptionListInputModel, PaymentOptionListOutputModel, PaymentOptionListViewModel>
@@ -238,6 +238,7 @@ internal object AppModel {
         )
 
         colorScheme = uiParameters.colorScheme
+        userPhoneNumber = paymentParameters.userPhoneNumber
 
         val currentUserGateway: CurrentUserGateway
         val paymentOptionListGateway: PaymentOptionListGateway
@@ -258,7 +259,8 @@ internal object AppModel {
             context = context,
             shopId = paymentParameters.shopId,
             useTestEnvironment = testParameters.googlePayTestEnvironment,
-            loadedPaymentOptionsGateway = getLoadedPaymentOptionListGateway
+            loadedPaymentOptionsGateway = getLoadedPaymentOptionListGateway,
+            googlePayParameters = paymentParameters.googlePayParameters
         )
 
         val reporter: Reporter = ReporterLogger(YandexMetricaReporter(context))

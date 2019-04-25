@@ -40,7 +40,7 @@
     <string name="ym_contract_continue">Next</string>
     <string name="ym_contract_change_payment_option">Change</string>
     <string name="ym_payment_auth_repeat">Send again</string>
-    <string name="ym_allow_wallet_linking">Save the Wallet in app ^1?</string>
+    <string name="ym_allow_wallet_linking">Save the Yandex.Money Wallet in this app?</string>
     <string name="ym_allow_recurring_payments">Allow recurring payments?</string>
     <string name="ym_auth_hint_sms">Enter the password from the text message</string>
     <string name="ym_auth_hint_totp">Enter a one-time password</string>

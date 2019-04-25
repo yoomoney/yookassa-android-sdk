@@ -40,7 +40,7 @@
     <string name="ym_contract_continue">Продолжить</string>
     <string name="ym_contract_change_payment_option">Изменить</string>
     <string name="ym_payment_auth_repeat">Отправить снова</string>
-    <string name="ym_allow_wallet_linking">Сохранить кошелёк в приложении ^1?</string>
+    <string name="ym_allow_wallet_linking">Сохранить кошелёк Яндекс.Денег в этом приложении?</string>
     <string name="ym_allow_recurring_payments">Разрешить повтор платежей?</string>
     <string name="ym_auth_hint_sms">Введите пароль из смс</string>
     <string name="ym_auth_hint_totp">Введите одноразовый пароль</string>

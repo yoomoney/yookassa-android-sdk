@@ -168,7 +168,8 @@ public final class MainActivity extends AppCompatActivity {
                     BuildConfig.SHOP_ID,
                     paymentMethodTypes,
                     BuildConfig.GATEWAY_ID,
-                    "https://custom.redirect.url/"
+                    getString(R.string.test_redirect_url),
+                    settings.autofillUserPhoneNumber() ? getString(R.string.test_phone_number): null
             );
 
             final UiParameters uiParameters = new UiParameters(

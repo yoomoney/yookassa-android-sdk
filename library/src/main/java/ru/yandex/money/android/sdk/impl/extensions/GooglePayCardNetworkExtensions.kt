@@ -1,6 +1,6 @@
 /*
  * The MIT License (MIT)
- * Copyright © 2019 NBCO Yandex.Money LLC
+ * Copyright © 2018 NBCO Yandex.Money LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
  * associated documentation files (the “Software”), to deal in the Software without restriction, including
@@ -19,23 +19,19 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package ru.yandex.money.android.sdk.impl.view
+package ru.yandex.money.android.sdk.impl.extensions
 
-import android.content.Context
-import android.content.res.ColorStateList
-import android.support.v4.view.ViewCompat
-import android.support.v7.widget.AppCompatEditText
-import android.util.AttributeSet
-import ru.yandex.money.android.sdk.impl.InMemoryColorSchemeRepository.colorScheme
+import com.google.android.gms.wallet.WalletConstants
+import ru.yandex.money.android.sdk.GooglePayCardNetwork
 
-internal class YmEditText
-@JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = android.R.attr.editTextStyle
-) : AppCompatEditText(context, attrs, defStyleAttr) {
-    init {
-        val primaryColor = colorScheme.primaryColor
-        ViewCompat.setBackgroundTintList(this, ColorStateList.valueOf(primaryColor))
+fun GooglePayCardNetwork.toWalletConstant(): Int {
+    return when (this) {
+        GooglePayCardNetwork.AMEX -> WalletConstants.CARD_NETWORK_AMEX
+        GooglePayCardNetwork.DISCOVER -> WalletConstants.CARD_NETWORK_DISCOVER
+        GooglePayCardNetwork.JCB -> WalletConstants.CARD_NETWORK_JCB
+        GooglePayCardNetwork.MASTERCARD -> WalletConstants.CARD_NETWORK_MASTERCARD
+        GooglePayCardNetwork.VISA -> WalletConstants.CARD_NETWORK_VISA
+        GooglePayCardNetwork.INTERAC -> WalletConstants.CARD_NETWORK_INTERAC
+        GooglePayCardNetwork.OTHER -> WalletConstants.CARD_NETWORK_OTHER
     }
 }

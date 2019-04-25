@@ -1,6 +1,13 @@
 ## Changelog
 
+### 2.2.0
+- Add new parameter "userPhoneNumber" in PaymentParameters.
+- Add setting of supported card networks in Google Pay.
+- Fix crash on 3-DS screen (https://github.com/yandex-money/yandex-checkout-android-sdk/issues/26).
+- Update README.
+
 ### 2.1.0
+2019-01-03
 - Add color customization.
 - Add support for AndroidX (https://github.com/yandex-money/yandex-checkout-android-sdk/issues/21).
 - Fix Google Pay disabling from AndroidManifest (https://github.com/yandex-money/yandex-checkout-android-sdk/issues/20).

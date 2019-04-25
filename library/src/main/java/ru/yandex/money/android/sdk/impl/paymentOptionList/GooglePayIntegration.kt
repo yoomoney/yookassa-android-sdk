@@ -37,7 +37,9 @@ import com.google.android.gms.wallet.PaymentsClient
 import com.google.android.gms.wallet.TransactionInfo
 import com.google.android.gms.wallet.Wallet
 import com.google.android.gms.wallet.WalletConstants
+import ru.yandex.money.android.sdk.GooglePayParameters
 import ru.yandex.money.android.sdk.impl.PendingIntentActivity
+import ru.yandex.money.android.sdk.impl.extensions.toWalletConstant
 import ru.yandex.money.android.sdk.impl.logging.MsdkLogger
 import ru.yandex.money.android.sdk.model.GooglePayInfo
 import ru.yandex.money.android.sdk.payment.GetLoadedPaymentOptionListGateway
@@ -51,7 +53,8 @@ internal class GooglePayIntegration(
     context: Context,
     private val shopId: String,
     useTestEnvironment: Boolean,
-    private val loadedPaymentOptionsGateway: GetLoadedPaymentOptionListGateway
+    private val loadedPaymentOptionsGateway: GetLoadedPaymentOptionListGateway,
+    private val googlePayParameters: GooglePayParameters
 ) : CheckGooglePayAvailableGateway {
 
     private var paymentOptionId: Int? = null
@@ -119,14 +122,12 @@ internal class GooglePayIntegration(
             .addAllowedPaymentMethod(WalletConstants.PAYMENT_METHOD_CARD)
             .addAllowedPaymentMethod(WalletConstants.PAYMENT_METHOD_TOKENIZED_CARD)
             .setCardRequirements(
-                CardRequirements.newBuilder()
-                    .addAllowedCardNetwork(WalletConstants.CARD_NETWORK_AMEX)
-                    .addAllowedCardNetwork(WalletConstants.CARD_NETWORK_DISCOVER)
-                    .addAllowedCardNetwork(WalletConstants.CARD_NETWORK_JCB)
-                    .addAllowedCardNetwork(WalletConstants.CARD_NETWORK_VISA)
-                    .addAllowedCardNetwork(WalletConstants.CARD_NETWORK_MASTERCARD)
-                    .setAllowPrepaidCards(false)
-                    .build()
+                CardRequirements.newBuilder().apply {
+                    googlePayParameters.allowedCardNetworks.forEach {
+                        addAllowedCardNetwork(it.toWalletConstant())
+                    }
+                    setAllowPrepaidCards(false)
+                }.build()
             )
             .setPaymentMethodTokenizationParameters(
                 PaymentMethodTokenizationParameters.newBuilder()
@@ -136,7 +137,6 @@ internal class GooglePayIntegration(
                     .build()
             )
             .build()
-
 
         paymentsClient.loadPaymentData(request).addOnCompleteListener { task ->
             task.exception?.takeIf { it is ResolvableApiException }?.also {

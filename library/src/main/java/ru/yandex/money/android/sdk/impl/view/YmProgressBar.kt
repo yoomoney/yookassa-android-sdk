@@ -25,7 +25,7 @@ import android.content.Context
 import android.graphics.PorterDuff
 import android.support.v4.widget.ContentLoadingProgressBar
 import android.util.AttributeSet
-import ru.yandex.money.android.sdk.impl.AppModel
+import ru.yandex.money.android.sdk.impl.InMemoryColorSchemeRepository.colorScheme
 
 internal class YmProgressBar
 @JvmOverloads constructor(
@@ -33,6 +33,6 @@ internal class YmProgressBar
     attrs: AttributeSet? = null
 ) : ContentLoadingProgressBar(context, attrs) {
     init {
-        indeterminateDrawable.setColorFilter(AppModel.colorScheme.primaryColor, PorterDuff.Mode.SRC_IN);
+        indeterminateDrawable.setColorFilter(colorScheme.primaryColor, PorterDuff.Mode.SRC_IN);
     }
 }

@@ -152,14 +152,14 @@ internal abstract class BankCardFragment : Fragment() {
             override fun afterTextChanged(s: Editable) {
                 when {
                     s.isEmpty() && clearButton.parent != null -> {
-                        TransitionManager.beginDelayedTransition(container)
                         container.removeView(clearButton)
+                        TransitionManager.beginDelayedTransition(container)
                         actionButton?.also(container::addView)
                     }
                     s.isNotEmpty() && clearButton.parent == null -> {
+                        actionButton?.also(container::removeView)
                         TransitionManager.beginDelayedTransition(container)
                         container.addView(clearButton)
-                        actionButton?.also(container::removeView)
                     }
                 }
             }

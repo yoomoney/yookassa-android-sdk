@@ -133,10 +133,8 @@ internal class ContractFragment : Fragment() {
                         switchesAndPaymentAuthContainer.showChild(switchesContainer)
 
                         allowWalletLinkingContainer.visible = viewModel.showAllowWalletLinking
-                        allowWalletLinking.text = TextUtils.expandTemplate(
-                            allowWalletLinking.context.getText(R.string.ym_allow_wallet_linking),
-                            viewModel.shopTitle
-                        )
+                        allowWalletLinking.text =
+                            allowWalletLinking.context.getString(R.string.ym_allow_wallet_linking)
 
                         allowRecurringPaymentsContainer.visible = viewModel.showAllowRecurringPayments
                     }
@@ -240,6 +238,9 @@ internal class ContractFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         phoneInput.configureForPhoneInput()
+        if (AppModel.userPhoneNumber != null) {
+            phoneInput.setText(AppModel.userPhoneNumber)
+        }
         phoneInput.setOnEditorActionListener { _, action, _ ->
             (action == EditorInfo.IME_ACTION_DONE).also {
                 if (it) {
