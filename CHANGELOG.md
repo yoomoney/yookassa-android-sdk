@@ -1,5 +1,8 @@
 ## Changelog
 
+### 2.2.1
+- ThreatMetrix fix.
+
 ### 2.2.0
 - Add new parameter "userPhoneNumber" in PaymentParameters.
 - Add setting of supported card networks in Google Pay.

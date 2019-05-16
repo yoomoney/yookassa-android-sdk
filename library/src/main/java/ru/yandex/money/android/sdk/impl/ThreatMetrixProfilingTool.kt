@@ -53,7 +53,7 @@ internal class ThreatMetrixProfilingTool : ProfilingTool {
 //                val sessionId = result.sessionID
 //                listener.onProfilingSessionId(sessionId)
 //            } else {
-//                listener.onProfilingError()
+//                listener.onProfilingError(status.name)
 //            }
 //        }
     }

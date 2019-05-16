@@ -200,8 +200,8 @@ internal class ApiV3PaymentAuthGateway(
         tmxSessionIdSemaphore.release()
     }
 
-    override fun onProfilingError() {
-        tmxSessionId = null
+    override fun onProfilingError(status: String) {
+        tmxSessionId = status
         tmxSessionIdSemaphore.release()
     }
 }

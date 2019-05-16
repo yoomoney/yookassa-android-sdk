@@ -49,7 +49,8 @@ internal class ApiV3TokenizeGateway(
         semaphore.release()
     }
 
-    override fun onProfilingError() {
+    override fun onProfilingError(status: String) {
+        tmxSessionId = status
         semaphore.release()
     }
 

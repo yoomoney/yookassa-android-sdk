@@ -56,7 +56,9 @@ internal interface ProfilingTool {
 
         /**
          * Called when an error occurred when obtaining session id.
+         *
+         * @param status error name
          */
-        fun onProfilingError()
+        fun onProfilingError(status: String)
     }
 }
