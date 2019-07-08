@@ -56,7 +56,7 @@ internal class PaymentOptionListRecyclerViewAdapter internal constructor(
             }
 
             if (paymentOption.canLogout) {
-                primaryText.setOnClickListener { showLogoutDialog(context, paymentOption.title) }
+                primaryText.setOnClickListener { showLogoutDialog(context, paymentOption.title, it.rootView) }
             }
 
             divider.visible = position != itemCount - 1

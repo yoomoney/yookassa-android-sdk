@@ -115,7 +115,7 @@ internal fun createLinkedCardPaymentOption(id: Int): PaymentOption =
         pan = "1234567887654321"
     )
 
-internal fun createGooglePayPaymentOption(id: Int): PaymentOption =
+internal fun createGooglePayPaymentOptionWithFee(id: Int): PaymentOption =
     GooglePay(
         id = id,
         charge = Amount(BigDecimal.TEN, RUB),
@@ -123,6 +123,13 @@ internal fun createGooglePayPaymentOption(id: Int): PaymentOption =
             Amount(BigDecimal.ONE, RUB),
             Amount(BigDecimal("0.5"), RUB)
         )
+    )
+
+internal fun createGooglePayPaymentOptionWithoutFee(id: Int): PaymentOption =
+    GooglePay(
+        id = id,
+        charge = Amount(BigDecimal.TEN, RUB),
+        fee = null
     )
 
 internal fun createNewCardInfo(): PaymentOptionInfo =
@@ -142,6 +149,7 @@ internal fun stubContractSuccessViewModel() = ContractSuccessViewModel(
     shopTitle = "title",
     shopSubtitle = "subtitle",
     paymentOption = stubPaymentOptionViewModel(),
+    licenseAgreement = "licenseAgreement",
     showChangeButton = false,
     showAllowRecurringPayments = false,
     showAllowWalletLinking = false,

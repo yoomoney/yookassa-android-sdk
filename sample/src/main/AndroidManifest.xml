@@ -49,7 +49,7 @@
             tools:ignore="UnusedAttribute">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+                android:value=".MainActivity" />
         </activity>
 
         <activity
@@ -60,7 +60,18 @@
             tools:ignore="UnusedAttribute">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".settings.SettingsActivity"/>
+                android:value=".settings.SettingsActivity" />
+        </activity>
+
+        <activity
+            android:name=".settings.FeeActivity"
+            android:parentActivityName=".settings.SettingsActivity"
+            android:theme="@style/AppTheme.Settings"
+            android:windowSoftInputMode="adjustResize"
+            tools:ignore="UnusedAttribute">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".settings.SettingsActivity" />
         </activity>
 
         <activity
@@ -71,7 +82,7 @@
             tools:ignore="UnusedAttribute">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".settings.SettingsActivity"/>
+                android:value=".settings.SettingsActivity" />
         </activity>
 
         <activity
@@ -81,13 +92,13 @@
             tools:ignore="UnusedAttribute">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+                android:value=".MainActivity" />
         </activity>
 
         <activity android:name=".ScanBankCardActivity">
 
             <intent-filter>
-                <action android:name="ru.yandex.money.android.sdk.action.SCAN_BANK_CARD"/>
+                <action android:name="ru.yandex.money.android.sdk.action.SCAN_BANK_CARD" />
             </intent-filter>
 
         </activity>

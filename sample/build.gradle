@@ -65,6 +65,7 @@ android {
 
 repositories {
     maven { url 'https://dl.bintray.com/yandex-money/maven' }
+    mavenCentral()
 }
 
 dependencies {
@@ -80,11 +81,12 @@ dependencies {
 
     releaseImplementation project(':library')
     debugImplementation project(':library')
-    implementation 'com.yandex.android:authsdk:2.1.0'
+    implementation 'com.yandex.android:authsdk:2.1.1'
     implementation project(':pay-cards-sdk')
     testImplementation 'junit:junit:4.12'
     testImplementation "org.mockito:mockito-core:$mockito_version"
     testImplementation "org.robolectric:robolectric:3.8"
     androidTestImplementation "com.android.support.test:runner:$support_test_version"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$espresso_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

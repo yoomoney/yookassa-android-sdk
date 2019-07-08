@@ -36,6 +36,7 @@
     <string name="ym_payment_options_yamoney">Яндекс.Деньги</string>
     <string name="ym_payment_options_android_pay">Google Pay</string>
     <string name="ym_contract_amount">К оплате</string>
+    <string name="ym_contract_fee">Включая комиссию</string>
     <string name="ym_payment_options_bank_card">Банковская карта</string>
     <string name="ym_contract_continue">Продолжить</string>
     <string name="ym_contract_change_payment_option">Изменить</string>
@@ -65,4 +66,6 @@
     <string name="ym_error_empty_payment_auth_code">Надо заполнить</string>
     <string name="ym_sberbank">Сбербанк Онлайн</string>
     <string name="ym_payment_option_google_pay">Google Pay</string>
+    <string name="ym_license_agreement_part_1">Нажимая кнопку, вы принимаете</string>
+    <string name="ym_license_agreement_part_2">условия сервиса</string>
 </resources>

@@ -22,6 +22,7 @@
 package ru.yandex.money.android.sdk.utils
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.CollapsingToolbarLayout
@@ -44,8 +45,9 @@ import ru.yandex.money.android.sdk.impl.logging.ReporterLogger
 import ru.yandex.money.android.sdk.impl.metrics.YandexMetricaReporter
 
 const val EXTRA_URL = "ru.yandex.money.android.extra.URL"
+const val EXTRA_LOG_PARAM = "ru.yandex.money.android.extra.LOG_PARAM"
 
-class CheckoutConfirmationActivity : AppCompatActivity(), WebViewFragment.Listener {
+class WebViewActivity : AppCompatActivity(), WebViewFragment.Listener {
 
     private lateinit var webViewFragment: WebViewFragment
 
@@ -57,17 +59,18 @@ class CheckoutConfirmationActivity : AppCompatActivity(), WebViewFragment.Listen
         super.onCreate(savedInstanceState)
 
         val url = intent.getStringExtra(EXTRA_URL)
+        val logParam = intent.getStringExtra(EXTRA_LOG_PARAM)
 
         if (checkUrl(url)) {
-            if (savedInstanceState == null) {
-                ReporterLogger(YandexMetricaReporter(this)).report("screen3ds")
+            if (savedInstanceState == null && logParam != null) {
+                ReporterLogger(YandexMetricaReporter(this)).report(logParam)
             }
 
             setContentView(R.layout.ym_activity_web_view)
             title = null
 
             webViewFragment = (supportFragmentManager.findFragmentById(R.id.web_view) as WebViewFragment).apply {
-                attach(this@CheckoutConfirmationActivity)
+                attach(this@WebViewActivity)
                 load(url, DEFAULT_REDIRECT_URL)
             }
         } else {
@@ -115,7 +118,7 @@ class CheckoutConfirmationActivity : AppCompatActivity(), WebViewFragment.Listen
 
         val actionView = menu.findItem(R.id.progress).actionView
         progress = ((actionView as ViewGroup).getChildAt(0) as ContentLoadingProgressBar?)?.apply {
-            val size = resources.getDimensionPixelSize(R.dimen.ym_checkout_confirmation_activity_progress_size)
+            val size = resources.getDimensionPixelSize(R.dimen.ym_checkout_web_view_activity_progress_size)
             with(layoutParams) {
                 width = size
                 height = size
@@ -168,14 +171,20 @@ class CheckoutConfirmationActivity : AppCompatActivity(), WebViewFragment.Listen
     }
 
     override fun onSuccess() {
-        setResult(
-            RESULT_OK,
-            Intent().putExtras(intent)
-        )
+        setResult(RESULT_OK, Intent().putExtras(intent))
         finish()
     }
 
     companion object {
+        fun create(context: Context, url: String, logParam: String? = null): Intent {
+            return Intent(context, WebViewActivity::class.java).apply {
+                putExtra(EXTRA_URL, url)
+                if (logParam != null) {
+                    putExtra(EXTRA_LOG_PARAM, logParam)
+                }
+            }
+        }
+
         fun checkUrl(url: String) = URLUtil.isHttpsUrl(url) || BuildConfig.DEBUG && URLUtil.isAssetUrl(url)
     }
 }

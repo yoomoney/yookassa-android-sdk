@@ -36,13 +36,14 @@
     <string name="ym_payment_options_yamoney">Yandex.Money</string>
     <string name="ym_payment_options_android_pay">Google Pay</string>
     <string name="ym_contract_amount">Amount to be paid</string>
+    <string name="ym_contract_fee">Including fee</string>
     <string name="ym_payment_options_bank_card">Bank card</string>
     <string name="ym_contract_continue">Next</string>
     <string name="ym_contract_change_payment_option">Change</string>
     <string name="ym_payment_auth_repeat">Send again</string>
     <string name="ym_allow_wallet_linking">Save the Yandex.Money Wallet in this app?</string>
     <string name="ym_allow_recurring_payments">Allow recurring payments?</string>
-    <string name="ym_auth_hint_sms">Enter the password from the text message</string>
+    <string name="ym_auth_hint_sms">Password from the message</string>
     <string name="ym_auth_hint_totp">Enter a one-time password</string>
     <string name="ym_auth_hint_password">Enter the password</string>
     <string name="ym_auth_hint_emergency">Enter the emergency code</string>
@@ -65,4 +66,7 @@
     <string name="ym_error_empty_payment_auth_code">Should not be empty</string>
     <string name="ym_sberbank">Sberbank Online</string>
     <string name="ym_payment_option_google_pay">Google Pay</string>
+    <string name="ym_license_agreement_part_1">By clicking this button, you accept</string>
+    <string name="ym_license_agreement_part_2">terms and conditions of the service</string>
+    <string name="ym_license_agreement_url" translatable="false">https://money.yandex.ru/page?id=526623</string>
 </resources>

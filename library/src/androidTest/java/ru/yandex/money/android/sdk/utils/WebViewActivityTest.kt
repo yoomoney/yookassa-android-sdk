@@ -44,10 +44,10 @@ import ru.yandex.money.android.sdk.Checkout.RESULT_ERROR
 import java.lang.Thread.sleep
 
 @RunWith(AndroidJUnit4::class)
-class CheckoutConfirmationActivityTest {
+class WebViewActivityTest {
 
     @[Rule JvmField]
-    val checkoutConfirmationActivityRule = ActivityTestRule(CheckoutConfirmationActivity::class.java, false, false)
+    val checkoutConfirmationActivityRule = ActivityTestRule(WebViewActivity::class.java, false, false)
 
     @Test
     fun shouldEndsWith_ResultOk_When_RedirectUrlReached() {

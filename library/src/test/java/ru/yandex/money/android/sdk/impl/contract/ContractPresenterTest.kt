@@ -37,7 +37,8 @@ import org.robolectric.annotation.Config
 import ru.yandex.money.android.sdk.Amount
 import ru.yandex.money.android.sdk.PaymentMethodType
 import ru.yandex.money.android.sdk.R
-import ru.yandex.money.android.sdk.createGooglePayPaymentOption
+import ru.yandex.money.android.sdk.createGooglePayPaymentOptionWithFee
+import ru.yandex.money.android.sdk.createGooglePayPaymentOptionWithoutFee
 import ru.yandex.money.android.sdk.createLinkedCardPaymentOption
 import ru.yandex.money.android.sdk.createNewCardPaymentOption
 import ru.yandex.money.android.sdk.createSbolSmsInvoicingPaymentOption
@@ -103,9 +104,10 @@ class ContractPresenterTest {
     }
 
     @Test
-    fun `should show GooglePayContractViewModel when GooglePay selected`() {
+    fun `should show ContractSuccessViewModel when GooglePay selected and fee is zero`() {
         // prepare
-        val testModel = SelectedPaymentOptionOutputModel(createGooglePayPaymentOption(1), hasAnotherOption, false)
+        val testModel =
+            SelectedPaymentOptionOutputModel(createGooglePayPaymentOptionWithoutFee(1), hasAnotherOption, false)
         val allowRecurrencePaymentRequest = false
         val presenter = ContractPresenter(context, shopTitle, shopSubtitle, allowRecurrencePaymentRequest)
 
@@ -114,6 +116,21 @@ class ContractPresenterTest {
 
         // assert
         assertThat(viewModel, instanceOf(GooglePayContractViewModel::class.java))
+    }
+
+    @Test
+    fun `should show GooglePayContractViewModel when GooglePay selected and fee is not zero`() {
+        // prepare
+        val testModel =
+            SelectedPaymentOptionOutputModel(createGooglePayPaymentOptionWithFee(1), hasAnotherOption, false)
+        val allowRecurrencePaymentRequest = false
+        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, allowRecurrencePaymentRequest)
+
+        // invoke
+        val viewModel = presenter(testModel)
+
+        // assert
+        assertThat(viewModel, instanceOf(ContractSuccessViewModel::class.java))
     }
 
     @Test
@@ -358,12 +375,14 @@ class ContractPresenterTest {
         val presenter = ContractPresenter(context, shopTitle, shopSubtitle, false)
 
         // invoke
-        presenter(RequestPaymentAuthOutputModel(
-            AuthTypeState(
-                AuthType.SMS,
-                15
+        presenter(
+            RequestPaymentAuthOutputModel(
+                AuthTypeState(
+                    AuthType.SMS,
+                    15
+                )
             )
-        ))
+        )
 
         // assert that exception thrown
     }
@@ -376,12 +395,14 @@ class ContractPresenterTest {
         presenter(testModel)
 
         // invoke
-        val viewModel = presenter(RequestPaymentAuthOutputModel(
-            AuthTypeState(
-                AuthType.SMS,
-                timeout
+        val viewModel = presenter(
+            RequestPaymentAuthOutputModel(
+                AuthTypeState(
+                    AuthType.SMS,
+                    timeout
+                )
             )
-        ))
+        )
 
         // assert
         viewModel.paymentAuth as PaymentAuthFormRetryViewModel
@@ -400,12 +421,14 @@ class ContractPresenterTest {
         presenter(testModel)
 
         // invoke
-        val viewModel = presenter(RequestPaymentAuthOutputModel(
-            AuthTypeState(
-                AuthType.TOTP,
-                timeout
+        val viewModel = presenter(
+            RequestPaymentAuthOutputModel(
+                AuthTypeState(
+                    AuthType.TOTP,
+                    timeout
+                )
             )
-        ))
+        )
 
         // assert
         viewModel.paymentAuth as PaymentAuthFormNoRetryViewModel
@@ -423,12 +446,14 @@ class ContractPresenterTest {
         presenter(testModel)
 
         // invoke
-        val viewModel = presenter(RequestPaymentAuthOutputModel(
-            AuthTypeState(
-                AuthType.SMS,
-                timeout
+        val viewModel = presenter(
+            RequestPaymentAuthOutputModel(
+                AuthTypeState(
+                    AuthType.SMS,
+                    timeout
+                )
             )
-        ))
+        )
 
         // assert
         viewModel.paymentAuth as PaymentAuthFormRetryViewModel
@@ -447,12 +472,14 @@ class ContractPresenterTest {
         presenter(testModel.copy(walletLinkingPossible = true))
 
         // invoke
-        val viewModel = presenter(RequestPaymentAuthOutputModel(
-            AuthTypeState(
-                AuthType.SMS,
-                timeout
+        val viewModel = presenter(
+            RequestPaymentAuthOutputModel(
+                AuthTypeState(
+                    AuthType.SMS,
+                    timeout
+                )
             )
-        ))
+        )
 
         // assert
         viewModel.paymentAuth as PaymentAuthFormRetryViewModel
@@ -547,12 +574,14 @@ class ContractPresenterTest {
         // prepare
         val presenter = ContractPresenter(context, shopTitle, shopSubtitle, false)
         presenter(testModel)
-        val viewModelWithForm = presenter(RequestPaymentAuthOutputModel(
-            AuthTypeState(
-                AuthType.SMS,
-                1
+        val viewModelWithForm = presenter(
+            RequestPaymentAuthOutputModel(
+                AuthTypeState(
+                    AuthType.SMS,
+                    1
+                )
             )
-        ))
+        )
         viewModelWithForm.paymentAuth as PaymentAuthFormRetryViewModel
 
         // invoke
@@ -570,12 +599,14 @@ class ContractPresenterTest {
         // prepare
         val presenter = ContractPresenter(context, shopTitle, shopSubtitle, true)
         presenter(testModel)
-        val viewModelWithForm = presenter(RequestPaymentAuthOutputModel(
-            AuthTypeState(
-                AuthType.SMS,
-                1
+        val viewModelWithForm = presenter(
+            RequestPaymentAuthOutputModel(
+                AuthTypeState(
+                    AuthType.SMS,
+                    1
+                )
             )
-        ))
+        )
         viewModelWithForm.paymentAuth as PaymentAuthFormRetryViewModel
 
         // invoke
@@ -595,12 +626,14 @@ class ContractPresenterTest {
         // prepare
         val presenter = ContractPresenter(context, shopTitle, shopSubtitle, false)
         presenter(testModel.copy(walletLinkingPossible = true))
-        val viewModelWithForm = presenter(RequestPaymentAuthOutputModel(
-            AuthTypeState(
-                AuthType.SMS,
-                1
+        val viewModelWithForm = presenter(
+            RequestPaymentAuthOutputModel(
+                AuthTypeState(
+                    AuthType.SMS,
+                    1
+                )
             )
-        ))
+        )
         viewModelWithForm.paymentAuth as PaymentAuthFormRetryViewModel
 
         // invoke
@@ -620,12 +653,14 @@ class ContractPresenterTest {
         val presenter = ContractPresenter(context, shopTitle, shopSubtitle, false)
 
         // invoke
-        presenter(SmsSessionRetryOutputModel(
-            AuthTypeState(
-                AuthType.SMS,
-                timeout
+        presenter(
+            SmsSessionRetryOutputModel(
+                AuthTypeState(
+                    AuthType.SMS,
+                    timeout
+                )
             )
-        ))
+        )
 
         // assert that exception thrown
     }
@@ -638,12 +673,14 @@ class ContractPresenterTest {
         presenter(testModel)
 
         // invoke
-        val viewModel = presenter(SmsSessionRetryOutputModel(
-            AuthTypeState(
-                AuthType.SMS,
-                timeout
+        val viewModel = presenter(
+            SmsSessionRetryOutputModel(
+                AuthTypeState(
+                    AuthType.SMS,
+                    timeout
+                )
             )
-        ))
+        )
 
         // assert
         viewModel.paymentAuth as PaymentAuthFormRetryViewModel
@@ -661,12 +698,14 @@ class ContractPresenterTest {
         presenter(testModel)
 
         // invoke
-        val viewModel = presenter(SmsSessionRetryOutputModel(
-            AuthTypeState(
-                AuthType.SMS,
-                timeout
+        val viewModel = presenter(
+            SmsSessionRetryOutputModel(
+                AuthTypeState(
+                    AuthType.SMS,
+                    timeout
+                )
             )
-        ))
+        )
 
         // assert
         viewModel.paymentAuth as PaymentAuthFormRetryViewModel
@@ -684,12 +723,14 @@ class ContractPresenterTest {
         presenter(testModel.copy(walletLinkingPossible = true))
 
         // invoke
-        val viewModel = presenter(SmsSessionRetryOutputModel(
-            AuthTypeState(
-                AuthType.SMS,
-                timeout
+        val viewModel = presenter(
+            SmsSessionRetryOutputModel(
+                AuthTypeState(
+                    AuthType.SMS,
+                    timeout
+                )
             )
-        ))
+        )
 
         // assert
         viewModel.paymentAuth as PaymentAuthFormRetryViewModel

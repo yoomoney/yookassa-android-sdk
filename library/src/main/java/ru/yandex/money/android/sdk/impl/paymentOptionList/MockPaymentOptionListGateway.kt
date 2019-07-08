@@ -40,28 +40,26 @@ import java.math.BigDecimal
 import java.util.Random
 
 internal class MockPaymentOptionListGateway(
-    private val linkedCardsCount: Int
+    private val linkedCardsCount: Int,
+    private val fee: Fee?
 ) : PaymentOptionListGateway {
 
     private val random = Random()
 
     override fun getPaymentOptions(amount: Amount, currentUser: CurrentUser): List<PaymentOption> {
         sleep(1000L)
-        val fee = Fee(
-            Amount(BigDecimal.ONE, amount.currency),
-            Amount(BigDecimal("0.5"), amount.currency)
-        )
         val id = generateSequence(0, 1::plus).iterator()
+        val charge = Amount(amount.value + (fee?.service?.value ?: BigDecimal.ZERO), amount.currency)
         return when (currentUser) {
-            is AuthorizedUser -> createAuthorizedList(id, amount, fee, currentUser)
-            AnonymousUser -> createAnonymousList(id, amount, fee)
+            is AuthorizedUser -> createAuthorizedList(id, charge, fee, currentUser)
+            AnonymousUser -> createAnonymousList(id, charge, fee)
         }
     }
 
     private fun createAuthorizedList(
         id: Iterator<Int>,
         amount: Amount,
-        fee: Fee,
+        fee: Fee?,
         currentUser: AuthorizedUser
     ) = mutableListOf<PaymentOption>().apply {
         add(
@@ -83,7 +81,7 @@ internal class MockPaymentOptionListGateway(
     private fun createAnonymousList(
         id: Iterator<Int>,
         amount: Amount,
-        fee: Fee
+        fee: Fee?
     ) = listOf(
         AbstractWallet(
             id = id.next(),

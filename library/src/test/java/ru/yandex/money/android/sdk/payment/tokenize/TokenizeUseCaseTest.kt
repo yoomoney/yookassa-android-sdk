@@ -31,7 +31,7 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
 import org.mockito.Mockito.inOrder
 import ru.yandex.money.android.sdk.Amount
-import ru.yandex.money.android.sdk.createGooglePayPaymentOption
+import ru.yandex.money.android.sdk.createGooglePayPaymentOptionWithFee
 import ru.yandex.money.android.sdk.createLinkedCardPaymentOption
 import ru.yandex.money.android.sdk.createNewCardPaymentOption
 import ru.yandex.money.android.sdk.createSbolSmsInvoicingPaymentOption
@@ -169,7 +169,7 @@ internal class TokenizeUseCaseTest {
     @Test
     fun `should return TokenizePaymentOptionInfoRequired with GooglePay when GooglePayOptionInfo not present`() {
         // prepare
-        val paymentOption = createGooglePayPaymentOption(1)
+        val paymentOption = createGooglePayPaymentOptionWithFee(1)
         whenever(getLoadedPaymentOptionListGateway.getLoadedPaymentOptions()).thenReturn(listOf(paymentOption))
 
         // invoke

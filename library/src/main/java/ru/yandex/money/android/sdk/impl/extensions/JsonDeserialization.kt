@@ -48,10 +48,14 @@ internal fun JSONObject.toAmount() = Amount(
     currency = Currency.getInstance(get("currency").toString())
 )
 
-internal fun JSONObject.toFee() = Fee(
-    service = optJSONObject("service")?.toAmount(),
-    counterparty = optJSONObject("counterparty")?.toAmount()
-)
+internal fun JSONObject.getFee(): Fee? {
+    return optJSONObject("fee")?.run {
+        Fee(
+            service = optJSONObject("service")?.toAmount(),
+            counterparty = optJSONObject("counterparty")?.toAmount()
+        )
+    }
+}
 
 internal fun JSONObject.toError() = Error(
     errorCode = getString("code").toErrorCode(),

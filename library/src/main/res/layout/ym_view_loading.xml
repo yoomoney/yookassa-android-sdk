@@ -37,7 +37,7 @@
         android:layout_marginBottom="@dimen/ym_iconPlusText_iconMargin_xl" />
 
     <TextView
-        style="@style/ym_standardText"
+        style="@style/ym_Text.Common2"
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

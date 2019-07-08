@@ -42,6 +42,7 @@ public final class Settings {
     static final String KEY_AUTOFILL_USER_PHONE_NUMBER = "autofill_user_phone_number";
     static final String KEY_TEST_MODE_ENABLED = "test_mode_enabled";
     static final String KEY_PAYMENT_AUTH_PASSED = "payment_auth_passed";
+    static final String KEY_SERVICE_FEE = "fee";
     static final String KEY_SHOULD_COMPLETE_PAYMENT_WITH_ERROR = "should_complete_with_error";
 
     private SharedPreferences sp;
@@ -80,6 +81,10 @@ public final class Settings {
 
     public boolean isPaymentAuthPassed() {
         return sp.getBoolean(KEY_PAYMENT_AUTH_PASSED, false);
+    }
+
+    public float getServiceFee() {
+        return sp.getFloat(KEY_SERVICE_FEE, 0f);
     }
 
     public int getLinkedCardsCount() {

@@ -33,11 +33,13 @@ import kotlinx.android.parcel.Parcelize
  * @param completeWithError complete payment with error
  * @param paymentAuthPassed get preauthorized user
  * @param linkedCardsCount number of linked cards for authorized user
+ * @param serviceFee fee, that will be shown on the contract
  */
 @[Parcelize SuppressLint("ParcelCreator")]
 data class MockConfiguration
 @[JvmOverloads Keep] constructor(
     @get:Keep val completeWithError: Boolean = false,
     @get:Keep val paymentAuthPassed: Boolean = false,
-    @get:Keep val linkedCardsCount: Int = 1
+    @get:Keep val linkedCardsCount: Int = 1,
+    @get:Keep val serviceFee: Amount? = null
 ) : Parcelable

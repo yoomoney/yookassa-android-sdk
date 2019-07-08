@@ -23,4 +23,4 @@ package ru.yandex.money.android.sdk.model
 
 import ru.yandex.money.android.sdk.Amount
 
-internal data class Fee(val service: Amount?, val counterparty: Amount?)
+internal data class Fee(val service: Amount? = null, val counterparty: Amount? = null)

@@ -30,7 +30,7 @@ import org.mockito.Mock
 import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
 import ru.yandex.money.android.sdk.Amount
-import ru.yandex.money.android.sdk.createGooglePayPaymentOption
+import ru.yandex.money.android.sdk.createGooglePayPaymentOptionWithFee
 import ru.yandex.money.android.sdk.createNewCardPaymentOption
 import ru.yandex.money.android.sdk.impl.extensions.RUB
 import ru.yandex.money.android.sdk.model.AnonymousUser
@@ -44,7 +44,7 @@ class PaymentOptionListWithGooglePayFilterGatewayTest {
     private val testCurrentUser = AnonymousUser
     private val testPaymentOptions = listOf(
         createNewCardPaymentOption(0),
-        createGooglePayPaymentOption(1)
+        createGooglePayPaymentOptionWithFee(1)
     )
 
     @Mock

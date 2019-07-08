@@ -23,7 +23,6 @@ package ru.yandex.money.android.example;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -169,7 +168,7 @@ public final class MainActivity extends AppCompatActivity {
                     paymentMethodTypes,
                     BuildConfig.GATEWAY_ID,
                     getString(R.string.test_redirect_url),
-                    settings.autofillUserPhoneNumber() ? getString(R.string.test_phone_number): null
+                    settings.autofillUserPhoneNumber() ? getString(R.string.test_phone_number) : null
             );
 
             final UiParameters uiParameters = new UiParameters(
@@ -179,7 +178,8 @@ public final class MainActivity extends AppCompatActivity {
             if (settings.isTestModeEnabled()) {
                 mockConfiguration = new MockConfiguration(settings.shouldCompletePaymentWithError(),
                         settings.isPaymentAuthPassed(),
-                        settings.getLinkedCardsCount());
+                        settings.getLinkedCardsCount(),
+                        new Amount(new BigDecimal(settings.getServiceFee()), RUB));
             } else {
                 mockConfiguration = null;
             }

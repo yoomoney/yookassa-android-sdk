@@ -27,7 +27,7 @@
 
     <application>
         <activity
-            android:name=".utils.CheckoutConfirmationActivity"
+            android:name=".utils.WebViewActivity"
             android:theme="@style/ym_Theme" />
 
         <activity

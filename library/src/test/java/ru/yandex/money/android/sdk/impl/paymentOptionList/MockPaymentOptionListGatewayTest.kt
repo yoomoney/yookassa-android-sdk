@@ -42,7 +42,7 @@ class MockPaymentOptionListGatewayTest {
     @Test
     fun testNoLinkedCards() {
         // prepare
-        val gateway = MockPaymentOptionListGateway(0)
+        val gateway = MockPaymentOptionListGateway(0, null)
 
         // invoke
         val options = gateway.getPaymentOptions(
@@ -65,7 +65,7 @@ class MockPaymentOptionListGatewayTest {
     @Test
     fun testWithLinkedCards() {
         // prepare
-        val gateway = MockPaymentOptionListGateway(3)
+        val gateway = MockPaymentOptionListGateway(3, null)
         // invoke
         val options = gateway.getPaymentOptions(
             Amount(BigDecimal.TEN, RUB),
@@ -90,7 +90,7 @@ class MockPaymentOptionListGatewayTest {
     @Test
     fun testAnonymousUser() {
         // prepare
-        val gateway = MockPaymentOptionListGateway(3)
+        val gateway = MockPaymentOptionListGateway(3, null)
         // invoke
         val options = gateway.getPaymentOptions(
             Amount(BigDecimal.TEN, RUB),

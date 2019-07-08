@@ -81,7 +81,7 @@ internal class PaymentOptionListFragment : Fragment(), PaymentOptionListRecycler
     }
 
     private val showAuthNoWalletViewModel: (UserAuthNoWalletViewModel) -> Unit = {
-        if (isAdded) {
+        if (!isStateSaved) {
             showNoWalletDialog(context!!, it.accountName)
         }
     }

@@ -1,16 +1,25 @@
 ## Changelog
 
+### 2.3.0
+- Add info about the fee on the contract screen.
+- Fix 3-DS screen closing after Google Pay tokenization.
+- Fix keyboard behaviour on user logout.
+- Fix scrolling on bank card screen.
+- Fix rare crashes after saving instance state.
+
 ### 2.2.1
+2019-05-16
 - ThreatMetrix fix.
 
 ### 2.2.0
+2019-04-25
 - Add new parameter "userPhoneNumber" in PaymentParameters.
 - Add setting of supported card networks in Google Pay.
 - Fix crash on 3-DS screen (https://github.com/yandex-money/yandex-checkout-android-sdk/issues/26).
 - Update README.
 
 ### 2.1.0
-2019-01-03
+2019-04-01
 - Add color customization.
 - Add support for AndroidX (https://github.com/yandex-money/yandex-checkout-android-sdk/issues/21).
 - Fix Google Pay disabling from AndroidManifest (https://github.com/yandex-money/yandex-checkout-android-sdk/issues/20).

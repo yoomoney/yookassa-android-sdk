@@ -32,11 +32,13 @@ internal data class ContractSuccessViewModel(
     val shopTitle: CharSequence,
     val shopSubtitle: CharSequence,
     val paymentOption: PaymentOptionViewModel,
+    val licenseAgreement: CharSequence,
     val showChangeButton: Boolean,
     val showAllowRecurringPayments: Boolean,
     val showAllowWalletLinking: Boolean,
     val paymentAuth: PaymentAuthViewModel?,
-    val showPhoneInput: Boolean
+    val showPhoneInput: Boolean,
+    val googlePayContractViewModel: GooglePayContractViewModel? = null
 ) : ContractViewModel()
 
 internal data class ContractCompleteViewModel(

@@ -71,10 +71,12 @@ public final class SettingsActivity extends AppCompatActivity implements View.On
             new Pair<>(KEY_SHOULD_COMPLETE_PAYMENT_WITH_ERROR, R.id.complete_with_error)
     );
     private View linkedCardsButton;
+    private View feeButton;
     private CompoundButton paymentAuthPassedSwitch;
     private CompoundButton completeWithErrorButton;
     private View paymentAuthPassedDivider;
     private View linkedCardsDivider;
+    private View feeDivider;
     private View completeWithErrorDivider;
 
     @Override
@@ -87,6 +89,9 @@ public final class SettingsActivity extends AppCompatActivity implements View.On
         linkedCardsButton = findViewById(R.id.linked_cards);
         linkedCardsButton.setOnClickListener(this);
 
+        feeButton = findViewById(R.id.fee);
+        feeButton.setOnClickListener(this);
+
         findViewById(R.id.colorScheme).setOnClickListener(
                 v -> startActivity(new Intent(SettingsActivity.this, ColorSchemeActivity.class)));
 
@@ -95,6 +100,7 @@ public final class SettingsActivity extends AppCompatActivity implements View.On
         completeWithErrorButton = findViewById(R.id.complete_with_error);
         paymentAuthPassedDivider = findViewById(R.id.payment_auth_passed_divider);
         linkedCardsDivider = findViewById(R.id.linked_cards_divider);
+        feeDivider = findViewById(R.id.fee_divider);
         completeWithErrorDivider = findViewById(R.id.complete_with_error_divider);
 
         enableTestModeSwitch.setOnCheckedChangeListener(
@@ -180,16 +186,20 @@ public final class SettingsActivity extends AppCompatActivity implements View.On
     public void onClick(View v) {
         if (v.getId() == R.id.linked_cards) {
             startActivity(new Intent(this, LinkedCardsActivity.class));
+        } else if (v.getId() == R.id.fee) {
+            startActivity(new Intent(this, FeeActivity.class));
         }
     }
 
     private void setTestGroupVisibility(int visibility) {
         paymentAuthPassedSwitch.setVisibility(visibility);
+        feeButton.setVisibility(visibility);
         linkedCardsButton.setVisibility(visibility);
         completeWithErrorButton.setVisibility(visibility);
         paymentAuthPassedDivider.setVisibility(visibility);
         linkedCardsDivider.setVisibility(visibility);
         completeWithErrorDivider.setVisibility(visibility);
+        feeDivider.setVisibility(visibility);
     }
 
     private void savePreferences() {

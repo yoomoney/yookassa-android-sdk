@@ -29,6 +29,7 @@ import ru.yandex.money.android.sdk.PaymentMethodType.YANDEX_MONEY
 import ru.yandex.money.android.sdk.impl.extensions.getCardBrand
 import ru.yandex.money.android.sdk.impl.extensions.getPaymentMethodType
 import ru.yandex.money.android.sdk.impl.extensions.toAmount
+import ru.yandex.money.android.sdk.impl.extensions.getFee
 import ru.yandex.money.android.sdk.impl.payment.InstrumentType.LINKED_BANK_CARD
 import ru.yandex.money.android.sdk.impl.payment.InstrumentType.UNKNOWN
 import ru.yandex.money.android.sdk.impl.payment.InstrumentType.WALLET
@@ -51,14 +52,14 @@ internal fun paymentOptionFactory(
 
     return paymentMethodType?.let {
         when (paymentMethodType) {
-            BANK_CARD -> NewCard(id, charge, null)
-            SBERBANK -> SbolSmsInvoicing(id, charge, null)
-            GOOGLE_PAY -> GooglePay(id, charge, null)
+            BANK_CARD -> NewCard(id, charge, jsonObject.getFee())
+            SBERBANK -> SbolSmsInvoicing(id, charge, jsonObject.getFee())
+            GOOGLE_PAY -> GooglePay(id, charge, jsonObject.getFee())
             YANDEX_MONEY -> when (InstrumentType.parse(jsonObject.optString("instrument_type"))) {
                 WALLET -> Wallet(
                     id = id,
                     charge = charge,
-                    fee = null,
+                    fee = jsonObject.getFee(),
                     walletId = jsonObject.optString("id"),
                     balance = jsonObject.optJSONObject("balance").toAmount(),
                     userName = userName
@@ -66,7 +67,7 @@ internal fun paymentOptionFactory(
                 LINKED_BANK_CARD -> LinkedCard(
                     id = id,
                     charge = charge,
-                    fee = null,
+                    fee = jsonObject.getFee(),
                     cardId = jsonObject.getString("id"),
                     name = jsonObject.optString("card_name"),
                     pan = jsonObject.getString("card_mask"),

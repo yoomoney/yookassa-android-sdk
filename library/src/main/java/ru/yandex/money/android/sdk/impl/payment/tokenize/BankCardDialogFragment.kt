@@ -53,7 +53,7 @@ private const val NEW_BANK_CARD_FRAGMENT = "new_bank_card_fragment"
 internal class BankCardDialogFragment : AppCompatDialogFragment() {
 
     private val paymentOptionInfoListener: (PaymentOptionInfoViewModel) -> Unit = {
-        childFragmentManager.takeIf { isAdded }?.apply {
+        childFragmentManager.takeIf { !isStateSaved }?.apply {
             when (it) {
                 is PaymentOptionInfoBankCardViewModel -> showNewBankCardFragment()
                 is PaymentOptionInfoLinkedCardViewModel -> {
@@ -80,11 +80,11 @@ internal class BankCardDialogFragment : AppCompatDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?) =
         BackPressedAppCompatDialog(checkNotNull(context), theme).apply {
-            window.setSoftInputMode(SOFT_INPUT_ADJUST_RESIZE or SOFT_INPUT_STATE_ALWAYS_VISIBLE)
+            window?.setSoftInputMode(SOFT_INPUT_ADJUST_RESIZE or SOFT_INPUT_STATE_ALWAYS_VISIBLE)
         }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        FrameLayout(context).apply {
+        FrameLayout(requireContext()).apply {
             id = R.id.ym_container
             val isNotTablet = !resources.getBoolean(R.bool.ym_isTablet)
             layoutParams = FrameLayout.LayoutParams(

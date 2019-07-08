@@ -29,7 +29,7 @@
     android:padding="@dimen/ym_space_m">
 
     <TextView
-        style="@style/ym_standardText"
+        style="@style/ym_Text.Common2"
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

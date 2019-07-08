@@ -33,7 +33,7 @@ import java.math.BigDecimal
 import java.util.Currency
 
 @RunWith(RobolectricTestRunner::class)
-class CheckoutConfirmationActivityRobolectricTest {
+class WebViewActivityRobolectricTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun `should throw exception if not https url present`() {

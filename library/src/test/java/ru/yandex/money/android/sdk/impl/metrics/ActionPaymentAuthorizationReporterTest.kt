@@ -52,7 +52,10 @@ class ActionPaymentAuthorizationReporterTest {
     fun setUp() {
         on(presenter(any() ?: ProcessPaymentAuthSuccessOutputModel())).thenReturn(
             ContractSuccessViewModel(
-                "", "", PaymentOptionViewModel(0, mock(Drawable::class.java), "", ""), false, false, false, null, false
+                "",
+                "",
+                PaymentOptionViewModel(0, mock(Drawable::class.java), "", ""),
+                "", false, false, false, null, false
             )
         )
         actionReporter = ActionPaymentAuthorizationReporter(presenter, reporter)

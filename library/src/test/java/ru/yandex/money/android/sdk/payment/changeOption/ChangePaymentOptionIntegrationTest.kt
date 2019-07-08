@@ -37,7 +37,7 @@ import ru.yandex.money.android.sdk.payment.loadOptionList.LoadPaymentOptionListU
 class ChangePaymentOptionIntegrationTest {
 
     private val userName = "test name"
-    private val paymentOptionsGateway = MockPaymentOptionListGateway(3)
+    private val paymentOptionsGateway = MockPaymentOptionListGateway(3, null)
     private val currentUserGateway = mock(CurrentUserGateway::class.java).apply {
         on(currentUser).thenReturn(AuthorizedUser(userName))
     }

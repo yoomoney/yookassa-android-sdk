@@ -37,8 +37,7 @@ import ru.yandex.money.android.sdk.impl.InMemoryColorSchemeRepository
 import ru.yandex.money.android.sdk.impl.paymentOptionInfo.EXTRA_CARD_NUMBER
 import ru.yandex.money.android.sdk.impl.paymentOptionInfo.EXTRA_EXPIRY_MONTH
 import ru.yandex.money.android.sdk.impl.paymentOptionInfo.EXTRA_EXPIRY_YEAR
-import ru.yandex.money.android.sdk.utils.CheckoutConfirmationActivity
-import ru.yandex.money.android.sdk.utils.EXTRA_URL
+import ru.yandex.money.android.sdk.utils.WebViewActivity
 
 /**
  * Entry point for MSDK. All actions related to MSDK should be performed through this class.
@@ -111,8 +110,11 @@ object Checkout {
     ): Intent {
         CheckoutInternal.checkUrl(url)
         InMemoryColorSchemeRepository.colorScheme = colorScheme
-        return Intent(context, CheckoutConfirmationActivity::class.java)
-            .putExtra(EXTRA_URL, url)
+        return WebViewActivity.create(
+            context = context,
+            url = url,
+            logParam = "screen3ds"
+        )
     }
 
     /**

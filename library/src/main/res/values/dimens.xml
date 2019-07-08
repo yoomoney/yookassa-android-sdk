@@ -49,6 +49,7 @@
     <dimen name="ym_decor_marginTop_xs">@dimen/ym_space_xs</dimen>
     <dimen name="ym_decor_marginTop_m">@dimen/ym_space_m</dimen>
     <dimen name="ym_decor_marginTop_xl">@dimen/ym_space_xl</dimen>
+    <dimen name="ym_decor_marginTop_2xl">@dimen/ym_space_2xl</dimen>
 
     <dimen name="ym_decor_marginEnd_2xs">@dimen/ym_space_2xs</dimen>
     <dimen name="ym_decor_marginEnd_2xl">@dimen/ym_space_2xl</dimen>
@@ -63,6 +64,6 @@
     
     <dimen name="ym_edittext_bottom_offset">12dp</dimen>
 
-    <!--Checkout confirmation activity option menu progress size-->
-    <dimen name="ym_checkout_confirmation_activity_progress_size">48dp</dimen>
+    <!--WebView-->
+    <dimen name="ym_checkout_web_view_activity_progress_size">48dp</dimen>
 </resources>

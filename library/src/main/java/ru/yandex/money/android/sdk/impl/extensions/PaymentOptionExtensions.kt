@@ -100,10 +100,9 @@ internal fun PaymentOption.toTokenizeScheme() = when (this) {
 
 internal fun PaymentOption.toConfirmation(returnUrl: String): Confirmation {
     return when (this) {
-        is YandexMoney, is NewCard -> RedirectConfirmation(
+        is YandexMoney, is NewCard, is GooglePay -> RedirectConfirmation(
             returnUrl
         )
         is SbolSmsInvoicing -> ExternalConfirmation
-        else -> NoConfirmation
     }
 }

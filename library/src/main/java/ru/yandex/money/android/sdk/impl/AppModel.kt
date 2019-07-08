@@ -112,6 +112,7 @@ import ru.yandex.money.android.sdk.logout.LogoutUseCase
 import ru.yandex.money.android.sdk.model.AuthorizedUser
 import ru.yandex.money.android.sdk.model.Controller
 import ru.yandex.money.android.sdk.model.CurrentUser
+import ru.yandex.money.android.sdk.model.Fee
 import ru.yandex.money.android.sdk.model.SdkException
 import ru.yandex.money.android.sdk.model.StateHolder
 import ru.yandex.money.android.sdk.model.ViewModel
@@ -271,7 +272,8 @@ internal object AppModel {
         val mockConfiguration = testParameters.mockConfiguration
 
         if (mockConfiguration != null) {
-            val mockPaymentOptionListGateway = MockPaymentOptionListGateway(mockConfiguration.linkedCardsCount)
+            val mockPaymentOptionListGateway =
+                MockPaymentOptionListGateway(mockConfiguration.linkedCardsCount, Fee(service = mockConfiguration.serviceFee))
             paymentOptionListGateway = mockPaymentOptionListGateway
             authorizeUserGateway = MockAuthorizeUserGateway
             tokenizeGateway = MockTokenizeGateway(mockConfiguration.completeWithError)

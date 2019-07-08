@@ -26,8 +26,8 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.text.Editable
-import android.text.TextUtils
 import android.text.TextWatcher
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,12 +36,7 @@ import kotlinx.android.synthetic.main.ym_fragment_contract.*
 import kotlinx.android.synthetic.main.ym_item_common.*
 import ru.yandex.money.android.sdk.R
 import ru.yandex.money.android.sdk.impl.AppModel
-import ru.yandex.money.android.sdk.impl.extensions.configureForPhoneInput
-import ru.yandex.money.android.sdk.impl.extensions.hideSoftKeyboard
-import ru.yandex.money.android.sdk.impl.extensions.isPhoneNumber
-import ru.yandex.money.android.sdk.impl.extensions.showChild
-import ru.yandex.money.android.sdk.impl.extensions.showSoftKeyboard
-import ru.yandex.money.android.sdk.impl.extensions.visible
+import ru.yandex.money.android.sdk.impl.extensions.*
 import ru.yandex.money.android.sdk.impl.paymentAuth.PaymentAuthView
 import ru.yandex.money.android.sdk.impl.paymentOptionList.GooglePayNotHandled
 import ru.yandex.money.android.sdk.impl.paymentOptionList.GooglePayTokenizationCanceled
@@ -57,13 +52,13 @@ import ru.yandex.money.android.sdk.utils.showLogoutDialog
 internal class ContractFragment : Fragment() {
 
     private val showContractProgress: (ContractProgressViewModel) -> Unit = {
-        if (isAdded) {
+        if (!isStateSaved) {
             rootContainer.showChild(loadingView)
         }
     }
 
     private val showContract: (ContractSuccessViewModel) -> Unit = { viewModel ->
-        if (isAdded) {
+        if (!isStateSaved) {
             rootContainer.showChild(contentView)
 
             title.text = viewModel.shopTitle
@@ -79,12 +74,19 @@ internal class ContractFragment : Fragment() {
 
                 if (canLogout) {
                     primaryText.setOnClickListener {
-                        showLogoutDialog(primaryText.context, name)
+                        showLogoutDialog(primaryText.context, name, view)
                     }
                 }
 
                 image.setImageDrawable(icon)
                 sum.text = amount
+
+                if (fee != null) {
+                    feeLayout.visible = true
+                    feeView.text = fee
+                } else {
+                    feeLayout.visible = false
+                }
 
                 nextButton.setOnClickListener { _ ->
                     AppModel.tokenizeController(TokenizeInputModel(optionId, viewModel.showAllowRecurringPayments))
@@ -98,6 +100,11 @@ internal class ContractFragment : Fragment() {
                     hideSoftKeyboard()
                     AppModel.changePaymentOptionController(Unit)
                 }
+            }
+
+            licenseAgreement.apply {
+                text = viewModel.licenseAgreement
+                movementMethod = LinkMovementMethod.getInstance()
             }
 
             switchesAndPaymentAuthContainer.visible = viewModel.paymentAuth != null
@@ -197,6 +204,17 @@ internal class ContractFragment : Fragment() {
                 }
                 is PaymentAuthSuccessViewModel -> AppModel.tokenizeController.retry()
             }
+
+            if (viewModel.googlePayContractViewModel != null) {
+                nextButton.setOnClickListener {
+                    rootContainer.showChild(loadingView)
+                    AppModel.googlePayIntegration?.startGooglePayTokenization(
+                        fragment = this,
+                        paymentOptionId = viewModel.googlePayContractViewModel.paymentOptionId,
+                        recurringPaymentsPossible = viewModel.googlePayContractViewModel.recurringPaymentsPossible
+                    )
+                }
+            }
         }
     }
 
@@ -213,7 +231,7 @@ internal class ContractFragment : Fragment() {
     }
 
     private val errorListener: (ContractErrorViewModel) -> Unit = {
-        if (isAdded) {
+        if (!isStateSaved) {
             errorView.setErrorText(it.error)
             errorView.setErrorButtonListener(View.OnClickListener {
                 AppModel.selectPaymentOptionController.retry()
@@ -223,7 +241,7 @@ internal class ContractFragment : Fragment() {
     }
 
     private val startGooglePayListener: (GooglePayContractViewModel) -> Unit = {
-        if (isAdded) {
+        if (!isStateSaved) {
             rootContainer.showChild(loadingView)
             AppModel.googlePayIntegration?.startGooglePayTokenization(
                 fragment = this,
@@ -292,7 +310,9 @@ internal class ContractFragment : Fragment() {
                         paymentOptionInfo = it.paymentOptionInfo
                     )
                 )
-                is GooglePayTokenizationCanceled -> AppModel.changePaymentOptionController(ChangePaymentOptionInputModel)
+                is GooglePayTokenizationCanceled -> AppModel.changePaymentOptionController(
+                    ChangePaymentOptionInputModel
+                )
                 is GooglePayNotHandled -> super.onActivityResult(requestCode, resultCode, data)
             }
         }

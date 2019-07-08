@@ -41,7 +41,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import ru.yandex.money.android.sdk.R
 import ru.yandex.money.android.sdk.createAbstractWalletPaymentOption
-import ru.yandex.money.android.sdk.createGooglePayPaymentOption
+import ru.yandex.money.android.sdk.createGooglePayPaymentOptionWithFee
 import ru.yandex.money.android.sdk.createLinkedCardPaymentOption
 import ru.yandex.money.android.sdk.createNewCardPaymentOption
 import ru.yandex.money.android.sdk.createSbolSmsInvoicingPaymentOption
@@ -119,7 +119,7 @@ class PaymentOptionExtensionsTest {
     @Test
     fun `get icon for GooglePay`() {
         // prepare
-        val paymentOption = createGooglePayPaymentOption(1)
+        val paymentOption = createGooglePayPaymentOptionWithFee(1)
 
         // invoke
         val icon = paymentOption.getIcon(context)
@@ -216,7 +216,7 @@ class PaymentOptionExtensionsTest {
     @Test
     fun `get title for GooglePay`() {
         // prepare
-        val paymentOption = createGooglePayPaymentOption(1)
+        val paymentOption = createGooglePayPaymentOptionWithFee(1)
 
         // invoke
         val title = paymentOption.getTitle(context)
@@ -281,7 +281,7 @@ class PaymentOptionExtensionsTest {
     @Test
     fun `get additional info for GooglePay`() {
         // prepare
-        val paymentOption = createGooglePayPaymentOption(1)
+        val paymentOption = createGooglePayPaymentOptionWithFee(1)
 
         // invoke
         val additionalInfo = paymentOption.getAdditionalInfo()
@@ -299,7 +299,7 @@ class PaymentOptionExtensionsTest {
             createLinkedCardPaymentOption(2),
             createNewCardPaymentOption(3),
             createSbolSmsInvoicingPaymentOption(4),
-            createGooglePayPaymentOption(5)
+            createGooglePayPaymentOptionWithFee(5)
         )
         val expectedTokenizeSchemes = arrayOf(
             TokenizeSchemeWallet(),
@@ -327,7 +327,7 @@ class PaymentOptionExtensionsTest {
             createLinkedCardPaymentOption(2),
             createNewCardPaymentOption(3),
             createSbolSmsInvoicingPaymentOption(4),
-            createGooglePayPaymentOption(5)
+            createGooglePayPaymentOptionWithFee(5)
         )
         val expectedConfirmations = arrayOf(
             RedirectConfirmation(redirectUrl),
@@ -335,7 +335,7 @@ class PaymentOptionExtensionsTest {
             RedirectConfirmation(redirectUrl),
             RedirectConfirmation(redirectUrl),
             ExternalConfirmation,
-            NoConfirmation
+            RedirectConfirmation(redirectUrl)
         )
 
         // invoke

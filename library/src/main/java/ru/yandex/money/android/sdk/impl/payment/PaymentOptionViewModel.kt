@@ -29,5 +29,6 @@ internal data class PaymentOptionViewModel(
         val name: CharSequence,
         val amount: CharSequence,
         val additionalInfo: CharSequence? = null,
-        val canLogout: Boolean = false
+        val canLogout: Boolean = false,
+        val fee: CharSequence? = null
 )

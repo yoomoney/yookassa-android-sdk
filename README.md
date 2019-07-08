@@ -13,7 +13,7 @@
 
 #  Документация
 
-Android Checkout mobile SDK - версия 2.2.1 ([changelog](https://github.com/yandex-money/yandex-checkout-android-sdk/blob/master/CHANGELOG.md))
+Android Checkout mobile SDK - версия 2.3.0 ([changelog](https://github.com/yandex-money/yandex-checkout-android-sdk/blob/master/CHANGELOG.md))
 
 * [Подключение зависимостей](#подключение-зависимостей)
     * [Подключение через Gradle](#подключение-через-gradle)
@@ -40,7 +40,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.yandex.money:checkout:2.2.1'
+    implementation 'com.yandex.money:checkout:2.3.0'
 }
 ```
 
@@ -62,7 +62,7 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    implementation "com.yandex.android:authsdk:2.1.0"
+    implementation "com.yandex.android:authsdk:2.1.1"
 }
 ```
 
@@ -214,7 +214,8 @@ public final class MainActivity extends AppCompatActivity {
 Поля класса `MockConfiguration`:
 * completeWithError (Boolean) - токенизация всегда возвращает ошибку;
 * paymentAuthPassed (Boolean) - пользователь всегда авторизован;
-* linkedCardsCount (Int) - количество карт, привязанных к кошельку пользователя.
+* linkedCardsCount (Int) - количество карт, привязанных к кошельку пользователя;
+* serviceFee (Amount) - комиссия, которая будет отображена на контракте;
 
 ```java
 class MyActivity extends android.support.v7.app.AppCompatActivity {
@@ -223,7 +224,8 @@ class MyActivity extends android.support.v7.app.AppCompatActivity {
 
     void timeToStartCheckout() {
         PaymentParameters paymentParameters = new PaymentParameters(...);
-        TestParameters testParameters = new TestParameters(true, true, new MockConfiguration(false, true, 5));
+        TestParameters testParameters = new TestParameters(true, true,
+            new MockConfiguration(false, true, 5, new Amount(BigDecimal.TEN, Currency.getInstance("RUB"))));
         Intent intent = Checkout.createTokenizeIntent(this, paymentParameters, testParameters);
         startActivityForResult(intent, REQUEST_CODE_TOKENIZE);
     }

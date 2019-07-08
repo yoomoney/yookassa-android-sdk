@@ -67,4 +67,7 @@
     <string name="test_phone_number" translatable="false">+79991234567</string>
     <string name="test_redirect_url" translatable="false">https://custom.redirect.url/</string>
     <string name="autofill_user_phone_number">Phone number autofill</string>
+    <string name="show_fee">Add fee to the test payment</string>
+    <string name="test_fee">Fee</string>
+    <string name="test_fee_hint">Fee to display on the contract screen</string>
 </resources>

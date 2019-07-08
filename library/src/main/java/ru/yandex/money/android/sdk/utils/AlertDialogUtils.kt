@@ -23,14 +23,17 @@ package ru.yandex.money.android.sdk.utils
 
 import android.content.Context
 import android.support.v7.app.AlertDialog
+import android.view.View
 import ru.yandex.money.android.sdk.R
 import ru.yandex.money.android.sdk.impl.AppModel
+import ru.yandex.money.android.sdk.impl.extensions.hideSoftKeyboard
 
-internal fun showLogoutDialog(context: Context, accountName: CharSequence) {
+internal fun showLogoutDialog(context: Context, accountName: CharSequence, view: View?) {
     AlertDialog.Builder(context, R.style.ym_DialogLogout).apply {
         setCancelable(true)
         setMessage(context.getString(R.string.ym_logout_dialog_message, accountName.trim()))
         setPositiveButton(context.getString(R.string.ym_logout_dialog_button_positive)) { _, _ ->
+            view?.hideSoftKeyboard()
             AppModel.logoutController.invoke(Unit)
         }
         setNegativeButton(context.getString(R.string.ym_logout_dialog_button_negative)) { _, _ -> }

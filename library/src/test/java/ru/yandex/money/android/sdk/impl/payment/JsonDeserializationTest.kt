@@ -40,7 +40,7 @@ import ru.yandex.money.android.sdk.impl.extensions.toAuthTypeState
 import ru.yandex.money.android.sdk.impl.extensions.toCheckoutTokenIssueExecuteResponse
 import ru.yandex.money.android.sdk.impl.extensions.toCheckoutTokenIssueInitResponse
 import ru.yandex.money.android.sdk.impl.extensions.toError
-import ru.yandex.money.android.sdk.impl.extensions.toFee
+import ru.yandex.money.android.sdk.impl.extensions.getFee
 import ru.yandex.money.android.sdk.impl.extensions.toPaymentOptionResponse
 import ru.yandex.money.android.sdk.impl.extensions.toTokenResponse
 import ru.yandex.money.android.sdk.impl.extensions.toWalletCheckResponse
@@ -88,36 +88,42 @@ class JsonDeserializationTest {
 
     @Test
     fun deserializeFeeWithServiceAndCounterparty() {
-        val jsonObject = JSONObject(
-            """{
+        val jsonObject = JSONObject().put(
+            "fee", JSONObject(
+                """{
             "service": {"value": "4.00","currency": "RUB"},
             "counterparty": {"value": "4.00","currency": "RUB"}
             }"""
+            )
         )
         val amount = Amount(BigDecimal("4.00"), RUB)
-        assertThat(jsonObject.toFee(), equalTo(Fee(amount, amount)))
+        assertThat(jsonObject.getFee(), equalTo(Fee(amount, amount)))
     }
 
     @Test
     fun deserializeFeeWithCounterparty() {
-        val jsonObject = JSONObject(
-            """{
+        val jsonObject = JSONObject().put(
+            "fee", JSONObject(
+                """{
             "counterparty": {"value": "4.00","currency": "RUB"}
             }"""
+            )
         )
         val amount = Amount(BigDecimal("4.00"), RUB)
-        assertThat(jsonObject.toFee(), equalTo(Fee(null, amount)))
+        assertThat(jsonObject.getFee(), equalTo(Fee(null, amount)))
     }
 
     @Test
     fun deserializeFeeWithService() {
-        val jsonObject = JSONObject(
-            """{
+        val jsonObject = JSONObject().put(
+            "fee", JSONObject(
+                """{
             "service": {"value": "4.00","currency": "RUB"}
             }"""
+            )
         )
         val amount = Amount(BigDecimal("4.00"), RUB)
-        assertThat(jsonObject.toFee(), equalTo(Fee(amount, null)))
+        assertThat(jsonObject.getFee(), equalTo(Fee(amount, null)))
     }
 
     @Test
@@ -315,7 +321,8 @@ class JsonDeserializationTest {
                         AuthType.SMS,
                         30
                     )
-                ), AuthType.SMS)
+                ), AuthType.SMS
+            )
         assertThat(jsonObject.toAuthContextGetResponse(), equalTo(authContextGetResponse))
     }
 
@@ -367,7 +374,8 @@ class JsonDeserializationTest {
                         AuthType.SMS,
                         30
                     )
-                ), AuthType.SMS)
+                ), AuthType.SMS
+            )
         assertThat(jsonObject.toAuthContextGetResponse(), equalTo(authContextGetResponse))
     }
 

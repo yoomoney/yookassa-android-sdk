@@ -33,23 +33,34 @@ import ru.yandex.money.android.sdk.impl.extensions.getTitle
 import ru.yandex.money.android.sdk.model.PaymentOption
 import ru.yandex.money.android.sdk.model.Presenter
 import ru.yandex.money.android.sdk.model.Wallet
+import java.math.BigDecimal
 
 internal class PaymentOptionPresenter(context: Context) :
     Presenter<PaymentOption, PaymentOptionViewModel> {
 
     private val context = context.applicationContext
 
-    override fun invoke(paymentOption: PaymentOption) = PaymentOptionViewModel(
+    override fun invoke(paymentOption: PaymentOption): PaymentOptionViewModel {
+        val serviceFee = paymentOption.fee?.service
+        val feeString = if (serviceFee != null && (serviceFee.value > BigDecimal.ZERO)) {
+            serviceFee.format()
+        } else {
+            null
+        }
+
+        return PaymentOptionViewModel(
             optionId = paymentOption.id,
             icon = paymentOption.getIcon(context),
             name = paymentOption.getTitle(context),
             amount = paymentOption.charge.format().makeStartBold(),
             additionalInfo = paymentOption.getAdditionalInfo(),
-            canLogout = paymentOption is Wallet
-    )
+            canLogout = paymentOption is Wallet,
+            fee = feeString
+        )
+    }
 
     private fun CharSequence.makeStartBold() =
-            (this as? Spannable ?: SpannableStringBuilder(this)).apply {
-                setSpan(StyleSpan(Typeface.BOLD), 0, length - 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-            }
+        (this as? Spannable ?: SpannableStringBuilder(this)).apply {
+            setSpan(StyleSpan(Typeface.BOLD), 0, length - 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
 }

@@ -66,7 +66,7 @@ internal class ContractOpenedReporterTest {
         val testOutputModel = SelectedPaymentOptionOutputModel(createWalletPaymentOption(1), false, false)
         val drawable = mock(Drawable::class.java)
         val testViewModel = ContractSuccessViewModel(
-            "", "", PaymentOptionViewModel(1, drawable, "", ""), false, false, false, null, false
+            "", "", PaymentOptionViewModel(1, drawable, "", ""), "", false, false, false, null, false
         )
         on(presenter(testOutputModel)).thenReturn(testViewModel)
 
@@ -83,7 +83,7 @@ internal class ContractOpenedReporterTest {
         val testOutputModel = UserAuthRequired()
         val drawable = mock(Drawable::class.java)
         val testViewModel = ContractSuccessViewModel(
-            "", "", PaymentOptionViewModel(1, drawable, "", ""), false, false, false, null, false
+            "", "", PaymentOptionViewModel(1, drawable, "", ""), "", false, false, false, null, false
         )
         on(presenter(testOutputModel)).thenReturn(testViewModel)
 

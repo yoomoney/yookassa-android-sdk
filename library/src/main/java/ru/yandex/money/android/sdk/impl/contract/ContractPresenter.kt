@@ -22,6 +22,14 @@
 package ru.yandex.money.android.sdk.impl.contract
 
 import android.content.Context
+import android.content.Intent
+import android.support.v4.content.ContextCompat
+import android.support.v4.content.ContextCompat.startActivity
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.TextPaint
+import android.text.style.ClickableSpan
+import android.view.View
 import ru.yandex.money.android.sdk.PaymentMethodType
 import ru.yandex.money.android.sdk.R
 import ru.yandex.money.android.sdk.impl.extensions.toHint
@@ -45,6 +53,8 @@ import ru.yandex.money.android.sdk.paymentAuth.ProcessPaymentAuthSuccessOutputMo
 import ru.yandex.money.android.sdk.paymentAuth.ProcessPaymentAuthWrongAnswerOutputModel
 import ru.yandex.money.android.sdk.paymentAuth.RequestPaymentAuthOutputModel
 import ru.yandex.money.android.sdk.paymentAuth.SmsSessionRetryOutputModel
+import ru.yandex.money.android.sdk.utils.WebViewActivity
+import java.math.BigDecimal
 
 internal class ContractPresenter(
     context: Context,
@@ -58,21 +68,81 @@ internal class ContractPresenter(
     private lateinit var contract: ContractSuccessViewModel
     private lateinit var paymentAuthForm: PaymentAuthFormViewModel
 
-    operator fun invoke(model: SelectPaymentOptionOutputModel) = when (model) {
-        is SelectedPaymentOptionOutputModel -> when (model.paymentOption) {
-            is GooglePay -> GooglePayContractViewModel(model.paymentOption.id, recurringPaymentsPossible)
-            else -> ContractSuccessViewModel(
-                shopTitle = shopTitle,
-                shopSubtitle = shopSubtitle,
-                paymentOption = paymentOptionPresenter(model.paymentOption),
-                showChangeButton = model.hasAnotherOptions,
-                showAllowRecurringPayments = recurringPaymentsPossible,
-                showAllowWalletLinking = model.walletLinkingPossible,
-                paymentAuth = null,
-                showPhoneInput = model.paymentOption is SbolSmsInvoicing
-            ).also { contract = it }
+    operator fun invoke(model: SelectPaymentOptionOutputModel): ContractViewModel {
+        return when (model) {
+            is SelectedPaymentOptionOutputModel -> {
+                when {
+                    model.paymentOption is GooglePay -> {
+                        val fee = model.paymentOption.fee?.service?.value
+                        if (fee == null || fee == BigDecimal.ZERO) {
+                            GooglePayContractViewModel(model.paymentOption.id, recurringPaymentsPossible)
+                        } else {
+                            ContractSuccessViewModel(
+                                shopTitle = shopTitle,
+                                shopSubtitle = shopSubtitle,
+                                licenseAgreement = getLicenseAgreementText(),
+                                paymentOption = paymentOptionPresenter(model.paymentOption),
+                                showChangeButton = model.hasAnotherOptions,
+                                showAllowRecurringPayments = recurringPaymentsPossible,
+                                showAllowWalletLinking = model.walletLinkingPossible,
+                                paymentAuth = null,
+                                showPhoneInput = model.paymentOption is SbolSmsInvoicing,
+                                googlePayContractViewModel = GooglePayContractViewModel(
+                                    model.paymentOption.id,
+                                    recurringPaymentsPossible
+                                )
+                            ).also { contract = it }
+                        }
+                    }
+                    else -> ContractSuccessViewModel(
+                        shopTitle = shopTitle,
+                        shopSubtitle = shopSubtitle,
+                        licenseAgreement = getLicenseAgreementText(),
+                        paymentOption = paymentOptionPresenter(model.paymentOption),
+                        showChangeButton = model.hasAnotherOptions,
+                        showAllowRecurringPayments = recurringPaymentsPossible,
+                        showAllowWalletLinking = model.walletLinkingPossible,
+                        paymentAuth = null,
+                        showPhoneInput = model.paymentOption is SbolSmsInvoicing
+                    ).also { contract = it }
+                }
+            }
+            is UserAuthRequired -> ContractUserAuthRequiredViewModel
         }
-        is UserAuthRequired -> ContractUserAuthRequiredViewModel
+    }
+
+    private fun getLicenseAgreementText(): CharSequence {
+        val link = context.getText(R.string.ym_license_agreement_part_2)
+
+        return SpannableStringBuilder(
+            "${context.getText(R.string.ym_license_agreement_part_1)} " + "$link"
+        ).apply {
+            setSpan(
+                object : ClickableSpan() {
+                    override fun onClick(widget: View) {
+                        startActivity(
+                            context,
+                            WebViewActivity.create(
+                                context,
+                                context.getString(R.string.ym_license_agreement_url)
+                            ).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                            null
+                        )
+                    }
+
+                    override fun updateDrawState(ds: TextPaint) {
+                        super.updateDrawState(ds)
+                        ds.apply {
+                            color = ContextCompat.getColor(context, R.color.ym_button_text_link)
+                            isUnderlineText = false
+                        }
+                    }
+                },
+                length - link.length,
+                length,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        }
     }
 
     operator fun invoke(model: TokenizeOutputModel) = when (model) {

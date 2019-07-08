@@ -154,6 +154,17 @@
                 style="@style/Divider"
                 android:id="@+id/linked_cards_divider" />
 
+            <Button
+                style="?attr/borderlessButtonStyle"
+                android:id="@+id/fee"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/test_fee" />
+
+           <View
+               style="@style/Divider"
+               android:id="@+id/fee_divider" />
+
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/complete_with_error"
                 android:layout_width="match_parent"

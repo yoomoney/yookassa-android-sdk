@@ -79,16 +79,16 @@ internal class MainDialogFragment : BottomSheetDialogFragment() {
             dismiss()
         } else {
             if (isHidden) {
-                fragmentManager?.takeIf { isAdded }?.popBackStack()
+                fragmentManager?.takeIf { !isStateSaved && isAdded }?.popBackStack()
             } else {
-                childFragmentManager.takeIf { isAdded }?.popBackStack()
+                childFragmentManager.takeIf { !isStateSaved && isAdded }?.popBackStack()
             }
         }
     }
 
     private val selectPaymentOptionListener: (ContractViewModel) -> Unit = { viewModel ->
         view?.post {
-            if (isAdded) {
+            if (!isStateSaved && isAdded) {
                 childFragmentManager.also {
                     val contract = it.findFragmentByTag(CONTRACT_FRAGMENT_TAG)!!
                     if (!contract.isHidden) {
@@ -109,23 +109,23 @@ internal class MainDialogFragment : BottomSheetDialogFragment() {
     }
 
     private val authListener: (UserAuthSuccessViewModel) -> Unit = {
-        childFragmentManager.takeIf { isAdded }?.popBackStack()
+        childFragmentManager.takeIf { !isStateSaved && isAdded }?.popBackStack()
         AppModel.loadPaymentOptionListController.retry()
     }
 
     private val showAuthFail: (UserAuthFailViewModel) -> Unit = {
-        childFragmentManager.takeIf { isAdded }?.popBackStack()
+        childFragmentManager.takeIf { !isStateSaved && isAdded }?.popBackStack()
     }
 
     private val logoutListener: (LogoutViewModel) -> Unit = {
         if (it is LogoutSuccessViewModel || it is LogoutFailViewModel) {
-            childFragmentManager.takeIf { isAdded }?.popBackStack()
+            childFragmentManager.takeIf { !isStateSaved && isAdded }?.popBackStack()
             AppModel.loadPaymentOptionListController.retry()
         }
     }
 
     private val unhandledExceptionListener: (UnhandledException) -> Unit = {
-        childFragmentManager.takeIf { isAdded }?.popBackStack()
+        childFragmentManager.takeIf { !isStateSaved && isAdded }?.popBackStack()
     }
 
     init {
@@ -136,11 +136,11 @@ internal class MainDialogFragment : BottomSheetDialogFragment() {
         val isTablet = it.resources.getBoolean(R.bool.ym_isTablet)
         if (isTablet) {
             BackPressedAppCompatDialog(it, theme).apply {
-                window.setSoftInputMode(SOFT_INPUT_ADJUST_PAN)
+                window?.setSoftInputMode(SOFT_INPUT_ADJUST_PAN)
             }
         } else {
             BackPressedBottomSheetDialog(it, theme).apply {
-                window.setSoftInputMode(SOFT_INPUT_ADJUST_RESIZE or SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+                window?.setSoftInputMode(SOFT_INPUT_ADJUST_RESIZE or SOFT_INPUT_STATE_ALWAYS_HIDDEN)
             }
         }
     }
@@ -273,7 +273,7 @@ internal class MainDialogFragment : BottomSheetDialogFragment() {
     }
 
     private val showBankCardScreen = Runnable {
-        if (isAdded) {
+        if (!isStateSaved && isAdded) {
             context?.resources?.also {
                 val isTablet = it.getBoolean(R.bool.ym_isTablet)
                 val tokenize = childFragmentManager.findFragmentByTag(BANK_CARD_FRAGMENT_TAG)

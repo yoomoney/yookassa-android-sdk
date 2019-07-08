@@ -24,7 +24,6 @@ package ru.yandex.money.android.sdk.impl
 import android.content.Context
 import android.util.Log
 import com.yandex.authsdk.YandexAuthSdk
-import ru.yandex.money.android.sdk.MockConfiguration
 import ru.yandex.money.android.sdk.PaymentMethodType
 import ru.yandex.money.android.sdk.PaymentParameters
 import ru.yandex.money.android.sdk.TestParameters
@@ -32,7 +31,7 @@ import ru.yandex.money.android.sdk.UiParameters
 import ru.yandex.money.android.sdk.impl.contract.ContractCompleteViewModel
 import ru.yandex.money.android.sdk.impl.extensions.initExtensions
 import ru.yandex.money.android.sdk.impl.logging.MsdkLogger
-import ru.yandex.money.android.sdk.utils.CheckoutConfirmationActivity
+import ru.yandex.money.android.sdk.utils.WebViewActivity
 import ru.yandex.money.android.sdk.utils.getAllPaymentMethods
 
 internal object CheckoutInternal {
@@ -59,7 +58,7 @@ internal object CheckoutInternal {
     }
 
     internal fun checkUrl(url: String) {
-        require(CheckoutConfirmationActivity.checkUrl(url)) { "Url $url is not allowed. It should be a valid https url." }
+        require(WebViewActivity.checkUrl(url)) { "Url $url is not allowed. It should be a valid https url." }
     }
 
     internal fun tokenize(
