@@ -58,7 +58,10 @@ internal class BankCardDialogFragment : AppCompatDialogFragment() {
                 is PaymentOptionInfoBankCardViewModel -> showNewBankCardFragment()
                 is PaymentOptionInfoLinkedCardViewModel -> {
                     showEditBankCardFragment()
-                    (findFragmentByTag(EDIT_BANK_CARD_FRAGMENT) as EditBankCardFragment).pan = it.pan
+                    with((findFragmentByTag(EDIT_BANK_CARD_FRAGMENT) as EditBankCardFragment)) {
+                        pan = it.pan
+                        titleText = getString(it.title)
+                    }
                 }
             }
         }

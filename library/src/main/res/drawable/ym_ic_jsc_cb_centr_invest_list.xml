@@ -1,0 +1,36 @@
+<!--
+  ~ The MIT License (MIT)
+  ~ Copyright © 2019 NBCO Yandex.Money LLC
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+  ~ associated documentation files (the “Software”), to deal in the Software without restriction, including
+  ~ without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+  ~ of the Software, and to permit persons to whom the Software is furnished to do so, subject to the
+  ~ following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all copies or substantial
+  ~ portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+  ~ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+  ~ PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+  ~ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+  ~ OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+  ~ OTHER DEALINGS IN THE SOFTWARE.
+  -->
+
+<vector android:height="24dp" android:viewportHeight="40"
+    android:viewportWidth="40" android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="#55B956" android:fillType="evenOdd" android:pathData="M4,6L36,6A4,4 0,0 1,40 10L40,30A4,4 0,0 1,36 34L4,34A4,4 0,0 1,0 30L0,10A4,4 0,0 1,4 6z"/>
+    <path android:fillColor="#FEED4A" android:fillType="evenOdd" android:pathData="M12.548,11h6.26v15.2L12.548,26.2L12.548,11zM15.678,19.8c1.729,0 3.13,-1.79 3.13,-4s-1.401,-4 -3.13,-4C13.949,11.8 12.548,13.59 12.548,15.8s1.401,4 3.13,4z"/>
+    <path android:fillColor="#00000000" android:fillType="evenOdd"
+        android:pathData="M13.678,15.8a2,2.852 0,1 0,4 0a2,2.852 0,1 0,-4 0z"
+        android:strokeColor="#FEED4A" android:strokeWidth=".697"/>
+    <path android:fillColor="#FEED4A" android:fillType="evenOdd" android:pathData="M20.374,26.2h6.26L26.634,11h-6.26v15.2zM23.504,17.4c1.729,0 3.13,1.79 3.13,4s-1.401,4 -3.13,4c-1.729,0 -3.13,-1.79 -3.13,-4s1.401,-4 3.13,-4zM19.213,25.4h0.77v0.8h-0.77z"/>
+    <path android:fillColor="#00000000" android:fillType="evenOdd"
+        android:pathData="M21.504,21.4a2.852,2 90,1 1,4 -0a2.852,2 90,1 1,-4 -0z"
+        android:strokeColor="#FEED4A" android:strokeWidth=".697"/>
+    <path android:fillColor="#FEED4A" android:fillType="evenOdd" android:pathData="M26.963,25.132L26.963,26.2c0.955,0.12 1.345,0.578 1.172,1.373 -0.26,1.191 -1.35,0.904 -2.011,0.904 -0.662,0 -5.956,-1.574 -9.598,-1.73 -3.642,-0.157 -3.8,2.028 -3.978,2.205h1.018c0.153,-0.515 0.727,-0.823 1.723,-0.924 1.492,-0.153 6.7,1.291 9.632,2.066 2.603,0.441 3.612,-0.396 3.625,-0.407 2.6,-2.114 0.42,-4.555 -1.583,-4.555z"/>
+    <path android:fillColor="#55B956" android:fillType="evenOdd" android:pathData="M26.662,11h-2.344L12,26.351l2.783,-0.151z"/>
+    <path android:fillColor="#FEED4A" android:fillType="evenOdd" android:pathData="M26.203,11L24.8,11L12.848,26.2h1.265z"/>
+</vector>

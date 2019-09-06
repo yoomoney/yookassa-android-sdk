@@ -48,7 +48,7 @@ internal fun paymentOptionFactory(
 ): PaymentOption? {
 
     val charge = jsonObject.getJSONObject("charge").toAmount()
-    val paymentMethodType = jsonObject.getPaymentMethodType()
+    val paymentMethodType = jsonObject.getPaymentMethodType("payment_method_type")
 
     return paymentMethodType?.let {
         when (paymentMethodType) {

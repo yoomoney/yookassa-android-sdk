@@ -22,8 +22,10 @@
 package ru.yandex.money.android.sdk.impl.metrics
 
 import ru.yandex.money.android.sdk.impl.paymentOptionInfo.PaymentOptionInfoLinkedCardViewModel
+import ru.yandex.money.android.sdk.model.PaymentIdCscConfirmation
 import ru.yandex.money.android.sdk.model.Presenter
 import ru.yandex.money.android.sdk.payment.tokenize.TokenizeOutputModel
+import ru.yandex.money.android.sdk.payment.tokenize.TokenizePaymentOptionInfoRequired
 
 internal class LinkedCardScreenOpenedReporter(
     presenter: Presenter<TokenizeOutputModel, Any>,
@@ -34,6 +36,9 @@ internal class LinkedCardScreenOpenedReporter(
 
     override fun getArgs(outputModel: TokenizeOutputModel, viewModel: Any): List<Param>? = null
 
-    override fun reportingAllowed(outputModel: TokenizeOutputModel, viewModel: Any) =
-        viewModel is PaymentOptionInfoLinkedCardViewModel
+    override fun reportingAllowed(outputModel: TokenizeOutputModel, viewModel: Any): Boolean  {
+        val isRecurring = outputModel is TokenizePaymentOptionInfoRequired && outputModel.option is PaymentIdCscConfirmation
+
+        return viewModel is PaymentOptionInfoLinkedCardViewModel && !isRecurring
+    }
 }

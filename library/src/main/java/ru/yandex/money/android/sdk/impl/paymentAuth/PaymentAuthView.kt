@@ -32,6 +32,7 @@ import ru.yandex.money.android.sdk.R
 import ru.yandex.money.android.sdk.impl.extensions.clear
 import ru.yandex.money.android.sdk.impl.extensions.showSoftKeyboard
 import ru.yandex.money.android.sdk.impl.extensions.visible
+import ru.yandex.money.android.sdk.utils.SimpleTextWatcher
 import java.util.concurrent.TimeUnit
 
 private const val COUNTDOWN_INTERVAL_MS = 1000L
@@ -47,6 +48,11 @@ internal class PaymentAuthView
 
     init {
         View.inflate(context, R.layout.ym_view_payment_auth, this)
+        accessCode.addTextChangedListener(object: SimpleTextWatcher {
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                error = ""
+            }
+        })
     }
 
     var error: CharSequence?

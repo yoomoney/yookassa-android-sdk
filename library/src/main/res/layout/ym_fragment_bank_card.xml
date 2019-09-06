@@ -76,20 +76,23 @@
                     android:id="@+id/cardNumberEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:drawablePadding="@dimen/ym_space_xs"
                     android:hint="@string/ym_bank_card_number_hint"
                     android:imeOptions="actionNext"
                     android:inputType="text|number"
                     android:maxLength="23"
                     android:nextFocusForward="@+id/card_expiry_edit_text" />
-            </ru.yandex.money.android.sdk.impl.view.YmTextInputLayout>
-        </FrameLayout>
+
+        </ru.yandex.money.android.sdk.impl.view.YmTextInputLayout>
+
+    </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/ym_space_m"
             android:layout_marginLeft="@dimen/ym_space_m"
             android:layout_marginRight="@dimen/ym_space_m"
+            android:layout_marginTop="@dimen/ym_space_m"
             android:baselineAligned="false"
             android:orientation="horizontal">
 

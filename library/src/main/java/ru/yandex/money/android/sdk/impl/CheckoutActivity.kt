@@ -26,11 +26,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.FragmentManager
 import android.support.v7.app.AppCompatActivity
+import ru.yandex.money.android.sdk.SavedBankCardPaymentParameters
 import ru.yandex.money.android.sdk.PaymentMethodType
+import ru.yandex.money.android.sdk.PaymentParameters
 import ru.yandex.money.android.sdk.impl.contract.ContractCompleteViewModel
 import ru.yandex.money.android.sdk.model.ViewModel
 
 internal const val EXTRA_PAYMENT_PARAMETERS = "ru.yandex.money.android.extra.PAYMENT_PARAMETERS"
+internal const val EXTRA_CSC_PARAMETERS = "ru.yandex.money.android.extra.CSC_PARAMETERS"
 internal const val EXTRA_TEST_PARAMETERS = "ru.yandex.money.android.extra.TEST_PARAMETERS"
 internal const val EXTRA_UI_PARAMETERS = "ru.yandex.money.android.extra.UI_PARAMETERS"
 internal const val EXTRA_CREATED_WITH_CHECKOUT_METHOD = "ru.yandex.money.android.extra.CREATED_WITH_CHECKOUT_METHOD"
@@ -68,12 +71,28 @@ internal class CheckoutActivity : AppCompatActivity() {
                 "Intent for CheckoutActivity should be created only with Checkout.createTokenizeIntent()."
             )
         }
+        var paymentMethodId: String? = null
+        val paymentParameter = if (intent.hasExtra(EXTRA_PAYMENT_PARAMETERS)) {
+            intent.getParcelableExtra(EXTRA_PAYMENT_PARAMETERS) as PaymentParameters
+        } else {
+            val cscParameter = intent.getParcelableExtra(EXTRA_CSC_PARAMETERS) as SavedBankCardPaymentParameters
+            paymentMethodId = cscParameter.paymentMethodId
+            PaymentParameters(
+                amount = cscParameter.amount,
+                title = cscParameter.title,
+                subtitle = cscParameter.subtitle,
+                clientApplicationKey = cscParameter.clientApplicationKey,
+                shopId = cscParameter.shopId,
+                paymentMethodTypes = setOf(PaymentMethodType.BANK_CARD)
+            )
+        }
 
         CheckoutInternal.tokenize(
             context = this,
-            paymentParameters = intent.getParcelableExtra(EXTRA_PAYMENT_PARAMETERS),
+            paymentParameters = paymentParameter,
             testParameters = intent.getParcelableExtra(EXTRA_TEST_PARAMETERS),
-            uiParameters = intent.getParcelableExtra(EXTRA_UI_PARAMETERS)
+            uiParameters = intent.getParcelableExtra(EXTRA_UI_PARAMETERS),
+            paymentMethodId = paymentMethodId
         )
     }
 

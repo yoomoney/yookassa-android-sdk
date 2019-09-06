@@ -56,6 +56,7 @@ import ru.yandex.money.android.sdk.impl.metrics.ExceptionReportingLogger
 import ru.yandex.money.android.sdk.impl.metrics.LinkedCardScreenOpenedReporter
 import ru.yandex.money.android.sdk.impl.metrics.NewBankCardScreenOpenedReporter
 import ru.yandex.money.android.sdk.impl.metrics.PaymentOptionListOpenedReporter
+import ru.yandex.money.android.sdk.impl.metrics.RecurringCardScreenOpenedReporter
 import ru.yandex.money.android.sdk.impl.metrics.Reporter
 import ru.yandex.money.android.sdk.impl.metrics.ResetTokenizeSchemeWrapper
 import ru.yandex.money.android.sdk.impl.metrics.SelectPaymentOptionTokenizeSchemeSetter
@@ -82,6 +83,8 @@ import ru.yandex.money.android.sdk.impl.paymentAuth.RequestPaymentAuthErrorPrese
 import ru.yandex.money.android.sdk.impl.paymentAuth.RequestPaymentAuthProgressViewModel
 import ru.yandex.money.android.sdk.impl.paymentAuth.SelectAppropriateAuthType
 import ru.yandex.money.android.sdk.impl.paymentAuth.SmsSessionRetryProgressViewModel
+import ru.yandex.money.android.sdk.impl.paymentMethodInfo.ApiV3PaymentMethodInfoGateway
+import ru.yandex.money.android.sdk.impl.paymentMethodInfo.MockPaymentInfoGateway
 import ru.yandex.money.android.sdk.impl.paymentOptionInfo.PaymentOptionInfoPresenter
 import ru.yandex.money.android.sdk.impl.paymentOptionList.ApiV3PaymentOptionListGateway
 import ru.yandex.money.android.sdk.impl.paymentOptionList.ChangePaymentOptionPresenter
@@ -131,6 +134,7 @@ import ru.yandex.money.android.sdk.payment.loadOptionList.PaymentOptionListGatew
 import ru.yandex.money.android.sdk.payment.loadOptionList.PaymentOptionListInputModel
 import ru.yandex.money.android.sdk.payment.loadOptionList.PaymentOptionListOutputModel
 import ru.yandex.money.android.sdk.payment.loadOptionList.PaymentOptionListWithGooglePayFilterGateway
+import ru.yandex.money.android.sdk.payment.loadPaymentInfo.PaymentMethodInfoGateway
 import ru.yandex.money.android.sdk.payment.selectOption.SelectPaymentOptionInputModel
 import ru.yandex.money.android.sdk.payment.selectOption.SelectPaymentOptionOutputModel
 import ru.yandex.money.android.sdk.payment.selectOption.SelectPaymentOptionUseCase
@@ -255,6 +259,7 @@ internal object AppModel {
         val paymentAuthTokenGateway: PaymentAuthTokenGateway
         val checkPaymentAuthRequiredGateway: CheckPaymentAuthRequiredGateway
         val checkGooglePayAvailableGateway: CheckGooglePayAvailableGateway
+        val paymentInfoGateway: PaymentMethodInfoGateway
 
         googlePayIntegration = GooglePayIntegration(
             context = context,
@@ -306,6 +311,7 @@ internal object AppModel {
                 checkPaymentAuthRequiredGateway = tokensStorage
             }
             checkGooglePayAvailableGateway = StubCheckGooglePayAvailableGateway(true)
+            paymentInfoGateway = MockPaymentInfoGateway()
         } else {
             currentUserGateway = SharedPreferencesCurrentUserGateway(sharedPreferences)
             val httpClient = lazy {
@@ -354,6 +360,12 @@ internal object AppModel {
             paymentAuthTokenGateway = tokensStorage
             checkPaymentAuthRequiredGateway = tokensStorage
             checkGooglePayAvailableGateway = googlePayIntegration as CheckGooglePayAvailableGateway
+
+            paymentInfoGateway = ApiV3PaymentMethodInfoGateway(
+                httpClient = httpClient,
+                tokensStorage = tokensStorage,
+                shopToken = paymentParameters.clientApplicationKey
+            )
         }
 
         val paymentOptionListWithGooglePayFilterGateway = PaymentOptionListWithGooglePayFilterGateway(
@@ -363,6 +375,7 @@ internal object AppModel {
 
         val paymentOptionListUseCase = LoadPaymentOptionListUseCase(
             paymentOptionListRestrictions = paymentParameters.paymentMethodTypes,
+            paymentMethodInfoGateway = paymentInfoGateway,
             paymentOptionListGateway = paymentOptionListWithGooglePayFilterGateway,
             saveLoadedPaymentOptionsListGateway = saveLoadedPaymentOptionsListGateway,
             currentUserGateway = currentUserGateway
@@ -487,7 +500,10 @@ internal object AppModel {
                 presenter = NewBankCardScreenOpenedReporter(
                     getAuthType = userAuthTypeParamProvider,
                     presenter = LinkedCardScreenOpenedReporter(
-                        presenter = PaymentOptionInfoPresenter(contractPresenter::invoke),
+                        presenter = RecurringCardScreenOpenedReporter(
+                            presenter = PaymentOptionInfoPresenter(contractPresenter::invoke),
+                            reporter = reporter
+                        ),
                         reporter = reporter
                     ),
                     reporter = reporter

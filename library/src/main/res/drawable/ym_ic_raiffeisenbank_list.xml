@@ -1,0 +1,28 @@
+<!--
+  ~ The MIT License (MIT)
+  ~ Copyright © 2019 NBCO Yandex.Money LLC
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+  ~ associated documentation files (the “Software”), to deal in the Software without restriction, including
+  ~ without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+  ~ of the Software, and to permit persons to whom the Software is furnished to do so, subject to the
+  ~ following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all copies or substantial
+  ~ portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+  ~ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+  ~ PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+  ~ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+  ~ OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+  ~ OTHER DEALINGS IN THE SOFTWARE.
+  -->
+
+<vector android:height="24dp" android:viewportHeight="40"
+    android:viewportWidth="40" android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="#FFF200" android:fillType="evenOdd" android:pathData="M4,6L36,6A4,4 0,0 1,40 10L40,30A4,4 0,0 1,36 34L4,34A4,4 0,0 1,0 30L0,10A4,4 0,0 1,4 6z"/>
+    <path android:fillColor="#000" android:fillType="nonZero" android:pathData="M11,11.015h17.893V29H11z"/>
+    <path android:fillColor="#FFF200" android:fillType="nonZero" android:pathData="M11.527,11.544h16.84V28.47h-16.84z"/>
+    <path android:fillColor="#000" android:fillType="nonZero" android:pathData="M12.399,25.62l2.178,2.232 5.104,-5.205 5.275,5.312 2.21,-2.2 -5.222,-5.248 1.004,-0.977v-2.082l0.63,-0.536v1.631l0.811,0.666 2.424,-2.437 0.78,0.601c0.459,-1.707 -2.2,-5.581 -4.4,-3.435l-2.562,2.555 0.523,0.633 -1.303,1.277 -1.26,-1.245 0.663,-0.601 -2.808,-2.726c-2.115,-1.75 -4.282,0.913 -4.357,3.51l0.769,-0.644 2.36,2.555 0.843,-0.709V16.98l0.522,0.397v2.05l1.026,1.03 -5.21,5.162z"/>
+</vector>

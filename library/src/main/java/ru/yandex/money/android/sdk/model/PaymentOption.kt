@@ -73,3 +73,14 @@ internal data class SbolSmsInvoicing(
     override val charge: Amount,
     override val fee: Fee?
 ) : PaymentOption()
+
+internal data class PaymentIdCscConfirmation(
+    override val id: Int,
+    override val charge: Amount,
+    override val fee: Fee?,
+    val paymentMethodId: String,
+    val first: String,
+    val last: String,
+    val expiryYear: String,
+    val expiryMonth: String
+) : PaymentOption()

@@ -36,6 +36,7 @@ import ru.yandex.money.android.sdk.R
 import ru.yandex.money.android.sdk.impl.metrics.TokenizeSchemeBankCard
 import ru.yandex.money.android.sdk.impl.metrics.TokenizeSchemeGooglePay
 import ru.yandex.money.android.sdk.impl.metrics.TokenizeSchemeLinkedCard
+import ru.yandex.money.android.sdk.impl.metrics.TokenizeSchemeRecurring
 import ru.yandex.money.android.sdk.impl.metrics.TokenizeSchemeSbolSms
 import ru.yandex.money.android.sdk.impl.metrics.TokenizeSchemeWallet
 import ru.yandex.money.android.sdk.model.AbstractWallet
@@ -44,9 +45,9 @@ import ru.yandex.money.android.sdk.model.ExternalConfirmation
 import ru.yandex.money.android.sdk.model.GooglePay
 import ru.yandex.money.android.sdk.model.LinkedCard
 import ru.yandex.money.android.sdk.model.NewCard
-import ru.yandex.money.android.sdk.model.NoConfirmation
 import ru.yandex.money.android.sdk.model.PaymentOption
 import ru.yandex.money.android.sdk.model.RedirectConfirmation
+import ru.yandex.money.android.sdk.model.PaymentIdCscConfirmation
 import ru.yandex.money.android.sdk.model.SbolSmsInvoicing
 import ru.yandex.money.android.sdk.model.Wallet
 import ru.yandex.money.android.sdk.model.YandexMoney
@@ -59,6 +60,7 @@ internal fun PaymentOption.getIcon(context: Context) = checkNotNull(
             is LinkedCard -> brand.getIconResId()
             is SbolSmsInvoicing -> R.drawable.ym_ic_sberbank
             is GooglePay -> R.drawable.ym_ic_google_pay
+            is PaymentIdCscConfirmation -> R.drawable.ym_ic_add_card
         }
     )?.apply { setBounds(0, 0, intrinsicWidth, intrinsicHeight) }
 ) { "icon not found for $this" }
@@ -70,6 +72,7 @@ internal fun PaymentOption.getTitle(context: Context): CharSequence = when (this
     is LinkedCard -> name.takeUnless(String?::isNullOrEmpty) ?: pan.chunked(4).joinToString(" ")
     is SbolSmsInvoicing -> context.getText(R.string.ym_sberbank)
     is GooglePay -> context.getText(R.string.ym_payment_option_google_pay)
+    is PaymentIdCscConfirmation -> context.getText(R.string.ym_payment_option_new_card)
 }.let { title ->
     title.takeIf { this is Wallet }?.let {
         val drawable = AppCompatResources.getDrawable(context, R.drawable.ym_ic_exit)?.apply {
@@ -96,11 +99,12 @@ internal fun PaymentOption.toTokenizeScheme() = when (this) {
     is NewCard -> TokenizeSchemeBankCard()
     is SbolSmsInvoicing -> TokenizeSchemeSbolSms()
     is GooglePay -> TokenizeSchemeGooglePay()
+    is PaymentIdCscConfirmation -> TokenizeSchemeRecurring()
 }
 
 internal fun PaymentOption.toConfirmation(returnUrl: String): Confirmation {
     return when (this) {
-        is YandexMoney, is NewCard, is GooglePay -> RedirectConfirmation(
+        is YandexMoney, is NewCard, is GooglePay, is PaymentIdCscConfirmation -> RedirectConfirmation(
             returnUrl
         )
         is SbolSmsInvoicing -> ExternalConfirmation

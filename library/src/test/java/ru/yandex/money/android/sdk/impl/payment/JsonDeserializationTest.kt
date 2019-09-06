@@ -30,6 +30,7 @@ import org.junit.rules.Timeout
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import ru.yandex.money.android.sdk.Amount
+import ru.yandex.money.android.sdk.PaymentMethodType
 import ru.yandex.money.android.sdk.impl.extensions.RUB
 import ru.yandex.money.android.sdk.impl.extensions.getStatus
 import ru.yandex.money.android.sdk.impl.extensions.toAmount
@@ -41,9 +42,11 @@ import ru.yandex.money.android.sdk.impl.extensions.toCheckoutTokenIssueExecuteRe
 import ru.yandex.money.android.sdk.impl.extensions.toCheckoutTokenIssueInitResponse
 import ru.yandex.money.android.sdk.impl.extensions.toError
 import ru.yandex.money.android.sdk.impl.extensions.getFee
+import ru.yandex.money.android.sdk.impl.extensions.toPaymentMethodResponse
 import ru.yandex.money.android.sdk.impl.extensions.toPaymentOptionResponse
 import ru.yandex.money.android.sdk.impl.extensions.toTokenResponse
 import ru.yandex.money.android.sdk.impl.extensions.toWalletCheckResponse
+import ru.yandex.money.android.sdk.methods.PaymentMethodResponse
 import ru.yandex.money.android.sdk.methods.PaymentOptionsResponse
 import ru.yandex.money.android.sdk.methods.TokenResponse
 import ru.yandex.money.android.sdk.methods.WalletCheckResponse
@@ -56,6 +59,7 @@ import ru.yandex.money.android.sdk.model.AbstractWallet
 import ru.yandex.money.android.sdk.model.AuthType
 import ru.yandex.money.android.sdk.model.AuthTypeState
 import ru.yandex.money.android.sdk.model.CardBrand
+import ru.yandex.money.android.sdk.model.CardInfo
 import ru.yandex.money.android.sdk.model.Error
 import ru.yandex.money.android.sdk.model.ErrorCode
 import ru.yandex.money.android.sdk.model.ExtendedStatus
@@ -63,6 +67,7 @@ import ru.yandex.money.android.sdk.model.Fee
 import ru.yandex.money.android.sdk.model.GooglePay
 import ru.yandex.money.android.sdk.model.LinkedCard
 import ru.yandex.money.android.sdk.model.NewCard
+import ru.yandex.money.android.sdk.model.PaymentMethodBankCard
 import ru.yandex.money.android.sdk.model.SbolSmsInvoicing
 import ru.yandex.money.android.sdk.model.Status
 import ru.yandex.money.android.sdk.model.Wallet
@@ -249,6 +254,47 @@ class JsonDeserializationTest {
             PaymentOptionsResponse(listOf(newCard, wallet, abstractWallet, bankCard, sberbank, googlePay), null)
 
         assertThat(jsonObject.toPaymentOptionResponse("Tony"), equalTo(paymentOptions))
+    }
+
+    @Test
+    fun deserializePaymentMethod() {
+        val jsonObject = JSONObject(
+            """{
+                "type": "bank_card",
+                "id": "1da5c87d-0984-50e8-a7f3-8de646dd9ec9",
+                "saved": true,
+                "title": "Основная карта",
+                "csc_required": true,
+                "card": {
+                    "first6": "427918",
+                    "last4": "7918",
+                    "expiry_year": "2017",
+                    "expiry_month": "07",
+                    "card_type": "MasterCard",
+                    "source": "google_pay"
+                }
+            }"""
+        )
+        val paymentMethod = PaymentMethodResponse(
+            paymentMethodBankCard = PaymentMethodBankCard(
+                type = PaymentMethodType.BANK_CARD,
+                id = "1da5c87d-0984-50e8-a7f3-8de646dd9ec9",
+                saved =  true,
+                cscRequired = true,
+                title = "Основная карта",
+                card = CardInfo(
+                    first = "427918",
+                    last = "7918",
+                    expiryYear = "2017",
+                    expiryMonth = "07",
+                    cardType = CardBrand.MASTER_CARD,
+                    source = PaymentMethodType.GOOGLE_PAY
+                )
+            ),
+            error = null
+        )
+
+        assertThat(jsonObject.toPaymentMethodResponse(), equalTo(paymentMethod))
     }
 
     @Test

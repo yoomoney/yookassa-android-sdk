@@ -30,14 +30,18 @@ import ru.yandex.money.android.sdk.methods.base.MimeType
 import ru.yandex.money.android.sdk.methods.base.PostRequest
 import ru.yandex.money.android.sdk.model.Confirmation
 import ru.yandex.money.android.sdk.model.Error
+import ru.yandex.money.android.sdk.model.LinkedCardInfo
 import ru.yandex.money.android.sdk.model.PaymentOption
 import ru.yandex.money.android.sdk.model.PaymentOptionInfo
+import ru.yandex.money.android.sdk.model.PaymentIdCscConfirmation
 
 private const val TOKEN_METHOD_PATH = "/tokens"
 private const val PAYMENT_METHOD_DATA = "payment_method_data"
 private const val TMX_SESSION_ID = "tmx_session_id"
 private const val AMOUNT = "amount"
 private const val CONFIRMATION = "confirmation"
+private const val PAYMENT_METHOD_ID = "payment_method_id"
+private const val CSC = "csc"
 
 internal data class TokenRequest(
     private val paymentOptionInfo: PaymentOptionInfo,
@@ -55,11 +59,15 @@ internal data class TokenRequest(
 
     override fun getPayload(): List<Pair<String, Any>> {
         return listOf(
-            PAYMENT_METHOD_DATA to paymentOptionInfo.toJsonObject(paymentOption),
             TMX_SESSION_ID to tmxSessionId,
             AMOUNT to paymentOption.charge.toJsonObject()
         ).let { payload ->
-            confirmation.toJsonObject()?.let { payload + (CONFIRMATION to it) } ?: payload
+            val params = if (paymentOption is PaymentIdCscConfirmation) {
+                payload + (PAYMENT_METHOD_ID to paymentOption.paymentMethodId) + (CSC to (paymentOptionInfo as LinkedCardInfo).csc)
+            } else {
+                payload + (PAYMENT_METHOD_DATA to paymentOptionInfo.toJsonObject(paymentOption))
+            }
+            confirmation.toJsonObject()?.let { params + (CONFIRMATION to it) } ?: params
         }
     }
 

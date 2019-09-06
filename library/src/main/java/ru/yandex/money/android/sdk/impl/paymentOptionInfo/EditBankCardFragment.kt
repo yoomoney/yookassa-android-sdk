@@ -24,7 +24,6 @@ package ru.yandex.money.android.sdk.impl.paymentOptionInfo
 import android.os.Bundle
 import android.view.View
 import kotlinx.android.synthetic.main.ym_fragment_bank_card.*
-import ru.yandex.money.android.sdk.R
 import ru.yandex.money.android.sdk.impl.extensions.showSoftKeyboard
 import ru.yandex.money.android.sdk.model.LinkedCardInfo
 import kotlin.properties.Delegates
@@ -33,6 +32,10 @@ internal class EditBankCardFragment : BankCardFragment() {
 
     var pan by Delegates.observable<CharSequence?>(null) { _, _, _ ->
         showBankCardNumber()
+    }
+
+    var titleText by Delegates.observable<CharSequence?>(null) { _, _, _ ->
+        showTitleText()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,8 +50,6 @@ internal class EditBankCardFragment : BankCardFragment() {
             isEnabled = false
             setText("**/**")
         }
-
-        setTitle(getString(R.string.ym_bank_card_title_edit))
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -70,4 +71,11 @@ internal class EditBankCardFragment : BankCardFragment() {
 
     override fun collectPaymentOptionInfo() =
         LinkedCardInfo(cscEditText.text.toString())
+
+    private fun showTitleText() {
+        titleText?.let {
+            setTitle(it)
+        }
+
+    }
 }

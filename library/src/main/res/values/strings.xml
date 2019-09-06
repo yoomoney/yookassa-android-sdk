@@ -27,7 +27,7 @@
     <string name="ym_payment_options_error_message">Connection error. Try again once you\'re online.</string>
     <string name="ym_payment_options_error_button">Try again</string>
     <string name="ym_bank_card_expiry_hint">Expires</string>
-    <string name="ym_bank_card_cvc_hint">CVC</string>
+    <string name="ym_bank_card_cvc_hint">Input CVC</string>
     <string name="ym_bank_card_number_hint">Card number</string>
     <string name="ym_bank_card_pay">Pay</string>
     <string name="ym_bank_card_title_existing">Bank card</string>

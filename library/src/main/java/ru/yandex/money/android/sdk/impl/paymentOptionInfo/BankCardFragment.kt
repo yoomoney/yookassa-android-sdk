@@ -27,6 +27,7 @@ import android.support.annotation.DrawableRes
 import android.support.annotation.IdRes
 import android.support.transition.TransitionManager
 import android.support.v4.app.Fragment
+import android.support.v7.content.res.AppCompatResources
 import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
@@ -42,6 +43,7 @@ import ru.yandex.money.android.sdk.model.PaymentOptionInfo
 import ru.yandex.money.android.sdk.payment.tokenize.TokenizeInputModel
 import ru.yandex.money.android.sdk.utils.PatternInputFilter
 import ru.yandex.money.android.sdk.utils.SimpleTextWatcher
+import ru.yandex.money.android.sdk.utils.getBankLogo
 
 private const val MIN_LENGTH_CSC = 3
 private const val KEY_FOCUSED_VIEW_ID = "focusedViewId"
@@ -71,6 +73,12 @@ internal abstract class BankCardFragment : Fragment() {
         }
     }
 
+    private val bankCardIconController = object: SimpleTextWatcher {
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+            setBankCardIcon(getBankLogo(s.toString()))
+        }
+    }
+
     final override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
         inflater.inflate(R.layout.ym_fragment_bank_card, container, false) as View
 
@@ -82,7 +90,9 @@ internal abstract class BankCardFragment : Fragment() {
         toolbar.setNavigationOnClickListener { closeListener?.invoke() }
 
         cardNumberEditText.addTextChangedListener(payButtonStateController)
+        cardNumberEditText.addTextChangedListener(bankCardIconController)
         expiryEditText.addTextChangedListener(payButtonStateController)
+        setBankCardIcon(R.drawable.ym_ic_unknown_list)
 
         with(cscEditText) {
             addTextChangedListener(payButtonStateController)
@@ -184,4 +194,13 @@ internal abstract class BankCardFragment : Fragment() {
             }
             (this as ImageView).setImageResource(icon)
         }
+
+    private fun setBankCardIcon(@DrawableRes idRes: Int) {
+        cardNumberEditText.setCompoundDrawablesWithIntrinsicBounds(
+            AppCompatResources.getDrawable(requireContext(), idRes),
+            null,
+            null,
+            null
+        )
+    }
 }

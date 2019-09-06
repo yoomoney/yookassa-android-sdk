@@ -1,6 +1,11 @@
 ## Changelog
 
+### 2.4.0
+- Add bank icons for card screen.
+- Add tokenization flow for saved bank cards.
+
 ### 2.3.0
+2019-08-08
 - Add info about the fee on the contract screen.
 - Fix 3-DS screen closing after Google Pay tokenization.
 - Fix keyboard behaviour on user logout.

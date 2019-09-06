@@ -64,6 +64,10 @@ internal class TokenizeSchemeGooglePay : TokenizeScheme() {
     override val value = "google-pay"
 }
 
+internal class TokenizeSchemeRecurring : TokenizeScheme() {
+    override val value = "recurring-card"
+}
+
 internal sealed class AuthType : Param() {
     final override val name = "authType"
 }

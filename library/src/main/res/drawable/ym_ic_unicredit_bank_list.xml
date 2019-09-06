@@ -1,0 +1,28 @@
+<!--
+  ~ The MIT License (MIT)
+  ~ Copyright © 2019 NBCO Yandex.Money LLC
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+  ~ associated documentation files (the “Software”), to deal in the Software without restriction, including
+  ~ without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+  ~ of the Software, and to permit persons to whom the Software is furnished to do so, subject to the
+  ~ following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all copies or substantial
+  ~ portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+  ~ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+  ~ PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+  ~ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+  ~ OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+  ~ OTHER DEALINGS IN THE SOFTWARE.
+  -->
+
+<vector android:height="24dp" android:viewportHeight="40"
+    android:viewportWidth="40" android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="#E51E26" android:fillType="evenOdd" android:pathData="M4,6L36,6A4,4 0,0 1,40 10L40,30A4,4 0,0 1,36 34L4,34A4,4 0,0 1,0 30L0,10A4,4 0,0 1,4 6z"/>
+    <path android:fillColor="#FFF" android:fillType="nonZero" android:pathData="M28.856,20c0,4.792 -3.97,8.677 -8.87,8.677 -4.898,0 -8.868,-3.885 -8.868,-8.677s3.97,-8.676 8.869,-8.676c4.898,0 8.87,3.883 8.87,8.676"/>
+    <path android:fillColor="#E51E26" android:fillType="nonZero" android:pathData="M19.424,17.59s1.026,-1.297 1.123,-1.456c0.098,-0.159 0.136,-0.287 -0.141,-0.457 -0.278,-0.17 -1.206,-0.701 -1.39,-0.84 -0.185,-0.138 -0.152,-0.647 0.391,-0.754 0.543,-0.106 5.258,-0.489 7.094,-0.298 1.837,0.192 1.587,0.703 1.597,1.117 0.01,0.414 -0.738,1.01 -1.738,1.891 0,0 -1.651,1.499 -2.857,2.53 -1.207,1.03 -5.063,4.209 -5.813,4.783 -0.75,0.574 -3.656,2.689 -3.845,2.828 -0.188,0.138 -0.716,0.553 -1.003,0.264 -0.287,-0.29 0,-0.612 0.146,-0.81 0.146,-0.197 6.002,-8.288 6.436,-8.798"/>
+    <path android:fillColor="#FFF" android:fillType="nonZero" android:pathData="M27.986,14.278c0.075,0.177 0.142,0.513 0.112,0.624 -0.106,0.4 -0.738,1.01 -1.738,1.891 0,0 -1.65,1.499 -2.857,2.53 -1.207,1.03 -5.063,4.209 -5.813,4.783 -0.75,0.574 -3.656,2.689 -3.844,2.828 -0.144,0.106 -0.784,0.196 -1.066,0.19 0.09,0.126 0.253,0.266 0.42,0.425 0.296,0.28 0.815,-0.126 1.004,-0.265 0.188,-0.137 3.095,-2.253 3.845,-2.828 0.75,-0.574 4.607,-3.752 5.812,-4.782 1.206,-1.031 2.857,-2.53 2.857,-2.53 1,-0.882 1.546,-1.362 1.652,-1.763 0.049,-0.185 0.115,-0.765 -0.384,-1.103"/>
+</vector>

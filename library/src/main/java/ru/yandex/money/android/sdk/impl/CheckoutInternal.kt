@@ -31,6 +31,8 @@ import ru.yandex.money.android.sdk.UiParameters
 import ru.yandex.money.android.sdk.impl.contract.ContractCompleteViewModel
 import ru.yandex.money.android.sdk.impl.extensions.initExtensions
 import ru.yandex.money.android.sdk.impl.logging.MsdkLogger
+import ru.yandex.money.android.sdk.payment.loadOptionList.PaymentOptionAmountInputModel
+import ru.yandex.money.android.sdk.payment.loadOptionList.PaymentOptionPaymentMethodInputModel
 import ru.yandex.money.android.sdk.utils.WebViewActivity
 import ru.yandex.money.android.sdk.utils.getAllPaymentMethods
 
@@ -65,7 +67,8 @@ internal object CheckoutInternal {
         context: Context,
         paymentParameters: PaymentParameters,
         testParameters: TestParameters,
-        uiParameters: UiParameters
+        uiParameters: UiParameters,
+        paymentMethodId: String? = null
     ) {
         val shopParameters =
             if (paymentParameters.paymentMethodTypes.isEmpty()) {
@@ -106,6 +109,11 @@ internal object CheckoutInternal {
             testParameters = testParameters,
             uiParameters = uiParameters
         )
-        AppModel.loadPaymentOptionListController(paymentParameters.amount)
+        val inputModel = if (paymentMethodId == null) {
+            PaymentOptionAmountInputModel(paymentParameters.amount)
+        } else {
+            PaymentOptionPaymentMethodInputModel(paymentParameters.amount, paymentMethodId)
+        }
+        AppModel.loadPaymentOptionListController(inputModel)
     }
 }

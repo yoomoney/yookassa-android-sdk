@@ -21,9 +21,11 @@
 
 package ru.yandex.money.android.sdk.impl.paymentOptionInfo
 
+import ru.yandex.money.android.sdk.R
 import ru.yandex.money.android.sdk.model.LinkedCard
 import ru.yandex.money.android.sdk.model.NewCard
 import ru.yandex.money.android.sdk.model.Presenter
+import ru.yandex.money.android.sdk.model.PaymentIdCscConfirmation
 import ru.yandex.money.android.sdk.model.ViewModel
 import ru.yandex.money.android.sdk.payment.tokenize.TokenizeOutputModel
 import ru.yandex.money.android.sdk.payment.tokenize.TokenizePaymentOptionInfoRequired
@@ -40,7 +42,14 @@ internal class PaymentOptionInfoPresenter(
             is LinkedCard -> PaymentOptionInfoLinkedCardViewModel(
                 optionId = outputModel.option.id,
                 allowRecurringPayments = outputModel.allowRecurringPayments,
+                title = R.string.ym_bank_card_title_edit,
                 pan = outputModel.option.pan.chunked(4).joinToString(" ")
+            )
+            is PaymentIdCscConfirmation -> PaymentOptionInfoLinkedCardViewModel(
+                optionId = outputModel.option.id,
+                allowRecurringPayments = outputModel.allowRecurringPayments,
+                title = R.string.ym_bank_card_title_new,
+                pan = (outputModel.option.first + "*****" + outputModel.option.last).chunked(4).joinToString(" ")
             )
             else -> throw IllegalArgumentException("${outputModel.option} is not allowed here")
         }
@@ -61,5 +70,6 @@ internal data class PaymentOptionInfoBankCardViewModel(
 internal data class PaymentOptionInfoLinkedCardViewModel(
     override val optionId: Int,
     override val allowRecurringPayments: Boolean,
-    val pan: CharSequence
+    val pan: CharSequence,
+    val title: Int
 ) : PaymentOptionInfoViewModel()

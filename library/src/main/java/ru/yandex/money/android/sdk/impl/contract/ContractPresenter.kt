@@ -40,6 +40,7 @@ import ru.yandex.money.android.sdk.impl.paymentAuth.SmsSessionRetryProgressViewM
 import ru.yandex.money.android.sdk.model.AuthType
 import ru.yandex.money.android.sdk.model.GooglePay
 import ru.yandex.money.android.sdk.model.NewCard
+import ru.yandex.money.android.sdk.model.PaymentIdCscConfirmation
 import ru.yandex.money.android.sdk.model.SbolSmsInvoicing
 import ru.yandex.money.android.sdk.model.YandexMoney
 import ru.yandex.money.android.sdk.payment.selectOption.SelectPaymentOptionOutputModel
@@ -153,6 +154,7 @@ internal class ContractPresenter(
                 is NewCard -> PaymentMethodType.BANK_CARD
                 is GooglePay -> PaymentMethodType.GOOGLE_PAY
                 is SbolSmsInvoicing -> PaymentMethodType.SBERBANK
+                is PaymentIdCscConfirmation -> PaymentMethodType.BANK_CARD
             }
         )
         is TokenizePaymentAuthRequiredOutputModel -> contract.copy(

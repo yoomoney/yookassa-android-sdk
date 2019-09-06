@@ -36,7 +36,12 @@ import kotlinx.android.synthetic.main.ym_fragment_contract.*
 import kotlinx.android.synthetic.main.ym_item_common.*
 import ru.yandex.money.android.sdk.R
 import ru.yandex.money.android.sdk.impl.AppModel
-import ru.yandex.money.android.sdk.impl.extensions.*
+import ru.yandex.money.android.sdk.impl.extensions.configureForPhoneInput
+import ru.yandex.money.android.sdk.impl.extensions.hideSoftKeyboard
+import ru.yandex.money.android.sdk.impl.extensions.isPhoneNumber
+import ru.yandex.money.android.sdk.impl.extensions.showChild
+import ru.yandex.money.android.sdk.impl.extensions.showSoftKeyboard
+import ru.yandex.money.android.sdk.impl.extensions.visible
 import ru.yandex.money.android.sdk.impl.paymentAuth.PaymentAuthView
 import ru.yandex.money.android.sdk.impl.paymentOptionList.GooglePayNotHandled
 import ru.yandex.money.android.sdk.impl.paymentOptionList.GooglePayTokenizationCanceled
@@ -88,7 +93,7 @@ internal class ContractFragment : Fragment() {
                     feeLayout.visible = false
                 }
 
-                nextButton.setOnClickListener { _ ->
+                nextButton.setOnClickListener {
                     AppModel.tokenizeController(TokenizeInputModel(optionId, viewModel.showAllowRecurringPayments))
                 }
             }

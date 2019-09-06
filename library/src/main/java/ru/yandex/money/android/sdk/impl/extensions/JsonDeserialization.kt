@@ -25,6 +25,7 @@ import org.json.JSONObject
 import ru.yandex.money.android.sdk.Amount
 import ru.yandex.money.android.sdk.PaymentMethodType
 import ru.yandex.money.android.sdk.impl.payment.paymentOptionFactory
+import ru.yandex.money.android.sdk.methods.PaymentMethodResponse
 import ru.yandex.money.android.sdk.methods.PaymentOptionsResponse
 import ru.yandex.money.android.sdk.methods.TokenResponse
 import ru.yandex.money.android.sdk.methods.WalletCheckResponse
@@ -36,9 +37,13 @@ import ru.yandex.money.android.sdk.methods.paymentAuth.CheckoutTokenIssueInitRes
 import ru.yandex.money.android.sdk.model.AuthType
 import ru.yandex.money.android.sdk.model.AuthTypeState
 import ru.yandex.money.android.sdk.model.CardBrand
+import ru.yandex.money.android.sdk.model.CardInfo
 import ru.yandex.money.android.sdk.model.Error
 import ru.yandex.money.android.sdk.model.ExtendedStatus
 import ru.yandex.money.android.sdk.model.Fee
+import ru.yandex.money.android.sdk.model.LinkedCard
+import ru.yandex.money.android.sdk.model.LinkedCardInfo
+import ru.yandex.money.android.sdk.model.PaymentMethodBankCard
 import ru.yandex.money.android.sdk.model.Status
 import java.math.BigDecimal
 import java.util.Currency
@@ -78,6 +83,34 @@ internal fun JSONObject.toPaymentOptionResponse(userName: String): PaymentOption
                     paymentOptionFactory(id, jsonObject, userName)
                 }
                 .filterNotNull(),
+            error = null
+        )
+    }
+
+internal fun JSONObject.toPaymentMethodResponse(): PaymentMethodResponse =
+    if (optString("type") == "error") {
+        PaymentMethodResponse(
+            paymentMethodBankCard = null,
+            error = toError()
+        )
+    } else {
+        val cardJson = getJSONObject("card")
+        PaymentMethodResponse(
+            paymentMethodBankCard = PaymentMethodBankCard(
+                type = getPaymentMethodType("type") ?: PaymentMethodType.BANK_CARD,
+                id = getString("id"),
+                saved = getBoolean("saved"),
+                cscRequired = getBoolean("csc_required"),
+                title = optString("title", null),
+                card = CardInfo(
+                    first = cardJson.getString("first6"),
+                    last = cardJson.getString("last4"),
+                    expiryYear = cardJson.getString("expiry_year"),
+                    expiryMonth = cardJson.getString("expiry_month"),
+                    cardType = cardJson.getCardBrand(),
+                    source = cardJson.getPaymentMethodType("source") ?: PaymentMethodType.GOOGLE_PAY
+                )
+            ),
             error = null
         )
     }
@@ -179,7 +212,7 @@ internal fun JSONObject.toAuthTypeState() = AuthTypeState(
     nextSessionTimeLeft = optInt("nextSessionTimeLeft")
 )
 
-internal fun JSONObject.getPaymentMethodType() = when (optString("payment_method_type")) {
+internal fun JSONObject.getPaymentMethodType(name: String) = when (optString(name)) {
     "bank_card" -> PaymentMethodType.BANK_CARD
     "yandex_money" -> PaymentMethodType.YANDEX_MONEY
     "sberbank" -> PaymentMethodType.SBERBANK

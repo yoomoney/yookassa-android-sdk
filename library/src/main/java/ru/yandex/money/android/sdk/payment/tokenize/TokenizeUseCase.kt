@@ -32,6 +32,7 @@ import ru.yandex.money.android.sdk.model.NewCard
 import ru.yandex.money.android.sdk.model.NewCardInfo
 import ru.yandex.money.android.sdk.model.PaymentOption
 import ru.yandex.money.android.sdk.model.PaymentOptionInfo
+import ru.yandex.money.android.sdk.model.PaymentIdCscConfirmation
 import ru.yandex.money.android.sdk.model.SbolSmsInvoicing
 import ru.yandex.money.android.sdk.model.SbolSmsInvoicingInfo
 import ru.yandex.money.android.sdk.model.SelectedOptionNotFoundException
@@ -80,7 +81,9 @@ internal class TokenizeUseCase(
         option is NewCard && inputModel.paymentOptionInfo !is NewCardInfo ||
                 option is LinkedCard && inputModel.paymentOptionInfo !is LinkedCardInfo ||
                 option is SbolSmsInvoicing && inputModel.paymentOptionInfo !is SbolSmsInvoicingInfo ||
-                option is GooglePay && inputModel.paymentOptionInfo !is GooglePayInfo
+                option is GooglePay && inputModel.paymentOptionInfo !is GooglePayInfo ||
+                option is PaymentIdCscConfirmation && inputModel.paymentOptionInfo !is LinkedCardInfo
+
 
     private fun isPaymentAuthRequired(option: PaymentOption) =
         option is YandexMoney && checkPaymentAuthRequiredGateway.checkPaymentAuthRequired()

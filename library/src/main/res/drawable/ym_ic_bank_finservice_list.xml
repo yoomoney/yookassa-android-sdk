@@ -1,0 +1,27 @@
+<!--
+  ~ The MIT License (MIT)
+  ~ Copyright © 2019 NBCO Yandex.Money LLC
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+  ~ associated documentation files (the “Software”), to deal in the Software without restriction, including
+  ~ without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+  ~ of the Software, and to permit persons to whom the Software is furnished to do so, subject to the
+  ~ following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all copies or substantial
+  ~ portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+  ~ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+  ~ PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+  ~ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+  ~ OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+  ~ OTHER DEALINGS IN THE SOFTWARE.
+  -->
+
+<vector android:height="24dp" android:viewportHeight="40"
+    android:viewportWidth="41" android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="#054497" android:fillType="evenOdd" android:pathData="M4,6L36,6A4,4 0,0 1,40 10L40,30A4,4 0,0 1,36 34L4,34A4,4 0,0 1,0 30L0,10A4,4 0,0 1,4 6z"/>
+    <path android:fillColor="#FFF" android:fillType="evenOdd" android:pathData="M20,20m-9,0a9,9 0,1 1,18 0a9,9 0,1 1,-18 0"/>
+    <path android:fillColor="#054497" android:fillType="evenOdd" android:pathData="M26.996,19.243c0.006,1.475 0.004,2.95 0.003,4.424 0,0.316 -0.014,0.329 -0.33,0.33 -0.37,0 -0.74,-0.01 -1.108,0.003 -0.217,0.007 -0.286,-0.075 -0.285,-0.282a301.64,301.64 0,0 0,0 -3.919,4.836 4.836,0 0,0 -0.095,-0.929c-0.1,-0.492 -0.484,-0.724 -0.988,-0.621 -0.588,0.12 -1.063,0.45 -1.51,0.818 -0.064,0.052 -0.078,0.186 -0.078,0.282 -0.006,1.435 -0.003,2.869 -0.004,4.304 0,0.33 -0.013,0.343 -0.344,0.343L21.2,23.996c-0.31,0 -0.336,-0.024 -0.336,-0.33L20.864,18.159c0,-0.32 0.002,-0.641 -0.002,-0.962 -0.001,-0.176 0.06,-0.264 0.26,-0.258 0.378,0.01 0.755,0.01 1.133,0.001 0.171,-0.003 0.239,0.068 0.237,0.227 -0.002,0.181 0,0.362 0,0.6 0.143,-0.107 0.237,-0.18 0.333,-0.249 0.575,-0.415 1.187,-0.73 1.923,-0.783 1.198,-0.086 2.023,0.546 2.189,1.719 0.037,0.26 0.06,0.526 0.06,0.789zM17.222,14.07c0.21,0.014 0.308,0.108 0.23,0.335 -0.088,0.258 -0.152,0.523 -0.218,0.787 -0.04,0.157 -0.117,0.227 -0.293,0.215 -0.94,-0.064 -1.2,0.177 -1.2,1.095v0.44c0.339,0 0.633,0.007 0.927,-0.002 0.187,-0.005 0.274,0.062 0.269,0.25 -0.005,0.264 -0.005,0.529 0,0.794 0,0.173 -0.082,0.245 -0.258,0.241 -0.302,-0.005 -0.604,-0.001 -0.938,-0.001v5.402c0,0.35 -0.021,0.37 -0.372,0.37 -0.37,0 -0.739,-0.005 -1.109,0.003 -0.19,0.004 -0.26,-0.072 -0.26,-0.257 0.003,-2.493 -0.001,-4.986 0.007,-7.479 0.004,-0.264 0.041,-0.527 0.11,-0.783 0.233,-0.905 0.891,-1.398 1.977,-1.46 0.374,-0.021 0.752,0.024 1.128,0.05zM20.275,17.185c-0.002,2.18 -0.003,4.359 0,6.538 0,0.208 -0.08,0.284 -0.294,0.277 -0.368,-0.012 -0.738,-0.003 -1.107,-0.004 -0.314,0 -0.339,-0.024 -0.339,-0.326L18.535,18.199c-0.3,0 -0.57,-0.016 -0.836,0.005 -0.201,0.016 -0.268,-0.051 -0.263,-0.238 0.008,-0.264 0.008,-0.529 0,-0.793 -0.006,-0.182 0.074,-0.273 0.257,-0.273 0.77,-0.002 1.539,-0.002 2.309,-0.002 0.195,0 0.273,0.098 0.273,0.288v-0.001zM18.62,15.022c-0.214,0.204 -0.42,0.415 -0.626,0.619 -0.148,-0.225 -0.104,-0.453 0.134,-0.687 0.305,-0.298 0.592,-0.613 0.899,-0.909 0.047,-0.046 0.162,-0.054 0.235,-0.037 0.04,0.01 0.096,0.121 0.08,0.164a1.132,1.132 0,0 1,-0.201 0.375c-0.158,0.172 -0.35,0.313 -0.52,0.475zM19.191,15.61c0.122,-0.16 0.27,-0.299 0.408,-0.448 0.295,-0.32 0.339,-0.464 0.258,-0.894 0.404,0.348 0.434,0.66 0.106,1.03 -0.172,0.193 -0.368,0.365 -0.54,0.557 -0.112,0.125 -0.202,0.268 -0.303,0.406 -0.149,-0.226 -0.083,-0.45 0.071,-0.651zM19.249,16.341c0.493,0 0.9,-0.396 0.962,-0.905 -0.196,0.406 -0.736,0.475 -0.961,0.905zM18.872,14.073l-0.895,0.852c-0.108,-0.392 0.363,-0.859 0.839,-0.906l0.056,0.054z"/>
+</vector>

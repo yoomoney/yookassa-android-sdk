@@ -1,0 +1,27 @@
+<!--
+  ~ The MIT License (MIT)
+  ~ Copyright © 2019 NBCO Yandex.Money LLC
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+  ~ associated documentation files (the “Software”), to deal in the Software without restriction, including
+  ~ without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+  ~ of the Software, and to permit persons to whom the Software is furnished to do so, subject to the
+  ~ following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all copies or substantial
+  ~ portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+  ~ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+  ~ PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+  ~ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+  ~ OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+  ~ OTHER DEALINGS IN THE SOFTWARE.
+  -->
+
+<vector android:height="24dp" android:viewportHeight="40"
+    android:viewportWidth="41" android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="#0A2973" android:fillType="evenOdd" android:pathData="M4,6L36,6A4,4 0,0 1,40 10L40,30A4,4 0,0 1,36 34L4,34A4,4 0,0 1,0 30L0,10A4,4 0,0 1,4 6z"/>
+    <path android:fillColor="#FFF" android:fillType="nonZero" android:pathData="M7.766,15l-0.441,1.168h6.123L13.89,15L7.766,15zM7.104,16.752l-0.442,1.168h6.123l0.442,-1.168L7.104,16.752zM6.442,18.504L6,19.672h6.124l0.441,-1.168L6.442,18.504z"/>
+    <path android:fillColor="#FFF" android:fillType="nonZero" android:pathData="M19.018,20.116v0.025c0.28,0.1 0.547,0.273 0.687,0.384 0.433,0.347 0.624,0.805 0.624,1.399 0,0.978 -0.534,1.684 -1.413,1.907 -0.267,0.074 -0.547,0.099 -1.07,0.099L15.188,23.93L15.188,16.774h2.355c0.483,0 0.814,0.025 1.107,0.099 0.853,0.223 1.413,0.792 1.413,1.696 0,0.483 -0.178,0.891 -0.471,1.164a1.786,1.786 0,0 1,-0.573 0.383zM16.663,20.872v1.881L17.683,22.753c0.305,0 0.585,-0.024 0.789,-0.21 0.204,-0.186 0.293,-0.421 0.293,-0.73a1,1 0,0 0,-0.191 -0.62c-0.217,-0.26 -0.484,-0.321 -0.942,-0.321L16.663,20.872zM16.651,19.634h0.827c0.254,0 0.382,0 0.509,-0.038 0.344,-0.099 0.56,-0.396 0.56,-0.804 0,-0.483 -0.229,-0.694 -0.56,-0.792 -0.14,-0.038 -0.28,-0.05 -0.56,-0.05h-0.776v1.684zM22.543,23.93L22.543,17.975L20.418,17.975L20.418,16.774h5.906l-0.42,1.2L24.02,17.974v5.956L22.544,23.93zM26.781,23.93L26.781,16.774h4.786l-0.42,1.2h-2.902v1.585h1.184c0.954,0 1.451,0.223 1.795,0.508 0.267,0.223 0.725,0.718 0.725,1.696 0,0.966 -0.47,1.498 -0.865,1.77 -0.459,0.31 -0.942,0.397 -1.922,0.397h-2.38zM28.245,22.729h1.108c0.42,0 0.674,-0.1 0.852,-0.322 0.09,-0.112 0.217,-0.31 0.217,-0.681 0,-0.372 -0.128,-0.632 -0.382,-0.817 -0.153,-0.112 -0.357,-0.173 -0.7,-0.173h-1.095v1.993z"/>
+</vector>

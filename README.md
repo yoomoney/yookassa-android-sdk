@@ -13,7 +13,7 @@
 
 #  Документация
 
-Android Checkout mobile SDK - версия 2.3.0 ([changelog](https://github.com/yandex-money/yandex-checkout-android-sdk/blob/master/CHANGELOG.md))
+Android Checkout mobile SDK - версия 2.4.0 ([changelog](https://github.com/yandex-money/yandex-checkout-android-sdk/blob/master/CHANGELOG.md))
 
 * [Подключение зависимостей](#подключение-зависимостей)
     * [Подключение через Gradle](#подключение-через-gradle)
@@ -22,6 +22,7 @@ Android Checkout mobile SDK - версия 2.3.0 ([changelog](https://github.com
 * [Использование библиотеки](#использование-библиотеки)
     * [Токенизация](#токенизация)
         * [Запуск токенизации](#запуск-токенизации)
+        * [Запуск токенизации для сохранённых банковских карт](#запуск-токенизации-для-сохранённых-банковских-карт)
         * [Получение результата токенизации](#получение-результата-токенизации)
         * [Тестовые параметры и отладка](#тестовые-параметры-и-отладка)
         * [Настройка интерфейса](#настройка-интерфейса)
@@ -40,7 +41,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.yandex.money:checkout:2.3.0'
+    implementation 'com.yandex.money:checkout:2.4.0'
 }
 ```
 
@@ -151,6 +152,52 @@ class MyActivity extends android.support.v7.app.AppCompatActivity {
 }
 ```
 
+### Запуск токенизации для сохранённых банковских карт
+
+Данный способ токенизации используется в случае, если есть привязанная к магазину карта и необходимо заново запросить у пользователя её csc.
+В остальных случаях следует использовать стандартный механизм токенизации (см. [Запуск токенизации](#запуск-токенизации)).
+
+Для запуска процесса токенизации с платежным идентификатором используется метод `Checkout.createSavedCardTokenizeIntent()`. Метод отдаёт `Intent`, который нужно запустить в startActivityForResult().
+Готовый платёжный токен можно получить в `onActivityResult()` (см. [Получение результата токенизации](#получение-результата-токенизации))
+
+Входные параметры метода:
+* context (Context) - контекст приложения;
+* savedBankCardPaymentParameters (SavedBankCardPaymentParameters) - параметры платежа с сохранённой банковской картой;
+* testParameters (TestParameters) - параметры для дебага, см. [Тестовые параметры и отладка](#тестовые-параметры-и-отладка]);
+* uiParameters (UiParameters) - настройка интерфейса, см. [Настройка интерфейса](#настройка-интерфейса]).
+
+Поля `SavedBankCardPaymentParameters`:
+
+* amount (Amount) - стоимость товара. Допустимые способы оплаты могут меняться в зависимости от этого параметра;
+* title (String) - название товара;
+* subtitle (String) - описание товара;
+* clientApplicationKey (String) - токен магазина, полученный в Яндекс.Кассе;
+* shopId (String) - идентификатор магазина в Яндекс.Кассе;
+* paymentId (String) - идентификатор платежа.
+
+Поля класса `Amount`:
+* value (BigDecimal) - сумма;
+* currency (Currency) - валюта.
+
+```java
+class MyActivity extends android.support.v7.app.AppCompatActivity {
+
+    ...
+
+    void timeToStartCheckout() {
+        SavedBankCardPaymentParameters parameters = new SavedBankCardPaymentParameters(
+                new Amount(BigDecimal.TEN, Currency.getInstance("RUB")),
+                "Название товара",
+                "Описание товара",
+                "live_AAAAAAAAAAAAAAAAAAAA",
+                "12345",
+                "paymentId"
+        );
+        Intent intent = Checkout.createSavedCardTokenizeIntent(this, parameters);
+        startActivityForResult(intent, REQUEST_CODE_TOKENIZE);
+    }
+}
+```
 
 ### Получение результата токенизации
 Результат токенизации будет возвращен в `onActivityResult()`.

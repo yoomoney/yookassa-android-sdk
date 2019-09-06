@@ -27,12 +27,14 @@ import org.junit.Test
 import org.mockito.Mockito.mock
 import ru.yandex.money.android.sdk.PaymentMethodType
 import ru.yandex.money.android.sdk.createAmount
+import ru.yandex.money.android.sdk.impl.paymentMethodInfo.MockPaymentInfoGateway
 import ru.yandex.money.android.sdk.impl.paymentOptionList.MockPaymentOptionListGateway
 import ru.yandex.money.android.sdk.model.AuthorizedUser
 import ru.yandex.money.android.sdk.on
 import ru.yandex.money.android.sdk.payment.CurrentUserGateway
 import ru.yandex.money.android.sdk.payment.InMemoryPaymentOptionListGateway
 import ru.yandex.money.android.sdk.payment.loadOptionList.LoadPaymentOptionListUseCase
+import ru.yandex.money.android.sdk.payment.loadOptionList.PaymentOptionAmountInputModel
 
 class ChangePaymentOptionIntegrationTest {
 
@@ -41,10 +43,12 @@ class ChangePaymentOptionIntegrationTest {
     private val currentUserGateway = mock(CurrentUserGateway::class.java).apply {
         on(currentUser).thenReturn(AuthorizedUser(userName))
     }
+    private val paymentMethodInfoGateway = MockPaymentInfoGateway()
     private val restrictions = mutableSetOf<PaymentMethodType>()
     private val loadUseCase = LoadPaymentOptionListUseCase(
         paymentOptionListRestrictions = restrictions,
         paymentOptionListGateway = paymentOptionsGateway,
+        paymentMethodInfoGateway = paymentMethodInfoGateway,
         saveLoadedPaymentOptionsListGateway = InMemoryPaymentOptionListGateway,
         currentUserGateway = currentUserGateway
     )
@@ -55,7 +59,7 @@ class ChangePaymentOptionIntegrationTest {
         // prepare
 
         // invoke
-        val paymentOptions = loadUseCase(createAmount())
+        val paymentOptions = loadUseCase(PaymentOptionAmountInputModel(createAmount()))
         val paymentOptionsAfterChange = changeUseCase(ChangePaymentOptionInputModel)
 
         // assert
@@ -68,7 +72,7 @@ class ChangePaymentOptionIntegrationTest {
         restrictions.add(PaymentMethodType.YANDEX_MONEY)
 
         // invoke
-        val paymentOptions = loadUseCase(createAmount())
+        val paymentOptions = loadUseCase(PaymentOptionAmountInputModel(createAmount()))
         val paymentOptionsAfterChange = changeUseCase(ChangePaymentOptionInputModel)
 
         // assert

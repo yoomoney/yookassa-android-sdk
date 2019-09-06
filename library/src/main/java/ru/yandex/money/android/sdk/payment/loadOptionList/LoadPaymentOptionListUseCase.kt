@@ -27,23 +27,50 @@ import ru.yandex.money.android.sdk.model.GooglePay
 import ru.yandex.money.android.sdk.model.LinkedCard
 import ru.yandex.money.android.sdk.model.NewCard
 import ru.yandex.money.android.sdk.model.PaymentOption
+import ru.yandex.money.android.sdk.model.PaymentIdCscConfirmation
 import ru.yandex.money.android.sdk.model.SbolSmsInvoicing
 import ru.yandex.money.android.sdk.model.UseCase
 import ru.yandex.money.android.sdk.model.Wallet
 import ru.yandex.money.android.sdk.model.YandexMoney
 import ru.yandex.money.android.sdk.payment.CurrentUserGateway
 import ru.yandex.money.android.sdk.payment.SaveLoadedPaymentOptionsListGateway
+import ru.yandex.money.android.sdk.payment.loadPaymentInfo.PaymentMethodInfoGateway
 
 internal class LoadPaymentOptionListUseCase(
     private val paymentOptionListRestrictions: Set<PaymentMethodType>,
     private val paymentOptionListGateway: PaymentOptionListGateway,
     private val saveLoadedPaymentOptionsListGateway: SaveLoadedPaymentOptionsListGateway,
+    private val paymentMethodInfoGateway: PaymentMethodInfoGateway,
     private val currentUserGateway: CurrentUserGateway
 ) : UseCase<PaymentOptionListInputModel, PaymentOptionListOutputModel> {
 
     override fun invoke(inputModel: PaymentOptionListInputModel): PaymentOptionListOutputModel {
         val currentUser = currentUserGateway.currentUser
-        val paymentOptions = paymentOptionListGateway.getPaymentOptions(inputModel, currentUser)
+
+        var paymentOptions = paymentOptionListGateway.getPaymentOptions(inputModel.amount, currentUser)
+        if (inputModel is PaymentOptionPaymentMethodInputModel) {
+            val paymentMethodInfo = paymentMethodInfoGateway.getPaymentMethodInfo(inputModel.paymentMethodId)
+            val paymentOption = when(paymentMethodInfo.type) {
+                PaymentMethodType.BANK_CARD -> paymentOptions.find { it is NewCard }
+                else -> null
+            }
+            if (paymentOption != null && paymentMethodInfo.card != null) {
+                paymentOptions = listOf(
+                    PaymentIdCscConfirmation(
+                        id = paymentOption.id,
+                        charge = paymentOption.charge,
+                        fee = paymentOption.fee,
+                        paymentMethodId = inputModel.paymentMethodId,
+                        first = paymentMethodInfo.card.first,
+                        last = paymentMethodInfo.card.last,
+                        expiryMonth = paymentMethodInfo.card.expiryMonth,
+                        expiryYear = paymentMethodInfo.card.expiryYear
+                    )
+                )
+            } else {
+                throw PaymentOptionListIsEmptyException()
+            }
+        }
         val options = when {
             paymentOptionListRestrictions.isEmpty() -> paymentOptions
             else -> paymentOptions.filter { it.toAllowed() in paymentOptionListRestrictions }
@@ -51,12 +78,23 @@ internal class LoadPaymentOptionListUseCase(
         saveLoadedPaymentOptionsListGateway.saveLoadedPaymentOptionsList(options)
         return options
             .takeIf { it.none { it is LinkedCard } }?.filter { it is Wallet }?.takeUnless(List<PaymentOption>::isEmpty)
-                ?: options.takeUnless(List<PaymentOption>::isEmpty)
-                ?: throw PaymentOptionListIsEmptyException()
+            ?: options.takeUnless(List<PaymentOption>::isEmpty)
+            ?: throw PaymentOptionListIsEmptyException()
     }
 }
 
-internal typealias PaymentOptionListInputModel = Amount
+internal sealed class PaymentOptionListInputModel {
+    abstract val amount: Amount
+}
+
+internal data class PaymentOptionAmountInputModel(
+    override val amount: Amount
+) : PaymentOptionListInputModel()
+
+internal data class PaymentOptionPaymentMethodInputModel(
+    override val amount: Amount,
+    val paymentMethodId: String
+) : PaymentOptionListInputModel()
 
 internal typealias PaymentOptionListOutputModel = List<PaymentOption>
 
@@ -65,4 +103,5 @@ private fun PaymentOption.toAllowed() = when (this) {
     is YandexMoney -> PaymentMethodType.YANDEX_MONEY
     is SbolSmsInvoicing -> PaymentMethodType.SBERBANK
     is GooglePay -> PaymentMethodType.GOOGLE_PAY
+    is PaymentIdCscConfirmation -> PaymentMethodType.BANK_CARD
 }

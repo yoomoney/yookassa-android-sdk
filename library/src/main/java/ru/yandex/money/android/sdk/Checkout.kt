@@ -28,6 +28,7 @@ import android.support.annotation.Keep
 import ru.yandex.money.android.sdk.impl.CheckoutActivity
 import ru.yandex.money.android.sdk.impl.CheckoutInternal
 import ru.yandex.money.android.sdk.impl.EXTRA_CREATED_WITH_CHECKOUT_METHOD
+import ru.yandex.money.android.sdk.impl.EXTRA_CSC_PARAMETERS
 import ru.yandex.money.android.sdk.impl.EXTRA_PAYMENT_METHOD_TYPE
 import ru.yandex.money.android.sdk.impl.EXTRA_PAYMENT_PARAMETERS
 import ru.yandex.money.android.sdk.impl.EXTRA_PAYMENT_TOKEN
@@ -134,5 +135,35 @@ object Checkout {
             .putExtra(EXTRA_CARD_NUMBER, cardNumber)
             .putExtra(EXTRA_EXPIRY_MONTH, expirationMonth)
             .putExtra(EXTRA_EXPIRY_YEAR, expirationYear)
+    }
+
+    /**
+     * Create [Intent] to start tokenization process with a paymentId of user's bank card.
+     * This method should be used if you have saved user's card and want user to re-enter csc.
+     * In other cases you should use [createTokenizeIntent].
+     *
+     * This intent should be used in startActivityForResult() to start tokenization.
+     *
+     * When tokenization is finished, result will return in onActivityResult().
+     * ResultCode can be Activity.RESULT_OK or Activity.RESULT_CANCELED.
+     * To retrieve successful result use [createTokenizationResult].
+     *
+     * @param context application context.
+     * @param savedBankCardPaymentParameters parameters of your shop and saved card, see [SavedBankCardPaymentParameters].
+     * @param testParameters (optional) debug parameters, see [TestParameters].
+     * @param uiParameters (optional) visual settings, see [UiParameters].
+     */
+    @[JvmStatic JvmOverloads Keep]
+    fun createSavedCardTokenizeIntent(
+        context: Context,
+        savedBankCardPaymentParameters: SavedBankCardPaymentParameters,
+        testParameters: TestParameters = TestParameters(),
+        uiParameters: UiParameters = UiParameters()
+    ): Intent {
+        return Intent(context, CheckoutActivity::class.java)
+            .putExtra(EXTRA_UI_PARAMETERS, uiParameters)
+            .putExtra(EXTRA_CSC_PARAMETERS, savedBankCardPaymentParameters)
+            .putExtra(EXTRA_TEST_PARAMETERS, testParameters)
+            .putExtra(EXTRA_CREATED_WITH_CHECKOUT_METHOD, true)
     }
 }

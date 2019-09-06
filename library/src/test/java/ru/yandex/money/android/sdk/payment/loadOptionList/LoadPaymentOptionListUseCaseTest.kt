@@ -21,6 +21,7 @@
 
 package ru.yandex.money.android.sdk.payment.loadOptionList
 
+import com.nhaarman.mockitokotlin2.argumentCaptor
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.instanceOf
 import org.hamcrest.collection.IsIterableContainingInOrder.contains
@@ -37,16 +38,21 @@ import ru.yandex.money.android.sdk.impl.extensions.RUB
 import ru.yandex.money.android.sdk.model.AbstractWallet
 import ru.yandex.money.android.sdk.model.AuthorizedUser
 import ru.yandex.money.android.sdk.model.CardBrand
+import ru.yandex.money.android.sdk.model.CardInfo
 import ru.yandex.money.android.sdk.model.Fee
 import ru.yandex.money.android.sdk.model.GooglePay
 import ru.yandex.money.android.sdk.model.LinkedCard
 import ru.yandex.money.android.sdk.model.NewCard
+import ru.yandex.money.android.sdk.model.PaymentMethodBankCard
+import ru.yandex.money.android.sdk.model.PaymentOption
+import ru.yandex.money.android.sdk.model.PaymentIdCscConfirmation
 import ru.yandex.money.android.sdk.model.SbolSmsInvoicing
 import ru.yandex.money.android.sdk.model.Wallet
 import ru.yandex.money.android.sdk.model.YandexMoney
 import ru.yandex.money.android.sdk.on
 import ru.yandex.money.android.sdk.payment.CurrentUserGateway
 import ru.yandex.money.android.sdk.payment.SaveLoadedPaymentOptionsListGateway
+import ru.yandex.money.android.sdk.payment.loadPaymentInfo.PaymentMethodInfoGateway
 import java.math.BigDecimal
 
 @RunWith(MockitoJUnitRunner.StrictStubs::class)
@@ -59,6 +65,7 @@ internal class LoadPaymentOptionListUseCaseTest {
         service = Amount(BigDecimal.ONE, RUB),
         counterparty = Amount(BigDecimal("0.5"), RUB)
     )
+    private val testPaymentMethodId = "test id"
     private val availableOptions = mutableListOf(
         NewCard(0, testCharge, testFee),
         Wallet(
@@ -86,6 +93,21 @@ internal class LoadPaymentOptionListUseCaseTest {
         SbolSmsInvoicing(5, testCharge, testFee),
         GooglePay(6, testCharge, testFee)
     )
+    private val bankCardInfo: PaymentMethodBankCard = PaymentMethodBankCard(
+        type = PaymentMethodType.BANK_CARD,
+        id = "123123",
+        saved = true,
+        cscRequired = true,
+        title = "title",
+        card = CardInfo(
+            first = "123456",
+            last = "7890",
+            expiryMonth = "10",
+            expiryYear = "20",
+            cardType = CardBrand.MASTER_CARD,
+            source = PaymentMethodType.GOOGLE_PAY
+        )
+    )
 
     private val restrictions = mutableSetOf<PaymentMethodType>()
     @Mock
@@ -94,19 +116,58 @@ internal class LoadPaymentOptionListUseCaseTest {
     private lateinit var currentUserGateway: CurrentUserGateway
     @Mock
     private lateinit var saveLoadedPaymentOptionsListGateway: SaveLoadedPaymentOptionsListGateway
+    @Mock
+    private lateinit var paymentMethodInfoGateway: PaymentMethodInfoGateway
     private lateinit var useCase: LoadPaymentOptionListUseCase
 
     @Before
     fun setUp() {
+        on(paymentMethodInfoGateway.getPaymentMethodInfo(testPaymentMethodId)).thenReturn(bankCardInfo)
         on(currentUserGateway.currentUser).thenReturn(testUser)
         on(paymentOptionListGateway.getPaymentOptions(testInputModel, testUser)).thenReturn(availableOptions)
 
         useCase = LoadPaymentOptionListUseCase(
             paymentOptionListRestrictions = restrictions,
             paymentOptionListGateway = paymentOptionListGateway,
+            paymentMethodInfoGateway = paymentMethodInfoGateway,
             saveLoadedPaymentOptionsListGateway = saveLoadedPaymentOptionsListGateway,
             currentUserGateway = currentUserGateway
         )
+    }
+
+    @Test
+    fun `should return SavedLinkedCard when paymentMethodId is set`() {
+        // prepare
+        val savedLinkedCard = listOf<PaymentOption>(
+            PaymentIdCscConfirmation(
+                id = 0,
+                charge = testCharge,
+                fee = testFee,
+                paymentMethodId = testPaymentMethodId,
+                first = "123456",
+                last = "7890",
+                expiryYear = "20",
+                expiryMonth = "10"
+            )
+        )
+
+        // invoke
+        val outputModel = useCase(PaymentOptionPaymentMethodInputModel(testInputModel, testPaymentMethodId))
+
+        // assert
+        assertThat(outputModel, contains(instanceOf(PaymentIdCscConfirmation::class.java)))
+
+        val captor = argumentCaptor<List<PaymentOption>>()
+
+        inOrder(paymentOptionListGateway, currentUserGateway, paymentMethodInfoGateway, saveLoadedPaymentOptionsListGateway).apply {
+            verify(currentUserGateway).currentUser
+            verify(paymentOptionListGateway).getPaymentOptions(testInputModel, testUser)
+            verify(paymentMethodInfoGateway).getPaymentMethodInfo(testPaymentMethodId)
+            verify(saveLoadedPaymentOptionsListGateway).saveLoadedPaymentOptionsList(captor.capture())
+            verifyNoMoreInteractions()
+        }
+
+        assertThat(captor.firstValue, equalTo(savedLinkedCard))
     }
 
     @Test
@@ -115,12 +176,12 @@ internal class LoadPaymentOptionListUseCaseTest {
         availableOptions.removeIf { it is Wallet }
 
         // invoke
-        val outputModel = useCase(testInputModel)
+        val outputModel = useCase(PaymentOptionAmountInputModel(testInputModel))
 
         // assert
         assertThat(outputModel, contains(*availableOptions.toTypedArray()))
 
-        inOrder(paymentOptionListGateway, currentUserGateway, saveLoadedPaymentOptionsListGateway).apply {
+        inOrder(paymentOptionListGateway, paymentOptionListGateway, currentUserGateway, saveLoadedPaymentOptionsListGateway).apply {
             verify(currentUserGateway).currentUser
             verify(paymentOptionListGateway).getPaymentOptions(testInputModel, testUser)
             verify(saveLoadedPaymentOptionsListGateway).saveLoadedPaymentOptionsList(availableOptions)
@@ -134,7 +195,7 @@ internal class LoadPaymentOptionListUseCaseTest {
         availableOptions.removeIf { it is LinkedCard }
 
         // invoke
-        val outputModel = useCase(testInputModel)
+        val outputModel = useCase(PaymentOptionAmountInputModel(testInputModel))
 
         // assert
         assertThat(outputModel, contains(instanceOf(Wallet::class.java)))
@@ -152,7 +213,7 @@ internal class LoadPaymentOptionListUseCaseTest {
         // prepare
 
         // invoke
-        val outputModel = useCase(testInputModel)
+        val outputModel = useCase(PaymentOptionAmountInputModel(testInputModel))
 
         // assert
         assertThat(outputModel, contains(*availableOptions.toTypedArray()))
@@ -171,7 +232,7 @@ internal class LoadPaymentOptionListUseCaseTest {
         restrictions.add(PaymentMethodType.BANK_CARD)
 
         // invoke
-        val outputModel = useCase(testInputModel)
+        val outputModel = useCase(PaymentOptionAmountInputModel(testInputModel))
 
         // assert
         assertThat(outputModel, contains(instanceOf(NewCard::class.java)))
@@ -189,7 +250,7 @@ internal class LoadPaymentOptionListUseCaseTest {
         restrictions.add(PaymentMethodType.GOOGLE_PAY)
 
         // invoke
-        val outputModel = useCase(testInputModel)
+        val outputModel = useCase(PaymentOptionAmountInputModel(testInputModel))
 
         // assert
         assertThat(outputModel.size, equalTo(1))
@@ -208,7 +269,7 @@ internal class LoadPaymentOptionListUseCaseTest {
         restrictions.add(PaymentMethodType.SBERBANK)
 
         // invoke
-        val outputModel = useCase(testInputModel)
+        val outputModel = useCase(PaymentOptionAmountInputModel(testInputModel))
 
         // assert
         assertThat(outputModel, contains(instanceOf(SbolSmsInvoicing::class.java)))
@@ -229,7 +290,7 @@ internal class LoadPaymentOptionListUseCaseTest {
         restrictions.add(PaymentMethodType.YANDEX_MONEY)
 
         // invoke
-        val outputModel = useCase(testInputModel)
+        val outputModel = useCase(PaymentOptionAmountInputModel(testInputModel))
 
         // assert
         assertThat(outputModel, contains(instanceOf(Wallet::class.java)))
@@ -249,7 +310,7 @@ internal class LoadPaymentOptionListUseCaseTest {
         restrictions.add(PaymentMethodType.YANDEX_MONEY)
 
         // invoke
-        val outputModel = useCase(testInputModel)
+        val outputModel = useCase(PaymentOptionAmountInputModel(testInputModel))
 
         // assert
         assertThat(
@@ -278,7 +339,7 @@ internal class LoadPaymentOptionListUseCaseTest {
         availableOptions.removeIf { it is Wallet }
 
         // invoke
-        val outputModel = useCase(testInputModel)
+        val outputModel = useCase(PaymentOptionAmountInputModel(testInputModel))
 
         // assert
         assertThat(
@@ -306,7 +367,7 @@ internal class LoadPaymentOptionListUseCaseTest {
         availableOptions.removeIf { it is Wallet }
 
         // invoke
-        val outputModel = useCase(testInputModel)
+        val outputModel = useCase(PaymentOptionAmountInputModel(testInputModel))
 
         // assert
         assertThat(
@@ -336,7 +397,7 @@ internal class LoadPaymentOptionListUseCaseTest {
         restrictions.addAll(PaymentMethodType.values())
 
         // invoke
-        val outputModel = useCase(testInputModel)
+        val outputModel = useCase(PaymentOptionAmountInputModel(testInputModel))
 
         // assert
         assertThat(outputModel, contains(instanceOf(Wallet::class.java)))
@@ -355,7 +416,7 @@ internal class LoadPaymentOptionListUseCaseTest {
         restrictions.addAll(PaymentMethodType.values())
 
         // invoke
-        val outputModel = useCase(testInputModel)
+        val outputModel = useCase(PaymentOptionAmountInputModel(testInputModel))
 
         // assert
         assertThat(
@@ -384,13 +445,13 @@ internal class LoadPaymentOptionListUseCaseTest {
         // prepare noRestrictionsOutput
 
         // invoke noRestrictionsOutput
-        val noRestrictionsOutput = useCase(testInputModel)
+        val noRestrictionsOutput = useCase(PaymentOptionAmountInputModel(testInputModel))
 
         // prepare fullRestrictionsOutput
         restrictions.addAll(PaymentMethodType.values())
 
         // invoke fullRestrictionsOutput
-        val fullRestrictionsOutput = useCase(testInputModel)
+        val fullRestrictionsOutput = useCase(PaymentOptionAmountInputModel(testInputModel))
 
         // assert
         assertThat(noRestrictionsOutput, contains(*fullRestrictionsOutput.toTypedArray()))
@@ -402,7 +463,7 @@ internal class LoadPaymentOptionListUseCaseTest {
         on(paymentOptionListGateway.getPaymentOptions(testInputModel, testUser)).thenReturn(listOf())
 
         // invoke
-        useCase(testInputModel)
+        useCase(PaymentOptionAmountInputModel(testInputModel))
 
         // assert that PaymentOptionListIsEmptyException thrown
     }

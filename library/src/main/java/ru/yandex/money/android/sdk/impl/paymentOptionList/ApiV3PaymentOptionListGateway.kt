@@ -21,7 +21,6 @@
 
 package ru.yandex.money.android.sdk.impl.paymentOptionList
 
-import android.content.Context
 import okhttp3.OkHttpClient
 import ru.yandex.money.android.sdk.Amount
 import ru.yandex.money.android.sdk.impl.ApiMethodException
