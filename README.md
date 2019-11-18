@@ -13,7 +13,7 @@
 
 #  Документация
 
-Android Checkout mobile SDK - версия 2.4.0 ([changelog](https://github.com/yandex-money/yandex-checkout-android-sdk/blob/master/CHANGELOG.md))
+Android Checkout mobile SDK - версия 2.4.1 ([changelog](https://github.com/yandex-money/yandex-checkout-android-sdk/blob/master/CHANGELOG.md))
 
 * [Подключение зависимостей](#подключение-зависимостей)
     * [Подключение через Gradle](#подключение-через-gradle)
@@ -41,7 +41,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.yandex.money:checkout:2.4.0'
+    implementation 'com.yandex.money:checkout:2.4.1'
 }
 ```
 

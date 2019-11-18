@@ -24,6 +24,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="ru.yandex.money.android.example">
 
+    <uses-sdk tools:overrideLibrary="cards.pay.paycardsrecognizer.sdk" />
+
     <application
         android:name=".App"
         android:allowBackup="false"

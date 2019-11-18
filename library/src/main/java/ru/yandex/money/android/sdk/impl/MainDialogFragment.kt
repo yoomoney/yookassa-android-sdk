@@ -251,12 +251,14 @@ internal class MainDialogFragment : BottomSheetDialogFragment() {
     override fun onCancel(dialog: DialogInterface?) {
         super.onCancel(dialog)
         AppModel.reset()
+        activity?.finish()
     }
 
     override fun onDismiss(dialog: DialogInterface?) {
         view?.hideSoftKeyboard()
 
         super.onDismiss(dialog)
+        activity?.finish()
     }
 
     private fun hideBankCardDialog() {

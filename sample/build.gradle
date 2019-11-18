@@ -82,7 +82,7 @@ dependencies {
     releaseImplementation project(':library')
     debugImplementation project(':library')
     implementation 'com.yandex.android:authsdk:2.1.1'
-    implementation project(':pay-cards-sdk')
+    implementation 'cards.pay:paycardsrecognizer:1.1.0'
     testImplementation 'junit:junit:4.12'
     testImplementation "org.mockito:mockito-core:$mockito_version"
     testImplementation "org.robolectric:robolectric:3.8"

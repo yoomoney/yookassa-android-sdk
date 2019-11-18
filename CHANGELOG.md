@@ -1,6 +1,11 @@
 ## Changelog
 
+### 2.4.1
+2019-11-15
+- Fix screen artifacts on closing mSDK.
+
 ### 2.4.0
+2019-09-06
 - Add bank icons for card screen.
 - Add tokenization flow for saved bank cards.
 

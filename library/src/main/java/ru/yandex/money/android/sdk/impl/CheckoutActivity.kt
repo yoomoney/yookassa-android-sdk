@@ -124,18 +124,9 @@ internal class CheckoutActivity : AppCompatActivity() {
     }
 
     private fun showDialog(supportFragmentManager: FragmentManager) {
-        val mainDialog = findDialog(supportFragmentManager) ?: MainDialogFragment().apply {
+        findDialog(supportFragmentManager) ?: MainDialogFragment().apply {
             show(supportFragmentManager, TAG_BOTTOM_SHEET)
             supportFragmentManager.executePendingTransactions()
-        }
-
-        mainDialog.apply {
-            dialog.setOnDismissListener {
-                finish()
-            }
-            dialog.setOnCancelListener {
-                finish()
-            }
         }
     }
 
