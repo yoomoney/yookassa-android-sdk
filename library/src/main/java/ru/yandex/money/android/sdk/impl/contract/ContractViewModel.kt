@@ -23,6 +23,7 @@ package ru.yandex.money.android.sdk.impl.contract
 
 import ru.yandex.money.android.sdk.Amount
 import ru.yandex.money.android.sdk.PaymentMethodType
+import ru.yandex.money.android.sdk.SavePaymentMethod
 import ru.yandex.money.android.sdk.impl.payment.PaymentOptionViewModel
 import ru.yandex.money.android.sdk.model.ViewModel
 
@@ -34,7 +35,7 @@ internal data class ContractSuccessViewModel(
     val paymentOption: PaymentOptionViewModel,
     val licenseAgreement: CharSequence,
     val showChangeButton: Boolean,
-    val showAllowRecurringPayments: Boolean,
+    val savePaymentMethodViewModel: SavePaymentMethodViewModel,
     val showAllowWalletLinking: Boolean,
     val paymentAuth: PaymentAuthViewModel?,
     val showPhoneInput: Boolean,
@@ -47,8 +48,7 @@ internal data class ContractCompleteViewModel(
 ) : ContractViewModel()
 
 internal data class GooglePayContractViewModel(
-    val paymentOptionId: Int,
-    val recurringPaymentsPossible: Boolean
+    val paymentOptionId: Int
 ) : ContractViewModel()
 
 internal sealed class ContractFailViewModel : ContractViewModel()

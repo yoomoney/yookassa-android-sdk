@@ -41,8 +41,7 @@
     <string name="ym_contract_continue">Продолжить</string>
     <string name="ym_contract_change_payment_option">Изменить</string>
     <string name="ym_payment_auth_repeat">Отправить снова</string>
-    <string name="ym_allow_wallet_linking">Сохранить кошелёк Яндекс.Денег в этом приложении?</string>
-    <string name="ym_allow_recurring_payments">Разрешить повтор платежей?</string>
+    <string name="ym_allow_wallet_linking">Запомнить кошелёк в этом приложении для быстрых платежей</string>
     <string name="ym_auth_hint_sms">Введите пароль из смс</string>
     <string name="ym_auth_hint_totp">Введите одноразовый пароль</string>
     <string name="ym_auth_hint_password">Введите код доступа</string>
@@ -68,4 +67,16 @@
     <string name="ym_payment_option_google_pay">Google Pay</string>
     <string name="ym_license_agreement_part_1">Нажимая кнопку, вы принимаете</string>
     <string name="ym_license_agreement_part_2">условия сервиса</string>
+    <string name="ym_save_payment_method_wallet_info_title">Разрешение списывать деньги без вашего участия</string>
+    <string name="ym_save_payment_method_wallet_info_text">Это значит, что вы даёте Яндекс.Деньгам предварительное согласие списывать деньги с кошелька по запросу магазина — без дополнительного подтверждения с вашей стороны. Отменить такие списания можно в любой момент: в настройках кошелька (на сайте Яндекс.Денег).</string>
+    <string name="ym_save_payment_method_wallet_switch_text_part_1">Разрешить магазину</string>
+    <string name="ym_save_payment_method_wallet_switch_text_part_2">списывать деньги без моего участия</string>
+    <string name="ym_save_payment_method_wallet_message_text_part_1">После оплаты привяжем кошелёк: магазин сможет</string>
+    <string name="ym_save_payment_method_wallet_message_text_part_2">списывать деньги без вашего участия</string>
+    <string name="ym_save_payment_method_bank_card_info_title">Разрешение списывать деньги по запросу магазина</string>
+    <string name="ym_save_payment_method_bank_card_info_text">Это значит, что предварительно вы разрешаете Яндекс.Деньгам списывать деньги по запросу магазина, без отдельного подтверждения — с этой карты или с новой, при перевыпуске (если ваш банк умеет автоматически обновлять данные). Отменить привязку можно в любой момент, через службу поддержки магазина.</string>
+    <string name="ym_save_payment_method_bank_card_switch_text_part_1">Привязать карту и</string>
+    <string name="ym_save_payment_method_bank_card_switch_text_part_2">списывать деньги по запросу магазина</string>
+    <string name="ym_save_payment_method_bank_card_message_text_part_1">После оплаты привяжем карту, чтобы</string>
+    <string name="ym_save_payment_method_bank_card_message_text_part_2">списывать деньги по запросу магазина</string>
 </resources>

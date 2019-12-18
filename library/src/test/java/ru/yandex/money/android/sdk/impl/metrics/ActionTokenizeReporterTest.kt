@@ -64,7 +64,7 @@ class ActionTokenizeReporterTest {
     @Test
     fun shouldNotReport_When_NotTokenOutputModel_And_NotContractCompleteViewModel() {
         // prepare
-        val outputModel = TokenizePaymentOptionInfoRequired(createNewCardPaymentOption(0), false)
+        val outputModel = TokenizePaymentOptionInfoRequired(createNewCardPaymentOption(0), true)
         on(presenter(outputModel)).thenReturn(ContractErrorViewModel("err"))
 
         // invoke
@@ -96,7 +96,7 @@ class ActionTokenizeReporterTest {
     @Test
     fun shouldNotReport_When_NotTokenOutputModel_And_ContractCompleteViewModel() {
         // prepare
-        val outputModel = TokenizePaymentOptionInfoRequired(createNewCardPaymentOption(0), false)
+        val outputModel = TokenizePaymentOptionInfoRequired(createNewCardPaymentOption(0), true)
         on(presenter(outputModel)).thenReturn(ContractCompleteViewModel("test token", PaymentMethodType.YANDEX_MONEY))
 
         // invoke

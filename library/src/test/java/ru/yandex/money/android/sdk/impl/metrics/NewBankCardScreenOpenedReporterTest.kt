@@ -38,7 +38,7 @@ import ru.yandex.money.android.sdk.payment.tokenize.TokenizeOutputModel
 internal class NewBankCardScreenOpenedReporterTest {
 
     private val stubOutputModel = TokenOutputModel("token", createWalletPaymentOption(0))
-    private val testViewModel = PaymentOptionInfoBankCardViewModel(0, false)
+    private val testViewModel = PaymentOptionInfoBankCardViewModel(0, true)
 
     @Mock
     private lateinit var authType: AuthType

@@ -54,7 +54,6 @@ import ru.yandex.money.android.sdk.impl.metrics.TokenizeSchemeSbolSms
 import ru.yandex.money.android.sdk.impl.metrics.TokenizeSchemeWallet
 import ru.yandex.money.android.sdk.model.ExternalConfirmation
 import ru.yandex.money.android.sdk.model.LinkedCard
-import ru.yandex.money.android.sdk.model.NoConfirmation
 import ru.yandex.money.android.sdk.model.PaymentOption
 import ru.yandex.money.android.sdk.model.RedirectConfirmation
 import ru.yandex.money.android.sdk.model.Wallet
@@ -339,7 +338,7 @@ class PaymentOptionExtensionsTest {
         )
 
         // invoke
-        val actualConfirmations = paymentOptions.map { it.toConfirmation(redirectUrl) }
+        val actualConfirmations = paymentOptions.map { it.getConfirmation(redirectUrl) }
 
         // assert
         assertThat(actualConfirmations, contains(*expectedConfirmations))

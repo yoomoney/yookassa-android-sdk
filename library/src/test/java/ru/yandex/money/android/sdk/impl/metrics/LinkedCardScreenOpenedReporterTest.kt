@@ -38,7 +38,7 @@ import ru.yandex.money.android.sdk.payment.tokenize.TokenizeOutputModel
 internal class LinkedCardScreenOpenedReporterTest {
 
     private val stubOutputModel = TokenOutputModel("token", createWalletPaymentOption(0))
-    private val testViewModel = PaymentOptionInfoLinkedCardViewModel(0, false, "1234567812345678", 123)
+    private val testViewModel = PaymentOptionInfoLinkedCardViewModel(0, true, "1234567812345678", 123)
 
     @Mock
     private lateinit var presenter: Presenter<TokenizeOutputModel, Any>

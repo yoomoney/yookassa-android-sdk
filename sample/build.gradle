@@ -63,6 +63,17 @@ android {
     }
 }
 
+play {
+    jsonFile = getGooglePlayKeyFile()
+    track = 'beta'
+}
+
+private File getGooglePlayKeyFile() {
+    def templateFile = file('google-play-key.json')
+    def keyFile = new File("play")
+    return keyFile
+}
+
 repositories {
     maven { url 'https://dl.bintray.com/yandex-money/maven' }
     mavenCentral()

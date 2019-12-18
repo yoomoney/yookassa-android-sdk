@@ -30,10 +30,11 @@ import ru.yandex.money.android.sdk.TestParameters
 import ru.yandex.money.android.sdk.UiParameters
 import ru.yandex.money.android.sdk.impl.InMemoryColorSchemeRepository.colorScheme
 import ru.yandex.money.android.sdk.impl.contract.ContractErrorPresenter
+import ru.yandex.money.android.sdk.impl.contract.ContractFormatter
 import ru.yandex.money.android.sdk.impl.contract.ContractPresenter
 import ru.yandex.money.android.sdk.impl.contract.ContractProgressViewModel
 import ru.yandex.money.android.sdk.impl.contract.ContractViewModel
-import ru.yandex.money.android.sdk.impl.extensions.toConfirmation
+import ru.yandex.money.android.sdk.impl.extensions.getConfirmation
 import ru.yandex.money.android.sdk.impl.logging.MsdkLogger
 import ru.yandex.money.android.sdk.impl.logging.ReporterLogger
 import ru.yandex.money.android.sdk.impl.logging.StubLogger
@@ -212,8 +213,7 @@ internal object AppModel {
         argContext: Context,
         paymentParameters: PaymentParameters,
         testParameters: TestParameters,
-        uiParameters: UiParameters,
-        requestRecurringPayment: Boolean = false
+        uiParameters: UiParameters
     ) {
 
         val context = argContext.applicationContext
@@ -278,7 +278,10 @@ internal object AppModel {
 
         if (mockConfiguration != null) {
             val mockPaymentOptionListGateway =
-                MockPaymentOptionListGateway(mockConfiguration.linkedCardsCount, Fee(service = mockConfiguration.serviceFee))
+                MockPaymentOptionListGateway(
+                    mockConfiguration.linkedCardsCount,
+                    Fee(service = mockConfiguration.serviceFee)
+                )
             paymentOptionListGateway = mockPaymentOptionListGateway
             authorizeUserGateway = MockAuthorizeUserGateway
             tokenizeGateway = MockTokenizeGateway(mockConfiguration.completeWithError)
@@ -326,7 +329,8 @@ internal object AppModel {
                 httpClient = httpClient,
                 gatewayId = paymentParameters.gatewayId,
                 tokensStorage = tokensStorage,
-                shopToken = paymentParameters.clientApplicationKey
+                shopToken = paymentParameters.clientApplicationKey,
+                savePaymentMethod = paymentParameters.savePaymentMethod
             )
             paymentOptionListGateway = InternetDependentGateway(context, apiV3PaymentOptionListGateway)
             if (paymentParameters.paymentMethodTypes.contains(PaymentMethodType.YANDEX_MONEY)) {
@@ -398,7 +402,9 @@ internal object AppModel {
             context = context,
             shopTitle = paymentParameters.title,
             shopSubtitle = paymentParameters.subtitle,
-            recurringPaymentsPossible = requestRecurringPayment
+            getSavePaymentMethodMessageLink = { ContractFormatter.getSavePaymentMethodMessageLink(context, it) },
+            getSavePaymentMethodSwitchLink = { ContractFormatter.getSavePaymentMethodSwitchLink(context, it) },
+            requestedSavePaymentMethod = paymentParameters.savePaymentMethod
         )
         val contractErrorPresenter = ContractErrorPresenter(errorPresenter)
         val requestPaymentAuthErrorPresenter = RequestPaymentAuthErrorPresenter(context, errorPresenter)
@@ -488,10 +494,8 @@ internal object AppModel {
                 getLoadedPaymentOptionListGateway = getLoadedPaymentOptionListGateway,
                 tokenizeGateway = tokenizeGateway,
                 checkPaymentAuthRequiredGateway = checkPaymentAuthRequiredGateway,
-                convertToConfirmation = {
-                    it.toConfirmation(
-                        paymentParameters.customReturnUrl ?: DEFAULT_REDIRECT_URL
-                    )
+                getConfirmation = {
+                    it.getConfirmation(paymentParameters.customReturnUrl ?: DEFAULT_REDIRECT_URL)
                 }
             ),
             presenter = ActionTokenizeReporter(

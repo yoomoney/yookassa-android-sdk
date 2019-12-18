@@ -26,7 +26,6 @@ import android.os.Parcelable
 import android.support.annotation.Keep
 import kotlinx.android.parcel.Parcelize
 import ru.yandex.money.android.sdk.utils.getAllPaymentMethods
-import java.io.Serializable
 
 /**
  * Wrapper for payment parameters. This class is used in [Checkout.createTokenizeIntent].
@@ -36,6 +35,7 @@ import java.io.Serializable
  * @param subtitle description of the goods to be bought.
  * @param clientApplicationKey merchant token from Yandex.Checkout.
  * @param shopId shop id from Yandex.Checkout.
+ * @param savePaymentMethod setting for saving payment method (see [SavePaymentMethod]]).
  * @param paymentMethodTypes (optional) set of permitted method types. Empty set or parameter absence means that all
  * payment methods are allowed. See [PaymentMethodType].
  * @param gatewayId (optional) your gateway id from Yandex.Money.
@@ -53,6 +53,7 @@ data class PaymentParameters
     @Keep val subtitle: String,
     @Keep val clientApplicationKey: String,
     @Keep val shopId: String,
+    @Keep val savePaymentMethod: SavePaymentMethod,
     @Keep val paymentMethodTypes: Set<PaymentMethodType> = getAllPaymentMethods(),
     @Keep val gatewayId: String? = null,
     @Keep val customReturnUrl: String? = null,

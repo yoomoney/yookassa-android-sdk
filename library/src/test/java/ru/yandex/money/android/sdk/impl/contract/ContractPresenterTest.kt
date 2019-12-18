@@ -37,6 +37,7 @@ import org.robolectric.annotation.Config
 import ru.yandex.money.android.sdk.Amount
 import ru.yandex.money.android.sdk.PaymentMethodType
 import ru.yandex.money.android.sdk.R
+import ru.yandex.money.android.sdk.SavePaymentMethod
 import ru.yandex.money.android.sdk.createGooglePayPaymentOptionWithFee
 import ru.yandex.money.android.sdk.createGooglePayPaymentOptionWithoutFee
 import ru.yandex.money.android.sdk.createLinkedCardPaymentOption
@@ -59,9 +60,10 @@ import ru.yandex.money.android.sdk.paymentAuth.ProcessPaymentAuthSuccessOutputMo
 import ru.yandex.money.android.sdk.paymentAuth.ProcessPaymentAuthWrongAnswerOutputModel
 import ru.yandex.money.android.sdk.paymentAuth.RequestPaymentAuthOutputModel
 import ru.yandex.money.android.sdk.paymentAuth.SmsSessionRetryOutputModel
+import ru.yandex.money.android.sdk.savePaymentMethodMessage
+import ru.yandex.money.android.sdk.savePaymentMethodViewModelTurnOn
 import java.math.BigDecimal
 import java.util.concurrent.TimeUnit
-
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [27])
@@ -87,8 +89,14 @@ class ContractPresenterTest {
     @Test
     fun shouldShow_SelectedPaymentOption() {
         // prepare
-        val allowRecurrencePaymentRequest = false
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, allowRecurrencePaymentRequest)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.ON,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
 
         // invoke
         val viewModel = presenter(testModel) as ContractSuccessViewModel
@@ -98,7 +106,10 @@ class ContractPresenterTest {
         assertThat(viewModel.shopSubtitle, equalTo(shopSubtitle))
         assertThat(viewModel.paymentOption.optionId, equalTo(testModel.paymentOption.id))
         assertThat(viewModel.showChangeButton, equalTo(hasAnotherOption))
-        assertThat(viewModel.showAllowRecurringPayments, equalTo(allowRecurrencePaymentRequest))
+        assertThat(
+            viewModel.savePaymentMethodViewModel as SavePaymentMethodViewModel.On,
+            equalTo(savePaymentMethodViewModelTurnOn)
+        )
         assertThat(viewModel.showAllowWalletLinking, equalTo(false))
         assertThat(viewModel.paymentAuth, nullValue())
     }
@@ -108,8 +119,14 @@ class ContractPresenterTest {
         // prepare
         val testModel =
             SelectedPaymentOptionOutputModel(createGooglePayPaymentOptionWithoutFee(1), hasAnotherOption, false)
-        val allowRecurrencePaymentRequest = false
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, allowRecurrencePaymentRequest)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.OFF,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
 
         // invoke
         val viewModel = presenter(testModel)
@@ -123,8 +140,14 @@ class ContractPresenterTest {
         // prepare
         val testModel =
             SelectedPaymentOptionOutputModel(createGooglePayPaymentOptionWithFee(1), hasAnotherOption, false)
-        val allowRecurrencePaymentRequest = false
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, allowRecurrencePaymentRequest)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.OFF,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
 
         // invoke
         val viewModel = presenter(testModel)
@@ -136,7 +159,14 @@ class ContractPresenterTest {
     @Test
     fun shouldReturn_ContractUserAuthRequired_When_UserAuthRequired() {
         // prepare
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, false)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.OFF,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
 
         // invoke
         val viewModel = presenter(UserAuthRequired())
@@ -148,7 +178,14 @@ class ContractPresenterTest {
     @Test(expected = UninitializedPropertyAccessException::class)
     fun shouldThrow_Exception_When_PaymentAuthRequired_Without_ContractSuccess() {
         // prepare
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, false)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.OFF,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
 
         // invoke
         presenter(TokenizePaymentAuthRequiredOutputModel(charge))
@@ -159,7 +196,14 @@ class ContractPresenterTest {
     @Test
     fun shouldReturn_PaymentAuthStart_When_PaymentAuthRequired() {
         // prepare
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, false)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.OFF,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
         presenter(testModel)
 
         // invoke
@@ -167,14 +211,24 @@ class ContractPresenterTest {
 
         // assert
         assertThat(viewModel.paymentAuth, instanceOf(PaymentAuthStartViewModel::class.java))
-        assertThat("should not show recurring payment", !viewModel.showAllowRecurringPayments)
+        assertThat(
+            "should not show recurring payment",
+            viewModel.savePaymentMethodViewModel == SavePaymentMethodViewModel.UserSelects
+        )
         assertThat("should not show wallet linking", !viewModel.showAllowWalletLinking)
     }
 
     @Test
     fun shouldReturn_PaymentAuthStart_When_PaymentAuthRequired_And_RecurringPayment() {
         // prepare
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, true)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.ON,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
         presenter(testModel)
 
         // invoke
@@ -182,14 +236,24 @@ class ContractPresenterTest {
 
         // assert
         assertThat(viewModel.paymentAuth, instanceOf(PaymentAuthStartViewModel::class.java))
-        assertThat("should not show recurring payment", !viewModel.showAllowRecurringPayments)
+        assertThat(
+            "should show recurring payment",
+            viewModel.savePaymentMethodViewModel == savePaymentMethodViewModelTurnOn
+        )
         assertThat("should not show wallet linking", !viewModel.showAllowWalletLinking)
     }
 
     @Test
     fun shouldReturn_PaymentAuthStart_When_PaymentAuthRequired_And_WalletLinking() {
         // prepare
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, false)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.ON,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
         presenter(testModel.copy(walletLinkingPossible = true))
 
         // invoke
@@ -197,14 +261,24 @@ class ContractPresenterTest {
 
         // assert
         assertThat(viewModel.paymentAuth, instanceOf(PaymentAuthStartViewModel::class.java))
-        assertThat("should not show recurring payment", !viewModel.showAllowRecurringPayments)
+        assertThat(
+            "should show recurring payment",
+            viewModel.savePaymentMethodViewModel == savePaymentMethodViewModelTurnOn
+        )
         assertThat("should not show wallet linking", !viewModel.showAllowWalletLinking)
     }
 
     @Test(expected = UninitializedPropertyAccessException::class)
     fun shouldThrow_Exception_When_RequestPaymentAuthProgress_Without_ContractSuccess() {
         // prepare
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, false)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.OFF,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
 
         // invoke
         presenter(RequestPaymentAuthProgressViewModel)
@@ -215,7 +289,14 @@ class ContractPresenterTest {
     @Test
     fun shouldReturn_PaymentAuthProgress_When_RequestPaymentAuthProgress() {
         // prepare
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, false)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.ON,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
         presenter(testModel)
 
         // invoke
@@ -223,14 +304,24 @@ class ContractPresenterTest {
 
         // assert
         assertThat(viewModel.paymentAuth, instanceOf(PaymentAuthProgressViewModel::class.java))
-        assertThat("should not show recurring payment", !viewModel.showAllowRecurringPayments)
+        assertThat(
+            "should show recurring payment",
+            viewModel.savePaymentMethodViewModel == savePaymentMethodViewModelTurnOn
+        )
         assertThat("should not show wallet linking", !viewModel.showAllowWalletLinking)
     }
 
     @Test
     fun shouldReturn_PaymentAuthProgress_When_RequestPaymentAuthProgress_And_RecurringPayment() {
         // prepare
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, true)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.ON,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
         presenter(testModel)
 
         // invoke
@@ -238,14 +329,24 @@ class ContractPresenterTest {
 
         // assert
         assertThat(viewModel.paymentAuth, instanceOf(PaymentAuthProgressViewModel::class.java))
-        assertThat("should not show recurring payment", !viewModel.showAllowRecurringPayments)
+        assertThat(
+            "should show recurring payment",
+            viewModel.savePaymentMethodViewModel == savePaymentMethodViewModelTurnOn
+        )
         assertThat("should not show wallet linking", !viewModel.showAllowWalletLinking)
     }
 
     @Test
     fun shouldReturn_PaymentAuthProgress_When_RequestPaymentAuthProgress_And_WalletLinking() {
         // prepare
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, false)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.OFF,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
         presenter(testModel.copy(walletLinkingPossible = true))
 
         // invoke
@@ -253,14 +354,21 @@ class ContractPresenterTest {
 
         // assert
         assertThat(viewModel.paymentAuth, instanceOf(PaymentAuthProgressViewModel::class.java))
-        assertThat("should not show recurring payment", !viewModel.showAllowRecurringPayments)
+        assertThat(
+            "should not show recurring payment",
+            viewModel.savePaymentMethodViewModel == SavePaymentMethodViewModel.UserSelects
+        )
         assertThat("should not show wallet linking", !viewModel.showAllowWalletLinking)
     }
 
     @Test(expected = UninitializedPropertyAccessException::class)
     fun shouldThrow_Exception_When_ProcessPaymentAuthProgress_Without_ContractSuccess() {
         // prepare
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, false)
+        val presenter = ContractPresenter(
+            context, shopTitle, shopSubtitle, SavePaymentMethod.OFF,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
 
         // invoke
         presenter(ProcessPaymentAuthProgressViewModel)
@@ -271,7 +379,14 @@ class ContractPresenterTest {
     @Test
     fun shouldReturn_PaymentAuthProgress_When_ProcessPaymentAuthProgress() {
         // prepare
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, false)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.OFF,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
         presenter(testModel)
 
         // invoke
@@ -279,14 +394,24 @@ class ContractPresenterTest {
 
         // assert
         assertThat(viewModel.paymentAuth, instanceOf(PaymentAuthProgressViewModel::class.java))
-        assertThat("should not show recurring payment", !viewModel.showAllowRecurringPayments)
+        assertThat(
+            "should not show recurring payment",
+            viewModel.savePaymentMethodViewModel == SavePaymentMethodViewModel.UserSelects
+        )
         assertThat("should not show wallet linking", !viewModel.showAllowWalletLinking)
     }
 
     @Test
     fun shouldReturn_PaymentAuthProgress_When_ProcessPaymentAuthProgress_And_RecurringPayment() {
         // prepare
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, true)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.ON,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
         presenter(testModel)
 
         // invoke
@@ -294,14 +419,24 @@ class ContractPresenterTest {
 
         // assert
         assertThat(viewModel.paymentAuth, instanceOf(PaymentAuthProgressViewModel::class.java))
-        assertThat("should not show recurring payment", !viewModel.showAllowRecurringPayments)
+        assertThat(
+            "should show recurring payment",
+            viewModel.savePaymentMethodViewModel == savePaymentMethodViewModelTurnOn
+        )
         assertThat("should not show wallet linking", !viewModel.showAllowWalletLinking)
     }
 
     @Test
     fun shouldReturn_PaymentAuthProgress_When_ProcessPaymentAuthProgress_And_WalletLinking() {
         // prepare
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, false)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.ON,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
         presenter(testModel.copy(walletLinkingPossible = true))
 
         // invoke
@@ -309,14 +444,24 @@ class ContractPresenterTest {
 
         // assert
         assertThat(viewModel.paymentAuth, instanceOf(PaymentAuthProgressViewModel::class.java))
-        assertThat("should not show recurring payment", !viewModel.showAllowRecurringPayments)
+        assertThat(
+            "should show recurring payment",
+            viewModel.savePaymentMethodViewModel == savePaymentMethodViewModelTurnOn
+        )
         assertThat("should not show wallet linking", !viewModel.showAllowWalletLinking)
     }
 
     @Test(expected = UninitializedPropertyAccessException::class)
     fun shouldThrow_Exception_When_ProgressSmsSessionRetry_Without_ContractSuccess() {
         // prepare
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, false)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.OFF,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
 
         // invoke
         presenter(SmsSessionRetryProgressViewModel)
@@ -327,7 +472,14 @@ class ContractPresenterTest {
     @Test
     fun shouldReturn_PaymentAuthProgress_When_ProgressSmsSessionRetry() {
         // prepare
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, false)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.ON,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
         presenter(testModel)
 
         // invoke
@@ -335,14 +487,24 @@ class ContractPresenterTest {
 
         // assert
         assertThat(viewModel.paymentAuth, instanceOf(PaymentAuthProgressViewModel::class.java))
-        assertThat("should not show recurring payment", !viewModel.showAllowRecurringPayments)
+        assertThat(
+            "should not show recurring payment",
+            viewModel.savePaymentMethodViewModel == savePaymentMethodViewModelTurnOn
+        )
         assertThat("should not show wallet linking", !viewModel.showAllowWalletLinking)
     }
 
     @Test
     fun shouldReturn_PaymentAuthProgress_When_ProgressSmsSessionRetry_And_RecurringPayment() {
         // prepare
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, true)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.ON,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
         presenter(testModel)
 
         // invoke
@@ -350,14 +512,24 @@ class ContractPresenterTest {
 
         // assert
         assertThat(viewModel.paymentAuth, instanceOf(PaymentAuthProgressViewModel::class.java))
-        assertThat("should not show recurring payment", !viewModel.showAllowRecurringPayments)
+        assertThat(
+            "should not show recurring payment",
+            viewModel.savePaymentMethodViewModel == savePaymentMethodViewModelTurnOn
+        )
         assertThat("should not show wallet linking", !viewModel.showAllowWalletLinking)
     }
 
     @Test
     fun shouldReturn_PaymentAuthProgress_When_ProgressSmsSessionRetry_And_WalletLinking() {
         // prepare
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, false)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.OFF,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
         presenter(testModel.copy(walletLinkingPossible = true))
 
         // invoke
@@ -365,14 +537,24 @@ class ContractPresenterTest {
 
         // assert
         assertThat(viewModel.paymentAuth, instanceOf(PaymentAuthProgressViewModel::class.java))
-        assertThat("should not show recurring payment", !viewModel.showAllowRecurringPayments)
+        assertThat(
+            "should not show recurring payment",
+            viewModel.savePaymentMethodViewModel == SavePaymentMethodViewModel.UserSelects
+        )
         assertThat("should not show wallet linking", !viewModel.showAllowWalletLinking)
     }
 
     @Test(expected = UninitializedPropertyAccessException::class)
     fun shouldThrow_Exception_When_PaymentAuthOutput_Without_ContractSuccess() {
         // prepare
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, false)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.OFF,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
 
         // invoke
         presenter(
@@ -391,7 +573,14 @@ class ContractPresenterTest {
     fun shouldReturn_PaymentAuthForm_When_PaymentAuthOutput() {
         // prepare
         val timeout = 15
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, false)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.ON,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
         presenter(testModel)
 
         // invoke
@@ -409,7 +598,10 @@ class ContractPresenterTest {
         assertThat(viewModel.paymentAuth.hint, notNullValue())
         assertThat(viewModel.paymentAuth.timeout, equalTo(timeout))
         assertThat(viewModel.paymentAuth.error, nullValue())
-        assertThat("should not show recurring payment", !viewModel.showAllowRecurringPayments)
+        assertThat(
+            "should show recurring payment",
+            viewModel.savePaymentMethodViewModel == savePaymentMethodViewModelTurnOn
+        )
         assertThat("should not show wallet linking", !viewModel.showAllowWalletLinking)
     }
 
@@ -417,7 +609,14 @@ class ContractPresenterTest {
     fun shouldReturn_PaymentAuthForm_WithoutRetry_When_PaymentAuthOutput_And_AuthType_isTotp() {
         // prepare
         val timeout = 15
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, false)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.OFF,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
         presenter(testModel)
 
         // invoke
@@ -434,7 +633,10 @@ class ContractPresenterTest {
         viewModel.paymentAuth as PaymentAuthFormNoRetryViewModel
         assertThat(viewModel.paymentAuth.hint, notNullValue())
         assertThat(viewModel.paymentAuth.error, nullValue())
-        assertThat("should not show recurring payment", !viewModel.showAllowRecurringPayments)
+        assertThat(
+            "should not show recurring payment",
+            viewModel.savePaymentMethodViewModel == SavePaymentMethodViewModel.UserSelects
+        )
         assertThat("should not show wallet linking", !viewModel.showAllowWalletLinking)
     }
 
@@ -442,7 +644,14 @@ class ContractPresenterTest {
     fun shouldReturn_PaymentAuthForm_When_PaymentAuthOutput_And_RecurringPayment() {
         // prepare
         val timeout = 15
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, true)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.ON,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
         presenter(testModel)
 
         // invoke
@@ -460,7 +669,10 @@ class ContractPresenterTest {
         assertThat(viewModel.paymentAuth.hint, notNullValue())
         assertThat(viewModel.paymentAuth.timeout, equalTo(timeout))
         assertThat(viewModel.paymentAuth.error, nullValue())
-        assertThat("should not show recurring payment", !viewModel.showAllowRecurringPayments)
+        assertThat(
+            "should show recurring payment",
+            viewModel.savePaymentMethodViewModel == savePaymentMethodViewModelTurnOn
+        )
         assertThat("should not show wallet linking", !viewModel.showAllowWalletLinking)
     }
 
@@ -468,7 +680,14 @@ class ContractPresenterTest {
     fun shouldReturn_PaymentAuthForm_When_PaymentAuthOutput_And_WalletLinking() {
         // prepare
         val timeout = 15
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, false)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.OFF,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
         presenter(testModel.copy(walletLinkingPossible = true))
 
         // invoke
@@ -486,14 +705,24 @@ class ContractPresenterTest {
         assertThat(viewModel.paymentAuth.hint, notNullValue())
         assertThat(viewModel.paymentAuth.timeout, equalTo(timeout))
         assertThat(viewModel.paymentAuth.error, nullValue())
-        assertThat("should not show recurring payment", !viewModel.showAllowRecurringPayments)
+        assertThat(
+            "should not show recurring payment",
+            viewModel.savePaymentMethodViewModel == SavePaymentMethodViewModel.UserSelects
+        )
         assertThat("should not show wallet linking", !viewModel.showAllowWalletLinking)
     }
 
     @Test(expected = UninitializedPropertyAccessException::class)
     fun shouldThrow_Exception_When_ProcessPaymentAuthSuccess_Without_ContractSuccess() {
         // prepare
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, false)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.OFF,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
 
         // invoke
         presenter(ProcessPaymentAuthSuccessOutputModel())
@@ -504,7 +733,14 @@ class ContractPresenterTest {
     @Test
     fun shouldReturn_PaymentAuthSuccess_When_ProcessPaymentAuthSuccess() {
         // prepare
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, false)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.OFF,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
         presenter(testModel)
 
         // invoke
@@ -512,14 +748,24 @@ class ContractPresenterTest {
 
         // assert
         assertThat(viewModel.paymentAuth, instanceOf(PaymentAuthSuccessViewModel::class.java))
-        assertThat("should not show recurring payment", !viewModel.showAllowRecurringPayments)
+        assertThat(
+            "should not show recurring payment",
+            viewModel.savePaymentMethodViewModel == SavePaymentMethodViewModel.UserSelects
+        )
         assertThat("should not show wallet linking", !viewModel.showAllowWalletLinking)
     }
 
     @Test
     fun shouldReturn_PaymentAuthSuccess_When_ProcessPaymentAuthSuccess_And_RecurringPayment() {
         // prepare
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, true)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.ON,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
         presenter(testModel)
 
         // invoke
@@ -527,14 +773,24 @@ class ContractPresenterTest {
 
         // assert
         assertThat(viewModel.paymentAuth, instanceOf(PaymentAuthSuccessViewModel::class.java))
-        assertThat("should not show recurring payment", !viewModel.showAllowRecurringPayments)
+        assertThat(
+            "should show recurring payment",
+            viewModel.savePaymentMethodViewModel == savePaymentMethodViewModelTurnOn
+        )
         assertThat("should not show wallet linking", !viewModel.showAllowWalletLinking)
     }
 
     @Test
     fun shouldReturn_PaymentAuthSuccess_When_ProcessPaymentAuthSuccess_And_WalletLinking() {
         // prepare
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, false)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.OFF,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
         presenter(testModel.copy(walletLinkingPossible = true))
 
         // invoke
@@ -542,14 +798,24 @@ class ContractPresenterTest {
 
         // assert
         assertThat(viewModel.paymentAuth, instanceOf(PaymentAuthSuccessViewModel::class.java))
-        assertThat("should not show recurring payment", !viewModel.showAllowRecurringPayments)
+        assertThat(
+            "should not show recurring payment",
+            viewModel.savePaymentMethodViewModel == SavePaymentMethodViewModel.UserSelects
+        )
         assertThat("should not show wallet linking", !viewModel.showAllowWalletLinking)
     }
 
     @Test(expected = UninitializedPropertyAccessException::class)
     fun shouldThrow_Exception_When_ProcessPaymentAuthWrongAnswer_Without_ContractSuccess() {
         // prepare
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, false)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.OFF,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
 
         // invoke
         presenter(ProcessPaymentAuthWrongAnswerOutputModel("test"))
@@ -560,7 +826,14 @@ class ContractPresenterTest {
     @Test(expected = UninitializedPropertyAccessException::class)
     fun shouldThrow_Exception_When_ProcessPaymentAuthWrongAnswer_Without_PaymentAuthForm() {
         // prepare
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, false)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.OFF,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
         presenter(testModel)
 
         // invoke
@@ -572,7 +845,14 @@ class ContractPresenterTest {
     @Test
     fun shouldReturn_PaymentAuthFormWithError_When_ProcessPaymentAuthWrongAnswer() {
         // prepare
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, false)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.OFF,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
         presenter(testModel)
         val viewModelWithForm = presenter(
             RequestPaymentAuthOutputModel(
@@ -597,7 +877,14 @@ class ContractPresenterTest {
     @Test
     fun shouldReturn_PaymentAuthFormWithError_When_ProcessPaymentAuthWrongAnswer_With_RecurringPayment() {
         // prepare
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, true)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.ON,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
         presenter(testModel)
         val viewModelWithForm = presenter(
             RequestPaymentAuthOutputModel(
@@ -617,14 +904,24 @@ class ContractPresenterTest {
         assertThat(viewModel.paymentAuth.hint, equalTo(viewModelWithForm.paymentAuth.hint))
         assertThat(viewModel.paymentAuth.timeout, equalTo(viewModelWithForm.paymentAuth.timeout))
         assertThat(viewModel.paymentAuth.error, equalTo(context.getText(R.string.ym_wrong_passcode_error)))
-        assertThat("should not show recurring payment", !viewModel.showAllowRecurringPayments)
+        assertThat(
+            "should show recurring payment",
+            viewModel.savePaymentMethodViewModel == savePaymentMethodViewModelTurnOn
+        )
         assertThat("should not show wallet linking", !viewModel.showAllowWalletLinking)
     }
 
     @Test
     fun shouldReturn_PaymentAuthFormWithError_When_ProcessPaymentAuthWrongAnswer_With_WalletLinking() {
         // prepare
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, false)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.OFF,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
         presenter(testModel.copy(walletLinkingPossible = true))
         val viewModelWithForm = presenter(
             RequestPaymentAuthOutputModel(
@@ -650,7 +947,14 @@ class ContractPresenterTest {
     fun shouldThrow_Exception_When_SmsSessionRetryOutput_Without_ContractSuccess() {
         // prepare
         val timeout = 15
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, false)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.OFF,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
 
         // invoke
         presenter(
@@ -669,7 +973,14 @@ class ContractPresenterTest {
     fun shouldReturn_PaymentAuthForm_When_SmsSessionRetryOutput() {
         // prepare
         val timeout = 15
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, false)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.OFF,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
         presenter(testModel)
 
         // invoke
@@ -686,7 +997,10 @@ class ContractPresenterTest {
         viewModel.paymentAuth as PaymentAuthFormRetryViewModel
         assertThat(viewModel.paymentAuth.hint, notNullValue())
         assertThat(viewModel.paymentAuth.timeout, equalTo(timeout))
-        assertThat("should not show recurring payment", !viewModel.showAllowRecurringPayments)
+        assertThat(
+            "should not show recurring payment",
+            viewModel.savePaymentMethodViewModel == SavePaymentMethodViewModel.UserSelects
+        )
         assertThat("should not show wallet linking", !viewModel.showAllowWalletLinking)
     }
 
@@ -694,7 +1008,14 @@ class ContractPresenterTest {
     fun shouldReturn_PaymentAuthForm_When_SmsSessionRetryOutput_And_RecurringPayment() {
         // prepare
         val timeout = 15
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, true)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.ON,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
         presenter(testModel)
 
         // invoke
@@ -711,7 +1032,10 @@ class ContractPresenterTest {
         viewModel.paymentAuth as PaymentAuthFormRetryViewModel
         assertThat(viewModel.paymentAuth.hint, notNullValue())
         assertThat(viewModel.paymentAuth.timeout, equalTo(timeout))
-        assertThat("should not show recurring payment", !viewModel.showAllowRecurringPayments)
+        assertThat(
+            "should show recurring payment",
+            viewModel.savePaymentMethodViewModel == savePaymentMethodViewModelTurnOn
+        )
         assertThat("should not show wallet linking", !viewModel.showAllowWalletLinking)
     }
 
@@ -719,7 +1043,14 @@ class ContractPresenterTest {
     fun shouldReturn_PaymentAuthForm_When_SmsSessionRetryOutput_And_WalletLinking() {
         // prepare
         val timeout = 15
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, false)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.OFF,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
         presenter(testModel.copy(walletLinkingPossible = true))
 
         // invoke
@@ -736,14 +1067,24 @@ class ContractPresenterTest {
         viewModel.paymentAuth as PaymentAuthFormRetryViewModel
         assertThat(viewModel.paymentAuth.hint, notNullValue())
         assertThat(viewModel.paymentAuth.timeout, equalTo(timeout))
-        assertThat("should not show recurring payment", !viewModel.showAllowRecurringPayments)
+        assertThat(
+            "should not show recurring payment",
+            viewModel.savePaymentMethodViewModel == SavePaymentMethodViewModel.UserSelects
+        )
         assertThat("should not show wallet linking", !viewModel.showAllowWalletLinking)
     }
 
     @Test
     fun shouldReturn_ContractDone_When_TokenOutput_With_Wallet() {
         // prepare
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, false)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.OFF,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
         val output = TokenOutputModel("token", createWalletPaymentOption(1))
 
         // invoke
@@ -757,7 +1098,14 @@ class ContractPresenterTest {
     @Test
     fun shouldReturn_ContractDone_When_TokenOutput_With_LinkedCard() {
         // prepare
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, false)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.OFF,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
         val output = TokenOutputModel("token", createLinkedCardPaymentOption(1))
 
         // invoke
@@ -771,7 +1119,14 @@ class ContractPresenterTest {
     @Test
     fun shouldReturn_ContractDone_When_TokenOutput_With_BankCard() {
         // prepare
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, false)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.OFF,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
         val output = TokenOutputModel("token", createNewCardPaymentOption(1))
 
         // invoke
@@ -785,7 +1140,14 @@ class ContractPresenterTest {
     @Test
     fun shouldReturn_ContractDone_When_TokenOutput_With_SbolSmsInvoicing() {
         // prepare
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, false)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.OFF,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
         val output = TokenOutputModel("token", createSbolSmsInvoicingPaymentOption(1))
 
         // invoke
@@ -799,8 +1161,15 @@ class ContractPresenterTest {
     @Test(expected = IllegalArgumentException::class)
     fun `should throw IllegalArgumentException when PaymentOptionInfoRequired`() {
         // prepare
-        val presenter = ContractPresenter(context, shopTitle, shopSubtitle, false)
-        val output = TokenizePaymentOptionInfoRequired(createNewCardPaymentOption(1), false)
+        val presenter = ContractPresenter(
+            context,
+            shopTitle,
+            shopSubtitle,
+            SavePaymentMethod.OFF,
+            savePaymentMethodMessage,
+            savePaymentMethodMessage
+        )
+        val output = TokenizePaymentOptionInfoRequired(createNewCardPaymentOption(1), true)
 
         // invoke
         presenter(output)

@@ -38,6 +38,10 @@
             android:name=".impl.CheckoutActivity"
             android:theme="@style/ym_Theme.Translucent" />
 
+        <activity
+            android:name=".impl.contract.SavePaymentMethodInfoActivity"
+            android:theme="@style/ym_Theme" />
+
         <meta-data
             android:name="com.google.android.gms.wallet.api.enabled"
             android:value="true" />

@@ -28,9 +28,9 @@ import org.robolectric.RuntimeEnvironment
 import ru.yandex.money.android.sdk.Amount
 import ru.yandex.money.android.sdk.Checkout
 import ru.yandex.money.android.sdk.PaymentParameters
+import ru.yandex.money.android.sdk.SavePaymentMethod
 import ru.yandex.money.android.sdk.impl.extensions.RUB
 import java.math.BigDecimal
-import java.util.Currency
 
 @RunWith(RobolectricTestRunner::class)
 class WebViewActivityRobolectricTest {
@@ -45,7 +45,8 @@ class WebViewActivityRobolectricTest {
                 title = "",
                 subtitle = "",
                 clientApplicationKey = "",
-                shopId = ""
+                shopId = "",
+                savePaymentMethod = SavePaymentMethod.ON
             )
         )
         val url = "http://wrong.scheme.url/"

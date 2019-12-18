@@ -67,4 +67,7 @@
     <string name="show_fee">Добавить комиссию на тестовый платёж</string>
     <string name="test_fee">Комиссия</string>
     <string name="test_fee_hint">Сумма комиссии для отображения на контракте</string>
+    <string name="save_payment_method_selector_user_decide">Пользователь может сохранить метод</string>
+    <string name="save_payment_method_selector_save">Сохранять платежный метод</string>
+    <string name="save_payment_method_selector_dont_save">Не сохранять платежный метод</string>
 </resources>

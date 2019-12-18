@@ -22,6 +22,7 @@
 package ru.yandex.money.android.sdk.payment.tokenize
 
 import ru.yandex.money.android.sdk.Amount
+import ru.yandex.money.android.sdk.SavePaymentMethod
 import ru.yandex.money.android.sdk.model.AbstractWallet
 import ru.yandex.money.android.sdk.model.Confirmation
 import ru.yandex.money.android.sdk.model.GooglePay
@@ -48,7 +49,7 @@ internal class TokenizeUseCase(
     private val getLoadedPaymentOptionListGateway: GetLoadedPaymentOptionListGateway,
     private val tokenizeGateway: TokenizeGateway,
     private val checkPaymentAuthRequiredGateway: CheckPaymentAuthRequiredGateway,
-    private val convertToConfirmation: (PaymentOption) -> Confirmation
+    private val getConfirmation: (PaymentOption) -> Confirmation
 ) : UseCase<TokenizeInputModel, TokenizeOutputModel> {
 
     override fun invoke(inputModel: TokenizeInputModel): TokenizeOutputModel {
@@ -63,14 +64,14 @@ internal class TokenizeUseCase(
             isPaymentAuthRequired(option) -> TokenizePaymentAuthRequiredOutputModel(option.charge)
             isPaymentInfoRequired(option, inputModel) -> TokenizePaymentOptionInfoRequired(
                 option = option,
-                allowRecurringPayments = inputModel.allowRecurringPayments
+                savePaymentMethod = inputModel.savePaymentMethod
             )
             else -> TokenOutputModel(
                 token = tokenizeGateway.getToken(
                     paymentOption = option,
                     paymentOptionInfo = inputModel.paymentOptionInfo ?: WalletInfo(),
-                    allowRecurringPayments = inputModel.allowRecurringPayments,
-                    confirmation = convertToConfirmation(option)
+                    confirmation = getConfirmation(option),
+                    savePaymentMethod = inputModel.savePaymentMethod
                 ),
                 option = option
             )
@@ -91,7 +92,7 @@ internal class TokenizeUseCase(
 
 internal data class TokenizeInputModel(
     val paymentOptionId: Int,
-    val allowRecurringPayments: Boolean,
+    val savePaymentMethod: Boolean,
     val paymentOptionInfo: PaymentOptionInfo? = null
 )
 
@@ -108,5 +109,5 @@ internal data class TokenizePaymentAuthRequiredOutputModel(
 
 internal data class TokenizePaymentOptionInfoRequired(
     val option: PaymentOption,
-    val allowRecurringPayments: Boolean
+    val savePaymentMethod: Boolean
 ) : TokenizeOutputModel()

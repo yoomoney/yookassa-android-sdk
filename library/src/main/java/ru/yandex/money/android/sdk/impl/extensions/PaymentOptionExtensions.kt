@@ -102,7 +102,7 @@ internal fun PaymentOption.toTokenizeScheme() = when (this) {
     is PaymentIdCscConfirmation -> TokenizeSchemeRecurring()
 }
 
-internal fun PaymentOption.toConfirmation(returnUrl: String): Confirmation {
+internal fun PaymentOption.getConfirmation(returnUrl: String): Confirmation {
     return when (this) {
         is YandexMoney, is NewCard, is GooglePay, is PaymentIdCscConfirmation -> RedirectConfirmation(
             returnUrl

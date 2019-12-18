@@ -24,13 +24,11 @@ package ru.yandex.money.android.sdk.payment.loadOptionList
 import ru.yandex.money.android.sdk.Amount
 import ru.yandex.money.android.sdk.PaymentMethodType
 import ru.yandex.money.android.sdk.model.GooglePay
-import ru.yandex.money.android.sdk.model.LinkedCard
 import ru.yandex.money.android.sdk.model.NewCard
-import ru.yandex.money.android.sdk.model.PaymentOption
 import ru.yandex.money.android.sdk.model.PaymentIdCscConfirmation
+import ru.yandex.money.android.sdk.model.PaymentOption
 import ru.yandex.money.android.sdk.model.SbolSmsInvoicing
 import ru.yandex.money.android.sdk.model.UseCase
-import ru.yandex.money.android.sdk.model.Wallet
 import ru.yandex.money.android.sdk.model.YandexMoney
 import ru.yandex.money.android.sdk.payment.CurrentUserGateway
 import ru.yandex.money.android.sdk.payment.SaveLoadedPaymentOptionsListGateway
@@ -64,7 +62,8 @@ internal class LoadPaymentOptionListUseCase(
                         first = paymentMethodInfo.card.first,
                         last = paymentMethodInfo.card.last,
                         expiryMonth = paymentMethodInfo.card.expiryMonth,
-                        expiryYear = paymentMethodInfo.card.expiryYear
+                        expiryYear = paymentMethodInfo.card.expiryYear,
+                        savePaymentMethodAllowed = paymentOption.savePaymentMethodAllowed
                     )
                 )
             } else {
@@ -76,9 +75,7 @@ internal class LoadPaymentOptionListUseCase(
             else -> paymentOptions.filter { it.toAllowed() in paymentOptionListRestrictions }
         }
         saveLoadedPaymentOptionsListGateway.saveLoadedPaymentOptionsList(options)
-        return options
-            .takeIf { it.none { it is LinkedCard } }?.filter { it is Wallet }?.takeUnless(List<PaymentOption>::isEmpty)
-            ?: options.takeUnless(List<PaymentOption>::isEmpty)
+        return options.takeUnless(List<PaymentOption>::isEmpty)
             ?: throw PaymentOptionListIsEmptyException()
     }
 }

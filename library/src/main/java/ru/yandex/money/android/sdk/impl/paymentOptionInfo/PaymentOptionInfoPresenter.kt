@@ -37,17 +37,17 @@ internal class PaymentOptionInfoPresenter(
         is TokenizePaymentOptionInfoRequired -> when (outputModel.option) {
             is NewCard -> PaymentOptionInfoBankCardViewModel(
                 optionId = outputModel.option.id,
-                allowRecurringPayments = outputModel.allowRecurringPayments
+                savePaymentOption = outputModel.savePaymentMethod
             )
             is LinkedCard -> PaymentOptionInfoLinkedCardViewModel(
                 optionId = outputModel.option.id,
-                allowRecurringPayments = outputModel.allowRecurringPayments,
+                savePaymentOption = outputModel.savePaymentMethod,
                 title = R.string.ym_bank_card_title_edit,
                 pan = outputModel.option.pan.chunked(4).joinToString(" ")
             )
             is PaymentIdCscConfirmation -> PaymentOptionInfoLinkedCardViewModel(
                 optionId = outputModel.option.id,
-                allowRecurringPayments = outputModel.allowRecurringPayments,
+                savePaymentOption = outputModel.savePaymentMethod,
                 title = R.string.ym_bank_card_title_new,
                 pan = (outputModel.option.first + "*****" + outputModel.option.last).chunked(4).joinToString(" ")
             )
@@ -59,17 +59,17 @@ internal class PaymentOptionInfoPresenter(
 
 internal sealed class PaymentOptionInfoViewModel : ViewModel() {
     abstract val optionId: Int
-    abstract val allowRecurringPayments: Boolean
+    abstract val savePaymentOption: Boolean
 }
 
 internal data class PaymentOptionInfoBankCardViewModel(
     override val optionId: Int,
-    override val allowRecurringPayments: Boolean
+    override val savePaymentOption: Boolean
 ) : PaymentOptionInfoViewModel()
 
 internal data class PaymentOptionInfoLinkedCardViewModel(
     override val optionId: Int,
-    override val allowRecurringPayments: Boolean,
+    override val savePaymentOption: Boolean,
     val pan: CharSequence,
     val title: Int
 ) : PaymentOptionInfoViewModel()

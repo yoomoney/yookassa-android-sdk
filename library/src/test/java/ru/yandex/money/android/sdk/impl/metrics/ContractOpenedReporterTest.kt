@@ -34,6 +34,7 @@ import ru.yandex.money.android.sdk.createWalletPaymentOption
 import ru.yandex.money.android.sdk.impl.contract.ContractSuccessViewModel
 import ru.yandex.money.android.sdk.impl.contract.ContractUserAuthRequiredViewModel
 import ru.yandex.money.android.sdk.impl.contract.ContractViewModel
+import ru.yandex.money.android.sdk.impl.contract.SavePaymentMethodViewModel
 import ru.yandex.money.android.sdk.impl.payment.PaymentOptionViewModel
 import ru.yandex.money.android.sdk.model.Presenter
 import ru.yandex.money.android.sdk.on
@@ -66,7 +67,7 @@ internal class ContractOpenedReporterTest {
         val testOutputModel = SelectedPaymentOptionOutputModel(createWalletPaymentOption(1), false, false)
         val drawable = mock(Drawable::class.java)
         val testViewModel = ContractSuccessViewModel(
-            "", "", PaymentOptionViewModel(1, drawable, "", ""), "", false, false, false, null, false
+            "", "", PaymentOptionViewModel(1, drawable, "", ""), "", false, SavePaymentMethodViewModel.UserSelects, false, null, false
         )
         on(presenter(testOutputModel)).thenReturn(testViewModel)
 
@@ -83,7 +84,7 @@ internal class ContractOpenedReporterTest {
         val testOutputModel = UserAuthRequired()
         val drawable = mock(Drawable::class.java)
         val testViewModel = ContractSuccessViewModel(
-            "", "", PaymentOptionViewModel(1, drawable, "", ""), "", false, false, false, null, false
+            "", "", PaymentOptionViewModel(1, drawable, "", ""), "", false, SavePaymentMethodViewModel.UserSelects, false, null, false
         )
         on(presenter(testOutputModel)).thenReturn(testViewModel)
 

@@ -67,19 +67,21 @@ internal class LoadPaymentOptionListUseCaseTest {
     )
     private val testPaymentMethodId = "test id"
     private val availableOptions = mutableListOf(
-        NewCard(0, testCharge, testFee),
+        NewCard(0, testCharge, testFee, true),
         Wallet(
             1, testCharge, testFee, "123456787654321",
-            Amount(BigDecimal.TEN, RUB), "test user"
+            Amount(BigDecimal.TEN, RUB), "test user", true
         ),
-        AbstractWallet(2, testCharge, testFee),
+        AbstractWallet(2, testCharge, testFee, false),
         LinkedCard(
             3,
             testCharge,
             testFee,
             "1234567887654321",
             CardBrand.VISA,
-            "123456787654321"
+            "123456787654321",
+            null,
+            true
         ),
         LinkedCard(
             4,
@@ -88,10 +90,11 @@ internal class LoadPaymentOptionListUseCaseTest {
             "1234567887654321",
             CardBrand.VISA,
             "123456787654321",
-            "test name"
+            "test name",
+            true
         ),
-        SbolSmsInvoicing(5, testCharge, testFee),
-        GooglePay(6, testCharge, testFee)
+        SbolSmsInvoicing(5, testCharge, testFee, false),
+        GooglePay(6, testCharge, testFee, false)
     )
     private val bankCardInfo: PaymentMethodBankCard = PaymentMethodBankCard(
         type = PaymentMethodType.BANK_CARD,
@@ -147,7 +150,8 @@ internal class LoadPaymentOptionListUseCaseTest {
                 first = "123456",
                 last = "7890",
                 expiryYear = "20",
-                expiryMonth = "10"
+                expiryMonth = "10",
+                savePaymentMethodAllowed = true
             )
         )
 
@@ -182,25 +186,6 @@ internal class LoadPaymentOptionListUseCaseTest {
         assertThat(outputModel, contains(*availableOptions.toTypedArray()))
 
         inOrder(paymentOptionListGateway, paymentOptionListGateway, currentUserGateway, saveLoadedPaymentOptionsListGateway).apply {
-            verify(currentUserGateway).currentUser
-            verify(paymentOptionListGateway).getPaymentOptions(testInputModel, testUser)
-            verify(saveLoadedPaymentOptionsListGateway).saveLoadedPaymentOptionsList(availableOptions)
-            verifyNoMoreInteractions()
-        }
-    }
-
-    @Test
-    fun `should return Wallet when Wallet present and no LinkedCards`() {
-        // prepare
-        availableOptions.removeIf { it is LinkedCard }
-
-        // invoke
-        val outputModel = useCase(PaymentOptionAmountInputModel(testInputModel))
-
-        // assert
-        assertThat(outputModel, contains(instanceOf(Wallet::class.java)))
-
-        inOrder(paymentOptionListGateway, currentUserGateway, saveLoadedPaymentOptionsListGateway).apply {
             verify(currentUserGateway).currentUser
             verify(paymentOptionListGateway).getPaymentOptions(testInputModel, testUser)
             verify(saveLoadedPaymentOptionsListGateway).saveLoadedPaymentOptionsList(availableOptions)
@@ -279,27 +264,6 @@ internal class LoadPaymentOptionListUseCaseTest {
             verify(paymentOptionListGateway).getPaymentOptions(testInputModel, testUser)
             verify(saveLoadedPaymentOptionsListGateway)
                 .saveLoadedPaymentOptionsList(availableOptions.filter { it is SbolSmsInvoicing })
-            verifyNoMoreInteractions()
-        }
-    }
-
-    @Test
-    fun `should return Wallet when yandex money restriction and no LinkedCards`() {
-        // prepare
-        availableOptions.removeIf { it is LinkedCard }
-        restrictions.add(PaymentMethodType.YANDEX_MONEY)
-
-        // invoke
-        val outputModel = useCase(PaymentOptionAmountInputModel(testInputModel))
-
-        // assert
-        assertThat(outputModel, contains(instanceOf(Wallet::class.java)))
-
-        inOrder(paymentOptionListGateway, currentUserGateway, saveLoadedPaymentOptionsListGateway).apply {
-            verify(currentUserGateway).currentUser
-            verify(paymentOptionListGateway).getPaymentOptions(testInputModel, testUser)
-            verify(saveLoadedPaymentOptionsListGateway)
-                .saveLoadedPaymentOptionsList(availableOptions.filter { it is YandexMoney })
             verifyNoMoreInteractions()
         }
     }
@@ -386,26 +350,6 @@ internal class LoadPaymentOptionListUseCaseTest {
             verify(paymentOptionListGateway).getPaymentOptions(testInputModel, testUser)
             verify(saveLoadedPaymentOptionsListGateway)
                 .saveLoadedPaymentOptionsList(availableOptions)
-            verifyNoMoreInteractions()
-        }
-    }
-
-    @Test
-    fun `should return Wallet when all restrictions set, Wallet present and no LinkedCards`() {
-        // prepare
-        availableOptions.removeIf { it is LinkedCard }
-        restrictions.addAll(PaymentMethodType.values())
-
-        // invoke
-        val outputModel = useCase(PaymentOptionAmountInputModel(testInputModel))
-
-        // assert
-        assertThat(outputModel, contains(instanceOf(Wallet::class.java)))
-
-        inOrder(paymentOptionListGateway, currentUserGateway, saveLoadedPaymentOptionsListGateway).apply {
-            verify(currentUserGateway).currentUser
-            verify(paymentOptionListGateway).getPaymentOptions(testInputModel, testUser)
-            verify(saveLoadedPaymentOptionsListGateway).saveLoadedPaymentOptionsList(availableOptions)
             verifyNoMoreInteractions()
         }
     }

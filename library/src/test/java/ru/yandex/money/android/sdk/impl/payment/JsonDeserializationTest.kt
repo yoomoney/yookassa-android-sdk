@@ -173,7 +173,8 @@ class JsonDeserializationTest {
               "charge": {
                 "value": "2.00",
                 "currency": "RUB"
-              }
+              },
+              "save_payment_method": "allowed"
             },
             {
               "payment_method_type": "yandex_money",
@@ -189,7 +190,8 @@ class JsonDeserializationTest {
               "balance": {
                 "value": "5.00",
                 "currency": "RUB"
-              }
+              },
+              "save_payment_method": "allowed"
             },
             {
               "payment_method_type": "yandex_money",
@@ -199,7 +201,8 @@ class JsonDeserializationTest {
               "charge": {
                 "value": "4.00",
                 "currency": "RUB"
-              }
+              },
+              "save_payment_method": "allowed"
             },
             {
               "payment_method_type": "yandex_money",
@@ -214,7 +217,8 @@ class JsonDeserializationTest {
               "instrument_type": "linked_bank_card",
               "card_name": "My card",
               "card_mask": "518901******0446",
-              "card_type": "MasterCard"
+              "card_type": "MasterCard",
+              "save_payment_method": "allowed"
             },
             {
               "payment_method_type": "sberbank",
@@ -224,31 +228,33 @@ class JsonDeserializationTest {
               "charge": {
                 "value": "2.00",
                 "currency": "RUB"
-              }
+              },
+              "save_payment_method": "forbidden"
             },
             {
               "payment_method_type": "google_pay",
               "charge": {
                 "value": "5.00",
                 "currency": "RUB"
-              }
+              },
+              "save_payment_method": "forbidden"
             }
           ]
         }"""
         )
 
-        val newCard = NewCard(0, Amount(BigDecimal("2.00"), RUB), null)
+        val newCard = NewCard(0, Amount(BigDecimal("2.00"), RUB), null, true)
         val wallet = Wallet(
             1, Amount(BigDecimal("3.00"), RUB),
-            null, "123456789", Amount(BigDecimal("5.00"), RUB), "Tony"
+            null, "123456789", Amount(BigDecimal("5.00"), RUB), "Tony", true
         )
-        val abstractWallet = AbstractWallet(2, Amount(BigDecimal("4.00"), RUB), null)
+        val abstractWallet = AbstractWallet(2, Amount(BigDecimal("4.00"), RUB), null, true)
         val bankCard = LinkedCard(
             3, Amount(BigDecimal("5.00"), RUB), null,
-            "123456789", CardBrand.MASTER_CARD, "518901******0446", "My card"
+            "123456789", CardBrand.MASTER_CARD, "518901******0446", "My card", true
         )
-        val sberbank = SbolSmsInvoicing(4, Amount(BigDecimal("2.00"), RUB), null)
-        val googlePay = GooglePay(5, Amount(BigDecimal("5.00"), RUB), null)
+        val sberbank = SbolSmsInvoicing(4, Amount(BigDecimal("2.00"), RUB), null, false)
+        val googlePay = GooglePay(5, Amount(BigDecimal("5.00"), RUB), null, false)
 
         val paymentOptions =
             PaymentOptionsResponse(listOf(newCard, wallet, abstractWallet, bankCard, sberbank, googlePay), null)

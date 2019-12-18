@@ -57,7 +57,7 @@ internal class ApiV3TokenizeGateway(
     override fun getToken(
         paymentOption: PaymentOption,
         paymentOptionInfo: PaymentOptionInfo,
-        allowRecurringPayments: Boolean,
+        savePaymentMethod: Boolean,
         confirmation: Confirmation
     ): String {
         tmxProfilingTool.requestSessionId(this)
@@ -70,7 +70,8 @@ internal class ApiV3TokenizeGateway(
             currentTmxSessionId,
             shopToken,
             paymentAuthToken,
-            confirmation
+            confirmation,
+            savePaymentMethod
         )
         tmxSessionId = null
         val response = httpClient.value.execute(tokenRequest)

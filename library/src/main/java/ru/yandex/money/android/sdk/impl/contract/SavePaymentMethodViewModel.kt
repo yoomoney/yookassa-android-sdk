@@ -19,32 +19,10 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package ru.yandex.money.android.sdk
+package ru.yandex.money.android.sdk.impl.contract
 
-import android.annotation.SuppressLint
-import android.os.Parcelable
-import android.support.annotation.Keep
-import kotlinx.android.parcel.Parcelize
-
-/**
- * Wrapper for payment parameters. This class is used only in [Checkout.createSavedCardTokenizeIntent].
- *
- * @param amount payment amount, see [Amount]. Available payment options can vary depending on amount.
- * @param title name of the goods to be bought.
- * @param subtitle description of the goods to be bought.
- * @param clientApplicationKey merchant token from Yandex.Checkout.
- * @param shopId shop id from Yandex.Checkout.
- * @param paymentMethodId id of previous payment.
- * @param savePaymentMethod setting for saving payment method (see [SavePaymentMethod]]).
- */
-@[Parcelize SuppressLint("ParcelCreator")]
-data class SavedBankCardPaymentParameters
-@Keep constructor(
-    @Keep val amount: Amount,
-    @Keep val title: String,
-    @Keep val subtitle: String,
-    @Keep val clientApplicationKey: String,
-    @Keep val shopId: String,
-    @Keep val paymentMethodId: String,
-    @Keep val savePaymentMethod: SavePaymentMethod
-) : Parcelable
+sealed class SavePaymentMethodViewModel {
+    data class On(val message: CharSequence): SavePaymentMethodViewModel()
+    data class Off(val switchMessage: CharSequence): SavePaymentMethodViewModel()
+    object UserSelects: SavePaymentMethodViewModel()
+}

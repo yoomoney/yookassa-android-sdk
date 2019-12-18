@@ -22,9 +22,9 @@
 apply from: rootProject.file("sensitive.gradle")
 
 ext {
-    versionMajor = 2
-    versionMinor = 4
-    versionPatch = 1
+    versionMajor = 3
+    versionMinor = 0
+    versionPatch = 0
 
     versionAlpha = null
 

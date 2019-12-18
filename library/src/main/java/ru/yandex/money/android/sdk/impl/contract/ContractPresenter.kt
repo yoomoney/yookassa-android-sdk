@@ -23,15 +23,13 @@ package ru.yandex.money.android.sdk.impl.contract
 
 import android.content.Context
 import android.content.Intent
-import android.support.v4.content.ContextCompat
 import android.support.v4.content.ContextCompat.startActivity
-import android.text.Spannable
-import android.text.SpannableStringBuilder
-import android.text.TextPaint
-import android.text.style.ClickableSpan
-import android.view.View
 import ru.yandex.money.android.sdk.PaymentMethodType
 import ru.yandex.money.android.sdk.R
+import ru.yandex.money.android.sdk.SavePaymentMethod
+import ru.yandex.money.android.sdk.SavePaymentMethod.USER_SELECTS
+import ru.yandex.money.android.sdk.SavePaymentMethod.OFF
+import ru.yandex.money.android.sdk.SavePaymentMethod.ON
 import ru.yandex.money.android.sdk.impl.extensions.toHint
 import ru.yandex.money.android.sdk.impl.payment.PaymentOptionPresenter
 import ru.yandex.money.android.sdk.impl.paymentAuth.ProcessPaymentAuthProgressViewModel
@@ -41,6 +39,7 @@ import ru.yandex.money.android.sdk.model.AuthType
 import ru.yandex.money.android.sdk.model.GooglePay
 import ru.yandex.money.android.sdk.model.NewCard
 import ru.yandex.money.android.sdk.model.PaymentIdCscConfirmation
+import ru.yandex.money.android.sdk.model.PaymentOption
 import ru.yandex.money.android.sdk.model.SbolSmsInvoicing
 import ru.yandex.money.android.sdk.model.YandexMoney
 import ru.yandex.money.android.sdk.payment.selectOption.SelectPaymentOptionOutputModel
@@ -55,13 +54,16 @@ import ru.yandex.money.android.sdk.paymentAuth.ProcessPaymentAuthWrongAnswerOutp
 import ru.yandex.money.android.sdk.paymentAuth.RequestPaymentAuthOutputModel
 import ru.yandex.money.android.sdk.paymentAuth.SmsSessionRetryOutputModel
 import ru.yandex.money.android.sdk.utils.WebViewActivity
+import ru.yandex.money.android.sdk.utils.getMessageWithLink
 import java.math.BigDecimal
 
 internal class ContractPresenter(
     context: Context,
     private val shopTitle: CharSequence,
     private val shopSubtitle: CharSequence,
-    private val recurringPaymentsPossible: Boolean
+    private val requestedSavePaymentMethod: SavePaymentMethod,
+    private val getSavePaymentMethodMessageLink: (PaymentOption) -> CharSequence,
+    private val getSavePaymentMethodSwitchLink: (PaymentOption) -> CharSequence
 ) {
     private val context = context.applicationContext
     private val paymentOptionPresenter = PaymentOptionPresenter(context.applicationContext)
@@ -70,13 +72,24 @@ internal class ContractPresenter(
     private lateinit var paymentAuthForm: PaymentAuthFormViewModel
 
     operator fun invoke(model: SelectPaymentOptionOutputModel): ContractViewModel {
+
         return when (model) {
             is SelectedPaymentOptionOutputModel -> {
+                val savePaymentMethodViewModel = if (model.paymentOption.savePaymentMethodAllowed) {
+                    when (requestedSavePaymentMethod) {
+                        ON -> SavePaymentMethodViewModel.On(getSavePaymentMethodMessageLink(model.paymentOption))
+                        OFF -> SavePaymentMethodViewModel.UserSelects
+                        USER_SELECTS -> SavePaymentMethodViewModel.Off(getSavePaymentMethodSwitchLink(model.paymentOption))
+                    }
+                } else {
+                    SavePaymentMethodViewModel.UserSelects
+                }
+
                 when {
                     model.paymentOption is GooglePay -> {
                         val fee = model.paymentOption.fee?.service?.value
                         if (fee == null || fee == BigDecimal.ZERO) {
-                            GooglePayContractViewModel(model.paymentOption.id, recurringPaymentsPossible)
+                            GooglePayContractViewModel(model.paymentOption.id)
                         } else {
                             ContractSuccessViewModel(
                                 shopTitle = shopTitle,
@@ -84,14 +97,11 @@ internal class ContractPresenter(
                                 licenseAgreement = getLicenseAgreementText(),
                                 paymentOption = paymentOptionPresenter(model.paymentOption),
                                 showChangeButton = model.hasAnotherOptions,
-                                showAllowRecurringPayments = recurringPaymentsPossible,
+                                savePaymentMethodViewModel = savePaymentMethodViewModel,
                                 showAllowWalletLinking = model.walletLinkingPossible,
                                 paymentAuth = null,
                                 showPhoneInput = model.paymentOption is SbolSmsInvoicing,
-                                googlePayContractViewModel = GooglePayContractViewModel(
-                                    model.paymentOption.id,
-                                    recurringPaymentsPossible
-                                )
+                                googlePayContractViewModel = GooglePayContractViewModel(model.paymentOption.id)
                             ).also { contract = it }
                         }
                     }
@@ -101,7 +111,7 @@ internal class ContractPresenter(
                         licenseAgreement = getLicenseAgreementText(),
                         paymentOption = paymentOptionPresenter(model.paymentOption),
                         showChangeButton = model.hasAnotherOptions,
-                        showAllowRecurringPayments = recurringPaymentsPossible,
+                        savePaymentMethodViewModel = savePaymentMethodViewModel,
                         showAllowWalletLinking = model.walletLinkingPossible,
                         paymentAuth = null,
                         showPhoneInput = model.paymentOption is SbolSmsInvoicing
@@ -113,35 +123,16 @@ internal class ContractPresenter(
     }
 
     private fun getLicenseAgreementText(): CharSequence {
-        val link = context.getText(R.string.ym_license_agreement_part_2)
-
-        return SpannableStringBuilder(
-            "${context.getText(R.string.ym_license_agreement_part_1)} " + "$link"
-        ).apply {
-            setSpan(
-                object : ClickableSpan() {
-                    override fun onClick(widget: View) {
-                        startActivity(
-                            context,
-                            WebViewActivity.create(
-                                context,
-                                context.getString(R.string.ym_license_agreement_url)
-                            ).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-                            null
-                        )
-                    }
-
-                    override fun updateDrawState(ds: TextPaint) {
-                        super.updateDrawState(ds)
-                        ds.apply {
-                            color = ContextCompat.getColor(context, R.color.ym_button_text_link)
-                            isUnderlineText = false
-                        }
-                    }
-                },
-                length - link.length,
-                length,
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        return getMessageWithLink(
+            context,
+            R.string.ym_license_agreement_part_1,
+            R.string.ym_license_agreement_part_2
+        ) {
+            startActivity(
+                context,
+                WebViewActivity.create(context, context.getString(R.string.ym_license_agreement_url))
+                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                null
             )
         }
     }
@@ -158,7 +149,6 @@ internal class ContractPresenter(
             }
         )
         is TokenizePaymentAuthRequiredOutputModel -> contract.copy(
-            showAllowRecurringPayments = false,
             showAllowWalletLinking = false,
             paymentAuth = PaymentAuthStartViewModel(model.charge)
         )
@@ -167,27 +157,23 @@ internal class ContractPresenter(
 
     @Suppress("UNUSED_PARAMETER")
     operator fun invoke(model: RequestPaymentAuthProgressViewModel) = contract.copy(
-        showAllowRecurringPayments = false,
         showAllowWalletLinking = false,
         paymentAuth = PaymentAuthProgressViewModel()
     )
 
     @Suppress("UNUSED_PARAMETER")
     operator fun invoke(model: ProcessPaymentAuthProgressViewModel) = contract.copy(
-        showAllowRecurringPayments = false,
         showAllowWalletLinking = false,
         paymentAuth = PaymentAuthProgressViewModel()
     )
 
     @Suppress("UNUSED_PARAMETER")
     operator fun invoke(model: SmsSessionRetryProgressViewModel) = contract.copy(
-        showAllowRecurringPayments = false,
         showAllowWalletLinking = false,
         paymentAuth = PaymentAuthProgressViewModel()
     )
 
     operator fun invoke(model: RequestPaymentAuthOutputModel) = contract.copy(
-        showAllowRecurringPayments = false,
         showAllowWalletLinking = false,
         paymentAuth = when (model.authTypeState.type) {
             AuthType.SMS, AuthType.PUSH -> PaymentAuthFormRetryViewModel(
@@ -203,7 +189,6 @@ internal class ContractPresenter(
     )
 
     operator fun invoke(model: ProcessPaymentAuthOutputModel) = contract.copy(
-        showAllowRecurringPayments = false,
         showAllowWalletLinking = false,
         paymentAuth = when (model) {
             is ProcessPaymentAuthSuccessOutputModel ->
@@ -221,7 +206,6 @@ internal class ContractPresenter(
     )
 
     operator fun invoke(model: SmsSessionRetryOutputModel) = contract.copy(
-        showAllowRecurringPayments = false,
         showAllowWalletLinking = false,
         paymentAuth = PaymentAuthFormRetryViewModel(
             hint = model.authTypeState.type.toHint(context),

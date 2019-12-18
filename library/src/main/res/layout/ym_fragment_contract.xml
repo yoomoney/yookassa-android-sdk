@@ -120,17 +120,55 @@
                     </FrameLayout>
 
                     <FrameLayout
-                        android:id="@+id/allowRecurringPaymentsContainer"
+                        android:id="@+id/savePaymentMethodSelectionContainer"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:visibility="gone">
 
-                        <ru.yandex.money.android.sdk.impl.view.YmSwitch
-                            style="@style/ym_Switch"
-                            android:id="@+id/allowRecurringPayments"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:checked="true"
-                            android:text="@string/ym_allow_recurring_payments" />
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/ym_Text.Common2"
+                                android:id="@+id/savePaymentMethodSwitchMessage"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_margin="@dimen/ym_space_m" />
+
+                            <ru.yandex.money.android.sdk.impl.view.YmSwitch
+                                style="@style/ym_Switch"
+                                android:id="@+id/savePaymentMethodSwitch"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:checked="false" />
+                        </LinearLayout>
+
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_gravity="bottom"
+                            android:layout_marginLeft="@dimen/ym_screen_indentStart"
+                            android:layout_marginStart="@dimen/ym_screen_indentStart"
+                            android:background="@color/ym_divider" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/savePaymentMethodInfoContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone">
+
+                        <TextView
+                            style="@style/ym_Text.Common2"
+                            android:id="@+id/savePaymentMethodMessage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/ym_space_m" />
 
                         <View
                             android:layout_width="match_parent"

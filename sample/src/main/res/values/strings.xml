@@ -69,4 +69,7 @@
     <string name="show_fee">Add fee to the test payment</string>
     <string name="test_fee">Fee</string>
     <string name="test_fee_hint">Fee to display on the contract screen</string>
+    <string name="save_payment_method_selector_user_decide">User can save payment method</string>
+    <string name="save_payment_method_selector_save">Save payment method</string>
+    <string name="save_payment_method_selector_dont_save">Do not save payment method</string>
 </resources>

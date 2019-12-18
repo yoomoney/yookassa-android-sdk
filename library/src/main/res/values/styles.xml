@@ -85,6 +85,11 @@
         <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif</item>
     </style>
 
+    <style name="ym_Text.Common3">
+        <item name="android:textColor">#000000</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
     <style name="ym_Text.Hint">
         <item name="android:textColor">@color/ym_loading</item>
         <item name="android:textSize">16sp</item>
@@ -113,6 +118,12 @@
         <item name="android:textColor">@color/ym_text_primary</item>
         <item name="android:textSize">22sp</item>
         <item name="android:letterSpacing" tools:ignore="NewApi">0.02</item>
+    </style>
+
+    <style name="ym_Text.Header4">
+        <item name="android:textColor">@color/ym_text_primary</item>
+        <item name="android:textSize">19sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="ym_Text.Sum">

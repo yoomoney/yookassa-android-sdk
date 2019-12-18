@@ -27,18 +27,21 @@ internal sealed class PaymentOption {
     abstract val id: Int
     abstract val charge: Amount
     abstract val fee: Fee?
+    abstract val savePaymentMethodAllowed: Boolean
 }
 
 internal data class GooglePay(
     override val id: Int,
     override val charge: Amount,
-    override val fee: Fee?
+    override val fee: Fee?,
+    override val savePaymentMethodAllowed: Boolean
 ) : PaymentOption()
 
 internal data class NewCard(
     override val id: Int,
     override val charge: Amount,
-    override val fee: Fee?
+    override val fee: Fee?,
+    override val savePaymentMethodAllowed: Boolean
 ) : PaymentOption()
 
 internal sealed class YandexMoney : PaymentOption()
@@ -49,13 +52,15 @@ internal data class Wallet(
     override val fee: Fee?,
     val walletId: String,
     val balance: Amount,
-    val userName: String
+    val userName: String,
+    override val savePaymentMethodAllowed: Boolean
 ) : YandexMoney()
 
 internal data class AbstractWallet(
     override val id: Int,
     override val charge: Amount,
-    override val fee: Fee?
+    override val fee: Fee?,
+    override val savePaymentMethodAllowed: Boolean
 ) : YandexMoney()
 
 internal data class LinkedCard(
@@ -65,13 +70,15 @@ internal data class LinkedCard(
     val cardId: String,
     val brand: CardBrand,
     val pan: String,
-    val name: String? = null
+    val name: String? = null,
+    override val savePaymentMethodAllowed: Boolean
 ) : YandexMoney()
 
 internal data class SbolSmsInvoicing(
     override val id: Int,
     override val charge: Amount,
-    override val fee: Fee?
+    override val fee: Fee?,
+    override val savePaymentMethodAllowed: Boolean
 ) : PaymentOption()
 
 internal data class PaymentIdCscConfirmation(
@@ -82,5 +89,6 @@ internal data class PaymentIdCscConfirmation(
     val first: String,
     val last: String,
     val expiryYear: String,
-    val expiryMonth: String
+    val expiryMonth: String,
+    override val savePaymentMethodAllowed: Boolean
 ) : PaymentOption()

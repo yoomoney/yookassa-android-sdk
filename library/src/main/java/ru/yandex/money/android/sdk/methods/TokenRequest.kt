@@ -41,6 +41,7 @@ private const val TMX_SESSION_ID = "tmx_session_id"
 private const val AMOUNT = "amount"
 private const val CONFIRMATION = "confirmation"
 private const val PAYMENT_METHOD_ID = "payment_method_id"
+private const val SAVE_PAYMENT_METHOD = "save_payment_method"
 private const val CSC = "csc"
 
 internal data class TokenRequest(
@@ -49,7 +50,8 @@ internal data class TokenRequest(
     private val tmxSessionId: String,
     private val shopToken: String,
     private val paymentAuthToken: String?,
-    private val confirmation: Confirmation
+    private val confirmation: Confirmation,
+    private val savePaymentMethod: Boolean
 ) : PostRequest<TokenResponse> {
 
     override fun getHeaders() = listOf("Authorization" to Credentials.basic(shopToken, "")).let { headers ->
@@ -60,7 +62,8 @@ internal data class TokenRequest(
     override fun getPayload(): List<Pair<String, Any>> {
         return listOf(
             TMX_SESSION_ID to tmxSessionId,
-            AMOUNT to paymentOption.charge.toJsonObject()
+            AMOUNT to paymentOption.charge.toJsonObject(),
+            SAVE_PAYMENT_METHOD to savePaymentMethod
         ).let { payload ->
             val params = if (paymentOption is PaymentIdCscConfirmation) {
                 payload + (PAYMENT_METHOD_ID to paymentOption.paymentMethodId) + (CSC to (paymentOptionInfo as LinkedCardInfo).csc)

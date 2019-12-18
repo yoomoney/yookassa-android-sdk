@@ -58,7 +58,7 @@ internal class GooglePayIntegration(
 ) : CheckGooglePayAvailableGateway {
 
     private var paymentOptionId: Int? = null
-    private var recurringPaymentsPossible: Boolean? = null
+    private var savePaymentMethodPossible: Boolean? = null
     private var waitingForResult = false
 
     private val paymentsClient: PaymentsClient =
@@ -99,15 +99,13 @@ internal class GooglePayIntegration(
 
     fun startGooglePayTokenization(
         fragment: Fragment,
-        paymentOptionId: Int,
-        recurringPaymentsPossible: Boolean
+        paymentOptionId: Int
     ) {
         if (waitingForResult) {
             return
         }
 
         this.paymentOptionId = paymentOptionId
-        this.recurringPaymentsPossible = recurringPaymentsPossible
 
         val paymentOption = loadedPaymentOptionsGateway.getLoadedPaymentOptions().first { it.id == paymentOptionId }
 
@@ -158,7 +156,6 @@ internal class GooglePayIntegration(
                 checkNotNull(PaymentData.getFromIntent(requireNotNull(data))).let {
                     GooglePayTokenizationSuccess(
                         paymentOptionId = checkNotNull(paymentOptionId),
-                        recurringPaymentsPossible = checkNotNull(recurringPaymentsPossible),
                         paymentOptionInfo = GooglePayInfo(
                             paymentMethodToken = checkNotNull(it.paymentMethodToken).token,
                             googleTransactionId = it.googleTransactionId
@@ -176,14 +173,13 @@ internal class GooglePayIntegration(
     fun reset() {
         waitingForResult = false
         paymentOptionId = null
-        recurringPaymentsPossible = null
+        savePaymentMethodPossible = null
     }
 }
 
 internal sealed class GooglePayTokenizationResult
 internal data class GooglePayTokenizationSuccess(
     val paymentOptionId: Int,
-    val recurringPaymentsPossible: Boolean,
     val paymentOptionInfo: GooglePayInfo
 ) : GooglePayTokenizationResult()
 

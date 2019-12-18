@@ -28,6 +28,8 @@ import android.preference.PreferenceManager;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 
+import ru.yandex.money.android.sdk.SavePaymentMethod;
+
 public final class Settings {
 
     static final String KEY_LINKED_CARDS_COUNT = "linked_cards_count";
@@ -44,6 +46,7 @@ public final class Settings {
     static final String KEY_PAYMENT_AUTH_PASSED = "payment_auth_passed";
     static final String KEY_SERVICE_FEE = "fee";
     static final String KEY_SHOULD_COMPLETE_PAYMENT_WITH_ERROR = "should_complete_with_error";
+    static final String KEY_SAVE_PAYMENT_METHOD = "save_payment_method";
 
     private SharedPreferences sp;
 
@@ -91,6 +94,14 @@ public final class Settings {
         return sp.getInt(KEY_LINKED_CARDS_COUNT, 1);
     }
 
+    public SavePaymentMethod getSavePaymentMethod() {
+        return getSavePaymentMethod(getSavePaymentMethodId());
+    }
+
+    int getSavePaymentMethodId() {
+        return sp.getInt(KEY_SAVE_PAYMENT_METHOD, 0);
+    }
+
     @ColorInt
     public int getPrimaryColor() {
         return Color.rgb(
@@ -102,5 +113,23 @@ public final class Settings {
 
     public boolean shouldCompletePaymentWithError() {
         return sp.getBoolean(KEY_SHOULD_COMPLETE_PAYMENT_WITH_ERROR, false);
+    }
+
+    private static SavePaymentMethod getSavePaymentMethod(int value) {
+        SavePaymentMethod savePaymentMethod;
+        switch (value) {
+            case 0:
+                savePaymentMethod = SavePaymentMethod.USER_SELECTS;
+                break;
+            case 1:
+                savePaymentMethod = SavePaymentMethod.ON;
+                break;
+            case 2:
+                savePaymentMethod = SavePaymentMethod.OFF;
+                break;
+            default:
+                savePaymentMethod = SavePaymentMethod.USER_SELECTS;
+        }
+        return savePaymentMethod;
     }
 }

@@ -34,6 +34,7 @@ import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 import org.mockito.stubbing.OngoingStubbing
 import ru.yandex.money.android.sdk.impl.contract.ContractSuccessViewModel
+import ru.yandex.money.android.sdk.impl.contract.SavePaymentMethodViewModel
 import ru.yandex.money.android.sdk.impl.extensions.RUB
 import ru.yandex.money.android.sdk.impl.payment.PaymentOptionViewModel
 import ru.yandex.money.android.sdk.model.AbstractWallet
@@ -66,7 +67,8 @@ internal fun createNewCardPaymentOption(id: Int): PaymentOption =
         fee = Fee(
             Amount(BigDecimal.ONE, RUB),
             Amount(BigDecimal("0.5"), RUB)
-        )
+        ),
+        savePaymentMethodAllowed = true
     )
 
 internal fun createWalletPaymentOption(id: Int): PaymentOption =
@@ -79,7 +81,8 @@ internal fun createWalletPaymentOption(id: Int): PaymentOption =
         ),
         walletId = "12345654321",
         balance = Amount(BigDecimal.TEN, RUB),
-        userName = "John Smith"
+        userName = "John Smith",
+        savePaymentMethodAllowed = true
     )
 
 internal fun createAbstractWalletPaymentOption(id: Int): PaymentOption =
@@ -89,7 +92,8 @@ internal fun createAbstractWalletPaymentOption(id: Int): PaymentOption =
         fee = Fee(
             Amount(BigDecimal.ONE, RUB),
             Amount(BigDecimal("0.5"), RUB)
-        )
+        ),
+        savePaymentMethodAllowed = true
     )
 
 internal fun createSbolSmsInvoicingPaymentOption(id: Int): PaymentOption =
@@ -99,7 +103,8 @@ internal fun createSbolSmsInvoicingPaymentOption(id: Int): PaymentOption =
         fee = Fee(
             Amount(BigDecimal.ONE, RUB),
             Amount(BigDecimal("0.5"), RUB)
-        )
+        ),
+        savePaymentMethodAllowed = false
     )
 
 internal fun createLinkedCardPaymentOption(id: Int): PaymentOption =
@@ -112,7 +117,8 @@ internal fun createLinkedCardPaymentOption(id: Int): PaymentOption =
         ),
         cardId = "12345654321",
         brand = CardBrand.MASTER_CARD,
-        pan = "1234567887654321"
+        pan = "1234567887654321",
+        savePaymentMethodAllowed = true
     )
 
 internal fun createGooglePayPaymentOptionWithFee(id: Int): PaymentOption =
@@ -122,14 +128,16 @@ internal fun createGooglePayPaymentOptionWithFee(id: Int): PaymentOption =
         fee = Fee(
             Amount(BigDecimal.ONE, RUB),
             Amount(BigDecimal("0.5"), RUB)
-        )
+        ),
+        savePaymentMethodAllowed = false
     )
 
 internal fun createGooglePayPaymentOptionWithoutFee(id: Int): PaymentOption =
     GooglePay(
         id = id,
         charge = Amount(BigDecimal.TEN, RUB),
-        fee = null
+        fee = null,
+        savePaymentMethodAllowed = false
     )
 
 internal fun createNewCardInfo(): PaymentOptionInfo =
@@ -145,14 +153,17 @@ internal fun createLinkedCardInfo(): PaymentOptionInfo =
 
 internal fun createAmount() = Amount(BigDecimal.TEN, RUB)
 
+internal val savePaymentMethodMessage: (PaymentOption) -> CharSequence = { "message" }
+internal val savePaymentMethodViewModelTurnOn = SavePaymentMethodViewModel.On("message")
+
 internal fun stubContractSuccessViewModel() = ContractSuccessViewModel(
     shopTitle = "title",
     shopSubtitle = "subtitle",
     paymentOption = stubPaymentOptionViewModel(),
     licenseAgreement = "licenseAgreement",
     showChangeButton = false,
-    showAllowRecurringPayments = false,
     showAllowWalletLinking = false,
+    savePaymentMethodViewModel = savePaymentMethodViewModelTurnOn,
     paymentAuth = null,
     showPhoneInput = false
 )

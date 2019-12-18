@@ -83,7 +83,8 @@ internal class CheckoutActivity : AppCompatActivity() {
                 subtitle = cscParameter.subtitle,
                 clientApplicationKey = cscParameter.clientApplicationKey,
                 shopId = cscParameter.shopId,
-                paymentMethodTypes = setOf(PaymentMethodType.BANK_CARD)
+                paymentMethodTypes = setOf(PaymentMethodType.BANK_CARD),
+                savePaymentMethod = cscParameter.savePaymentMethod
             )
         }
 

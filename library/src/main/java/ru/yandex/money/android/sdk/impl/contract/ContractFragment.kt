@@ -94,7 +94,12 @@ internal class ContractFragment : Fragment() {
                 }
 
                 nextButton.setOnClickListener {
-                    AppModel.tokenizeController(TokenizeInputModel(optionId, viewModel.showAllowRecurringPayments))
+                    AppModel.tokenizeController(
+                        TokenizeInputModel(
+                            paymentOptionId = optionId,
+                            savePaymentMethod = shouldSavePaymentMethod(viewModel.savePaymentMethodViewModel)
+                        )
+                    )
                 }
             }
 
@@ -114,8 +119,8 @@ internal class ContractFragment : Fragment() {
 
             switchesAndPaymentAuthContainer.visible = viewModel.paymentAuth != null
                     || viewModel.showAllowWalletLinking
-                    || viewModel.showAllowRecurringPayments
                     || viewModel.showPhoneInput
+                    || viewModel.savePaymentMethodViewModel != SavePaymentMethodViewModel.UserSelects
 
             when (viewModel.paymentAuth) {
                 null -> {
@@ -133,8 +138,8 @@ internal class ContractFragment : Fragment() {
                                 AppModel.tokenizeController(
                                     TokenizeInputModel(
                                         paymentOptionId = viewModel.paymentOption.optionId,
-                                        allowRecurringPayments = viewModel.showAllowRecurringPayments,
-                                        paymentOptionInfo = SbolSmsInvoicingInfo(text.toString())
+                                        paymentOptionInfo = SbolSmsInvoicingInfo(text.toString()),
+                                        savePaymentMethod = shouldSavePaymentMethod(viewModel.savePaymentMethodViewModel)
                                     )
                                 )
                             } else {
@@ -148,7 +153,28 @@ internal class ContractFragment : Fragment() {
                         allowWalletLinking.text =
                             allowWalletLinking.context.getString(R.string.ym_allow_wallet_linking)
 
-                        allowRecurringPaymentsContainer.visible = viewModel.showAllowRecurringPayments
+                        when (viewModel.savePaymentMethodViewModel) {
+                            is SavePaymentMethodViewModel.On -> {
+                                savePaymentMethodMessage.apply {
+                                    text = viewModel.savePaymentMethodViewModel.message
+                                    movementMethod = LinkMovementMethod.getInstance()
+                                }
+                                savePaymentMethodInfoContainer.visible = true
+                                savePaymentMethodSelectionContainer.visible = false
+                            }
+                            is SavePaymentMethodViewModel.Off -> {
+                                savePaymentMethodSwitchMessage.apply {
+                                    text = viewModel.savePaymentMethodViewModel.switchMessage
+                                    movementMethod = LinkMovementMethod.getInstance()
+                                }
+                                savePaymentMethodInfoContainer.visible = false
+                                savePaymentMethodSelectionContainer.visible = true
+                            }
+                            is SavePaymentMethodViewModel.UserSelects -> {
+                                savePaymentMethodInfoContainer.visible = false
+                                savePaymentMethodSelectionContainer.visible = false
+                            }
+                        }
                     }
                 }
                 is PaymentAuthStartViewModel -> {
@@ -215,8 +241,7 @@ internal class ContractFragment : Fragment() {
                     rootContainer.showChild(loadingView)
                     AppModel.googlePayIntegration?.startGooglePayTokenization(
                         fragment = this,
-                        paymentOptionId = viewModel.googlePayContractViewModel.paymentOptionId,
-                        recurringPaymentsPossible = viewModel.googlePayContractViewModel.recurringPaymentsPossible
+                        paymentOptionId = viewModel.googlePayContractViewModel.paymentOptionId
                     )
                 }
             }
@@ -250,8 +275,7 @@ internal class ContractFragment : Fragment() {
             rootContainer.showChild(loadingView)
             AppModel.googlePayIntegration?.startGooglePayTokenization(
                 fragment = this,
-                paymentOptionId = it.paymentOptionId,
-                recurringPaymentsPossible = it.recurringPaymentsPossible
+                paymentOptionId = it.paymentOptionId
             )
         }
     }
@@ -311,8 +335,8 @@ internal class ContractFragment : Fragment() {
                 is GooglePayTokenizationSuccess -> AppModel.tokenizeController(
                     TokenizeInputModel(
                         paymentOptionId = it.paymentOptionId,
-                        allowRecurringPayments = it.recurringPaymentsPossible,
-                        paymentOptionInfo = it.paymentOptionInfo
+                        paymentOptionInfo = it.paymentOptionInfo,
+                        savePaymentMethod = false
                     )
                 )
                 is GooglePayTokenizationCanceled -> AppModel.changePaymentOptionController(
@@ -320,6 +344,14 @@ internal class ContractFragment : Fragment() {
                 )
                 is GooglePayNotHandled -> super.onActivityResult(requestCode, resultCode, data)
             }
+        }
+    }
+
+    private fun shouldSavePaymentMethod(savePaymentMethod: SavePaymentMethodViewModel): Boolean {
+        return when (savePaymentMethod) {
+            is SavePaymentMethodViewModel.On -> true
+            is SavePaymentMethodViewModel.UserSelects -> false
+            is SavePaymentMethodViewModel.Off -> savePaymentMethodSwitch.isChecked
         }
     }
 }

@@ -31,6 +31,7 @@ import org.mockito.Mockito.inOrder
 import org.mockito.Mockito.mock
 import org.mockito.junit.MockitoJUnitRunner
 import ru.yandex.money.android.sdk.impl.contract.ContractSuccessViewModel
+import ru.yandex.money.android.sdk.impl.contract.SavePaymentMethodViewModel
 import ru.yandex.money.android.sdk.impl.payment.PaymentOptionViewModel
 import ru.yandex.money.android.sdk.model.Presenter
 import ru.yandex.money.android.sdk.on
@@ -55,7 +56,7 @@ class ActionPaymentAuthorizationReporterTest {
                 "",
                 "",
                 PaymentOptionViewModel(0, mock(Drawable::class.java), "", ""),
-                "", false, false, false, null, false
+                "", false, SavePaymentMethodViewModel.UserSelects, false, null, false
             )
         )
         actionReporter = ActionPaymentAuthorizationReporter(presenter, reporter)

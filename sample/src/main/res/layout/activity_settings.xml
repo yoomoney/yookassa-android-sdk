@@ -113,6 +113,17 @@
                 android:text="@string/autofill_user_phone_number"
                 tools:checked="true" />
 
+            <Spinner
+                android:id="@+id/savePaymentMethodSelector"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ym_space_xs"
+                android:layout_marginBottom="@dimen/ym_space_xs"
+                android:layout_marginLeft="@dimen/ym_space_xs"
+                android:layout_marginRight="@dimen/ym_space_m"
+                android:spinnerMode="dropdown"
+                tools:ignore="RtlHardcoded" />
+
             <Button
                 style="?attr/borderlessButtonStyle"
                 android:id="@+id/colorScheme"

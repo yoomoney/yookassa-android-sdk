@@ -25,6 +25,7 @@ import okhttp3.Credentials
 import org.json.JSONObject
 import ru.yandex.money.android.sdk.Amount
 import ru.yandex.money.android.sdk.BuildConfig
+import ru.yandex.money.android.sdk.SavePaymentMethod
 import ru.yandex.money.android.sdk.impl.extensions.toPaymentOptionResponse
 import ru.yandex.money.android.sdk.methods.base.GetRequest
 import ru.yandex.money.android.sdk.model.AnonymousUser
@@ -37,13 +38,15 @@ private const val PAYMENT_OPTIONS_METHOD_PATH = "/payment_options"
 private const val AMOUNT = "amount"
 private const val CURRENCY = "currency"
 private const val GATEWAY_ID = "gateway_id"
+private const val SAVE_PAYMENT_METHOD = "save_payment_method"
 
 internal data class PaymentOptionsRequest(
     private val amount: Amount,
     private val currentUser: CurrentUser,
     private val gatewayId: String?,
     private val userAuthToken: String?,
-    private val shopToken: String
+    private val shopToken: String,
+    private val savePaymentMethod: SavePaymentMethod
 ) : GetRequest<PaymentOptionsResponse> {
 
     override fun getHeaders(): List<Pair<String, String>> {
@@ -55,25 +58,31 @@ internal data class PaymentOptionsRequest(
     }
 
     override fun getUrl(): String {
-        val map = mutableMapOf<String, String>()
-        map[AMOUNT] = amount.value.toString()
-        map[CURRENCY] = amount.currency.toString()
+        val params = mutableMapOf<String, String>()
+        params[AMOUNT] = amount.value.toString()
+        params[CURRENCY] = amount.currency.toString()
         if (gatewayId != null) {
-            map[GATEWAY_ID] = gatewayId
+            params[GATEWAY_ID] = gatewayId
         }
 
-        return getHost() + createFullPath(PAYMENT_OPTIONS_METHOD_PATH, map)
+        when (savePaymentMethod) {
+            SavePaymentMethod.ON -> params[SAVE_PAYMENT_METHOD] = "true"
+            SavePaymentMethod.OFF -> params[SAVE_PAYMENT_METHOD] = "false"
+            SavePaymentMethod.USER_SELECTS -> {
+                //don't add SAVE_PAYMENT_METHOD param
+            }
+        }.toString()
+
+        return getHost() + createFullPath(PAYMENT_OPTIONS_METHOD_PATH, params)
     }
 
     private fun getHost() = BuildConfig.HOST
 
     private fun createFullPath(path: String, params: Map<String, String>) =
-            path
-                    .takeIf { params.isNotEmpty() }
-                    ?.plus(params
-                            .map { "${it.key}=${it.value}" }
-                            .joinToString(prefix = "?", separator = "&"))
-                    ?: path
+        path.takeIf { params.isNotEmpty() }
+            ?.plus(params.map { "${it.key}=${it.value}" }
+                .joinToString(prefix = "?", separator = "&"))
+            ?: path
 
     override fun convertJsonToResponse(jsonObject: JSONObject): PaymentOptionsResponse {
         val userName = when (currentUser) {

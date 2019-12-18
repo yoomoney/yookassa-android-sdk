@@ -35,7 +35,7 @@ internal class MockTokenizeGateway(
     override fun getToken(
         paymentOption: PaymentOption,
         paymentOptionInfo: PaymentOptionInfo,
-        allowRecurringPayments: Boolean,
+        savePaymentMethod: Boolean,
         confirmation: Confirmation
     ): String {
         sleep(1000L)
@@ -46,7 +46,7 @@ internal class MockTokenizeGateway(
                     "To get production token, remove mockConfiguration from your TestParameters object, " +
                     "that is used in Checkout.createTokenizeIntent()). \n\n" +
                     "Parameters: $paymentOption, $paymentOptionInfo, \n" +
-                    "Allow recurring payments: $allowRecurringPayments, $confirmation"
+                    "Save payment method: $savePaymentMethod, $confirmation"
         }
     }
 }

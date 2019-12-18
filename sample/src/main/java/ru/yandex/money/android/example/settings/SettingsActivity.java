@@ -30,9 +30,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import ru.yandex.money.android.example.BuildConfig;
 import ru.yandex.money.android.example.R;
 import ru.yandex.money.android.sdk.Checkout;
@@ -45,6 +49,7 @@ import static ru.yandex.money.android.example.settings.Settings.KEY_AUTOFILL_USE
 import static ru.yandex.money.android.example.settings.Settings.KEY_GOOGLE_PAY_ALLOWED;
 import static ru.yandex.money.android.example.settings.Settings.KEY_NEW_CARD_ALLOWED;
 import static ru.yandex.money.android.example.settings.Settings.KEY_PAYMENT_AUTH_PASSED;
+import static ru.yandex.money.android.example.settings.Settings.KEY_SAVE_PAYMENT_METHOD;
 import static ru.yandex.money.android.example.settings.Settings.KEY_SBERBANK_ONLINE_ALLOWED;
 import static ru.yandex.money.android.example.settings.Settings.KEY_SHOULD_COMPLETE_PAYMENT_WITH_ERROR;
 import static ru.yandex.money.android.example.settings.Settings.KEY_SHOW_YANDEX_CHECKOUT_LOGO;
@@ -102,6 +107,7 @@ public final class SettingsActivity extends AppCompatActivity implements View.On
         linkedCardsDivider = findViewById(R.id.linked_cards_divider);
         feeDivider = findViewById(R.id.fee_divider);
         completeWithErrorDivider = findViewById(R.id.complete_with_error_divider);
+        final Spinner savePaymentMethodSelector = findViewById(R.id.savePaymentMethodSelector);
 
         enableTestModeSwitch.setOnCheckedChangeListener(
                 (v, isChecked) -> setTestGroupVisibility(isChecked ? View.VISIBLE : View.GONE));
@@ -123,6 +129,8 @@ public final class SettingsActivity extends AppCompatActivity implements View.On
         enableTestModeSwitch.setChecked(settings.isTestModeEnabled());
         paymentAuthPassedSwitch.setChecked(settings.isPaymentAuthPassed());
         completeWithErrorButton.setChecked(settings.shouldCompletePaymentWithError());
+
+        setUpSavePaymentMethodSelector(savePaymentMethodSelector, settings);
 
         final Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(BuildConfig.BUILD_DATE);
@@ -189,6 +197,29 @@ public final class SettingsActivity extends AppCompatActivity implements View.On
         } else if (v.getId() == R.id.fee) {
             startActivity(new Intent(this, FeeActivity.class));
         }
+    }
+
+    private void setUpSavePaymentMethodSelector(Spinner savePaymentMethodSelector, Settings settings) {
+        String[] items = new String[]{
+                getString(R.string.save_payment_method_selector_user_decide),
+                getString(R.string.save_payment_method_selector_save),
+                getString(R.string.save_payment_method_selector_dont_save)
+        };
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+        savePaymentMethodSelector.setAdapter(adapter);
+        savePaymentMethodSelector.setSelection(settings.getSavePaymentMethodId());
+        savePaymentMethodSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this).edit()
+                        .putInt(KEY_SAVE_PAYMENT_METHOD, position)
+                        .apply();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
     }
 
     private void setTestGroupVisibility(int visibility) {

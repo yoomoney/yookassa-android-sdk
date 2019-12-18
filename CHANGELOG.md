@@ -1,5 +1,9 @@
 ## Changelog
 
+### 3.0.0
+- Change public api. PaymentParameters and SavedBankCardPaymentParameters now have new required parameter - savePaymentMethod.
+- Add ability to save payment methods for recurring payments.
+
 ### 2.4.1
 2019-11-15
 - Fix screen artifacts on closing mSDK.

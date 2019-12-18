@@ -46,6 +46,7 @@ import ru.yandex.money.android.sdk.ColorScheme;
 import ru.yandex.money.android.sdk.PaymentMethodType;
 import ru.yandex.money.android.sdk.PaymentParameters;
 import ru.yandex.money.android.sdk.MockConfiguration;
+import ru.yandex.money.android.sdk.SavePaymentMethod;
 import ru.yandex.money.android.sdk.TestParameters;
 import ru.yandex.money.android.sdk.TokenizationResult;
 import ru.yandex.money.android.sdk.UiParameters;
@@ -165,6 +166,7 @@ public final class MainActivity extends AppCompatActivity {
                     getString(R.string.main_product_description),
                     BuildConfig.MERCHANT_TOKEN,
                     BuildConfig.SHOP_ID,
+                    settings.getSavePaymentMethod(),
                     paymentMethodTypes,
                     BuildConfig.GATEWAY_ID,
                     getString(R.string.test_redirect_url),

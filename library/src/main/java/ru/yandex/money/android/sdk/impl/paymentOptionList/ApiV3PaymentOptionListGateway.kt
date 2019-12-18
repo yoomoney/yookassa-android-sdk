@@ -23,6 +23,7 @@ package ru.yandex.money.android.sdk.impl.paymentOptionList
 
 import okhttp3.OkHttpClient
 import ru.yandex.money.android.sdk.Amount
+import ru.yandex.money.android.sdk.SavePaymentMethod
 import ru.yandex.money.android.sdk.impl.ApiMethodException
 import ru.yandex.money.android.sdk.impl.TokensStorage
 import ru.yandex.money.android.sdk.impl.extensions.execute
@@ -35,12 +36,20 @@ internal class ApiV3PaymentOptionListGateway(
     private val httpClient: Lazy<OkHttpClient>,
     private val gatewayId: String?,
     private val tokensStorage: TokensStorage,
-    private val shopToken: String
+    private val shopToken: String,
+    private val savePaymentMethod: SavePaymentMethod
 ) : PaymentOptionListGateway {
 
     override fun getPaymentOptions(amount: Amount, currentUser: CurrentUser): List<PaymentOption> {
         val paymentRequest =
-            PaymentOptionsRequest(amount, currentUser, gatewayId, tokensStorage.userAuthToken, shopToken)
+            PaymentOptionsRequest(
+                amount = amount,
+                currentUser = currentUser,
+                gatewayId = gatewayId,
+                userAuthToken = tokensStorage.userAuthToken,
+                shopToken = shopToken,
+                savePaymentMethod = savePaymentMethod
+            )
 
         val response = httpClient.value.execute(paymentRequest)
 

@@ -13,7 +13,7 @@
 
 #  Документация
 
-Android Checkout mobile SDK - версия 2.4.1 ([changelog](https://github.com/yandex-money/yandex-checkout-android-sdk/blob/master/CHANGELOG.md))
+Android Checkout mobile SDK - версия 3.0.0 ([changelog](https://github.com/yandex-money/yandex-checkout-android-sdk/blob/master/CHANGELOG.md))
 
 * [Подключение зависимостей](#подключение-зависимостей)
     * [Подключение через Gradle](#подключение-через-gradle)
@@ -41,7 +41,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.yandex.money:checkout:2.4.1'
+    implementation 'com.yandex.money:checkout:3.0.0'
 }
 ```
 
@@ -102,6 +102,7 @@ dependencies {
 * subtitle (String) - описание товара;
 * clientApplicationKey (String) - токен магазина, полученный в Яндекс.Кассе;
 * shopId (String) - идентификатор магазина в Яндекс.Кассе.
+* savePaymentMethod (SavePaymentMethod) - настройка сохранения платёжного метода. Сохранённые платёжные методы можно использовать для проведения рекуррентных платежей.
 
 Необязательные:
 * paymentMethodTypes (Set of PaymentMethodType) - ограничения способов оплаты. Если оставить поле пустым или передать в него null,
@@ -114,6 +115,11 @@ dependencies {
 Поля класса `Amount`:
 * value (BigDecimal) - сумма;
 * currency (Currency) - валюта.
+
+Значения `SavePaymentMethod`:
+* ON - Сохранить платёжный метод для проведения рекуррентных платежей. Пользователю будут доступны только способы оплаты, поддерживающие сохранение. На экране контракта будет отображено сообщение о том, что платёжный метод будет сохранён.
+* OFF - Не сохранять платёжный метод.
+* USER_SELECTS - Пользователь выбирает, сохранять платёжный метод или нет. Если метод можно сохранить, на экране контракта появится переключатель.
 
 Значения `PaymentMethodType`:
 * YANDEX_MONEY - оплата произведена с кошелька Яндекс.денег;
@@ -144,7 +150,8 @@ class MyActivity extends android.support.v7.app.AppCompatActivity {
                 "Название товара",
                 "Описание товара",
                 "live_AAAAAAAAAAAAAAAAAAAA",
-                "12345"
+                "12345",
+                SavePaymentMethod.OFF
         );
         Intent intent = Checkout.createTokenizeIntent(this, paymentParameters);
         startActivityForResult(intent, REQUEST_CODE_TOKENIZE);
@@ -174,10 +181,16 @@ class MyActivity extends android.support.v7.app.AppCompatActivity {
 * clientApplicationKey (String) - токен магазина, полученный в Яндекс.Кассе;
 * shopId (String) - идентификатор магазина в Яндекс.Кассе;
 * paymentId (String) - идентификатор платежа.
+* savePaymentMethod (SavePaymentMethod) - настройка сохранения платёжного метода. Сохранённые платёжные методы можно использовать для проведения рекуррентных платежей.
 
 Поля класса `Amount`:
 * value (BigDecimal) - сумма;
 * currency (Currency) - валюта.
+
+Значения `SavePaymentMethod`:
+* ON - Сохранить платёжный метод для проведения рекуррентных платежей. Пользователю будут доступны только способы оплаты, поддерживающие сохранение. На экране контракта будет отображено сообщение о том, что платёжный метод будет сохранён.
+* OFF - Не сохранять платёжный метод.
+* USER_SELECTS - Пользователь выбирает, сохранять платёжный метод или нет. Если метод можно сохранить, на экране контракта появится переключатель.
 
 ```java
 class MyActivity extends android.support.v7.app.AppCompatActivity {
@@ -191,7 +204,8 @@ class MyActivity extends android.support.v7.app.AppCompatActivity {
                 "Описание товара",
                 "live_AAAAAAAAAAAAAAAAAAAA",
                 "12345",
-                "paymentId"
+                "paymentId",
+                SavePaymentMethod.OFF
         );
         Intent intent = Checkout.createSavedCardTokenizeIntent(this, parameters);
         startActivityForResult(intent, REQUEST_CODE_TOKENIZE);

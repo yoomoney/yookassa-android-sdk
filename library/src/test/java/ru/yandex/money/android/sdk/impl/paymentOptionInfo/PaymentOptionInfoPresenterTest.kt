@@ -91,7 +91,7 @@ class PaymentOptionInfoPresenterTest {
     @Test
     fun `should return PaymentOptionInfoBankCardViewModel if TokenizePaymentOptionInfoRequired with NewCard`() {
         // prepare
-        val outputMode = TokenizePaymentOptionInfoRequired(createNewCardPaymentOption(0), false)
+        val outputMode = TokenizePaymentOptionInfoRequired(createNewCardPaymentOption(0), true)
 
         // invoke
         presenter(outputMode) as PaymentOptionInfoBankCardViewModel
@@ -104,7 +104,7 @@ class PaymentOptionInfoPresenterTest {
     fun `should return PaymentOptionInfoLinkedCardViewModel if TokenizePaymentOptionInfoRequired with LinkedCard`() {
         // prepare
         val option = createLinkedCardPaymentOption(0) as LinkedCard
-        val outputMode = TokenizePaymentOptionInfoRequired(option, false)
+        val outputMode = TokenizePaymentOptionInfoRequired(option, true)
 
         // invoke
         val viewModel = presenter(outputMode) as PaymentOptionInfoLinkedCardViewModel

@@ -49,12 +49,16 @@ internal fun paymentOptionFactory(
 
     val charge = jsonObject.getJSONObject("charge").toAmount()
     val paymentMethodType = jsonObject.getPaymentMethodType("payment_method_type")
+    val savePaymentMethodAllowed = when (jsonObject.getString("save_payment_method")) {
+        "allowed" -> true
+        else -> false
+    }
 
     return paymentMethodType?.let {
         when (paymentMethodType) {
-            BANK_CARD -> NewCard(id, charge, jsonObject.getFee())
-            SBERBANK -> SbolSmsInvoicing(id, charge, jsonObject.getFee())
-            GOOGLE_PAY -> GooglePay(id, charge, jsonObject.getFee())
+            BANK_CARD -> NewCard(id, charge, jsonObject.getFee(), savePaymentMethodAllowed)
+            SBERBANK -> SbolSmsInvoicing(id, charge, jsonObject.getFee(), savePaymentMethodAllowed)
+            GOOGLE_PAY -> GooglePay(id, charge, jsonObject.getFee(), savePaymentMethodAllowed)
             YANDEX_MONEY -> when (InstrumentType.parse(jsonObject.optString("instrument_type"))) {
                 WALLET -> Wallet(
                     id = id,
@@ -62,7 +66,8 @@ internal fun paymentOptionFactory(
                     fee = jsonObject.getFee(),
                     walletId = jsonObject.optString("id"),
                     balance = jsonObject.optJSONObject("balance").toAmount(),
-                    userName = userName
+                    userName = userName,
+                    savePaymentMethodAllowed = savePaymentMethodAllowed
                 )
                 LINKED_BANK_CARD -> LinkedCard(
                     id = id,
@@ -71,9 +76,10 @@ internal fun paymentOptionFactory(
                     cardId = jsonObject.getString("id"),
                     name = jsonObject.optString("card_name"),
                     pan = jsonObject.getString("card_mask"),
-                    brand = jsonObject.getCardBrand()
+                    brand = jsonObject.getCardBrand(),
+                    savePaymentMethodAllowed = savePaymentMethodAllowed
                 )
-                UNKNOWN -> AbstractWallet(id, charge, null)
+                UNKNOWN -> AbstractWallet(id, charge, null, savePaymentMethodAllowed)
             }
         }
     }

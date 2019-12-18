@@ -69,13 +69,14 @@ internal class MockPaymentOptionListGateway(
                 fee = fee,
                 walletId = "11234567887654321",
                 balance = Amount(BigDecimal.TEN, amount.currency),
-                userName = currentUser.userName
+                userName = currentUser.userName,
+                savePaymentMethodAllowed = true
             )
         )
         addAll(generateLinkedCards(id, amount, fee).take(linkedCardsCount))
-        add(SbolSmsInvoicing(id.next(), amount, fee))
-        add(GooglePay(id.next(), amount, fee))
-        add(NewCard(id.next(), amount, fee))
+        add(SbolSmsInvoicing(id.next(), amount, fee, false))
+        add(GooglePay(id.next(), amount, fee, false))
+        add(NewCard(id.next(), amount, fee, true))
     }.toList()
 
     private fun createAnonymousList(
@@ -86,11 +87,12 @@ internal class MockPaymentOptionListGateway(
         AbstractWallet(
             id = id.next(),
             charge = Amount(amount.value, amount.currency),
-            fee = fee
+            fee = fee,
+            savePaymentMethodAllowed = true
         ),
-        SbolSmsInvoicing(id.next(), Amount(amount.value, amount.currency), fee),
-        GooglePay(id.next(), amount, fee),
-        NewCard(id.next(), Amount(amount.value, amount.currency), fee)
+        SbolSmsInvoicing(id.next(), Amount(amount.value, amount.currency), fee, false),
+        GooglePay(id.next(), amount, fee, false),
+        NewCard(id.next(), Amount(amount.value, amount.currency), fee, true)
     )
 
     private fun generateLinkedCards(
@@ -106,7 +108,8 @@ internal class MockPaymentOptionListGateway(
             cardId = cardId,
             brand = randomCardBrand(),
             pan = cardId.replaceRange(4, 12, "*".repeat(8)),
-            name = "testCardName".takeIf { random.nextInt(10) < 5 }
+            name = "testCardName".takeIf { random.nextInt(10) < 5 },
+            savePaymentMethodAllowed = true
         )
     }
 

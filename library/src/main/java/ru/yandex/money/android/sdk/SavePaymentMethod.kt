@@ -21,30 +21,36 @@
 
 package ru.yandex.money.android.sdk
 
-import android.annotation.SuppressLint
-import android.os.Parcelable
 import android.support.annotation.Keep
-import kotlinx.android.parcel.Parcelize
 
 /**
- * Wrapper for payment parameters. This class is used only in [Checkout.createSavedCardTokenizeIntent].
+ * Setting for saving payment method. If payment method is saved, shop can make recurring payments with a token,
+ * received from [Checkout.createTokenizationResult].
  *
- * @param amount payment amount, see [Amount]. Available payment options can vary depending on amount.
- * @param title name of the goods to be bought.
- * @param subtitle description of the goods to be bought.
- * @param clientApplicationKey merchant token from Yandex.Checkout.
- * @param shopId shop id from Yandex.Checkout.
- * @param paymentMethodId id of previous payment.
- * @param savePaymentMethod setting for saving payment method (see [SavePaymentMethod]]).
+ * There are three options for this setting:
+ * [ON] - always save payment method. User can select only from payment methods, that allow saving.
+ * On the contract screen user will see a message about saving his payment method.
+ * [OFF] - don't save payment method. User can select from all of the available payment methods.
+ * [USER_SELECTS] - user chooses to save payment method (user will have a switch to change
+ * selection, if payment method can be saved).
  */
-@[Parcelize SuppressLint("ParcelCreator")]
-data class SavedBankCardPaymentParameters
-@Keep constructor(
-    @Keep val amount: Amount,
-    @Keep val title: String,
-    @Keep val subtitle: String,
-    @Keep val clientApplicationKey: String,
-    @Keep val shopId: String,
-    @Keep val paymentMethodId: String,
-    @Keep val savePaymentMethod: SavePaymentMethod
-) : Parcelable
+@Keep
+enum class SavePaymentMethod {
+    /**
+     * Always save payment method. User can select only from payment methods, that allow saving.
+     * On the contract screen user will see a message about saving his payment method.
+     */
+    @Keep
+    ON,
+    /**
+     * Don't save payment method. User can select from all of the available payment methods.
+     */
+    @Keep
+    OFF,
+    /**
+     * User chooses to save payment method (user will have a switch to change selection,
+     * if payment method can be saved).
+     */
+    @Keep
+    USER_SELECTS
+}

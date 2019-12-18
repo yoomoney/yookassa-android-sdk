@@ -59,7 +59,7 @@ internal class TokenizeUseCaseTest {
         getLoadedPaymentOptionListGateway = getLoadedPaymentOptionListGateway,
         tokenizeGateway = tokenizeGateway,
         checkPaymentAuthRequiredGateway = checkPaymentAuthRequiredGateway,
-        convertToConfirmation = convertToConfirmation
+        getConfirmation = convertToConfirmation
     )
 
     @Test(expected = SelectedOptionNotFoundException::class)
@@ -94,7 +94,8 @@ internal class TokenizeUseCaseTest {
         // assert
         inOrder(getLoadedPaymentOptionListGateway, tokenizeGateway, checkPaymentAuthRequiredGateway).apply {
             verify(getLoadedPaymentOptionListGateway).getLoadedPaymentOptions()
-            verify(tokenizeGateway).getToken(testPaymentOption, testPaymentOptionInfo, true,
+            verify(tokenizeGateway).getToken(
+                testPaymentOption, testPaymentOptionInfo, true,
                 NoConfirmation
             )
             verifyNoMoreInteractions()
@@ -118,11 +119,11 @@ internal class TokenizeUseCaseTest {
     fun shouldThrow_IllegalStateException_When_TryToTokenizeAbstractWallet() {
         // prepare
         whenever(getLoadedPaymentOptionListGateway.getLoadedPaymentOptions()).thenReturn(
-            listOf(AbstractWallet(1, Amount(BigDecimal.TEN, RUB), null))
+            listOf(AbstractWallet(1, Amount(BigDecimal.TEN, RUB), null, true))
         )
 
         // invoke
-        useCase(TokenizeInputModel(1, false))
+        useCase(TokenizeInputModel(1, true))
 
         // assert that CannotTokenizeAbstractWalletException thrown
     }
@@ -134,7 +135,7 @@ internal class TokenizeUseCaseTest {
         whenever(getLoadedPaymentOptionListGateway.getLoadedPaymentOptions()).thenReturn(listOf(paymentOption))
 
         // invoke
-        val outputModel = useCase(TokenizeInputModel(1, false)) as TokenizePaymentOptionInfoRequired
+        val outputModel = useCase(TokenizeInputModel(1, true)) as TokenizePaymentOptionInfoRequired
 
         // assert
         assertThat(outputModel.option, equalTo(paymentOption))
@@ -147,7 +148,7 @@ internal class TokenizeUseCaseTest {
         whenever(getLoadedPaymentOptionListGateway.getLoadedPaymentOptions()).thenReturn(listOf(paymentOption))
 
         // invoke
-        val outputModel = useCase(TokenizeInputModel(1, false)) as TokenizePaymentOptionInfoRequired
+        val outputModel = useCase(TokenizeInputModel(1, true)) as TokenizePaymentOptionInfoRequired
 
         // assert
         assertThat(outputModel.option, equalTo(paymentOption))
@@ -160,7 +161,7 @@ internal class TokenizeUseCaseTest {
         whenever(getLoadedPaymentOptionListGateway.getLoadedPaymentOptions()).thenReturn(listOf(paymentOption))
 
         // invoke
-        val outputModel = useCase(TokenizeInputModel(1, false)) as TokenizePaymentOptionInfoRequired
+        val outputModel = useCase(TokenizeInputModel(1, true)) as TokenizePaymentOptionInfoRequired
 
         // assert
         assertThat(outputModel.option, equalTo(paymentOption))
@@ -173,7 +174,7 @@ internal class TokenizeUseCaseTest {
         whenever(getLoadedPaymentOptionListGateway.getLoadedPaymentOptions()).thenReturn(listOf(paymentOption))
 
         // invoke
-        val outputModel = useCase(TokenizeInputModel(1, false)) as TokenizePaymentOptionInfoRequired
+        val outputModel = useCase(TokenizeInputModel(1, true)) as TokenizePaymentOptionInfoRequired
 
         // assert
         assertThat(outputModel.option, equalTo(paymentOption))
@@ -187,7 +188,7 @@ internal class TokenizeUseCaseTest {
         whenever(tokenizeGateway.getToken(any(), any(), any(), any())).thenReturn("test token")
 
         // invoke
-        val outputModel = useCase(TokenizeInputModel(1, false)) as TokenOutputModel
+        val outputModel = useCase(TokenizeInputModel(1, true)) as TokenOutputModel
 
         // assert
         assertThat(outputModel.option, equalTo(paymentOption))

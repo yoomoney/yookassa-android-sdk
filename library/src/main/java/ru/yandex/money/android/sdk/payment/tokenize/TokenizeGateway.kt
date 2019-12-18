@@ -26,10 +26,11 @@ import ru.yandex.money.android.sdk.model.PaymentOption
 import ru.yandex.money.android.sdk.model.PaymentOptionInfo
 
 internal interface TokenizeGateway {
+
     fun getToken(
         paymentOption: PaymentOption,
         paymentOptionInfo: PaymentOptionInfo,
-        allowRecurringPayments: Boolean,
+        savePaymentMethod: Boolean,
         confirmation: Confirmation
     ): String
 }

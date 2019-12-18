@@ -60,8 +60,8 @@ internal abstract class BankCardFragment : Fragment() {
             AppModel.tokenizeController(
                 TokenizeInputModel(
                     paymentOptionId = viewModel.optionId,
-                    allowRecurringPayments = viewModel.allowRecurringPayments,
-                    paymentOptionInfo = collectPaymentOptionInfo()
+                    paymentOptionInfo = collectPaymentOptionInfo(),
+                    savePaymentMethod = viewModel.savePaymentOption
                 )
             )
         }
