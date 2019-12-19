@@ -1,6 +1,7 @@
 ## Changelog
 
 ### 3.0.0
+2019-12-18
 - Change public api. PaymentParameters and SavedBankCardPaymentParameters now have new required parameter - savePaymentMethod.
 - Add ability to save payment methods for recurring payments.
 
