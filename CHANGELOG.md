@@ -1,5 +1,9 @@
 ## Changelog
 
+### 3.0.1
+2019-12-20
+- Update translations.
+
 ### 3.0.0
 2019-12-18
 - Change public api. PaymentParameters and SavedBankCardPaymentParameters now have new required parameter - savePaymentMethod.

@@ -26,7 +26,7 @@
     <string name="ym_payment_options_title">Способ оплаты</string>
     <string name="ym_payment_options_error_message">Проблема с интернетом. Попробуйте ещё раз, когда будете онлайн</string>
     <string name="ym_payment_options_error_button">Повторить попытку</string>
-    <string name="ym_bank_card_expiry_hint">Действует до</string>
+    <string name="ym_bank_card_expiry_hint">ММ / ГГ</string>
     <string name="ym_bank_card_cvc_hint">Введите CVC</string>
     <string name="ym_bank_card_number_hint">Номер карты</string>
     <string name="ym_bank_card_pay">Заплатить</string>
@@ -67,6 +67,7 @@
     <string name="ym_payment_option_google_pay">Google Pay</string>
     <string name="ym_license_agreement_part_1">Нажимая кнопку, вы принимаете</string>
     <string name="ym_license_agreement_part_2">условия сервиса</string>
+    <string name="ym_license_agreement_url">https://money.yandex.ru/page?id=526623</string>
     <string name="ym_save_payment_method_wallet_info_title">Разрешение списывать деньги без вашего участия</string>
     <string name="ym_save_payment_method_wallet_info_text">Это значит, что вы даёте Яндекс.Деньгам предварительное согласие списывать деньги с кошелька по запросу магазина — без дополнительного подтверждения с вашей стороны. Отменить такие списания можно в любой момент: в настройках кошелька (на сайте Яндекс.Денег).</string>
     <string name="ym_save_payment_method_wallet_switch_text_part_1">Разрешить магазину</string>

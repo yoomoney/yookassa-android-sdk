@@ -41,7 +41,7 @@
     <string name="ym_contract_continue">Next</string>
     <string name="ym_contract_change_payment_option">Change</string>
     <string name="ym_payment_auth_repeat">Send again</string>
-    <string name="ym_allow_wallet_linking">Save the Yandex.Money Wallet in this app</string>
+    <string name="ym_allow_wallet_linking">Save the wallet in this app for faster payments</string>
     <string name="ym_auth_hint_sms">Password from the message</string>
     <string name="ym_auth_hint_totp">Enter a one-time password</string>
     <string name="ym_auth_hint_password">Enter the password</string>
@@ -67,17 +67,17 @@
     <string name="ym_payment_option_google_pay">Google Pay</string>
     <string name="ym_license_agreement_part_1">By clicking this button, you accept</string>
     <string name="ym_license_agreement_part_2">terms and conditions of the service</string>
-    <string name="ym_license_agreement_url" translatable="false">https://money.yandex.ru/page?id=526623</string>
-    <string name="ym_save_payment_method_wallet_info_title">Разрешение списывать деньги без вашего участия</string>
-    <string name="ym_save_payment_method_wallet_info_text">Это значит, что вы даёте Яндекс.Деньгам предварительное согласие списывать деньги с кошелька по запросу магазина — без дополнительного подтверждения с вашей стороны. Отменить такие списания можно в любой момент: в настройках кошелька (на сайте Яндекс.Денег).</string>
-    <string name="ym_save_payment_method_wallet_switch_text_part_1">Разрешить магазину</string>
-    <string name="ym_save_payment_method_wallet_switch_text_part_2">списывать деньги без моего участия</string>
-    <string name="ym_save_payment_method_wallet_message_text_part_1">После оплаты привяжем кошелёк: магазин сможет</string>
-    <string name="ym_save_payment_method_wallet_message_text_part_2">списывать деньги без вашего участия</string>
-    <string name="ym_save_payment_method_bank_card_info_title">Разрешение списывать деньги по запросу магазина</string>
-    <string name="ym_save_payment_method_bank_card_info_text">Это значит, что предварительно вы разрешаете Яндекс.Деньгам списывать деньги по запросу магазина, без отдельного подтверждения — с этой карты или с новой, при перевыпуске (если ваш банк умеет автоматически обновлять данные). Отменить привязку можно в любой момент, через службу поддержки магазина.</string>
-    <string name="ym_save_payment_method_bank_card_switch_text_part_1">Привязать карту и</string>
-    <string name="ym_save_payment_method_bank_card_switch_text_part_2">списывать деньги по запросу магазина</string>
-    <string name="ym_save_payment_method_bank_card_message_text_part_1">После оплаты привяжем карту, чтобы</string>
-    <string name="ym_save_payment_method_bank_card_message_text_part_2">списывать деньги по запросу магазина</string>
+    <string name="ym_license_agreement_url">https://money.yandex.ru/page?id=526623</string>
+    <string name="ym_save_payment_method_wallet_info_title">Permission to debit money without your participation</string>
+    <string name="ym_save_payment_method_wallet_info_text">It means that you are giving Yandex.Money your prior consent to debit money from your wallet upon store\'s request without any additional confirmation from your side. You can disable this permission at any moment in the wallet settings (on the Yandex.Money website).</string>
+    <string name="ym_save_payment_method_wallet_switch_text_part_1">Allow the store</string>
+    <string name="ym_save_payment_method_wallet_switch_text_part_2">to debit money without my participation</string>
+    <string name="ym_save_payment_method_wallet_message_text_part_1">After the payment, we will link the wallet: the store will be able</string>
+    <string name="ym_save_payment_method_wallet_message_text_part_2">to debit money without your participation</string>
+    <string name="ym_save_payment_method_bank_card_info_title">Permission to debit money upon store\'s request</string>
+    <string name="ym_save_payment_method_bank_card_info_text">It means that you are giving Yandex.Money your prior consent to debit money upon store\'s request without any additional confirmation from your side from this card or a new one in case it is reissued (if your bank can update the data automatically). You can unlink the card at any moment via store\'s support service.</string>
+    <string name="ym_save_payment_method_bank_card_switch_text_part_1">Link the card and</string>
+    <string name="ym_save_payment_method_bank_card_switch_text_part_2">debit money upon store\'s request</string>
+    <string name="ym_save_payment_method_bank_card_message_text_part_1">After the payment, we will link the card so that</string>
+    <string name="ym_save_payment_method_bank_card_message_text_part_2">money could be debited upon store\'s request</string>
 </resources>
