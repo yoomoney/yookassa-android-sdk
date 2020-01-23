@@ -53,7 +53,7 @@ internal class CheckoutActivity : AppCompatActivity() {
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (savedInstanceState == null) {
+        if (savedInstanceState == null || !AppModel.isInitialized) {
             tokenize()
         }
         attachMainDialogFragment()
@@ -126,8 +126,7 @@ internal class CheckoutActivity : AppCompatActivity() {
 
     private fun showDialog(supportFragmentManager: FragmentManager) {
         findDialog(supportFragmentManager) ?: MainDialogFragment().apply {
-            show(supportFragmentManager, TAG_BOTTOM_SHEET)
-            supportFragmentManager.executePendingTransactions()
+            supportFragmentManager.beginTransaction().add(this, TAG_BOTTOM_SHEET).commitNowAllowingStateLoss()
         }
     }
 

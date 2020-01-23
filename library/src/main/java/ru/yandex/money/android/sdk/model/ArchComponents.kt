@@ -21,6 +21,7 @@
 
 package ru.yandex.money.android.sdk.model
 
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.reflect.KClass
@@ -144,17 +145,18 @@ internal class UnhandledException(cause: Throwable?) : Exception(cause)
 
 internal class StateHolder(private val uiExecutor: Executor) {
 
-    private val stateListeners = mutableMapOf<KClass<*>, MutableList<Any>>()
+    private val stateListeners = ConcurrentHashMap<KClass<*>, MutableList<Any>>()
     private var lastState: ViewModel? = null
 
     @Suppress("UNCHECKED_CAST")
     inline fun <reified T : ViewModel> onEvent(event: T) {
         lastState = event
-        stateListeners
-            .filterKeys { it.java.isInstance(event) }
-            .values.asSequence()
-            .flatten()
-            .forEach { uiExecutor { (it as (T) -> Unit)(event) } }
+        for (entry in stateListeners) {
+            if (entry.key.java.isInstance(lastState)) {
+                for (element in entry.value)
+                    uiExecutor { (element as (T) -> Unit)(event) }
+            }
+        }
     }
 
     inline operator fun <reified T : ViewModel> plusAssign(noinline listener: (T) -> Unit) {

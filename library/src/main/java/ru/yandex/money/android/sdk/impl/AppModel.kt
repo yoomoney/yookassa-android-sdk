@@ -209,6 +209,8 @@ internal object AppModel {
             Controller<SmsSessionRetryInputModel, SmsSessionRetryOutputModel, ContractViewModel>
         private set
 
+    internal var isInitialized: Boolean = false
+
     internal fun init(
         argContext: Context,
         paymentParameters: PaymentParameters,
@@ -632,6 +634,8 @@ internal object AppModel {
             resultConsumer = listeners::onEvent,
             logger = logger
         )
+
+        isInitialized = true
     }
 
     fun reset() {

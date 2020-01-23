@@ -1,5 +1,9 @@
 ## Changelog
 
+### 3.0.2
+2019-01-23
+- Fix minor crashes.
+
 ### 3.0.1
 2019-12-20
 - Update translations.

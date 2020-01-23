@@ -42,11 +42,11 @@ internal class YandexAuthFragment :
         context?.also {
             yandexAuthSdk = YandexAuthSdk(it, YandexAuthOptions(it, true))
         }
-        AppModel.yandexAuthGateway!!.setListener(this)
+        AppModel.yandexAuthGateway?.setListener(this)
     }
 
     override fun onDestroy() {
-        AppModel.yandexAuthGateway!!.removeListener()
+        AppModel.yandexAuthGateway?.removeListener()
         super.onDestroy()
     }
 
@@ -60,9 +60,9 @@ internal class YandexAuthFragment :
             }
 
             if (token != null) {
-                AppModel.yandexAuthGateway!!.setResult(token)
+                AppModel.yandexAuthGateway?.setResult(token)
             } else {
-                AppModel.yandexAuthGateway!!.cancel()
+                AppModel.yandexAuthGateway?.cancel()
             }
         }
     }
