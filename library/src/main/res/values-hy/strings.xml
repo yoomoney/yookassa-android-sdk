@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+  ~ The MIT License (MIT)
+  ~ Copyright © 2018 NBCO Yandex.Money LLC
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+  ~ associated documentation files (the “Software”), to deal in the Software without restriction, including
+  ~ without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+  ~ of the Software, and to permit persons to whom the Software is furnished to do so, subject to the
+  ~ following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all copies or substantial
+  ~ portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+  ~ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+  ~ PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+  ~ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+  ~ OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+  ~ OTHER DEALINGS IN THE SOFTWARE.
+  -->
+
+<resources>
+    <string name="ym_payment_option_new_card">Բանկային քարտ</string>
+    <string name="ym_payment_option_yamoney">Яндекс.Деньги</string>
+    <string name="ym_payment_options_title">Վճարման միջոց</string>
+    <string name="ym_payment_options_error_message">Ինտերնետի խնդիր։ Փորձեք նորից երբ կլինեք օնլայն  </string>
+    <string name="ym_payment_options_error_button">Փորձել նորից</string>
+    <string name="ym_bank_card_expiry_hint">ԱԱ/ՏՏ</string>
+    <string name="ym_bank_card_cvc_hint">Մուտքագրեք CVC-ն</string>
+    <string name="ym_bank_card_number_hint">Քարտի համարը</string>
+    <string name="ym_bank_card_pay">Վճարել</string>
+    <string name="ym_bank_card_title_existing">Բանկային քարտ</string>
+    <string name="ym_bank_card_title_new">Բանկային քարտ</string>
+    <string name="ym_bank_card_title_edit">Կցված քարտը</string>
+    <string name="ym_payment_options_yamoney">Yandex.Money</string>
+    <string name="ym_payment_options_android_pay">Google Pay</string>
+    <string name="ym_sberbank">Сбербанк Онлайн</string>
+    <string name="ym_contract_amount">Վճարման գումարը</string>
+    <string name="ym_contract_fee">Ներառյալ միջնորդավճարը</string>
+    <string name="ym_payment_options_bank_card">Բանկային քարտ</string>
+    <string name="ym_contract_continue">Շարունակել</string>
+    <string name="ym_contract_change_payment_option">Փոխարինել</string>
+    <string name="ym_payment_auth_repeat">Ուղարկել նորից</string>
+    <string name="ym_allow_wallet_linking">Պահպանե՞լ Yandex.Money դրամապանակը այս հավելվածում</string>
+    <string name="ym_auth_hint_sms">Մուտքագրեք գաղտնաբառը sms-ից</string>
+    <string name="ym_auth_hint_totp">Մուտքագրեք միանգամյա գաղտնաբառը</string>
+    <string name="ym_auth_hint_password">Մուտքագրեք մուտքի կոդը</string>
+    <string name="ym_auth_hint_emergency">Մուտքագրեք վթարային կոդը</string>
+    <string name="ym_logout_dialog_button_negative">Չեղարկել</string>
+    <string name="ym_logout_dialog_button_positive">լավ</string>
+    <string name="ym_logout_dialog_message">Ցանկանում ե՞ք դուրս գալ հաշվից %1$s?</string>
+    <string name="ym_retry">Փորձել նորից</string>
+    <string name="ym_no_wallet_dialog_message">%1$s,  Դուք չունեք դրամապանակ Յանդեքսում</string>
+    <string name="ym_no_wallet_dialog_shoose_payment_option">Ընտրել վճարման տարբերակը</string>
+    <string name="ym_error_something_went_wrong">Հավանաբար առաջացել է տեխնիկական խնդիր</string>
+    <string name="ym_error_no_internet">Ինտերնետի խնդիր։ Փորձեք նորից երբ կլինեք օնլայն</string>
+    <string name="ym_no_payment_options_error"> Չկա հասանելի վճարման տարբերակ</string>
+    <string name="ym_wrong_passcode_error">Սխալ գաղտնաբառ</string>
+    <string name="ym_login_error"> Առաջացել է լոգինի սխալ Yandex.Money ծառայությունում </string>
+    <string name="ym_server_error">Հավանաբար սա տեխնիկական խնդիր է</string>
+    <string name="ym_unknown_error">Հավանաբար սա տեխնիկական սխալ է</string>
+    <string name="ym_unhandled_error">Տեղի է ունեցել սխալ, փորձեք նորից</string>
+    <string name="ym_verify_attempts_exceeded">Դուք մի անգամ մուտքագրել եք սխալ գաղտնաբառ։ Փորձեք նորից ավելի ուշ</string>
+    <string name="ym_sms_retry_time">Կարող եք փորձել նորից. %1$s с</string>
+    <string name="ym_error_empty_payment_auth_code">Անհրաժեշտ է լրացնել</string>
+    <string name="ym_payment_option_google_pay">Google Pay</string>
+    <string name="ym_license_agreement_url">https://money.yandex.ru/page?id=526623</string>
+    <string name="ym_license_agreement_part_1"> Սեղմելիս կոճակը դուք ընդունում եք</string>
+    <string name="ym_license_agreement_part_2">ծառայության պայմանները</string>
+    <string name="ym_save_payment_method_wallet_info_title">Առանց ձեր մասնակցության գումարը գանձելու թույլտվություն</string>
+    <string name="ym_save_payment_method_wallet_info_text">Սա նշանակում է, որ դուք Яндекс.Деньги-ին նախնական համաձայնություն եք տալիս ձեր դրամապանակից գումար գանձել խանութի հարցումով - առանց ձեր կողմից լրացուցիչ հաստատումի</string>
+    <string name="ym_save_payment_method_wallet_switch_text_part_1">Թույլատրել խանութին</string>
+    <string name="ym_save_payment_method_wallet_switch_text_part_2">գումար գանձել առանց իմ մասնակցության</string>
+    <string name="ym_save_payment_method_wallet_message_text_part_1">Վճարումից հետո կկցվի դրամապանակը. խանութը կկարողանա</string>
+    <string name="ym_save_payment_method_wallet_message_text_part_2">գումար գանձել առանց ձեր մասնակցության</string>
+    <string name="ym_save_payment_method_bank_card_info_title">Խանութի հարցումով գումար գանձելու թույլտվություն</string>
+    <string name="ym_save_payment_method_bank_card_info_text">Սա նշանակում է, որ դուք նախնական թույլտվություն եք տալիս Яндекс.Деньги-ին գումար գանձել խանութի հարցումով, առանց առանձին հաստատման - այս կամ նոր քարտից, վերաթողարկման դեպքում (եթե ձեր բանկը կարողանում է ավտոմատ կերպով թարմացնել տվյալները)։ Չեղարկել կցումը հնարավոր է ցանկացած պահի, խանութի տեխնիկական աջակցության ծառայության միջոցով։</string>
+    <string name="ym_save_payment_method_bank_card_switch_text_part_1">Կցել քարտը և</string>
+    <string name="ym_save_payment_method_bank_card_switch_text_part_2">գումար գանձել խանութի հարցումով</string>
+    <string name="ym_save_payment_method_bank_card_message_text_part_1">Վճարումից հետո կկցենք քարտը, որպեսզի</string>
+    <string name="ym_save_payment_method_bank_card_message_text_part_2">գումար գանձել խանութի հարցումով</string>
+</resources>
