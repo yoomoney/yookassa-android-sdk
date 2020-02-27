@@ -13,16 +13,18 @@
 
 #  Документация
 
-Android Checkout mobile SDK - версия 2.2.1 ([changelog](https://github.com/yandex-money/yandex-checkout-android-sdk/blob/master/CHANGELOG.md))
+Android Checkout mobile SDK - версия 3.0.2 ([changelog](https://github.com/yandex-money/yandex-checkout-android-sdk/blob/master/CHANGELOG.md))
 
 * [Подключение зависимостей](#подключение-зависимостей)
-    * [Подключение через Gradle](#подключение-через-gradle)
-    * [Подключение YandexLoginSDK (для платежей из кошелька)](#подключение-yandexloginsdk)
+    * [Подключение через Gradle](#подключение-через-Gradle)
+    * [Подключение YandexLoginSDK (для платежей из кошелька)](#подключение-YandexLoginSDK)
     * [Настройка приложения при продаже цифровых товаров](#настройка-приложения-при-продаже-цифровых-товаров)
 * [Использование библиотеки](#использование-библиотеки)
     * [Токенизация](#токенизация)
         * [Запуск токенизации](#запуск-токенизации)
+        * [Запуск токенизации для сохранённых банковских карт](#запуск-токенизации-для-сохранённых-банковских-карт)
         * [Получение результата токенизации](#получение-результата-токенизации)
+        * [Использование платежного токена](#использование-платежного-токена)
         * [Тестовые параметры и отладка](#тестовые-параметры-и-отладка)
         * [Настройка интерфейса](#настройка-интерфейса)
     * [3DSecure](#3dsecure)
@@ -40,7 +42,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.yandex.money:checkout:2.2.1'
+    implementation 'com.yandex.money:checkout:3.0.2'
 }
 ```
 
@@ -62,7 +64,7 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    implementation "com.yandex.android:authsdk:2.1.0"
+    implementation "com.yandex.android:authsdk:2.1.1"
 }
 ```
 
@@ -90,8 +92,8 @@ dependencies {
 Входные параметры метода:
 * context (Context) - контекст приложения;
 * paymentParameters (PaymentParameters) - параметры платежа;
-* testParameters (TestParameters) - параметры для дебага, см. [Тестовые параметры и отладка](#тестовые-параметры-и-отладка]);
-* uiParameters (UiParameters) - настройка интерфейса, см. [Настройка интерфейса](#настройка-интерфейса]).
+* testParameters (TestParameters) - параметры для дебага, см. [Тестовые параметры и отладка](#тестовые-параметры-и-отладка);
+* uiParameters (UiParameters) - настройка интерфейса, см. [Настройка интерфейса](#настройка-интерфейса).
 
 Поля `PaymentParameters`:
 
@@ -99,8 +101,9 @@ dependencies {
 * amount (Amount) - стоимость товара. Допустимые способы оплаты могут меняться в зависимости от этого параметра;
 * title (String) - название товара;
 * subtitle (String) - описание товара;
-* clientApplicationKey (String) - токен магазина, полученный в Яндекс.Кассе;
+* clientApplicationKey (String) - ключ для клиентских приложений из личного кабинета Яндекс.Кассы ([раздел Настройки — Ключи API](https://kassa.yandex.ru/my/api-keys-settings)).;
 * shopId (String) - идентификатор магазина в Яндекс.Кассе.
+* savePaymentMethod (SavePaymentMethod) - настройка сохранения платёжного метода. Сохранённые платёжные методы можно использовать для проведения рекуррентных платежей.
 
 Необязательные:
 * paymentMethodTypes (Set of PaymentMethodType) - ограничения способов оплаты. Если оставить поле пустым или передать в него null,
@@ -113,6 +116,11 @@ dependencies {
 Поля класса `Amount`:
 * value (BigDecimal) - сумма;
 * currency (Currency) - валюта.
+
+Значения `SavePaymentMethod`:
+* ON - Сохранить платёжный метод для проведения рекуррентных платежей. Пользователю будут доступны только способы оплаты, поддерживающие сохранение. На экране контракта будет отображено сообщение о том, что платёжный метод будет сохранён.
+* OFF - Не сохранять платёжный метод.
+* USER_SELECTS - Пользователь выбирает, сохранять платёжный метод или нет. Если метод можно сохранить, на экране контракта появится переключатель.
 
 Значения `PaymentMethodType`:
 * YANDEX_MONEY - оплата произведена с кошелька Яндекс.денег;
@@ -143,7 +151,8 @@ class MyActivity extends android.support.v7.app.AppCompatActivity {
                 "Название товара",
                 "Описание товара",
                 "live_AAAAAAAAAAAAAAAAAAAA",
-                "12345"
+                "12345",
+                SavePaymentMethod.OFF
         );
         Intent intent = Checkout.createTokenizeIntent(this, paymentParameters);
         startActivityForResult(intent, REQUEST_CODE_TOKENIZE);
@@ -151,6 +160,59 @@ class MyActivity extends android.support.v7.app.AppCompatActivity {
 }
 ```
 
+### Запуск токенизации для сохранённых банковских карт
+
+Данный способ токенизации используется в случае, если есть привязанная к магазину карта и необходимо заново запросить у пользователя её csc.
+В остальных случаях следует использовать стандартный механизм токенизации (см. [Запуск токенизации](#запуск-токенизации)).
+
+Для запуска процесса токенизации с платежным идентификатором используется метод `Checkout.createSavedCardTokenizeIntent()`. Метод отдаёт `Intent`, который нужно запустить в startActivityForResult().
+Готовый платёжный токен можно получить в `onActivityResult()` (см. [Получение результата токенизации](#получение-результата-токенизации))
+
+Входные параметры метода:
+* context (Context) - контекст приложения;
+* savedBankCardPaymentParameters (SavedBankCardPaymentParameters) - параметры платежа с сохранённой банковской картой;
+* testParameters (TestParameters) - параметры для дебага, см. [Тестовые параметры и отладка](#тестовые-параметры-и-отладка);
+* uiParameters (UiParameters) - настройка интерфейса, см. [Настройка интерфейса](#настройка-интерфейса).
+
+Поля `SavedBankCardPaymentParameters`:
+
+* amount (Amount) - стоимость товара. Допустимые способы оплаты могут меняться в зависимости от этого параметра;
+* title (String) - название товара;
+* subtitle (String) - описание товара;
+* clientApplicationKey (String) - токен магазина, полученный в Яндекс.Кассе;
+* shopId (String) - идентификатор магазина в Яндекс.Кассе;
+* paymentId (String) - идентификатор платежа.
+* savePaymentMethod (SavePaymentMethod) - настройка сохранения платёжного метода. Сохранённые платёжные методы можно использовать для проведения рекуррентных платежей.
+
+Поля класса `Amount`:
+* value (BigDecimal) - сумма;
+* currency (Currency) - валюта.
+
+Значения `SavePaymentMethod`:
+* ON - Сохранить платёжный метод для проведения рекуррентных платежей. Пользователю будут доступны только способы оплаты, поддерживающие сохранение. На экране контракта будет отображено сообщение о том, что платёжный метод будет сохранён.
+* OFF - Не сохранять платёжный метод.
+* USER_SELECTS - Пользователь выбирает, сохранять платёжный метод или нет. Если метод можно сохранить, на экране контракта появится переключатель.
+
+```java
+class MyActivity extends android.support.v7.app.AppCompatActivity {
+
+    ...
+
+    void timeToStartCheckout() {
+        SavedBankCardPaymentParameters parameters = new SavedBankCardPaymentParameters(
+                new Amount(BigDecimal.TEN, Currency.getInstance("RUB")),
+                "Название товара",
+                "Описание товара",
+                "live_AAAAAAAAAAAAAAAAAAAA",
+                "12345",
+                "paymentId",
+                SavePaymentMethod.OFF
+        );
+        Intent intent = Checkout.createSavedCardTokenizeIntent(this, parameters);
+        startActivityForResult(intent, REQUEST_CODE_TOKENIZE);
+    }
+}
+```
 
 ### Получение результата токенизации
 Результат токенизации будет возвращен в `onActivityResult()`.
@@ -163,7 +225,7 @@ class MyActivity extends android.support.v7.app.AppCompatActivity {
 Для получения токена используйте метод `Checkout.createTokenizationResult()`.
 
 `Checkout.createTokenizationResult()` принимает на вход `Intent`, полученный в `onActivityResult()` при успешной токенизации. Он возвращает TokenizationResult, который состоит из:
-* paymentToken (String) - платежный токен;
+* paymentToken (String) - платежный токен, см. [Использование платежного токена](#использование-платежного-токена);
 * paymentMethodType (PaymentMethodType) - тип платежного средства.
 
 Значения `PaymentMethodType`:
@@ -198,6 +260,17 @@ public final class MainActivity extends AppCompatActivity {
 }
 ```
 
+### Использование платежного токена
+Необходимо получить у менеджера Яндекс.Кассы разрешение на проведение платежей с использованием токена. 
+Токен одноразовый, срок действия — 1 час. Если не создать платеж в течение часа, токен нужно будет запрашивать заново.
+
+В платежном токене содержатся данные о [сценарии подтверждения](https://kassa.yandex.ru/developers/payments/payment-process#user-confirmation) платежа.
+После получения платежного токена Вы можете [создать платеж](https://kassa.yandex.ru/developers/api#create_payment), в параметре `payment_token` передайте платежный токен.
+Если платеж проводится с аутентификацией по 3-D Secure, используйте `confirmation_url`, который придет в объекте [Платежа](https://kassa.yandex.ru/developers/api#payment_object). 
+Используйте `confirmation_url` для запуска 3-D Secure, см. [3DSecure](#3DSecure).
+
+Так же, Вы можете получить [информацию о платеже](https://kassa.yandex.ru/developers/api#get_payment) 
+
 ### Тестовые параметры и отладка
 
 Для отладки токенизации в вызов `Checkout.createTokenizeIntent()` можно добавить объект `TestParameters`.
@@ -214,7 +287,8 @@ public final class MainActivity extends AppCompatActivity {
 Поля класса `MockConfiguration`:
 * completeWithError (Boolean) - токенизация всегда возвращает ошибку;
 * paymentAuthPassed (Boolean) - пользователь всегда авторизован;
-* linkedCardsCount (Int) - количество карт, привязанных к кошельку пользователя.
+* linkedCardsCount (Int) - количество карт, привязанных к кошельку пользователя;
+* serviceFee (Amount) - комиссия, которая будет отображена на контракте;
 
 ```java
 class MyActivity extends android.support.v7.app.AppCompatActivity {
@@ -223,7 +297,8 @@ class MyActivity extends android.support.v7.app.AppCompatActivity {
 
     void timeToStartCheckout() {
         PaymentParameters paymentParameters = new PaymentParameters(...);
-        TestParameters testParameters = new TestParameters(true, true, new MockConfiguration(false, true, 5));
+        TestParameters testParameters = new TestParameters(true, true,
+            new MockConfiguration(false, true, 5, new Amount(BigDecimal.TEN, Currency.getInstance("RUB"))));
         Intent intent = Checkout.createTokenizeIntent(this, paymentParameters, testParameters);
         startActivityForResult(intent, REQUEST_CODE_TOKENIZE);
     }
@@ -349,4 +424,4 @@ public class ScanBankCardActivity extends Activity {
 * [Сайт Яндекс.Кассы](https://kassa.yandex.ru)
 * [Документация мобильных SDK на сайте Яндекс.Кассы](https://kassa.yandex.ru/docs/client-sdks/#mobil-nye-sdk)
 * [Демо-приложение в Google Play](https://play.google.com/store/apps/details?id=ru.yandex.money.android.example.prod)
-* [SDK для iOS](https://kassa.yandex.ru)
+* [SDK для iOS](https://github.com/yandex-money/yandex-checkout-payments-swift)
