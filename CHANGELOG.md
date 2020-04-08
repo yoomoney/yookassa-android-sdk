@@ -1,7 +1,13 @@
 ## Changelog
 
+### 3.0.3
+2020-04-8
+- Temporary measure: accepting expired cards (card expiry date must not be earlier than 2020-01-01)
+- Update README.
+- Update CODEOWNERS.
+
 ### 3.0.2
-2019-01-23
+2020-01-23
 - Fix minor crashes.
 
 ### 3.0.1
