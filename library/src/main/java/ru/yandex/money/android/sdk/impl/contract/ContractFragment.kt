@@ -94,6 +94,7 @@ internal class ContractFragment : Fragment() {
                 }
 
                 nextButton.setOnClickListener {
+                    view?.hideSoftKeyboard()
                     AppModel.tokenizeController(
                         TokenizeInputModel(
                             paymentOptionId = optionId,
@@ -133,6 +134,7 @@ internal class ContractFragment : Fragment() {
                         }
 
                         nextButton.setOnClickListener { _ ->
+                            view?.hideSoftKeyboard()
                             val text = phoneInput.text
                             if (text != null && text.isPhoneNumber) {
                                 AppModel.tokenizeController(
@@ -224,6 +226,7 @@ internal class ContractFragment : Fragment() {
                         requestFocusAndShowSoftKeyboard()
                     }
                     nextButton.setOnClickListener {
+                        view?.hideSoftKeyboard()
                         processPaymentAuth()
                     }
                 }
@@ -238,6 +241,7 @@ internal class ContractFragment : Fragment() {
 
             if (viewModel.googlePayContractViewModel != null) {
                 nextButton.setOnClickListener {
+                    view?.hideSoftKeyboard()
                     rootContainer.showChild(loadingView)
                     AppModel.googlePayIntegration?.startGooglePayTokenization(
                         fragment = this,
@@ -264,7 +268,7 @@ internal class ContractFragment : Fragment() {
         if (!isStateSaved) {
             errorView.setErrorText(it.error)
             errorView.setErrorButtonListener(View.OnClickListener {
-                AppModel.selectPaymentOptionController.retry()
+                AppModel.tokenizeController.retry()
             })
             rootContainer.showChild(errorView)
         }

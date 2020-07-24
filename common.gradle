@@ -24,7 +24,7 @@ apply from: rootProject.file("sensitive.gradle")
 ext {
     versionMajor = 3
     versionMinor = 0
-    versionPatch = 3
+    versionPatch = 4
 
     versionAlpha = null
 
@@ -33,20 +33,21 @@ ext {
 
     generateFileName = { project, variant ->
         def fileNameParts = [
-                variant.name,
+                "msdk",
+                getBuildBranch().replaceAll(/[^\w-.]/, "-"),
+                variant.getFlavorName(),
+                variant.buildType.name,
                 project.versionName,
-                project.ext.has('teamcity.buildConfName') ? project.ext['teamcity.buildConfName'] : "local",
-                project.ext.has('build.number') ? project.ext['build.number'] : "0"
+                getBuildNumber()
         ]
-
-        if (variant.productFlavors.find { it.name.equalsIgnoreCase("prod") }) {
-            fileNameParts += optionalProperty('defaultProdYandexAuthToken') ? "hasYandexToken" : "noYandexToken"
-            fileNameParts += optionalProperty('defaultProdPaymentAuthToken') ? "hasPaymentToken" : "noPaymentToken"
-        } else if (variant.productFlavors.find { it.name.equalsIgnoreCase("dev") }) {
-            fileNameParts += optionalProperty('defaultDevYandexAuthToken') ? "hasYandexToken" : "noYandexToken"
-            fileNameParts += optionalProperty('defaultDevPaymentAuthToken') ? "hasPaymentToken" : "noPaymentToken"
-        }
-
         return fileNameParts.join('-')
+    }
+
+    getBuildBranch = {
+        System.getenv('BUILD_BRANCH') ?: 'local'
+    }
+
+    getBuildNumber = {
+        System.getenv('BUILD_NUMBER') ?: '0'
     }
 }

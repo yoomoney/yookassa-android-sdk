@@ -21,15 +21,17 @@
 
 package ru.yandex.money.android.example;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import cards.pay.paycardsrecognizer.sdk.Card;
-import cards.pay.paycardsrecognizer.sdk.ScanCardIntent;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+
+import io.card.payment.CardIOActivity;
+import io.card.payment.CreditCard;
 import ru.yandex.money.android.sdk.Checkout;
 
-public class ScanBankCardActivity extends Activity {
+public class ScanBankCardActivity extends AppCompatActivity {
 
     public static final int REQUEST_CODE = 1;
 
@@ -37,8 +39,9 @@ public class ScanBankCardActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Intent intent = new ScanCardIntent.Builder(this).build();
-        startActivityForResult(intent, REQUEST_CODE);
+        Intent scanIntent = new Intent(this, CardIOActivity.class);
+        scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_EXPIRY, true);
+        startActivityForResult(scanIntent, REQUEST_CODE);
     }
 
     @Override
@@ -46,16 +49,17 @@ public class ScanBankCardActivity extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_CODE) {
-            if (resultCode == RESULT_OK && data != null) {
-                final Card card = data.getParcelableExtra(ScanCardIntent.RESULT_PAYCARDS_CARD);
-                final String expirationDate = card.getExpirationDate();
+            if (data != null && data.hasExtra(CardIOActivity.EXTRA_SCAN_RESULT)) {
+                CreditCard scanResult = data.getParcelableExtra(CardIOActivity.EXTRA_SCAN_RESULT);
+                final String cardNumber = scanResult.getFormattedCardNumber();
 
-                if (expirationDate != null) {
-                    final String[] expirationDateParts = expirationDate.split("/");
+                if (scanResult.isExpiryValid() && scanResult.getRedactedCardNumber() != null &&
+                        !scanResult.getRedactedCardNumber().isEmpty()) {
                     final Intent scanBankCardResult = Checkout.createScanBankCardIntent(
-                            card.getCardNumber(),
-                            Integer.parseInt(expirationDateParts[0]),
-                            Integer.parseInt(expirationDateParts[1]));
+                            cardNumber,
+                            scanResult.expiryMonth,
+                            scanResult.expiryYear % 100
+                    );
                     setResult(RESULT_OK, scanBankCardResult);
                 } else {
                     setResult(RESULT_CANCELED);

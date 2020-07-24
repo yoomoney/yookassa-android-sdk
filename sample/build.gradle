@@ -30,7 +30,7 @@ android {
     buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId "ru.yandex.money.android.example"
-        minSdkVersion 15
+        minSdkVersion 16
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
@@ -40,6 +40,7 @@ android {
         buildConfigField "String", "MERCHANT_TOKEN", "${optionalProperty('merchantToken')}"
         buildConfigField "String", "GATEWAY_ID", "${optionalProperty('gatewayId')}"
         buildConfigField "String", "SHOP_ID", "${optionalProperty('shopId')}"
+
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -93,7 +94,8 @@ dependencies {
     releaseImplementation project(':library')
     debugImplementation project(':library')
     implementation 'com.yandex.android:authsdk:2.1.1'
-    implementation 'cards.pay:paycardsrecognizer:1.1.0'
+    implementation 'io.card:android-sdk:5.5.1'
+
     testImplementation 'junit:junit:4.12'
     testImplementation "org.mockito:mockito-core:$mockito_version"
     testImplementation "org.robolectric:robolectric:3.8"

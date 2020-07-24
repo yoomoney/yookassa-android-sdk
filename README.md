@@ -13,7 +13,7 @@
 
 #  Документация
 
-Android Checkout mobile SDK - версия 3.0.3 ([changelog](https://github.com/yandex-money/yandex-checkout-android-sdk/blob/master/CHANGELOG.md))
+Android Checkout mobile SDK - версия 3.0.4 ([changelog](https://github.com/yandex-money/yandex-checkout-android-sdk/blob/master/CHANGELOG.md))
 
 * [Подключение зависимостей](#подключение-зависимостей)
     * [Подключение через Gradle](#подключение-через-Gradle)
@@ -42,7 +42,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.yandex.money:checkout:3.0.3'
+    implementation 'com.yandex.money:checkout:3.0.4'
 }
 ```
 
@@ -277,7 +277,7 @@ public final class MainActivity extends AppCompatActivity {
 
 Поля класса `TestParameters:`
 * showLogs (Boolean) - включить отображение логов SDK. Все логи начинаются с тега 'Yandex.Checkout.SDK'
-* googlePayTestEnvironment (Boolean) - использовать тестовую среду Google Pay - все транзакции, проведенные через Google Pay, будут использовать `WalletConstants.ENVIRONMENT_TEST`. Подробнее см. на https://developers.google.com/pay/api/android/guides/test-and-deploy/integration-checklist#about-the-test-environment.
+* googlePayTestEnvironment (Boolean) - использовать тестовую среду Google Pay - все транзакции, проведенные через Google Pay, будут использовать `WalletConstants.ENVIRONMENT_TEST`. Имейте ввиду, что при попытке оплаты с параметром googlePayTestEnvironment=true произойдет ошибка токенизации. Подробнее см. на https://developers.google.com/pay/api/android/guides/test-and-deploy/integration-checklist#about-the-test-environment. 
 * mockConfiguration (MockConfiguration) - использовать моковую конфигурацию. Если этот параметр присутствует, SDK будет работать в оффлайн режиме и генерировать тестовый токен. Этот токен нельзя использовать для платежей.
 
 `MockConfiguration`

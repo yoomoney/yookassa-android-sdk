@@ -152,7 +152,7 @@ internal class StateHolder(private val uiExecutor: Executor) {
     inline fun <reified T : ViewModel> onEvent(event: T) {
         lastState = event
         for (entry in stateListeners) {
-            if (entry.key.java.isInstance(lastState)) {
+            if (entry.key.java.isInstance(event)) {
                 for (element in entry.value)
                     uiExecutor { (element as (T) -> Unit)(event) }
             }

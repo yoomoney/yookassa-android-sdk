@@ -1,5 +1,10 @@
 ## Changelog
 
+### 3.0.4
+2020-07-24
+- Bug fixes and improvements
+- Fix scanning of Bank cards on some devices in demo app
+
 ### 3.0.3
 2020-04-8
 - Temporary measure: accepting expired cards (card expiry date must not be earlier than 2020-01-01)

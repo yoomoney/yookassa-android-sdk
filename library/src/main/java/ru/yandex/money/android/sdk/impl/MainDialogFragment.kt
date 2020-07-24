@@ -76,7 +76,7 @@ internal class MainDialogFragment : BottomSheetDialogFragment() {
 
     private val paymentOptionListListener: (PaymentOptionListViewModel) -> Unit = {
         if (it === PaymentOptionListCloseViewModel) {
-            dismiss()
+            dismissAllowingStateLoss()
         } else {
             if (isHidden) {
                 fragmentManager?.takeIf { !isStateSaved && isAdded }?.popBackStack()

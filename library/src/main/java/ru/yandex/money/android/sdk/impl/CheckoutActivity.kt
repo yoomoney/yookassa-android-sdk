@@ -24,8 +24,10 @@ package ru.yandex.money.android.sdk.impl
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.support.v4.app.FragmentManager
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import ru.yandex.money.android.sdk.SavedBankCardPaymentParameters
 import ru.yandex.money.android.sdk.PaymentMethodType
 import ru.yandex.money.android.sdk.PaymentParameters
@@ -58,6 +60,13 @@ internal class CheckoutActivity : AppCompatActivity() {
         }
         attachMainDialogFragment()
         super.onCreate(savedInstanceState)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (!AppModel.isInitialized) {
+            tokenize()
+        }
     }
 
     override fun onDestroy() {
@@ -125,9 +134,7 @@ internal class CheckoutActivity : AppCompatActivity() {
     }
 
     private fun showDialog(supportFragmentManager: FragmentManager) {
-        findDialog(supportFragmentManager) ?: MainDialogFragment().apply {
-            supportFragmentManager.beginTransaction().add(this, TAG_BOTTOM_SHEET).commitNowAllowingStateLoss()
-        }
+        findDialog(supportFragmentManager) ?: MainDialogFragment().show(supportFragmentManager, TAG_BOTTOM_SHEET)
     }
 
     private fun findDialog(supportFragmentManager: FragmentManager) =
