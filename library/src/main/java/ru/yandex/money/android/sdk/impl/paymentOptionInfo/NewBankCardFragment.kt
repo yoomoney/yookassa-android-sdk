@@ -53,8 +53,6 @@ private const val MIN_LENGTH_CARD_NUMBER = 19
 private const val MIN_LENGTH_EXPIRY = 5
 private const val REQUEST_CODE_SCAN_BANK_CARD = 0x37BD
 
-private const val JANUARY = 0
-
 internal class NewBankCardFragment : BankCardFragment() {
 
     private val intent = Intent("ru.yandex.money.android.sdk.action.SCAN_BANK_CARD")
@@ -62,10 +60,11 @@ internal class NewBankCardFragment : BankCardFragment() {
     private val minExpiry = Calendar.getInstance()
 
     init {
+        val year = minExpiry.get(Calendar.YEAR)
+        val month = minExpiry.get(Calendar.MONTH)
         minExpiry.clear()
-        minExpiry.set(2020, JANUARY, 1)
+        minExpiry.set(year, month, 1)
         minExpiry.add(Calendar.DAY_OF_MONTH, -1)
-        // TODO("Temporary measure")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

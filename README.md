@@ -11,9 +11,13 @@
 * [Код библиотеки](https://github.com/yandex-money/yandex-checkout-android-sdk/tree/master/library)
 * [Код демо-приложения, которое интегрирует SDK](https://github.com/yandex-money/yandex-checkout-android-sdk/tree/master/sample)
 
+
+### Внимание: 
+В следующей версии sdk библиотека appcompat будет заменена на androidx. Обратной совместимости у них нет, поэтому если вы испольуете appcompat, для обновления sdk нужно будет мигрировать ваш проект на androidx. Подробнее о том, как это сделать — https://developer.android.com/jetpack/androidx/migrate 
+ 
 #  Документация
 
-Android Checkout mobile SDK - версия 3.0.4 ([changelog](https://github.com/yandex-money/yandex-checkout-android-sdk/blob/master/CHANGELOG.md))
+Android Checkout mobile SDK - версия 3.1.0 ([changelog](https://github.com/yandex-money/yandex-checkout-android-sdk/blob/master/CHANGELOG.md))
 
 * [Подключение зависимостей](#подключение-зависимостей)
     * [Подключение через Gradle](#подключение-через-Gradle)
@@ -42,7 +46,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.yandex.money:checkout:3.0.4'
+    implementation 'com.yandex.money:checkout:3.1.0'
 }
 ```
 
@@ -141,7 +145,7 @@ dependencies {
 * OTHER
 
 ```java
-class MyActivity extends android.support.v7.app.AppCompatActivity {
+class MyActivity extends AppCompatActivity {
 
     ...
 
@@ -194,7 +198,7 @@ class MyActivity extends android.support.v7.app.AppCompatActivity {
 * USER_SELECTS - Пользователь выбирает, сохранять платёжный метод или нет. Если метод можно сохранить, на экране контракта появится переключатель.
 
 ```java
-class MyActivity extends android.support.v7.app.AppCompatActivity {
+class MyActivity extends AppCompatActivity {
 
     ...
 
@@ -291,7 +295,7 @@ public final class MainActivity extends AppCompatActivity {
 * serviceFee (Amount) - комиссия, которая будет отображена на контракте;
 
 ```java
-class MyActivity extends android.support.v7.app.AppCompatActivity {
+class MyActivity extends AppCompatActivity {
 
     ...
 
@@ -318,7 +322,7 @@ class MyActivity extends android.support.v7.app.AppCompatActivity {
 Не рекомендуется задавать в качестве этого цвета слишком светлые цвета (они будут не видны на белом фоне) и красный цвет (он будет пересекаться с цветом ошибки).
 
 ```java
-class MyActivity extends android.support.v7.app.AppCompatActivity {
+class MyActivity extends AppCompatActivity {
 
     ...
 
@@ -350,7 +354,7 @@ class MyActivity extends android.support.v7.app.AppCompatActivity {
 
 **Запуск 3ds и получение результата**
 ```java
-class MyActivity extends android.support.v7.app.AppCompatActivity {
+class MyActivity extends AppCompatActivity {
     
     void timeToStart3DS() {
         Intent intent = Checkout.create3dsIntent(

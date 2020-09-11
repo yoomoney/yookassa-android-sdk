@@ -36,7 +36,7 @@ android {
     resourcePrefix 'ym_'
 
     defaultConfig {
-        minSdkVersion 14
+        minSdkVersion 21
         versionCode project.ext.versionCode
         versionName project.ext.versionName
 
