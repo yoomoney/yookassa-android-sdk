@@ -2,7 +2,7 @@
 
 ### 3.1.0
 2020-09-11
-- minSdkVersion changed from 21 to 24 (Android 5)
+- minSdkVersion changed to 21 (Android 5)
 - The measure to accept expired cards was rolled back
 - Update README.
 
