@@ -21,8 +21,6 @@
 
 package ru.yandex.money.android.sdk.userAuth
 
-import org.hamcrest.CoreMatchers.equalTo
-import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -42,8 +40,6 @@ internal class UserAuthUseCaseTest {
     private lateinit var currentUserGateway: CurrentUserGateway
     @Mock
     private lateinit var userAuthTokenGateway: UserAuthTokenGateway
-    @Mock
-    private lateinit var walletCheckGateway: WalletCheckGateway
 
     private lateinit var useCase: UserAuthUseCase
 
@@ -52,27 +48,24 @@ internal class UserAuthUseCaseTest {
         useCase = UserAuthUseCase(
                 authorizeUserGateway = authorizeUserGateway,
                 currentUserGateway = currentUserGateway,
-                userAuthTokenGateway = userAuthTokenGateway,
-                walletCheckGateway = walletCheckGateway
+                userAuthTokenGateway = userAuthTokenGateway
         )
     }
 
     @Test
     fun shouldReturn_AuthorizedUser_If_GatewayReturnsUser() {
         // prepare
-        val testUserAuth = AuthorizeUserGateway.User("name", "user auth token")
+        val testUserAuth = AuthorizeUserGateway.User("user auth token")
         on(authorizeUserGateway.authorizeUser()).thenReturn(testUserAuth)
-        on(walletCheckGateway.checkIfUserHasWallet("user auth token")).thenReturn(true)
 
         // invoke
         val model = useCase(Unit) as UserAuthSuccessOutputModel
 
         // assert
-        assertThat(model.authorizedUser.userName, equalTo(testUserAuth.name))
         verify(authorizeUserGateway).authorizeUser()
         verify(userAuthTokenGateway).userAuthToken = testUserAuth.token
         verify(currentUserGateway).currentUser = model.authorizedUser
-        verifyNoMoreInteractions(authorizeUserGateway, userAuthTokenGateway, currentUserGateway, walletCheckGateway)
+        verifyNoMoreInteractions(authorizeUserGateway, userAuthTokenGateway, currentUserGateway)
     }
 
     @Test
@@ -84,21 +77,6 @@ internal class UserAuthUseCaseTest {
 
         // assert
         verify(authorizeUserGateway).authorizeUser()
-        verifyNoMoreInteractions(authorizeUserGateway, userAuthTokenGateway, currentUserGateway, walletCheckGateway)
-    }
-
-    @Test
-    fun shouldReturn_UserNoWallet_If_GatewayReturnsNoWallet() {
-        // prepare
-        val testUserAuth = AuthorizeUserGateway.User("name", "user auth token")
-        on(authorizeUserGateway.authorizeUser()).thenReturn(testUserAuth)
-        on(walletCheckGateway.checkIfUserHasWallet("user auth token")).thenReturn(false)
-
-        // invoke
-        useCase(Unit) as UserAuthNoWalletOutputModel
-
-        // assert
-        verify(authorizeUserGateway).authorizeUser()
-        verifyNoMoreInteractions(authorizeUserGateway, userAuthTokenGateway, currentUserGateway, walletCheckGateway)
+        verifyNoMoreInteractions(authorizeUserGateway, userAuthTokenGateway, currentUserGateway)
     }
 }

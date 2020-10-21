@@ -22,8 +22,8 @@
 package ru.yandex.money.android.sdk.impl.secure
 
 import android.content.Context
-import android.support.test.InstrumentationRegistry
-import android.support.test.runner.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.IsNull.notNullValue
 import org.hamcrest.core.IsNull.nullValue
@@ -50,7 +50,7 @@ class BcKeyStorageTest {
     val timeout = Timeout(1, TimeUnit.MINUTES)
 
 
-    private val context = InstrumentationRegistry.getContext()
+    private val context = InstrumentationRegistry.getInstrumentation().context
     private val storage = KeyStore.getInstance(KEYSTORE_TYPE).apply {
         try {
             context.openFileInput(PATH).use { file -> load(file, PASSWORD.toCharArray()) }

@@ -21,17 +21,23 @@
 
 package ru.yandex.money.android.sdk
 
-import android.support.annotation.Keep
+import androidx.annotation.Keep
 
 /**
  * Type of selected payment method.
  */
+@Keep
 enum class PaymentMethodType {
     /**
      * Payment method Yandex.Money
      */
     @Keep
     YANDEX_MONEY,
+    /**
+     * Payment method Yandex.Money
+     */
+    @Keep
+    YOO_MONEY,
     /**
      * Payment method Google pay
      */

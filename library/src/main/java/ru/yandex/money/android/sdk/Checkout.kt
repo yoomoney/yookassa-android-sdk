@@ -24,7 +24,7 @@ package ru.yandex.money.android.sdk
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.support.annotation.Keep
+import androidx.annotation.Keep
 import ru.yandex.money.android.sdk.impl.CheckoutActivity
 import ru.yandex.money.android.sdk.impl.CheckoutInternal
 import ru.yandex.money.android.sdk.impl.EXTRA_CREATED_WITH_CHECKOUT_METHOD

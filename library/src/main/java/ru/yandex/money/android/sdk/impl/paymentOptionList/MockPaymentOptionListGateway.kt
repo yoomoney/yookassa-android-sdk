@@ -22,6 +22,7 @@
 package ru.yandex.money.android.sdk.impl.paymentOptionList
 
 import ru.yandex.money.android.sdk.Amount
+import ru.yandex.money.android.sdk.PaymentMethodType
 import ru.yandex.money.android.sdk.model.AbstractWallet
 import ru.yandex.money.android.sdk.model.AnonymousUser
 import ru.yandex.money.android.sdk.model.AuthorizedUser
@@ -69,8 +70,8 @@ internal class MockPaymentOptionListGateway(
                 fee = fee,
                 walletId = "11234567887654321",
                 balance = Amount(BigDecimal.TEN, amount.currency),
-                userName = currentUser.userName,
-                savePaymentMethodAllowed = true
+                savePaymentMethodAllowed = true,
+                paymentMethodType = PaymentMethodType.YANDEX_MONEY
             )
         )
         addAll(generateLinkedCards(id, amount, fee).take(linkedCardsCount))
@@ -88,7 +89,8 @@ internal class MockPaymentOptionListGateway(
             id = id.next(),
             charge = Amount(amount.value, amount.currency),
             fee = fee,
-            savePaymentMethodAllowed = true
+            savePaymentMethodAllowed = true,
+            paymentMethodType = PaymentMethodType.YANDEX_MONEY
         ),
         SbolSmsInvoicing(id.next(), Amount(amount.value, amount.currency), fee, false),
         GooglePay(id.next(), amount, fee, false),
@@ -109,7 +111,8 @@ internal class MockPaymentOptionListGateway(
             brand = randomCardBrand(),
             pan = cardId.replaceRange(4, 12, "*".repeat(8)),
             name = "testCardName".takeIf { random.nextInt(10) < 5 },
-            savePaymentMethodAllowed = true
+            savePaymentMethodAllowed = true,
+            paymentMethodType = PaymentMethodType.YANDEX_MONEY
         )
     }
 

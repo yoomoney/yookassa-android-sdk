@@ -25,13 +25,13 @@ package ru.yandex.money.android.sdk.impl.extensions
 
 import android.content.Context
 import android.graphics.Typeface
-import android.support.v4.content.ContextCompat
-import android.support.v7.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.text.style.ImageSpan
 import android.text.style.StyleSpan
+import androidx.appcompat.content.res.AppCompatResources
 import ru.yandex.money.android.sdk.R
 import ru.yandex.money.android.sdk.impl.metrics.TokenizeSchemeBankCard
 import ru.yandex.money.android.sdk.impl.metrics.TokenizeSchemeGooglePay
@@ -67,7 +67,7 @@ internal fun PaymentOption.getIcon(context: Context) = checkNotNull(
 
 internal fun PaymentOption.getTitle(context: Context): CharSequence = when (this) {
     is NewCard -> context.getText(R.string.ym_payment_option_new_card)
-    is Wallet -> userName
+    is Wallet -> walletId
     is AbstractWallet -> context.getText(R.string.ym_payment_option_yamoney)
     is LinkedCard -> name.takeUnless(String?::isNullOrEmpty) ?: pan.chunked(4).joinToString(" ")
     is SbolSmsInvoicing -> context.getText(R.string.ym_sberbank)

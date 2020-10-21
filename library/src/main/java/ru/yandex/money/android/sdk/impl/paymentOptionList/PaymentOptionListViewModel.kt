@@ -36,6 +36,10 @@ internal data class PaymentOptionListSuccessViewModel(
     override val showLogo: Boolean
 ) : PaymentOptionListViewModel()
 
+internal data class PaymentOptionListNoWalletViewModel(
+    override val showLogo: Boolean
+) : PaymentOptionListViewModel()
+
 internal data class PaymentOptionListItemViewModel(
     val optionId: Int,
     val icon: Drawable,

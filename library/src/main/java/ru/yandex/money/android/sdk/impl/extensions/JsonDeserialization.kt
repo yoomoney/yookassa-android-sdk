@@ -70,7 +70,7 @@ internal fun JSONObject.toError() = Error(
     retryAfter = optString("retry_after").toIntOrNull() ?: 0
 )
 
-internal fun JSONObject.toPaymentOptionResponse(userName: String): PaymentOptionsResponse =
+internal fun JSONObject.toPaymentOptionResponse(): PaymentOptionsResponse =
     if (optString("type") == "error") {
         PaymentOptionsResponse(
             paymentOptions = listOf(),
@@ -80,7 +80,7 @@ internal fun JSONObject.toPaymentOptionResponse(userName: String): PaymentOption
         PaymentOptionsResponse(
             paymentOptions = getJSONArray("items")
                 .mapIndexed { id, jsonObject ->
-                    paymentOptionFactory(id, jsonObject, userName)
+                    paymentOptionFactory(id, jsonObject)
                 }
                 .filterNotNull(),
             error = null
@@ -215,6 +215,7 @@ internal fun JSONObject.toAuthTypeState() = AuthTypeState(
 internal fun JSONObject.getPaymentMethodType(name: String) = when (optString(name)) {
     "bank_card" -> PaymentMethodType.BANK_CARD
     "yandex_money" -> PaymentMethodType.YANDEX_MONEY
+    "yoo_money" -> PaymentMethodType.YOO_MONEY
     "sberbank" -> PaymentMethodType.SBERBANK
     "google_pay" -> PaymentMethodType.GOOGLE_PAY
     else -> null

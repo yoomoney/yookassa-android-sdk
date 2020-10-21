@@ -47,8 +47,8 @@ internal class UserAuthTypeParamProviderTest(
             return listOf(
                     arrayOf(AnonymousUser, true, AuthTypeWithoutAuth()),
                     arrayOf(AnonymousUser, false, AuthTypeWithoutAuth()),
-                    arrayOf(AuthorizedUser("name"), true, AuthTypeYandexLogin()),
-                    arrayOf(AuthorizedUser("name"), false, AuthTypePaymentAuth())
+                    arrayOf(AuthorizedUser(), true, AuthTypeYandexLogin()),
+                    arrayOf(AuthorizedUser(), false, AuthTypePaymentAuth())
             )
         }
     }

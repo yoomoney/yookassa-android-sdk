@@ -39,4 +39,9 @@ internal class MockProcessPaymentAuthGateway : ProcessPaymentAuthGateway {
             else -> PaymentAuthToken(currentUser.toString() + passphrase)
         }
     }
+
+    override fun getPaymentAuthToken(currentUser: CurrentUser): ProcessPaymentAuthGatewayResponse {
+        sleep(1000L)
+        return PaymentAuthToken(currentUser.toString())
+    }
 }

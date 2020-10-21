@@ -21,6 +21,7 @@
 
 package ru.yandex.money.android.sdk.impl.logout
 
+import ru.yandex.money.android.sdk.impl.TmxSessionIdStorage
 import ru.yandex.money.android.sdk.logout.LogoutGateway
 import ru.yandex.money.android.sdk.model.AnonymousUser
 import ru.yandex.money.android.sdk.payment.CurrentUserGateway
@@ -31,12 +32,17 @@ internal class LogoutGatewayImpl(
     private val currentUserGateway: CurrentUserGateway,
     private val userAuthTokenGateway: UserAuthTokenGateway,
     private val paymentAuthTokenGateway: PaymentAuthTokenGateway,
-    private val removeKeys: () -> Unit
+    private val tmxSessionIdStorage: TmxSessionIdStorage,
+    private val removeKeys: () -> Unit,
+    private val revokeUserAuthToken: (token: String?) -> Unit
 ) : LogoutGateway {
 
     override fun logout() {
+        revokeUserAuthToken(userAuthTokenGateway.userAuthToken)
         userAuthTokenGateway.userAuthToken = null
+        userAuthTokenGateway.passportAuthToken = null
         paymentAuthTokenGateway.paymentAuthToken = null
+        tmxSessionIdStorage.tmxSessionId = null
         currentUserGateway.currentUser = AnonymousUser
         removeKeys()
     }

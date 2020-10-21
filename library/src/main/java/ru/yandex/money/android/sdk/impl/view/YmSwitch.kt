@@ -25,8 +25,8 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Color.LTGRAY
-import android.support.v7.widget.SwitchCompat
 import android.util.AttributeSet
+import androidx.appcompat.widget.SwitchCompat
 import ru.yandex.money.android.sdk.impl.InMemoryColorSchemeRepository.colorScheme
 import ru.yandex.money.android.sdk.impl.extensions.highlight
 

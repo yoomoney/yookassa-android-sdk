@@ -23,7 +23,7 @@ package ru.yandex.money.android.sdk
 
 import android.annotation.SuppressLint
 import android.os.Parcelable
-import android.support.annotation.Keep
+import androidx.annotation.Keep
 import com.google.android.gms.wallet.WalletConstants
 import kotlinx.android.parcel.Parcelize
 
@@ -37,7 +37,7 @@ import kotlinx.android.parcel.Parcelize
  * @param mockConfiguration (optional) configuration for mock parameters. If this parameter is present, mSDK will
  * work in offline test mode. Token created with this configuration can't be used for payments.
  */
-@[Parcelize SuppressLint("ParcelCreator")]
+@[Parcelize Keep SuppressLint("ParcelCreator")]
 data class TestParameters
 @[JvmOverloads Keep] constructor(
     @Keep val showLogs: Boolean = false,

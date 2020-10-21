@@ -24,8 +24,8 @@
 package ru.yandex.money.android.sdk.impl.extensions
 
 import android.annotation.SuppressLint
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentTransaction
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 
 @SuppressLint("CommitTransaction")
 internal inline fun FragmentManager.inTransaction(block: FragmentTransaction.() -> Unit) {

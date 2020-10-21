@@ -21,7 +21,7 @@
 
 package ru.yandex.money.android.sdk
 
-import android.support.annotation.Keep
+import androidx.annotation.Keep
 
 /**
  * Result for payment tokenization.

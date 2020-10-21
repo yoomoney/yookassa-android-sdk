@@ -22,7 +22,9 @@
 package ru.yandex.money.android.sdk.impl.extensions
 
 import org.json.JSONObject
+import org.json.JSONStringer
 import ru.yandex.money.android.sdk.Amount
+import ru.yandex.money.android.sdk.PaymentMethodType
 import ru.yandex.money.android.sdk.model.AuthType
 import ru.yandex.money.android.sdk.model.AuthType.EMERGENCY
 import ru.yandex.money.android.sdk.model.AuthType.NOT_NEEDED
@@ -50,6 +52,14 @@ internal fun Amount.toJsonObject(): JSONObject = JSONObject()
     .put("value", value.toString())
     .put("currency", currency)
 
+internal fun PaymentMethodType.toJsonString(): String = when(this) {
+    PaymentMethodType.YANDEX_MONEY -> "yandex_money"
+    PaymentMethodType.BANK_CARD -> "bank_card"
+    PaymentMethodType.YOO_MONEY -> "yoo_money"
+    PaymentMethodType.GOOGLE_PAY -> "google_pay"
+    PaymentMethodType.SBERBANK -> "sberbank"
+}
+
 internal fun PaymentOptionInfo.toJsonObject(paymentOption: PaymentOption): JSONObject = when (this) {
     is NewCardInfo -> JSONObject()
         .put("type", "bank_card")
@@ -61,14 +71,14 @@ internal fun PaymentOptionInfo.toJsonObject(paymentOption: PaymentOption): JSONO
                 .put("csc", csc)
         )
     is WalletInfo -> JSONObject()
-        .put("type", "yandex_money")
-        .put("instrument_type", "wallet")
         .put("id", (paymentOption as Wallet).walletId)
+        .put("type", paymentOption.paymentMethodType.toJsonString())
+        .put("instrument_type", "wallet")
         .put("balance", paymentOption.balance.toJsonObject())
     is LinkedCardInfo -> JSONObject()
-        .put("type", "yandex_money")
-        .put("instrument_type", "linked_bank_card")
         .put("id", (paymentOption as LinkedCard).cardId)
+        .put("type", paymentOption.paymentMethodType.toJsonString())
+        .put("instrument_type", "linked_bank_card")
         .put("csc", this.csc)
     is SbolSmsInvoicingInfo -> JSONObject()
         .put("type", "sberbank")

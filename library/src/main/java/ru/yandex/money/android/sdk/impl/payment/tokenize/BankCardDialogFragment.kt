@@ -24,8 +24,6 @@ package ru.yandex.money.android.sdk.impl.payment.tokenize
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
-import android.support.v4.app.FragmentManager
-import android.support.v7.app.AppCompatDialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,6 +32,8 @@ import android.view.WindowManager
 import android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
 import android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE
 import android.widget.FrameLayout
+import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.fragment.app.FragmentManager
 import ru.yandex.money.android.sdk.R
 import ru.yandex.money.android.sdk.impl.AppModel
 import ru.yandex.money.android.sdk.impl.BackPressedAppCompatDialog
@@ -71,7 +71,7 @@ internal class BankCardDialogFragment : AppCompatDialogFragment() {
         setStyle(STYLE_NO_FRAME, R.style.ym_FullscreenDialogTheme)
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
     }
@@ -82,7 +82,7 @@ internal class BankCardDialogFragment : AppCompatDialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?) =
-        BackPressedAppCompatDialog(checkNotNull(context), theme).apply {
+        BackPressedAppCompatDialog(requireContext(), theme).apply {
             window?.setSoftInputMode(SOFT_INPUT_ADJUST_RESIZE or SOFT_INPUT_STATE_ALWAYS_VISIBLE)
         }
 
@@ -139,7 +139,7 @@ internal class BankCardDialogFragment : AppCompatDialogFragment() {
         super.onDestroyView()
     }
 
-    override fun onDismiss(dialog: DialogInterface?) {
+    override fun onDismiss(dialog: DialogInterface) {
         view?.hideSoftKeyboard()
 
         super.onDismiss(dialog)

@@ -24,12 +24,12 @@ package ru.yandex.money.android.sdk.impl.view
 import android.content.Context
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
-import android.support.design.widget.TextInputLayout
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.FrameLayout
+import com.google.android.material.textfield.TextInputLayout
 import ru.yandex.money.android.sdk.impl.InMemoryColorSchemeRepository.colorScheme
 
 /**

@@ -22,12 +22,12 @@
 package ru.yandex.money.android.sdk.impl.extensions
 
 import android.graphics.Typeface
-import android.support.v4.content.ContextCompat
-import android.support.v7.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.text.style.ImageSpan
 import android.text.style.StyleSpan
+import androidx.appcompat.content.res.AppCompatResources
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.contains
 import org.hamcrest.Matchers.equalTo
@@ -136,7 +136,7 @@ class PaymentOptionExtensionsTest {
         val title = paymentOption.getTitle(context) as SpannableStringBuilder
 
         // assert
-        assertThat(title.toString(), equalTo("${paymentOption.userName}   "))
+        assertThat(title.toString(), equalTo("${paymentOption.walletId}   "))
 
         val exitIcon = AppCompatResources.getDrawable(context, R.drawable.ym_ic_exit)
         val exitSpan = title.getSpans(title.length - 2, title.length - 1, ImageSpan::class.java).single().drawable

@@ -26,6 +26,7 @@ import ru.yandex.money.android.sdk.PaymentMethodType.BANK_CARD
 import ru.yandex.money.android.sdk.PaymentMethodType.GOOGLE_PAY
 import ru.yandex.money.android.sdk.PaymentMethodType.SBERBANK
 import ru.yandex.money.android.sdk.PaymentMethodType.YANDEX_MONEY
+import ru.yandex.money.android.sdk.PaymentMethodType.YOO_MONEY
 import ru.yandex.money.android.sdk.impl.extensions.getCardBrand
 import ru.yandex.money.android.sdk.impl.extensions.getPaymentMethodType
 import ru.yandex.money.android.sdk.impl.extensions.toAmount
@@ -43,8 +44,7 @@ import ru.yandex.money.android.sdk.model.Wallet
 
 internal fun paymentOptionFactory(
     id: Int,
-    jsonObject: JSONObject,
-    userName: String
+    jsonObject: JSONObject
 ): PaymentOption? {
 
     val charge = jsonObject.getJSONObject("charge").toAmount()
@@ -59,15 +59,15 @@ internal fun paymentOptionFactory(
             BANK_CARD -> NewCard(id, charge, jsonObject.getFee(), savePaymentMethodAllowed)
             SBERBANK -> SbolSmsInvoicing(id, charge, jsonObject.getFee(), savePaymentMethodAllowed)
             GOOGLE_PAY -> GooglePay(id, charge, jsonObject.getFee(), savePaymentMethodAllowed)
-            YANDEX_MONEY -> when (InstrumentType.parse(jsonObject.optString("instrument_type"))) {
+            YANDEX_MONEY, YOO_MONEY -> when (InstrumentType.parse(jsonObject.optString("instrument_type"))) {
                 WALLET -> Wallet(
                     id = id,
                     charge = charge,
                     fee = jsonObject.getFee(),
                     walletId = jsonObject.optString("id"),
                     balance = jsonObject.optJSONObject("balance").toAmount(),
-                    userName = userName,
-                    savePaymentMethodAllowed = savePaymentMethodAllowed
+                    savePaymentMethodAllowed = savePaymentMethodAllowed,
+                    paymentMethodType = paymentMethodType
                 )
                 LINKED_BANK_CARD -> LinkedCard(
                     id = id,
@@ -77,9 +77,10 @@ internal fun paymentOptionFactory(
                     name = jsonObject.optString("card_name"),
                     pan = jsonObject.getString("card_mask"),
                     brand = jsonObject.getCardBrand(),
-                    savePaymentMethodAllowed = savePaymentMethodAllowed
+                    savePaymentMethodAllowed = savePaymentMethodAllowed,
+                    paymentMethodType = paymentMethodType
                 )
-                UNKNOWN -> AbstractWallet(id, charge, null, savePaymentMethodAllowed)
+                UNKNOWN -> AbstractWallet(id, charge, null, savePaymentMethodAllowed, paymentMethodType)
             }
         }
     }

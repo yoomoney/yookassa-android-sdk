@@ -12,16 +12,13 @@
 * [Код демо-приложения, которое интегрирует SDK](https://github.com/yandex-money/yandex-checkout-android-sdk/tree/master/sample)
 
 
-### Внимание: 
-В следующей версии sdk библиотека appcompat будет заменена на androidx. Обратной совместимости у них нет, поэтому если вы испольуете appcompat, для обновления sdk нужно будет мигрировать ваш проект на androidx. Подробнее о том, как это сделать — https://developer.android.com/jetpack/androidx/migrate 
- 
 #  Документация
 
-Android Checkout mobile SDK - версия 3.1.0 ([changelog](https://github.com/yandex-money/yandex-checkout-android-sdk/blob/master/CHANGELOG.md))
+Android Checkout mobile SDK - версия 4.0.0 ([changelog](https://github.com/yandex-money/yandex-checkout-android-sdk/blob/master/CHANGELOG.md))
 
 * [Подключение зависимостей](#подключение-зависимостей)
     * [Подключение через Gradle](#подключение-через-Gradle)
-    * [Подключение YandexLoginSDK (для платежей из кошелька)](#подключение-YandexLoginSDK)
+    * [Подключение ru.yoo.sdk.auth (для платежей из кошелька)](#подключение-ru.yoo.sdk.auth)
     * [Настройка приложения при продаже цифровых товаров](#настройка-приложения-при-продаже-цифровых-товаров)
 * [Использование библиотеки](#использование-библиотеки)
     * [Токенизация](#токенизация)
@@ -46,29 +43,38 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.yandex.money:checkout:3.1.0'
+    implementation 'com.yandex.money:checkout:4.0.0'
 }
 ```
 
-## Подключение YandexLoginSDK
-Если среди платёжных методов есть кошелёк Яндекс.Денег, необходимо подключить `YandexLoginSDK`.
+Попросите у менеджера по подключению библиотеку `ThreatMetrix Android SDK 5.4-73.aar`. 
+Создайте папку libs в модуле где подключаете sdk и добавьте туда файл `ThreatMetrix Android SDK 5.4-73.aar`. В build.gradle того же модуля в dependencies добавьте:
+```groovy
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.aar"])
+}
+```
+
+## Подключение ru.yoo.sdk.auth
+Если среди платёжных методов есть кошелёк Яндекс.Денег, необходимо подключить `ru.yoo.sdk.auth`.
 В остальных случаях этот шаг можно пропустить.
 
-На странице [создания приложения](https://oauth.yandex.ru/client/new), в разделе *Платформы* надо выбрать *Android приложение*
-
-В разделе *API Яндекс.Паспорта* надо добавить *Доступ к логину, имени, фамилии и полу* для корректного отображения имени пользователя
+Попросить менеджера по подключению зарегистрировать для вас приложение в центре авторизации.
 
 ```groovy
-android {
-    defaultConfig {
-        manifestPlaceholders = [YANDEX_CLIENT_ID:"ваш id приложения в Яндекс.Паспорте"]
-    }
-}
 repositories {
-    mavenCentral()
+    maven { url 'https://dl.bintray.com/yoomoney/maven' }
 }
 dependencies {
-    implementation "com.yandex.android:authsdk:2.1.1"
+    implementation "ru.yoo.sdk.auth:auth:1.0.19"
+}
+```
+
+Попросите у менеджера по подключению библиотеку `ui-lib-1.19.4.aar`. 
+Создайте папку `libs` в модуле где подключаете sdk и положите туда файл `ui-lib-1.19.4.aar`. В `build.gradle` того же модуля в dependencies добавьте:
+```groovy
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.aar"])
 }
 ```
 
@@ -108,6 +114,7 @@ dependencies {
 * clientApplicationKey (String) - ключ для клиентских приложений из личного кабинета Яндекс.Кассы ([раздел Настройки — Ключи API](https://kassa.yandex.ru/my/api-keys-settings)).;
 * shopId (String) - идентификатор магазина в Яндекс.Кассе.
 * savePaymentMethod (SavePaymentMethod) - настройка сохранения платёжного метода. Сохранённые платёжные методы можно использовать для проведения рекуррентных платежей.
+* clientId (String) - идентификатор приложения для sdk авторизации `ru.yoo.sdk.auth`, нужно запросить у менеджера по подключению.
 
 Необязательные:
 * paymentMethodTypes (Set of PaymentMethodType) - ограничения способов оплаты. Если оставить поле пустым или передать в него null,

@@ -25,13 +25,13 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.CollapsingToolbarLayout
-import android.support.v4.widget.ContentLoadingProgressBar
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
+import androidx.core.widget.ContentLoadingProgressBar
 import android.view.Menu
 import android.view.ViewGroup
 import android.webkit.URLUtil
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import com.google.android.material.appbar.CollapsingToolbarLayout
 import ru.yandex.money.android.sdk.BuildConfig
 import ru.yandex.money.android.sdk.Checkout
 import ru.yandex.money.android.sdk.Checkout.EXTRA_ERROR_CODE

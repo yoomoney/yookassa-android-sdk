@@ -24,10 +24,8 @@ package ru.yandex.money.android.sdk.impl
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.support.v4.app.FragmentManager
-import android.support.v7.app.AppCompatActivity
-import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
 import ru.yandex.money.android.sdk.SavedBankCardPaymentParameters
 import ru.yandex.money.android.sdk.PaymentMethodType
 import ru.yandex.money.android.sdk.PaymentParameters

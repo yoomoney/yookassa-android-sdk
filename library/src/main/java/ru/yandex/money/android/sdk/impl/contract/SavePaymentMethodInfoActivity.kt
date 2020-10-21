@@ -24,9 +24,9 @@ package ru.yandex.money.android.sdk.impl.contract
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import ru.yandex.money.android.sdk.R
 
 internal const val EXTRA_TITLE_RES = "ru.yandex.money.android.extra.SAVE_PAYMENT_INFO_TITLE"

@@ -23,9 +23,9 @@ package ru.yandex.money.android.sdk.impl.view
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.support.v4.view.ViewCompat
-import android.support.v7.widget.AppCompatEditText
 import android.util.AttributeSet
+import androidx.appcompat.widget.AppCompatEditText
+import androidx.core.view.ViewCompat
 import ru.yandex.money.android.sdk.impl.InMemoryColorSchemeRepository.colorScheme
 
 internal class YmEditText

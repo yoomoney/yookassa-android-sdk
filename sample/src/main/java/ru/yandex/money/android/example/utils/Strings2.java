@@ -21,7 +21,7 @@
 
 package ru.yandex.money.android.example.utils;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public final class Strings2 {
 

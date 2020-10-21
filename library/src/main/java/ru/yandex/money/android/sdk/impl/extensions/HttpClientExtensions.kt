@@ -64,7 +64,7 @@ internal fun <T> OkHttpClient.execute(
     }
 
     val stringBody: String = try {
-        response.body()!!.string()
+        response.body!!.string()
     } catch (e: IOException) {
         throw ResponseReadingException(response, e)
     }

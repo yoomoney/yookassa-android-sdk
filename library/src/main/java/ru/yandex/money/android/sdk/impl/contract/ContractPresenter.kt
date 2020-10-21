@@ -23,7 +23,7 @@ package ru.yandex.money.android.sdk.impl.contract
 
 import android.content.Context
 import android.content.Intent
-import android.support.v4.content.ContextCompat.startActivity
+import androidx.core.content.ContextCompat.startActivity
 import ru.yandex.money.android.sdk.PaymentMethodType
 import ru.yandex.money.android.sdk.R
 import ru.yandex.money.android.sdk.SavePaymentMethod
@@ -180,12 +180,13 @@ internal class ContractPresenter(
                 hint = model.authTypeState.type.toHint(context),
                 timeout = model.authTypeState.nextSessionTimeLeft,
                 error = null
-            )
+            ).also { paymentAuthForm = it }
+            AuthType.NOT_NEEDED -> AuthNotRequiredViewModel
             else -> PaymentAuthFormNoRetryViewModel(
                 hint = model.authTypeState.type.toHint(context),
                 error = null
-            )
-        }.also { paymentAuthForm = it }
+            ).also { paymentAuthForm = it }
+        }
     )
 
     operator fun invoke(model: ProcessPaymentAuthOutputModel) = contract.copy(

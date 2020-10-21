@@ -28,23 +28,14 @@ import ru.yandex.money.android.sdk.payment.CurrentUserGateway
 internal class UserAuthUseCase(
         private val authorizeUserGateway: AuthorizeUserGateway,
         private val currentUserGateway: CurrentUserGateway,
-        private val userAuthTokenGateway: UserAuthTokenGateway,
-        private val walletCheckGateway: WalletCheckGateway
+        private val userAuthTokenGateway: UserAuthTokenGateway
 ) : UseCase<UserAuthInputModel, UserAuthOutputModel> {
 
     override fun invoke(authInputModel: Unit): UserAuthOutputModel {
         val user = authorizeUserGateway.authorizeUser() ?: return UserAuthCancelledOutputModel()
-
-        val hasWallet = walletCheckGateway.checkIfUserHasWallet(user.token)
-
-        return if (hasWallet) {
-            userAuthTokenGateway.userAuthToken = user.token
-            val authorizedUser = AuthorizedUser(user.name).also(currentUserGateway::currentUser::set)
-
-            UserAuthSuccessOutputModel(authorizedUser)
-        } else {
-            UserAuthNoWalletOutputModel(user.name)
-        }
+        userAuthTokenGateway.userAuthToken = user.token
+        val authorizedUser = AuthorizedUser().also(currentUserGateway::currentUser::set)
+        return UserAuthSuccessOutputModel(authorizedUser)
     }
 }
 
@@ -53,4 +44,3 @@ internal typealias UserAuthInputModel = Unit
 internal sealed class UserAuthOutputModel
 internal data class UserAuthSuccessOutputModel(val authorizedUser: AuthorizedUser) : UserAuthOutputModel()
 internal class UserAuthCancelledOutputModel : UserAuthOutputModel()
-internal class UserAuthNoWalletOutputModel(val accountName: String) : UserAuthOutputModel()

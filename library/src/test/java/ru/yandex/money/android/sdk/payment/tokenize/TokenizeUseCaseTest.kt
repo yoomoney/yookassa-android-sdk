@@ -31,6 +31,7 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
 import org.mockito.Mockito.inOrder
 import ru.yandex.money.android.sdk.Amount
+import ru.yandex.money.android.sdk.PaymentMethodType
 import ru.yandex.money.android.sdk.createGooglePayPaymentOptionWithFee
 import ru.yandex.money.android.sdk.createLinkedCardPaymentOption
 import ru.yandex.money.android.sdk.createNewCardPaymentOption
@@ -119,7 +120,7 @@ internal class TokenizeUseCaseTest {
     fun shouldThrow_IllegalStateException_When_TryToTokenizeAbstractWallet() {
         // prepare
         whenever(getLoadedPaymentOptionListGateway.getLoadedPaymentOptions()).thenReturn(
-            listOf(AbstractWallet(1, Amount(BigDecimal.TEN, RUB), null, true))
+            listOf(AbstractWallet(1, Amount(BigDecimal.TEN, RUB), null, true, PaymentMethodType.YANDEX_MONEY))
         )
 
         // invoke

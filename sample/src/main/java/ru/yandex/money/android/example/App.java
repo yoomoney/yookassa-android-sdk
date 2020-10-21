@@ -23,8 +23,6 @@ package ru.yandex.money.android.example;
 
 import android.app.Application;
 
-import com.squareup.leakcanary.LeakCanary;
-
 import ru.yandex.money.android.example.utils.Currencies;
 
 public class App extends Application {
@@ -32,12 +30,6 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            return;
-        }
-
-        LeakCanary.install(this);
-
         Currencies.RoubleTypefaceSpan.init(this);
     }
 }

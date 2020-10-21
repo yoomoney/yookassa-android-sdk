@@ -32,6 +32,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
+import ru.yandex.money.android.sdk.impl.TmxSessionIdStorage
 import ru.yandex.money.android.sdk.impl.TokensStorage
 import ru.yandex.money.android.sdk.impl.extensions.edit
 import ru.yandex.money.android.sdk.impl.payment.SharedPreferencesCurrentUserGateway
@@ -47,6 +48,7 @@ class LogoutGatewayImplTest {
     private lateinit var logoutGateway: LogoutGateway
     private lateinit var tokensStorage: TokensStorage
     private lateinit var currentUserGateway: SharedPreferencesCurrentUserGateway
+    private val tmxSessionIdStorage = TmxSessionIdStorage()
 
     @Before
     fun setUp() {
@@ -61,7 +63,9 @@ class LogoutGatewayImplTest {
             currentUserGateway = currentUserGateway,
             userAuthTokenGateway = tokensStorage,
             paymentAuthTokenGateway = tokensStorage,
-            removeKeys = { }
+            removeKeys = { },
+            tmxSessionIdStorage = tmxSessionIdStorage,
+            revokeUserAuthToken = {}
         )
     }
 
@@ -75,7 +79,7 @@ class LogoutGatewayImplTest {
     @Test
     fun shouldRemoveUserData() {
         // prepare
-        currentUserGateway.currentUser = AuthorizedUser("test_name")
+        currentUserGateway.currentUser = AuthorizedUser()
         tokensStorage.paymentAuthToken = "12345"
         tokensStorage.userAuthToken = "12345"
 

@@ -21,7 +21,7 @@
 
 package ru.yandex.money.android.sdk
 
-import android.support.annotation.Keep
+import androidx.annotation.Keep
 
 /**
  * Setting for saving payment method. If payment method is saved, shop can make recurring payments with a token,

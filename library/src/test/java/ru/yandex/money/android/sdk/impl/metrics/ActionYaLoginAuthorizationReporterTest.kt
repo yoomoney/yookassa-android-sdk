@@ -28,14 +28,12 @@ import org.mockito.Mock
 import org.mockito.Mockito.inOrder
 import org.mockito.junit.MockitoJUnitRunner
 import ru.yandex.money.android.sdk.impl.userAuth.UserAuthCancelledViewModel
-import ru.yandex.money.android.sdk.impl.userAuth.UserAuthNoWalletViewModel
 import ru.yandex.money.android.sdk.impl.userAuth.UserAuthSuccessViewModel
 import ru.yandex.money.android.sdk.impl.userAuth.UserAuthViewModel
 import ru.yandex.money.android.sdk.model.AuthorizedUser
 import ru.yandex.money.android.sdk.model.Presenter
 import ru.yandex.money.android.sdk.on
 import ru.yandex.money.android.sdk.userAuth.UserAuthCancelledOutputModel
-import ru.yandex.money.android.sdk.userAuth.UserAuthNoWalletOutputModel
 import ru.yandex.money.android.sdk.userAuth.UserAuthOutputModel
 import ru.yandex.money.android.sdk.userAuth.UserAuthSuccessOutputModel
 
@@ -58,7 +56,7 @@ class ActionYaLoginAuthorizationReporterTest {
     @Test
     fun `should report AuthYaLoginStatusSuccess when UserAuthSuccessOutputModel`() {
         // prepare
-        val outputModel = UserAuthSuccessOutputModel(AuthorizedUser("name"))
+        val outputModel = UserAuthSuccessOutputModel(AuthorizedUser())
         on(presenter(outputModel)).thenReturn(UserAuthSuccessViewModel(outputModel.authorizedUser))
 
         // invoke
@@ -85,23 +83,6 @@ class ActionYaLoginAuthorizationReporterTest {
         inOrder(presenter, reporter).apply {
             verify(presenter).invoke(outputModel)
             verify(reporter).report(name, listOf(AuthYaLoginStatusCanceled()))
-            verifyNoMoreInteractions()
-        }
-    }
-
-    @Test
-    fun `should report AuthYaLoginStatusWithoutWallet when UserAuthNoWalletOutputModel`() {
-        // prepare
-        val outputModel = UserAuthNoWalletOutputModel("name")
-        on(presenter(outputModel)).thenReturn(UserAuthNoWalletViewModel(outputModel.accountName))
-
-        // invoke
-        actionReporter(outputModel)
-
-        // assert
-        inOrder(presenter, reporter).apply {
-            verify(presenter).invoke(outputModel)
-            verify(reporter).report(name, listOf(AuthYaLoginStatusWithoutWallet()))
             verifyNoMoreInteractions()
         }
     }

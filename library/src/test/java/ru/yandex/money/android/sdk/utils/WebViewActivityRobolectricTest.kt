@@ -46,7 +46,8 @@ class WebViewActivityRobolectricTest {
                 subtitle = "",
                 clientApplicationKey = "",
                 shopId = "",
-                savePaymentMethod = SavePaymentMethod.ON
+                savePaymentMethod = SavePaymentMethod.ON,
+                authCenterClientId = ""
             )
         )
         val url = "http://wrong.scheme.url/"

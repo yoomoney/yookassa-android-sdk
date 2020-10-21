@@ -50,7 +50,7 @@
     <string name="ym_logout_dialog_button_negative">Cancel</string>
     <string name="ym_logout_dialog_message">Are you sure you want to log out of account %1$s?</string>
     <string name="ym_retry">Try again</string>
-    <string name="ym_no_wallet_dialog_message">%1$s, you do not have a Yandex.Money Wallet</string>
+    <string name="ym_no_wallet_dialog_message">You do not have a Yandex.Money Wallet</string>
     <string name="ym_no_wallet_dialog_shoose_payment_option">Select payment method</string>
     <string name="ym_error_something_went_wrong">Seems we\'ve had a technical error</string>
     <string name="ym_error_no_internet">Connection error. Try again once you\'re online.</string>
@@ -80,4 +80,7 @@
     <string name="ym_save_payment_method_bank_card_switch_text_part_2">debit money upon store\'s request</string>
     <string name="ym_save_payment_method_bank_card_message_text_part_1">After the payment, we will link the card so that</string>
     <string name="ym_save_payment_method_bank_card_message_text_part_2">money could be debited upon store\'s request</string>
+    <string name="ym_support_email">supp@money.yandex.ru</string>
+    <string name="ym_support_help_url">https://money.yandex.ru/page?id=536720</string>
+    <string name="ym_support_phone">+78002506699</string>
 </resources>

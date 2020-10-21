@@ -26,10 +26,9 @@ import android.app.Activity
 import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
-import android.support.annotation.IntRange
-import android.support.design.widget.TextInputLayout
 import android.text.Editable
 import android.view.View
+import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.ym_fragment_bank_card.*
 import ru.yandex.money.android.sdk.R
 import ru.yandex.money.android.sdk.impl.extensions.configureForCardNumberInput
@@ -167,7 +166,7 @@ internal class NewBankCardFragment : BankCardFragment() {
 
     private class AutoProceedWatcher internal constructor(
         private val inputLayout: TextInputLayout,
-        @param:IntRange(from = 0) @field:IntRange(from = 0)
+        @androidx.annotation.IntRange(from = 0)
         private val minLength: Int,
         private val onDone: () -> Unit,
         private val isCorrect: (() -> Boolean)? = null

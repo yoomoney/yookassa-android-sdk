@@ -23,7 +23,7 @@ package ru.yandex.money.android.sdk
 
 import android.annotation.SuppressLint
 import android.os.Parcelable
-import android.support.annotation.Keep
+import androidx.annotation.Keep
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -37,7 +37,7 @@ import kotlinx.android.parcel.Parcelize
  * @param paymentMethodId id of previous payment.
  * @param savePaymentMethod setting for saving payment method (see [SavePaymentMethod]]).
  */
-@[Parcelize SuppressLint("ParcelCreator")]
+@[Parcelize Keep SuppressLint("ParcelCreator")]
 data class SavedBankCardPaymentParameters
 @Keep constructor(
     @Keep val amount: Amount,

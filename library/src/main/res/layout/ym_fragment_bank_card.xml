@@ -30,14 +30,14 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <android.support.design.widget.AppBarLayout
+        <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarContainer"
             android:layout_width="match_parent"
             android:layout_height="@dimen/ym_appbar_height"
             android:background="@color/ym_background"
             app:layout_constraintTop_toTopOf="parent">
 
-            <android.support.design.widget.CollapsingToolbarLayout
+            <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:id="@+id/appbar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -46,15 +46,15 @@
                 app:expandedTitleTextAppearance="@style/ym_Text.Header2"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-                <android.support.v7.widget.Toolbar
+                <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?android:attr/actionBarSize"
                     app:layout_collapseMode="pin"
                     app:navigationIcon="@drawable/ym_ic_close"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-            </android.support.design.widget.CollapsingToolbarLayout>
-        </android.support.design.widget.AppBarLayout>
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
 
         <FrameLayout
             android:id="@+id/cardNumberInputContainer"

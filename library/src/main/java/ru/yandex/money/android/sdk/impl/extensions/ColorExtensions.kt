@@ -21,7 +21,7 @@
 
 package ru.yandex.money.android.sdk.impl.extensions
 
-import android.support.v4.graphics.ColorUtils
+import androidx.core.graphics.ColorUtils
 
 internal fun Int.highlight(): Int {
     val hsl = FloatArray(3)

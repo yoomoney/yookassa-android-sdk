@@ -21,13 +21,8 @@
 
 package ru.yandex.money.android.sdk.impl.userAuth
 
-import android.content.Context
-import com.yandex.authsdk.YandexAuthOptions
-import com.yandex.authsdk.YandexAuthSdk
-import com.yandex.authsdk.YandexAuthToken
+import ru.yoo.sdk.auth.account.model.UserAccount
 import ru.yandex.money.android.sdk.BuildConfig
-import ru.yandex.money.android.sdk.impl.extensions.getDisplayName
-import ru.yandex.money.android.sdk.impl.extensions.getJsonPayload
 import ru.yandex.money.android.sdk.impl.userAuth.YandexAuthorizeUserGateway.State.COLLECTING_USER
 import ru.yandex.money.android.sdk.impl.userAuth.YandexAuthorizeUserGateway.State.HAS_TO_COLLECT_USER
 import ru.yandex.money.android.sdk.impl.userAuth.YandexAuthorizeUserGateway.State.IDLE
@@ -37,13 +32,14 @@ import java.util.concurrent.Semaphore
 
 internal class YandexAuthorizeUserGateway(
     private val uiExecutor: Executor,
-    private val context: Context
+    private val authCenterClientId: String
 ) : AuthorizeUserGateway {
 
     private var listener: Listener? = null
 
     private val semaphore = Semaphore(0)
-    private var token: YandexAuthToken? = null
+    private var token: String? = null
+    private var userAccount: UserAccount? = null
     private var state: State = IDLE
 
     override fun authorizeUser(): AuthorizeUserGateway.User? {
@@ -52,15 +48,13 @@ internal class YandexAuthorizeUserGateway(
         semaphore.acquire()
 
         return token?.let {
-            val sdk = YandexAuthSdk(context, YandexAuthOptions(context, true))
-            AuthorizeUserGateway.User(
-                    name = sdk.getJwt(it).getJsonPayload().getDisplayName(),
-                    token = BuildConfig.DEFAULT_YANDEX_AUTH_TOKEN ?: it.value)
+            AuthorizeUserGateway.User(token = BuildConfig.DEFAULT_YANDEX_AUTH_TOKEN ?: it)
         }
     }
 
-    fun setResult(token: YandexAuthToken) {
+    fun setResult(token: String, userAccount: UserAccount?) {
         this.token = token
+        this.userAccount = userAccount
         state = IDLE
         semaphore.release()
     }
@@ -96,13 +90,13 @@ internal class YandexAuthorizeUserGateway(
 
     private fun collectUser(currentListener: Listener) {
         uiExecutor {
-            currentListener.collectCurrentUser()
+            currentListener.collectCurrentUser(authCenterClientId)
         }
         state = COLLECTING_USER
     }
 
     internal interface Listener {
-        fun collectCurrentUser()
+        fun collectCurrentUser(authCenterClientId: String)
     }
 
     enum class State {

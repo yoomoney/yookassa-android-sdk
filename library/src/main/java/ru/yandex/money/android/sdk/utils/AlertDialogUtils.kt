@@ -22,8 +22,8 @@
 package ru.yandex.money.android.sdk.utils
 
 import android.content.Context
-import android.support.v7.app.AlertDialog
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import ru.yandex.money.android.sdk.R
 import ru.yandex.money.android.sdk.impl.AppModel
 import ru.yandex.money.android.sdk.impl.extensions.hideSoftKeyboard
@@ -41,9 +41,9 @@ internal fun showLogoutDialog(context: Context, accountName: CharSequence, view:
     }
 }
 
-internal fun showNoWalletDialog(context: Context, accountName: CharSequence) {
+internal fun showNoWalletDialog(context: Context) {
     AlertDialog.Builder(context, R.style.ym_DialogNoWallet).apply {
-        setMessage(context.getString(R.string.ym_no_wallet_dialog_message, accountName))
+        setMessage(context.getString(R.string.ym_no_wallet_dialog_message))
         setPositiveButton(context.getString(R.string.ym_no_wallet_dialog_shoose_payment_option)) { _, _ ->
             AppModel.logoutController.invoke(Unit)
         }

@@ -23,7 +23,7 @@ package ru.yandex.money.android.sdk
 
 import android.annotation.SuppressLint
 import android.os.Parcelable
-import android.support.annotation.Keep
+import androidx.annotation.Keep
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -35,7 +35,7 @@ import kotlinx.android.parcel.Parcelize
  * @param linkedCardsCount number of linked cards for authorized user
  * @param serviceFee fee, that will be shown on the contract
  */
-@[Parcelize SuppressLint("ParcelCreator")]
+@[Parcelize Keep SuppressLint("ParcelCreator")]
 data class MockConfiguration
 @[JvmOverloads Keep] constructor(
     @get:Keep val completeWithError: Boolean = false,

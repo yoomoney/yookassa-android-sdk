@@ -22,6 +22,7 @@
 package ru.yandex.money.android.sdk.model
 
 import ru.yandex.money.android.sdk.Amount
+import ru.yandex.money.android.sdk.PaymentMethodType
 
 internal sealed class PaymentOption {
     abstract val id: Int
@@ -44,7 +45,10 @@ internal data class NewCard(
     override val savePaymentMethodAllowed: Boolean
 ) : PaymentOption()
 
-internal sealed class YandexMoney : PaymentOption()
+
+internal sealed class YandexMoney : PaymentOption() {
+    abstract val paymentMethodType: PaymentMethodType
+}
 
 internal data class Wallet(
     override val id: Int,
@@ -52,15 +56,16 @@ internal data class Wallet(
     override val fee: Fee?,
     val walletId: String,
     val balance: Amount,
-    val userName: String,
-    override val savePaymentMethodAllowed: Boolean
+    override val savePaymentMethodAllowed: Boolean,
+    override val paymentMethodType: PaymentMethodType
 ) : YandexMoney()
 
 internal data class AbstractWallet(
     override val id: Int,
     override val charge: Amount,
     override val fee: Fee?,
-    override val savePaymentMethodAllowed: Boolean
+    override val savePaymentMethodAllowed: Boolean,
+    override val paymentMethodType: PaymentMethodType
 ) : YandexMoney()
 
 internal data class LinkedCard(
@@ -71,7 +76,8 @@ internal data class LinkedCard(
     val brand: CardBrand,
     val pan: String,
     val name: String? = null,
-    override val savePaymentMethodAllowed: Boolean
+    override val savePaymentMethodAllowed: Boolean,
+    override val paymentMethodType: PaymentMethodType
 ) : YandexMoney()
 
 internal data class SbolSmsInvoicing(

@@ -39,6 +39,7 @@ import ru.yandex.money.android.sdk.createWalletPaymentOption
 import ru.yandex.money.android.sdk.impl.extensions.initExtensions
 import ru.yandex.money.android.sdk.model.Wallet
 import ru.yandex.money.android.sdk.payment.loadOptionList.PaymentOptionListOutputModel
+import ru.yandex.money.android.sdk.payment.loadOptionList.PaymentOptionListSuccessOutputModel
 import java.util.concurrent.TimeUnit
 
 @RunWith(RobolectricTestRunner::class)
@@ -57,10 +58,10 @@ class PaymentOptionListPresenterTest {
     fun testNonePaymentOptions() {
         // prepare
         val presenter = PaymentOptionListPresenter(RuntimeEnvironment.application, false)
-        val outputModel: PaymentOptionListOutputModel = emptyList()
+        val outputModel: PaymentOptionListOutputModel = PaymentOptionListSuccessOutputModel(emptyList())
 
         // invoke
-        val viewModel = presenter(outputModel)
+        val viewModel = presenter(outputModel) as PaymentOptionListSuccessViewModel
 
         // assert
         assertThat("should be empty", viewModel.paymentOptions.isEmpty())
@@ -73,7 +74,7 @@ class PaymentOptionListPresenterTest {
         val presenter = PaymentOptionListPresenter(RuntimeEnvironment.application, showLogo)
 
         // invoke
-        val viewModel = presenter(emptyList())
+        val viewModel = presenter(PaymentOptionListSuccessOutputModel(emptyList()))
 
         // assert
         assertThat("should show logo", viewModel.showLogo)
@@ -86,7 +87,7 @@ class PaymentOptionListPresenterTest {
         val presenter = PaymentOptionListPresenter(RuntimeEnvironment.application, showLogo)
 
         // invoke
-        val viewModel = presenter(emptyList())
+        val viewModel = presenter(PaymentOptionListSuccessOutputModel(emptyList()))
 
         // assert
         assertThat("should not show logo", !viewModel.showLogo)
@@ -96,18 +97,18 @@ class PaymentOptionListPresenterTest {
     fun testAllPaymentOptions() {
         // prepare
         val presenter = PaymentOptionListPresenter(RuntimeEnvironment.application, false)
-        val outputModel = listOf(
+        val outputModel = PaymentOptionListSuccessOutputModel(listOf(
                 createNewCardPaymentOption(0),
                 createWalletPaymentOption(1),
                 createAbstractWalletPaymentOption(2),
-                createLinkedCardPaymentOption(3))
+                createLinkedCardPaymentOption(3)))
 
         // invoke
-        val viewModel = presenter(outputModel)
+        val viewModel = presenter(outputModel) as PaymentOptionListSuccessViewModel
 
         // assert
-        assertThat("should be same length", viewModel.paymentOptions.size, CoreMatchers.equalTo(outputModel.size))
-        outputModel.zip(viewModel.paymentOptions).forEach { (model, viewModel) ->
+        assertThat("should be same length", viewModel.paymentOptions.size, CoreMatchers.equalTo(outputModel.options.size))
+        outputModel.options.zip(viewModel.paymentOptions).forEach { (model, viewModel) ->
             val modelName = model.toString()
             assertThat(modelName, viewModel.optionId == model.id)
             assertThat(modelName, viewModel.canLogout, equalTo(model is Wallet))

@@ -23,12 +23,14 @@ package ru.yandex.money.android.sdk.payment.loadOptionList
 
 import ru.yandex.money.android.sdk.Amount
 import ru.yandex.money.android.sdk.PaymentMethodType
+import ru.yandex.money.android.sdk.model.AuthorizedUser
 import ru.yandex.money.android.sdk.model.GooglePay
 import ru.yandex.money.android.sdk.model.NewCard
 import ru.yandex.money.android.sdk.model.PaymentIdCscConfirmation
 import ru.yandex.money.android.sdk.model.PaymentOption
 import ru.yandex.money.android.sdk.model.SbolSmsInvoicing
 import ru.yandex.money.android.sdk.model.UseCase
+import ru.yandex.money.android.sdk.model.Wallet
 import ru.yandex.money.android.sdk.model.YandexMoney
 import ru.yandex.money.android.sdk.payment.CurrentUserGateway
 import ru.yandex.money.android.sdk.payment.SaveLoadedPaymentOptionsListGateway
@@ -72,10 +74,30 @@ internal class LoadPaymentOptionListUseCase(
         }
         val options = when {
             paymentOptionListRestrictions.isEmpty() -> paymentOptions
-            else -> paymentOptions.filter { it.toAllowed() in paymentOptionListRestrictions }
+            else -> {
+                val hasYooMoney = paymentOptions.find { it is YandexMoney && it.paymentMethodType == PaymentMethodType.YOO_MONEY } != null
+                val paymentOptionListRestrictions = if (hasYooMoney && paymentOptionListRestrictions.contains(PaymentMethodType.YANDEX_MONEY)) {
+                        paymentOptionListRestrictions.toMutableSet().apply {
+                            remove(PaymentMethodType.YANDEX_MONEY)
+                            add(PaymentMethodType.YOO_MONEY)
+                        }
+                } else {
+                    paymentOptionListRestrictions
+                }
+                paymentOptions.filter { it.toAllowed() in paymentOptionListRestrictions }
+            }
         }
         saveLoadedPaymentOptionsListGateway.saveLoadedPaymentOptionsList(options)
-        return options.takeUnless(List<PaymentOption>::isEmpty)
+
+        return options.takeUnless(List<PaymentOption>::isEmpty)?.let { paymentOptions ->
+            if (currentUser is AuthorizedUser
+                && paymentOptionListRestrictions.any { it == PaymentMethodType.YANDEX_MONEY || it == PaymentMethodType.YOO_MONEY }
+                && paymentOptions.filterIsInstance<Wallet>().isEmpty()) {
+                PaymentOptionListNoWalletOutputModel
+            } else {
+                PaymentOptionListSuccessOutputModel(paymentOptions)
+            }
+        }
             ?: throw PaymentOptionListIsEmptyException()
     }
 }
@@ -93,11 +115,17 @@ internal data class PaymentOptionPaymentMethodInputModel(
     val paymentMethodId: String
 ) : PaymentOptionListInputModel()
 
-internal typealias PaymentOptionListOutputModel = List<PaymentOption>
+
+internal sealed class PaymentOptionListOutputModel
+
+internal data class PaymentOptionListSuccessOutputModel(val options: List<PaymentOption>): PaymentOptionListOutputModel()
+
+internal object PaymentOptionListNoWalletOutputModel : PaymentOptionListOutputModel()
+
 
 private fun PaymentOption.toAllowed() = when (this) {
     is NewCard -> PaymentMethodType.BANK_CARD
-    is YandexMoney -> PaymentMethodType.YANDEX_MONEY
+    is YandexMoney -> paymentMethodType
     is SbolSmsInvoicing -> PaymentMethodType.SBERBANK
     is GooglePay -> PaymentMethodType.GOOGLE_PAY
     is PaymentIdCscConfirmation -> PaymentMethodType.BANK_CARD

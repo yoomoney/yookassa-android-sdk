@@ -1,5 +1,10 @@
 ## Changelog
 
+### 4.0.0
+2020-10-20
+- Replace appcompat libraries with androidx
+- Replace YandexAuthSdk with YooMoney auth-sdk 
+
 ### 3.1.0
 2020-09-11
 - minSdkVersion changed to 21 (Android 5)

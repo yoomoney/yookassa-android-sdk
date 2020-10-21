@@ -24,8 +24,8 @@ package ru.yandex.money.android.sdk.impl.paymentOptionList
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.support.v4.app.Fragment
 import android.util.Log
+import androidx.fragment.app.Fragment
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.wallet.AutoResolveHelper
 import com.google.android.gms.wallet.CardRequirements
@@ -140,7 +140,7 @@ internal class GooglePayIntegration(
             task.exception?.takeIf { it is ResolvableApiException }?.also {
                 fragment.startActivityForResult(
                     PendingIntentActivity.createIntent(
-                        checkNotNull(fragment.context),
+                        fragment.requireContext(),
                         (it as ResolvableApiException).resolution
                     ), GOOGLE_PAY_REQUEST_CODE
                 )

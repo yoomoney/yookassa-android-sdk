@@ -25,9 +25,6 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Build
 import android.os.Bundle
-import android.support.design.widget.BottomSheetBehavior
-import android.support.design.widget.BottomSheetDialog
-import android.support.design.widget.BottomSheetDialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,6 +33,9 @@ import android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
 import android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
 import android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
 import android.widget.FrameLayout
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import ru.yandex.money.android.sdk.R
 import ru.yandex.money.android.sdk.impl.contract.ContractCompleteViewModel
 import ru.yandex.money.android.sdk.impl.contract.ContractFragment
@@ -132,7 +132,7 @@ internal class MainDialogFragment : BottomSheetDialogFragment() {
         setStyle(STYLE_NO_FRAME, R.style.ym_MainDialogTheme)
     }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog = checkNotNull(context).let {
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog = requireContext().let {
         val isTablet = it.resources.getBoolean(R.bool.ym_isTablet)
         if (isTablet) {
             BackPressedAppCompatDialog(it, theme).apply {
@@ -178,7 +178,7 @@ internal class MainDialogFragment : BottomSheetDialogFragment() {
 
         onGlobalLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
             (dialog as? BottomSheetDialog)?.also { dialog ->
-                val bottomSheet = dialog.findViewById<FrameLayout?>(android.support.design.R.id.design_bottom_sheet)
+                val bottomSheet = dialog.findViewById<FrameLayout?>(R.id.design_bottom_sheet)!!
                 BottomSheetBehavior.from(bottomSheet).apply {
                     state = BottomSheetBehavior.STATE_EXPANDED
                     skipCollapsed = true
@@ -248,13 +248,13 @@ internal class MainDialogFragment : BottomSheetDialogFragment() {
         super.onDestroyView()
     }
 
-    override fun onCancel(dialog: DialogInterface?) {
+    override fun onCancel(dialog: DialogInterface) {
         super.onCancel(dialog)
         AppModel.reset()
         activity?.finish()
     }
 
-    override fun onDismiss(dialog: DialogInterface?) {
+    override fun onDismiss(dialog: DialogInterface) {
         view?.hideSoftKeyboard()
 
         super.onDismiss(dialog)

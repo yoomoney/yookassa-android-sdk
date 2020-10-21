@@ -21,12 +21,13 @@
 
 package ru.yandex.money.android.sdk.impl.paymentOptionList
 
-import android.support.test.InstrumentationRegistry
+import androidx.test.platform.app.InstrumentationRegistry
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.Timeout
 import ru.yandex.money.android.sdk.Amount
+import ru.yandex.money.android.sdk.GooglePayParameters
 import ru.yandex.money.android.sdk.impl.extensions.RUB
 import ru.yandex.money.android.sdk.model.NewCard
 import ru.yandex.money.android.sdk.model.PaymentOption
@@ -45,14 +46,16 @@ internal class CheckGooglePayAvailableGatewayTest {
         val shopId = "stub shopId"
         val gateway =
             GooglePayIntegration(
-                context = InstrumentationRegistry.getTargetContext(),
+                context = InstrumentationRegistry.getInstrumentation().targetContext,
                 shopId = shopId,
                 useTestEnvironment = true,
                 loadedPaymentOptionsGateway = object : GetLoadedPaymentOptionListGateway {
                     override fun getLoadedPaymentOptions(): List<PaymentOption> {
-                        return listOf(NewCard(1, Amount(BigDecimal.TEN, RUB), null))
+                        return listOf(NewCard(1, Amount(BigDecimal.TEN, RUB), null, false))
                     }
-                })
+                },
+                googlePayParameters = GooglePayParameters()
+            )
 
         // invoke
         val available = gateway.checkGooglePayAvailable()

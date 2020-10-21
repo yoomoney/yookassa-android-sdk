@@ -23,4 +23,5 @@ package ru.yandex.money.android.sdk.userAuth
 
 internal interface UserAuthTokenGateway {
     var userAuthToken: String?
+    var passportAuthToken: String?
 }

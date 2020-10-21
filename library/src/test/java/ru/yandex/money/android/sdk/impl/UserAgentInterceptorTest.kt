@@ -64,7 +64,7 @@ class UserAgentInterceptorTest {
         val response = userAgentInterceptor.intercept(chain)
 
         // assert
-        val userAgent = response.request().header("User-Agent")
+        val userAgent = response.request.header("User-Agent")
         assertThat(userAgent, notNullValue())
         assertThat(
             userAgent,
@@ -81,7 +81,7 @@ class UserAgentInterceptorTest {
         val response = userAgentInterceptor.intercept(chain)
 
         // assert
-        val userAgent = response.request().header("User-Agent")
+        val userAgent = response.request.header("User-Agent")
         assertThat(userAgent, notNullValue())
         assertThat(
             userAgent,

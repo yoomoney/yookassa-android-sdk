@@ -23,7 +23,6 @@ package ru.yandex.money.android.sdk.impl.contract
 
 import ru.yandex.money.android.sdk.Amount
 import ru.yandex.money.android.sdk.PaymentMethodType
-import ru.yandex.money.android.sdk.SavePaymentMethod
 import ru.yandex.money.android.sdk.impl.payment.PaymentOptionViewModel
 import ru.yandex.money.android.sdk.model.ViewModel
 
@@ -62,6 +61,8 @@ internal data class PaymentAuthStartViewModel(val amount: Amount) : PaymentAuthV
 internal class PaymentAuthRestartViewModel : PaymentAuthViewModel()
 internal class PaymentAuthShowUserAuthViewModel : PaymentAuthViewModel()
 internal class PaymentAuthProgressViewModel : PaymentAuthViewModel()
+
+internal object AuthNotRequiredViewModel : PaymentAuthViewModel()
 
 internal sealed class PaymentAuthFormViewModel : PaymentAuthViewModel() {
     abstract val hint: CharSequence

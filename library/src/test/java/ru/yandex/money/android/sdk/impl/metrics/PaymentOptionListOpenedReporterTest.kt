@@ -33,12 +33,13 @@ import ru.yandex.money.android.sdk.model.PaymentOption
 import ru.yandex.money.android.sdk.model.Presenter
 import ru.yandex.money.android.sdk.on
 import ru.yandex.money.android.sdk.payment.loadOptionList.PaymentOptionListOutputModel
+import ru.yandex.money.android.sdk.payment.loadOptionList.PaymentOptionListSuccessOutputModel
 
 @RunWith(MockitoJUnitRunner.StrictStubs::class)
 internal class PaymentOptionListOpenedReporterTest {
 
-    private val testOutputModel = listOf<PaymentOption>()
-    private val testViewModel = PaymentOptionListSuccessViewModel(listOf(), false)
+    private val testOutputModel = PaymentOptionListSuccessOutputModel(emptyList())
+    private val testViewModel = PaymentOptionListSuccessViewModel(emptyList(), false)
 
     @Mock
     private lateinit var authType: AuthType

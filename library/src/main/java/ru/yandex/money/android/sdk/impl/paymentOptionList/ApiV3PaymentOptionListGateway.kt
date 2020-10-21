@@ -41,12 +41,17 @@ internal class ApiV3PaymentOptionListGateway(
 ) : PaymentOptionListGateway {
 
     override fun getPaymentOptions(amount: Amount, currentUser: CurrentUser): List<PaymentOption> {
+        val userAuthToken: String? = if (!tokensStorage.passportAuthToken.isNullOrEmpty() && !tokensStorage.paymentAuthToken.isNullOrEmpty()) {
+            tokensStorage.passportAuthToken
+        } else {
+            tokensStorage.userAuthToken
+        }
         val paymentRequest =
             PaymentOptionsRequest(
                 amount = amount,
                 currentUser = currentUser,
                 gatewayId = gatewayId,
-                userAuthToken = tokensStorage.userAuthToken,
+                userAuthToken = userAuthToken,
                 shopToken = shopToken,
                 savePaymentMethod = savePaymentMethod
             )

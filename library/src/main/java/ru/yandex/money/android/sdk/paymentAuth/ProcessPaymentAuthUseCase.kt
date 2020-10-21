@@ -36,29 +36,48 @@ internal class ProcessPaymentAuthUseCase(
 
         check(currentUser is AuthorizedUser) { "can't submit payment auth for anonymous user" }
 
-        val response = processPaymentAuthGateway.getPaymentAuthToken(currentUser, inputModel.passphrase)
-
-        return when (response) {
-            is PaymentAuthToken -> {
-                with(paymentAuthTokenGateway) {
-                    paymentAuthToken = response.token
-
-                    if (inputModel.saveAuth) {
-                        persistPaymentAuth()
+        return when(inputModel) {
+            is RequiredProcessPaymentAuthInputModel -> {
+                when (val response = processPaymentAuthGateway.getPaymentAuthToken(currentUser, inputModel.passphrase)) {
+                    is PaymentAuthToken -> {
+                        handlePaymentAuthToken(inputModel, response)
+                        ProcessPaymentAuthSuccessOutputModel()
                     }
+                    is PaymentAuthWrongAnswer -> ProcessPaymentAuthWrongAnswerOutputModel(inputModel.passphrase)
                 }
-
+            }
+            is NotRequiredProcessPaymentAuthInputModel -> {
+                when (val response = processPaymentAuthGateway.getPaymentAuthToken(currentUser)) {
+                    is PaymentAuthToken -> handlePaymentAuthToken(inputModel, response)
+                }
                 ProcessPaymentAuthSuccessOutputModel()
             }
-            is PaymentAuthWrongAnswer -> ProcessPaymentAuthWrongAnswerOutputModel(inputModel.passphrase)
+        }
+    }
+
+    private fun handlePaymentAuthToken(inputModel: ProcessPaymentAuthInputModel, response: PaymentAuthToken) {
+        with(paymentAuthTokenGateway) {
+            paymentAuthToken = response.token
+            if (inputModel.saveAuth) {
+                persistPaymentAuth()
+            }
         }
     }
 }
 
-internal data class ProcessPaymentAuthInputModel(
+internal sealed class ProcessPaymentAuthInputModel {
+    abstract val saveAuth: Boolean
+}
+
+internal data class RequiredProcessPaymentAuthInputModel(
     val passphrase: String,
-    val saveAuth: Boolean
-)
+    override val saveAuth: Boolean
+): ProcessPaymentAuthInputModel()
+
+internal data class NotRequiredProcessPaymentAuthInputModel(
+    override val saveAuth: Boolean
+) : ProcessPaymentAuthInputModel()
+
 
 internal sealed class ProcessPaymentAuthOutputModel
 internal class ProcessPaymentAuthSuccessOutputModel : ProcessPaymentAuthOutputModel()

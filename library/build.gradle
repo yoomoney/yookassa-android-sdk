@@ -25,12 +25,8 @@ apply plugin: 'kotlin-android-extensions'
 
 apply from: rootProject.file('common.gradle')
 
-androidExtensions {
-    experimental = true
-}
-
 android {
-    compileSdkVersion targetSdkVersion
+    compileSdkVersion target_sdk_version
     buildToolsVersion '28.0.3'
 
     resourcePrefix 'ym_'
@@ -41,11 +37,9 @@ android {
         versionName project.ext.versionName
 
         multiDexEnabled true
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        targetSdkVersion rootProject.ext.target_sdk_version
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
-        manifestPlaceholders = [YANDEX_CLIENT_ID: "INVALID"]
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
         buildConfigField "String", "DEFAULT_YANDEX_AUTH_TOKEN", "${optionalProperty('defaultYandexAuthToken')}"
 
@@ -54,8 +48,10 @@ android {
         buildConfigField "String", "THREAT_METRIX_CERTIFICATE_HASHES", "${optionalProperty('threatMetrixCertificateHashes')}"
 
         buildConfigField "String", "HOST", "\"https://payment.yandex.net/frontend-api/v3\""
-        buildConfigField "String", "PAYMENT_AUTHORIZATION_HOST", "\"https://money.yandex.ru/api/wallet-auth/v1\""
-        buildConfigField "String", "API_V1_HOST", "\"https://money.yandex.ru/api\""
+        buildConfigField "String", "PAYMENT_AUTHORIZATION_HOST", "\"https://yoomoney.ru/api/wallet-auth/v1\""
+        buildConfigField "String", "API_V1_HOST", "\"https://yoomoney.ru/api\""
+        buildConfigField "String", "AUTH_HOST", "\"\""
+        buildConfigField "String", "YANDEX_CLIENT_ID", "\"80642c11721c49d69d9936de0c265886\""
 
         buildConfigField "String", "APP_METRICA_KEY", "${optionalProperty('metricaKey')}"
 
@@ -84,39 +80,38 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
     }
 }
 
-repositories {
-    maven { url "http://artifactory.yandex.net/jcenter" }
-}
-
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.google.android.gms:play-services-wallet:16.0.1'
-    implementation "com.android.support:support-v4:$support_version"
-    implementation "com.android.support:appcompat-v7:$support_version"
-    implementation "com.android.support:design:$support_version"
-    implementation "com.android.support.constraint:constraint-layout:$constraint_layout_version"
+    implementation "androidx.appcompat:appcompat:$appcompat"
+    implementation "com.google.android.material:material:$material"
+    implementation "androidx.recyclerview:recyclerview:$recyclerview"
+    implementation "androidx.constraintlayout:constraintlayout:$constraintlayout"
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
-    implementation "com.yandex.android:authsdk:$authsdk_version"
     implementation 'com.yandex.android:mobmetricalib:3.5.1'
     implementation 'ru.tinkoff.decoro:decoro:1.3.4'
-    testImplementation 'junit:junit:4.12'
+
+    implementation "ru.yoo.sdk.auth:auth:$yoo_sdk_auth_version"
+
+    testImplementation "junit:junit:$junit"
     testImplementation "org.mockito:mockito-core:$mockito_version"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0"
     testImplementation 'org.robolectric:robolectric:4.0.1'
-    androidTestImplementation "com.android.support.test:runner:$support_test_version"
-    androidTestImplementation "com.android.support.test:rules:$support_test_version"
     androidTestImplementation "org.mockito:mockito-core:$mockito_version"
     androidTestImplementation 'org.mockito:mockito-android:2.7.22'
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$espresso_version"
-    androidTestImplementation "com.android.support.test.espresso:espresso-intents:$espresso_version"
-    androidTestImplementation "com.android.support.test.espresso:espresso-web:$espresso_version"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:$espresso_intents"
+    androidTestImplementation "androidx.test.espresso:espresso-web:$espresso_web"
+    androidTestImplementation "androidx.test.ext:junit:$androidx_junit"
 }
 
 task copyTestClasses(type: Copy) {

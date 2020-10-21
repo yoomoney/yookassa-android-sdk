@@ -21,7 +21,7 @@
 
 package ru.yandex.money.android.sdk.impl.secure
 
-import android.support.test.runner.AndroidJUnit4
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.hamcrest.MatcherAssert
 import org.hamcrest.core.IsEqual
 import org.hamcrest.core.IsNot

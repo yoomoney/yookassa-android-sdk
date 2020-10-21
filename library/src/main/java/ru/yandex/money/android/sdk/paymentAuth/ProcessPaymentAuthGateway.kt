@@ -25,6 +25,7 @@ import ru.yandex.money.android.sdk.model.CurrentUser
 
 internal interface ProcessPaymentAuthGateway {
     fun getPaymentAuthToken(currentUser: CurrentUser, passphrase: String): ProcessPaymentAuthGatewayResponse
+    fun getPaymentAuthToken(currentUser: CurrentUser): ProcessPaymentAuthGatewayResponse
 }
 
 internal sealed class ProcessPaymentAuthGatewayResponse

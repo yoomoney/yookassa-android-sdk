@@ -58,7 +58,7 @@
             android:layout_marginStart="@dimen/ym_space_2xs"
             android:text="@string/ym_payment_auth_repeat" />
 
-        <android.support.v4.widget.Space
+        <androidx.legacy.widget.Space
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />

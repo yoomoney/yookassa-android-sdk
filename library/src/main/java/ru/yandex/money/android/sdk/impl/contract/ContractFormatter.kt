@@ -23,7 +23,7 @@ package ru.yandex.money.android.sdk.impl.contract
 
 import android.content.Context
 import android.content.Intent
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import ru.yandex.money.android.sdk.R
 import ru.yandex.money.android.sdk.model.AbstractWallet
 import ru.yandex.money.android.sdk.model.PaymentOption

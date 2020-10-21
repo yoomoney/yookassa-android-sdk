@@ -22,12 +22,6 @@
 package ru.yandex.money.android.sdk.impl.paymentOptionInfo
 
 import android.os.Bundle
-import android.support.annotation.CallSuper
-import android.support.annotation.DrawableRes
-import android.support.annotation.IdRes
-import android.support.transition.TransitionManager
-import android.support.v4.app.Fragment
-import android.support.v7.content.res.AppCompatResources
 import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
@@ -35,6 +29,12 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo.IME_ACTION_DONE
 import android.widget.EditText
 import android.widget.ImageView
+import androidx.annotation.CallSuper
+import androidx.annotation.DrawableRes
+import androidx.annotation.IdRes
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.fragment.app.Fragment
+import androidx.transition.TransitionManager
 import kotlinx.android.synthetic.main.ym_fragment_bank_card.*
 import ru.yandex.money.android.sdk.R
 import ru.yandex.money.android.sdk.impl.AppModel

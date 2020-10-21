@@ -81,8 +81,8 @@ internal fun createWalletPaymentOption(id: Int): PaymentOption =
         ),
         walletId = "12345654321",
         balance = Amount(BigDecimal.TEN, RUB),
-        userName = "John Smith",
-        savePaymentMethodAllowed = true
+        savePaymentMethodAllowed = true,
+        paymentMethodType = PaymentMethodType.YANDEX_MONEY
     )
 
 internal fun createAbstractWalletPaymentOption(id: Int): PaymentOption =
@@ -93,7 +93,8 @@ internal fun createAbstractWalletPaymentOption(id: Int): PaymentOption =
             Amount(BigDecimal.ONE, RUB),
             Amount(BigDecimal("0.5"), RUB)
         ),
-        savePaymentMethodAllowed = true
+        savePaymentMethodAllowed = true,
+        paymentMethodType = PaymentMethodType.YANDEX_MONEY
     )
 
 internal fun createSbolSmsInvoicingPaymentOption(id: Int): PaymentOption =
@@ -118,7 +119,8 @@ internal fun createLinkedCardPaymentOption(id: Int): PaymentOption =
         cardId = "12345654321",
         brand = CardBrand.MASTER_CARD,
         pan = "1234567887654321",
-        savePaymentMethodAllowed = true
+        savePaymentMethodAllowed = true,
+        paymentMethodType = PaymentMethodType.YANDEX_MONEY
     )
 
 internal fun createGooglePayPaymentOptionWithFee(id: Int): PaymentOption =

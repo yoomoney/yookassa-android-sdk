@@ -35,7 +35,7 @@ internal abstract class CheckoutRequest<out T>(
 
     override fun getHeaders(): List<Pair<String, String>> {
         return listOf(
-                "Passport-Authorization" to ("Bearer $userAuthToken"),
+                "Authorization" to ("Bearer $userAuthToken"),
                 "Merchant-Client-Authorization" to (Credentials.basic(shopToken, "")),
                 "X-Forwarded-For" to "127.0.0.1"
         )

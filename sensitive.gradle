@@ -25,9 +25,9 @@ ext {
 
     shopId = "YOUR_SHOP_ID"
 
-    gatewayId = "YOUR_GATEWAY_ID"
+    cliendId = "YOUR_CLIENT_ID"
 
-    yandexClientId = "YOUR_YANDEX_CLIENT_ID"
+    gatewayId = "YOUR_GATEWAY_ID"
 
     threatMetrixOrigId = 'fsymclue'
     threatMetrixFPServer = 's4.money.yandex.net'

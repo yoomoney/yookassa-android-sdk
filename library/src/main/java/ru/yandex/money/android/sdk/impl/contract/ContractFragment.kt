@@ -23,15 +23,14 @@ package ru.yandex.money.android.sdk.impl.contract
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.text.Editable
-import android.text.TextWatcher
 import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.ym_fragment_contract.*
 import kotlinx.android.synthetic.main.ym_item_common.*
 import ru.yandex.money.android.sdk.R
@@ -49,9 +48,11 @@ import ru.yandex.money.android.sdk.impl.paymentOptionList.GooglePayTokenizationS
 import ru.yandex.money.android.sdk.model.SbolSmsInvoicingInfo
 import ru.yandex.money.android.sdk.payment.changeOption.ChangePaymentOptionInputModel
 import ru.yandex.money.android.sdk.payment.tokenize.TokenizeInputModel
-import ru.yandex.money.android.sdk.paymentAuth.ProcessPaymentAuthInputModel
+import ru.yandex.money.android.sdk.paymentAuth.NotRequiredProcessPaymentAuthInputModel
 import ru.yandex.money.android.sdk.paymentAuth.RequestPaymentAuthInputModel
+import ru.yandex.money.android.sdk.paymentAuth.RequiredProcessPaymentAuthInputModel
 import ru.yandex.money.android.sdk.userAuth.UserAuthInputModel
+import ru.yandex.money.android.sdk.utils.SimpleTextWatcher
 import ru.yandex.money.android.sdk.utils.showLogoutDialog
 
 internal class ContractFragment : Fragment() {
@@ -126,6 +127,7 @@ internal class ContractFragment : Fragment() {
             when (viewModel.paymentAuth) {
                 null -> {
                     if (viewModel.showPhoneInput) {
+                        nextButton.isEnabled = phoneInput.text?.isPhoneNumber ?: false
                         switchesAndPaymentAuthContainer.showChild(additionalInfoInputViewContainer)
                         additionalInfoInputViewContainer.showChild(phoneInput)
                         phoneInput.apply {
@@ -149,6 +151,7 @@ internal class ContractFragment : Fragment() {
                             }
                         }
                     } else {
+                        nextButton.isEnabled = true
                         switchesAndPaymentAuthContainer.showChild(switchesContainer)
 
                         allowWalletLinkingContainer.visible = viewModel.showAllowWalletLinking
@@ -187,6 +190,13 @@ internal class ContractFragment : Fragment() {
                         )
                     )
                 }
+                is AuthNotRequiredViewModel -> {
+                    AppModel.processPaymentAuthController(
+                        NotRequiredProcessPaymentAuthInputModel(
+                            allowWalletLinking.isChecked
+                        )
+                    )
+                }
                 is PaymentAuthFormViewModel -> {
                     switchesAndPaymentAuthContainer.showChild(additionalInfoInputViewContainer)
                     additionalInfoInputViewContainer.showChild(paymentAuth)
@@ -198,7 +208,7 @@ internal class ContractFragment : Fragment() {
                             paymentAuth.error = " "
                         } else {
                             AppModel.processPaymentAuthController(
-                                ProcessPaymentAuthInputModel(
+                                RequiredProcessPaymentAuthInputModel(
                                     passphrase = accessCode,
                                     saveAuth = allowWalletLinking.isChecked
                                 )
@@ -299,15 +309,10 @@ internal class ContractFragment : Fragment() {
                 }
             }
         }
-        phoneInput.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
+        phoneInput.addTextChangedListener(object: SimpleTextWatcher {
+            override fun afterTextChanged(s: Editable) {
                 phoneInputContainer.error = null
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                nextButton.isEnabled = s.toString().isPhoneNumber
             }
         })
 

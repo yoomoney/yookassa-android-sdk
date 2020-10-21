@@ -23,7 +23,7 @@ package ru.yandex.money.android.sdk
 
 import android.annotation.SuppressLint
 import android.os.Parcelable
-import android.support.annotation.Keep
+import androidx.annotation.Keep
 import kotlinx.android.parcel.Parcelize
 import ru.yandex.money.android.sdk.utils.getAllPaymentMethods
 
@@ -44,8 +44,9 @@ import ru.yandex.money.android.sdk.utils.getAllPaymentMethods
  * @param userPhoneNumber (optional) phone number of the user. It will be inserted into the form
  * that is used by "Sberbank online" payment method. Format for this number is "+7XXXXXXXXXX".
  * @param googlePayParameters (optional) settings for Google Pay (see [GooglePayParameters]).
+ * * @param authCenterClientId (optional) client id for ru.yoo.sdk.auth:auth sdk.
  */
-@[Parcelize SuppressLint("ParcelCreator")]
+@[Parcelize Keep SuppressLint("ParcelCreator")]
 data class PaymentParameters
 @[JvmOverloads Keep] constructor(
     @Keep val amount: Amount,
@@ -58,5 +59,6 @@ data class PaymentParameters
     @Keep val gatewayId: String? = null,
     @Keep val customReturnUrl: String? = null,
     @Keep val userPhoneNumber: String? = null,
-    @Keep val googlePayParameters: GooglePayParameters = GooglePayParameters()
+    @Keep val googlePayParameters: GooglePayParameters = GooglePayParameters(),
+    @Keep val authCenterClientId: String? = null
 ) : Parcelable

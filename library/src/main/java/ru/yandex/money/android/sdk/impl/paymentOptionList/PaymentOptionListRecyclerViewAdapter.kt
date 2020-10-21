@@ -21,10 +21,10 @@
 
 package ru.yandex.money.android.sdk.impl.paymentOptionList
 
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.ym_item_common.view.*
 import ru.yandex.money.android.sdk.R
 import ru.yandex.money.android.sdk.impl.extensions.visible

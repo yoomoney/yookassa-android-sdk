@@ -25,6 +25,7 @@ import okhttp3.OkHttpClient
 import ru.yandex.money.android.sdk.impl.ApiMethodException
 import ru.yandex.money.android.sdk.impl.ProfilingTool
 import ru.yandex.money.android.sdk.impl.ThreatMetrixProfilingTool
+import ru.yandex.money.android.sdk.impl.TmxSessionIdStorage
 import ru.yandex.money.android.sdk.impl.extensions.execute
 import ru.yandex.money.android.sdk.methods.TokenRequest
 import ru.yandex.money.android.sdk.model.Confirmation
@@ -38,6 +39,7 @@ internal class ApiV3TokenizeGateway(
     private val httpClient: Lazy<OkHttpClient>,
     private val shopToken: String,
     private val paymentAuthTokenGateway: PaymentAuthTokenGateway,
+    private val tmxSessionIdStorage: TmxSessionIdStorage,
     private val tmxProfilingTool: ThreatMetrixProfilingTool
 ) : TokenizeGateway, ProfilingTool.SessionIdListener {
 
@@ -60,8 +62,11 @@ internal class ApiV3TokenizeGateway(
         savePaymentMethod: Boolean,
         confirmation: Confirmation
     ): String {
-        tmxProfilingTool.requestSessionId(this)
-        semaphore.acquire()
+        tmxSessionId = tmxSessionIdStorage.tmxSessionId
+        if (tmxSessionId.isNullOrEmpty()) {
+            tmxProfilingTool.requestSessionId(this)
+            semaphore.acquire()
+        }
         val currentTmxSessionId = tmxSessionId ?: throw TmxProfilingFailedException()
         val paymentAuthToken = paymentAuthTokenGateway.paymentAuthToken
         val tokenRequest = TokenRequest(
@@ -74,6 +79,7 @@ internal class ApiV3TokenizeGateway(
             savePaymentMethod
         )
         tmxSessionId = null
+        tmxSessionIdStorage.tmxSessionId = null
         val response = httpClient.value.execute(tokenRequest)
         when (response.error) {
             null -> return checkNotNull(response.paymentToken)

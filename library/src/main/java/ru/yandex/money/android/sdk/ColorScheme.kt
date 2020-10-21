@@ -24,8 +24,8 @@ package ru.yandex.money.android.sdk
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Parcelable
-import android.support.annotation.ColorInt
-import android.support.annotation.Keep
+import androidx.annotation.ColorInt
+import androidx.annotation.Keep
 import kotlinx.android.parcel.Parcelize
 
 /**

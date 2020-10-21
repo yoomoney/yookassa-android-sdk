@@ -38,7 +38,7 @@ internal class ProcessPaymentAuthUseCaseTest {
 
     private val testPassphrase = "test passphrase"
     private val paymentAuthToken = PaymentAuthToken("test token")
-    private val testUser = AuthorizedUser("username")
+    private val testUser = AuthorizedUser()
 
     @Mock
     private lateinit var currentUserGateway: CurrentUserGateway
@@ -65,7 +65,7 @@ internal class ProcessPaymentAuthUseCaseTest {
         on(currentUserGateway.currentUser).thenReturn(AnonymousUser)
 
         // invoke
-        useCase(ProcessPaymentAuthInputModel(testPassphrase, false))
+        useCase(RequiredProcessPaymentAuthInputModel(testPassphrase, false))
 
         // assert that IllegalStateException thrown
     }
@@ -77,7 +77,7 @@ internal class ProcessPaymentAuthUseCaseTest {
         on(processPaymentAuthGateway.getPaymentAuthToken(testUser, testPassphrase)).thenReturn(paymentAuthToken)
 
         // invoke
-        val outputModel = useCase(ProcessPaymentAuthInputModel(testPassphrase, false))
+        val outputModel = useCase(RequiredProcessPaymentAuthInputModel(testPassphrase, false))
 
         // assert
         assertThat(outputModel, instanceOf(ProcessPaymentAuthSuccessOutputModel::class.java))
@@ -94,7 +94,7 @@ internal class ProcessPaymentAuthUseCaseTest {
         on(processPaymentAuthGateway.getPaymentAuthToken(testUser, testPassphrase)).thenReturn(paymentAuthToken)
 
         // invoke
-        val outputModel = useCase(ProcessPaymentAuthInputModel(testPassphrase, true))
+        val outputModel = useCase(RequiredProcessPaymentAuthInputModel(testPassphrase, true))
 
         // assert
         assertThat(outputModel, instanceOf(ProcessPaymentAuthSuccessOutputModel::class.java))
@@ -112,7 +112,7 @@ internal class ProcessPaymentAuthUseCaseTest {
         on(processPaymentAuthGateway.getPaymentAuthToken(testUser, testPassphrase)).thenReturn(PaymentAuthWrongAnswer())
 
         // invoke
-        val outputModel = useCase(ProcessPaymentAuthInputModel(testPassphrase, true))
+        val outputModel = useCase(RequiredProcessPaymentAuthInputModel(testPassphrase, true))
 
         // assert
         assertThat(outputModel, instanceOf(ProcessPaymentAuthWrongAnswerOutputModel::class.java))

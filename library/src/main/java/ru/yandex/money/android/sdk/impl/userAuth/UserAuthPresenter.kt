@@ -23,7 +23,6 @@ package ru.yandex.money.android.sdk.impl.userAuth
 
 import ru.yandex.money.android.sdk.model.Presenter
 import ru.yandex.money.android.sdk.userAuth.UserAuthCancelledOutputModel
-import ru.yandex.money.android.sdk.userAuth.UserAuthNoWalletOutputModel
 import ru.yandex.money.android.sdk.userAuth.UserAuthOutputModel
 import ru.yandex.money.android.sdk.userAuth.UserAuthSuccessOutputModel
 
@@ -31,6 +30,5 @@ internal class UserAuthPresenter : Presenter<UserAuthOutputModel, UserAuthViewMo
     override fun invoke(outputModel: UserAuthOutputModel) = when (outputModel) {
         is UserAuthSuccessOutputModel -> UserAuthSuccessViewModel(outputModel.authorizedUser)
         is UserAuthCancelledOutputModel -> UserAuthCancelledViewModel
-        is UserAuthNoWalletOutputModel -> UserAuthNoWalletViewModel(outputModel.accountName)
     }
 }

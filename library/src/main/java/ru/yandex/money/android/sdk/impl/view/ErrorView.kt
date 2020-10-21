@@ -22,11 +22,10 @@
 package ru.yandex.money.android.sdk.impl.view
 
 import android.content.Context
-import android.support.v7.content.res.AppCompatResources
-import android.support.v7.widget.LinearLayoutCompat
 import android.util.AttributeSet
 import android.view.View
-import android.widget.LinearLayout
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.appcompat.widget.LinearLayoutCompat
 import kotlinx.android.synthetic.main.ym_view_error.view.*
 import ru.yandex.money.android.sdk.R
 
@@ -38,7 +37,7 @@ internal class ErrorView : LinearLayoutCompat {
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
         View.inflate(context, R.layout.ym_view_error, this)
-        orientation = LinearLayout.VERTICAL
+        orientation = LinearLayoutCompat.VERTICAL
 
         val topDrawable = checkNotNull(AppCompatResources.getDrawable(context, R.drawable.ym_ic_fail)).apply {
             setBounds(0, 0, intrinsicWidth, intrinsicHeight)

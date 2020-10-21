@@ -26,8 +26,7 @@ import android.graphics.Bitmap
 import android.net.http.SslError
 import android.os.Build
 import android.os.Bundle
-import android.support.annotation.Keep
-import android.support.v4.app.Fragment
+import androidx.annotation.Keep
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -35,6 +34,7 @@ import android.webkit.SslErrorHandler
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.fragment.app.Fragment
 import ru.yandex.money.android.sdk.BuildConfig
 
 private const val KEY_LOAD_URL = "loadUrl"

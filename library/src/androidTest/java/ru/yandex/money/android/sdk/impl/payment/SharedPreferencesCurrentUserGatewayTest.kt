@@ -23,8 +23,8 @@ package ru.yandex.money.android.sdk.impl.payment
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.support.test.InstrumentationRegistry
-import android.support.test.runner.AndroidJUnit4
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.After
@@ -43,7 +43,7 @@ class SharedPreferencesCurrentUserGatewayTest {
 
     @Before
     fun setUp() {
-        sharedPreferences = InstrumentationRegistry.getContext().getSharedPreferences("testsp", Context.MODE_PRIVATE)
+        sharedPreferences = InstrumentationRegistry.getInstrumentation().context.getSharedPreferences("testsp", Context.MODE_PRIVATE)
         gateway = SharedPreferencesCurrentUserGateway(sharedPreferences)
     }
 

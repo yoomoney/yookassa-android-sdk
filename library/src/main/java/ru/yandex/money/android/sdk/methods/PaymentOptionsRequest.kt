@@ -85,11 +85,7 @@ internal data class PaymentOptionsRequest(
             ?: path
 
     override fun convertJsonToResponse(jsonObject: JSONObject): PaymentOptionsResponse {
-        val userName = when (currentUser) {
-            is AuthorizedUser -> currentUser.userName
-            AnonymousUser -> ""
-        }
-        return jsonObject.toPaymentOptionResponse(userName)
+        return jsonObject.toPaymentOptionResponse()
     }
 }
 

@@ -22,10 +22,10 @@
 package ru.yandex.money.android.sdk.impl
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.ym_fragment_loading_with_error.*
 import ru.yandex.money.android.sdk.R
 import ru.yandex.money.android.sdk.impl.extensions.showChild

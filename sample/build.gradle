@@ -26,12 +26,12 @@ apply plugin: 'com.github.triplet.play'
 apply from: rootProject.file('common.gradle')
 
 android {
-    compileSdkVersion targetSdkVersion
+    compileSdkVersion target_sdk_version
     buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId "ru.yandex.money.android.example"
         minSdkVersion 21
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         vectorDrawables.useSupportLibrary = true
 
         def buildDateMillis = Calendar.getInstance().toInstant().toEpochMilli()
@@ -40,6 +40,7 @@ android {
         buildConfigField "String", "MERCHANT_TOKEN", "${optionalProperty('merchantToken')}"
         buildConfigField "String", "GATEWAY_ID", "${optionalProperty('gatewayId')}"
         buildConfigField "String", "SHOP_ID", "${optionalProperty('shopId')}"
+        buildConfigField "String", "CLIENT_ID", "${optionalProperty('cliendId')}"
 
     }
     compileOptions {
@@ -48,13 +49,9 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro', '../library/proguard-rules.pro'
         }
-    }
-
-    defaultConfig {
-        manifestPlaceholders = [YANDEX_CLIENT_ID: "${findProperty('yandexClientId')}"]
     }
 
     applicationVariants.all { variant ->
@@ -81,25 +78,20 @@ repositories {
 }
 
 dependencies {
-    implementation "com.android.support:appcompat-v7:$support_version"
-    implementation "com.android.support:design:$support_version"
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation fileTree(dir: "libs", include: ["*.aar"])
+    implementation "androidx.appcompat:appcompat:$appcompat"
+    implementation "com.google.android.material:material:$material"
+    implementation "androidx.recyclerview:recyclerview:$recyclerview"
+    implementation "androidx.constraintlayout:constraintlayout:$constraintlayout"
     implementation 'com.facebook.device.yearclass:yearclass:2.1.0'
-
-    final leak_canary = '1.6.2'
-    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leak_canary"
-    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leak_canary"
-    debugImplementation "com.squareup.leakcanary:leakcanary-support-fragment:$leak_canary"
 
     releaseImplementation project(':library')
     debugImplementation project(':library')
-    implementation 'com.yandex.android:authsdk:2.1.1'
     implementation 'io.card:android-sdk:5.5.1'
 
-    testImplementation 'junit:junit:4.12'
+    testImplementation "junit:junit:$junit"
     testImplementation "org.mockito:mockito-core:$mockito_version"
     testImplementation "org.robolectric:robolectric:3.8"
-    androidTestImplementation "com.android.support.test:runner:$support_test_version"
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$espresso_version"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

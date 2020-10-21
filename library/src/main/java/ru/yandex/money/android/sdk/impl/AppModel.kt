@@ -162,6 +162,7 @@ import ru.yandex.money.android.sdk.userAuth.UserAuthOutputModel
 import ru.yandex.money.android.sdk.userAuth.UserAuthTokenGateway
 import ru.yandex.money.android.sdk.userAuth.UserAuthUseCase
 import ru.yandex.money.android.sdk.userAuth.WalletCheckGateway
+import ru.yoo.sdk.auth.YooMoneyAuth
 
 private const val USER_STORAGE_TEST_MODE = "userStorageTestMode"
 private const val USER_STORAGE_REAL_MODE = "userStorageRealMode"
@@ -176,6 +177,8 @@ internal object AppModel {
     private lateinit var tokensStorage: TokensStorage
 
     val listeners = StateHolder(mainExecutor)
+
+    val tmxSessionIdStorage = TmxSessionIdStorage()
 
     var yandexAuthGateway: YandexAuthorizeUserGateway? = null
         private set
@@ -205,8 +208,16 @@ internal object AppModel {
     lateinit var processPaymentAuthController:
             Controller<ProcessPaymentAuthInputModel, ProcessPaymentAuthOutputModel, ContractViewModel>
         private set
+
+    lateinit var skipPaymentAuthController:
+            Controller<ProcessPaymentAuthInputModel, ProcessPaymentAuthOutputModel, ContractViewModel>
+        private set
+
     lateinit var smsSessionRetryController:
             Controller<SmsSessionRetryInputModel, SmsSessionRetryOutputModel, ContractViewModel>
+        private set
+
+    lateinit var reporter: Reporter
         private set
 
     internal var isInitialized: Boolean = false
@@ -271,7 +282,7 @@ internal object AppModel {
             googlePayParameters = paymentParameters.googlePayParameters
         )
 
-        val reporter: Reporter = ReporterLogger(YandexMetricaReporter(context))
+        reporter = ReporterLogger(YandexMetricaReporter(context))
         val errorReporter = YandexMetricaErrorReporter(context)
         val exceptionReporter = YandexMetricaExceptionReporter(context)
         sessionReporter = YandexMetricaSessionReporter(context)
@@ -294,10 +305,11 @@ internal object AppModel {
             if (mockConfiguration.paymentAuthPassed) {
                 currentUserGateway = object : CurrentUserGateway {
                     override var currentUser: CurrentUser =
-                        AuthorizedUser("testUser")
+                        AuthorizedUser()
                 }
                 userAuthTokenGateway = object : UserAuthTokenGateway {
                     override var userAuthToken: String? = "userAuthToken"
+                    override var passportAuthToken: String? = "passportAuthToken"
                 }
                 paymentAuthTokenGateway = object : PaymentAuthTokenGateway {
                     override var paymentAuthToken: String? = "paymentAuthToken"
@@ -336,7 +348,10 @@ internal object AppModel {
             )
             paymentOptionListGateway = InternetDependentGateway(context, apiV3PaymentOptionListGateway)
             if (paymentParameters.paymentMethodTypes.contains(PaymentMethodType.YANDEX_MONEY)) {
-                authorizeUserGateway = YandexAuthorizeUserGateway(mainExecutor, context)
+                authorizeUserGateway = YandexAuthorizeUserGateway(
+                    mainExecutor,
+                    requireNotNull(paymentParameters.authCenterClientId)
+                )
                 yandexAuthGateway = authorizeUserGateway
             } else {
                 authorizeUserGateway = object : AuthorizeUserGateway {
@@ -349,13 +364,15 @@ internal object AppModel {
                 httpClient = httpClient,
                 shopToken = paymentParameters.clientApplicationKey,
                 paymentAuthTokenGateway = tokensStorage,
-                tmxProfilingTool = profilingTool
+                tmxProfilingTool = profilingTool,
+                tmxSessionIdStorage = tmxSessionIdStorage
             )
             val paymentAuthGateway = ApiV3PaymentAuthGateway(
                 httpClient = httpClient,
                 tokensStorage = tokensStorage,
                 shopToken = paymentParameters.clientApplicationKey,
                 tmxProfilingTool = profilingTool,
+                tmxSessionIdStorage = tmxSessionIdStorage,
                 selectAppropriateAuthType = SelectAppropriateAuthType()
             )
             paymentAuthTypeGateway = paymentAuthGateway
@@ -532,8 +549,7 @@ internal object AppModel {
             useCase = UserAuthUseCase(
                 authorizeUserGateway = authorizeUserGateway,
                 currentUserGateway = currentUserGateway,
-                userAuthTokenGateway = userAuthTokenGateway,
-                walletCheckGateway = walletCheckGateway
+                userAuthTokenGateway = userAuthTokenGateway
             ),
             presenter = ActionYaLoginAuthorizationReporter(
                 presenter = UserAuthPresenter(),
@@ -560,11 +576,17 @@ internal object AppModel {
                     currentUserGateway = currentUserGateway,
                     userAuthTokenGateway = userAuthTokenGateway,
                     paymentAuthTokenGateway = paymentAuthTokenGateway,
+                    tmxSessionIdStorage = tmxSessionIdStorage,
                     removeKeys = {
                         ivStorage.remove(ivKey)
                         keyStorage.value.remove(keyKey)
                         encrypt.reset()
                         decrypt.reset()
+                    },
+                    revokeUserAuthToken = { token ->
+                        if (token != null && paymentParameters.paymentMethodTypes.contains(PaymentMethodType.YANDEX_MONEY)) {
+                            YooMoneyAuth.logout(argContext, token)
+                        }
                     }
                 )
             ),

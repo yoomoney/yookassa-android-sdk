@@ -28,6 +28,7 @@ import ru.yandex.money.android.sdk.paymentAuth.PaymentAuthTokenGateway
 import ru.yandex.money.android.sdk.userAuth.UserAuthTokenGateway
 
 private const val KEY_USER_AUTH_TOKEN = "userAuthToken"
+private const val KEY_YOO_USER_AUTH_TOKEN = "yooUserAuthToken"
 private const val KEY_PAYMENT_AUTH_TOKEN = "paymentAuthToken"
 
 internal class TokensStorage(
@@ -39,11 +40,16 @@ internal class TokensStorage(
     private var _paymentAuthToken: String? = null
 
     override var userAuthToken: String?
+        get() = preferences.getString(KEY_YOO_USER_AUTH_TOKEN, null)?.let(decrypt)
+        set(value) {
+            preferences[KEY_YOO_USER_AUTH_TOKEN] = value?.let(encrypt)
+        }
+
+    override var passportAuthToken: String?
         get() = preferences.getString(KEY_USER_AUTH_TOKEN, null)?.let(decrypt)
         set(value) {
             preferences[KEY_USER_AUTH_TOKEN] = value?.let(encrypt)
         }
-
 
     override var paymentAuthToken: String?
         get() = _paymentAuthToken ?: preferences.getString(KEY_PAYMENT_AUTH_TOKEN, null)?.let(decrypt)

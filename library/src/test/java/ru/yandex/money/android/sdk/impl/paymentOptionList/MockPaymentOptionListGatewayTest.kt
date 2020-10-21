@@ -47,7 +47,7 @@ class MockPaymentOptionListGatewayTest {
         // invoke
         val options = gateway.getPaymentOptions(
             Amount(BigDecimal.TEN, RUB),
-            AuthorizedUser("name")
+            AuthorizedUser()
         )
 
         // assert
@@ -69,7 +69,7 @@ class MockPaymentOptionListGatewayTest {
         // invoke
         val options = gateway.getPaymentOptions(
             Amount(BigDecimal.TEN, RUB),
-            AuthorizedUser("name")
+            AuthorizedUser()
         )
 
         // assert

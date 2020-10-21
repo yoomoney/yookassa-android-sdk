@@ -31,15 +31,23 @@ import ru.yandex.money.android.sdk.model.PaymentOption
 import ru.yandex.money.android.sdk.model.Presenter
 import ru.yandex.money.android.sdk.model.Wallet
 import ru.yandex.money.android.sdk.payment.loadOptionList.PaymentOptionListIsEmptyException
+import ru.yandex.money.android.sdk.payment.loadOptionList.PaymentOptionListNoWalletOutputModel
+import ru.yandex.money.android.sdk.payment.loadOptionList.PaymentOptionListOutputModel
+import ru.yandex.money.android.sdk.payment.loadOptionList.PaymentOptionListSuccessOutputModel
 
 internal class PaymentOptionListPresenter(
     context: Context,
     private val showLogo: Boolean
-) : Presenter<List<PaymentOption>, PaymentOptionListSuccessViewModel> {
+) : Presenter<PaymentOptionListOutputModel, PaymentOptionListViewModel> {
 
     private val context = context.applicationContext
 
-    override fun invoke(output: List<PaymentOption>) = constructOptionListSuccessViewModel(context, output, showLogo)
+    override fun invoke(output: PaymentOptionListOutputModel): PaymentOptionListViewModel {
+        return when (output) {
+            is PaymentOptionListSuccessOutputModel -> constructOptionListSuccessViewModel(context, output.options, showLogo)
+            is PaymentOptionListNoWalletOutputModel -> PaymentOptionListNoWalletViewModel(showLogo)
+        }
+    }
 }
 
 internal class ChangePaymentOptionPresenter(

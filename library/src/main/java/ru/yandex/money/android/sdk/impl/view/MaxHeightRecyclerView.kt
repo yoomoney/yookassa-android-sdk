@@ -22,8 +22,8 @@
 package ru.yandex.money.android.sdk.impl.view
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
+import androidx.recyclerview.widget.RecyclerView
 import ru.yandex.money.android.sdk.R
 
 internal class MaxHeightRecyclerView @JvmOverloads constructor(

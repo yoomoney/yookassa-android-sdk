@@ -22,7 +22,7 @@
 package ru.yandex.money.android.sdk.impl.paymentAuth
 
 import android.content.Context
-import android.support.annotation.StringRes
+import androidx.annotation.StringRes
 import ru.yandex.money.android.sdk.R
 import ru.yandex.money.android.sdk.impl.ApiMethodException
 import ru.yandex.money.android.sdk.impl.contract.ContractErrorViewModel

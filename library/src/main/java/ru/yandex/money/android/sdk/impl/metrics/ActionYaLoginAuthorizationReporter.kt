@@ -25,7 +25,6 @@ import ru.yandex.money.android.sdk.impl.userAuth.UserAuthFailViewModel
 import ru.yandex.money.android.sdk.impl.userAuth.UserAuthViewModel
 import ru.yandex.money.android.sdk.model.Presenter
 import ru.yandex.money.android.sdk.userAuth.UserAuthCancelledOutputModel
-import ru.yandex.money.android.sdk.userAuth.UserAuthNoWalletOutputModel
 import ru.yandex.money.android.sdk.userAuth.UserAuthOutputModel
 import ru.yandex.money.android.sdk.userAuth.UserAuthSuccessOutputModel
 
@@ -42,7 +41,6 @@ internal class ActionYaLoginAuthorizationReporter(
         when (outputModel) {
             is UserAuthSuccessOutputModel -> AuthYaLoginStatusSuccess()
             is UserAuthCancelledOutputModel -> AuthYaLoginStatusCanceled()
-            is UserAuthNoWalletOutputModel -> AuthYaLoginStatusWithoutWallet()
         }
     )
 

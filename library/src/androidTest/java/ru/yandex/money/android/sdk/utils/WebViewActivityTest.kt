@@ -22,13 +22,13 @@
 package ru.yandex.money.android.sdk.utils
 
 import android.app.Activity.RESULT_OK
-import android.support.test.InstrumentationRegistry
-import android.support.test.espresso.web.sugar.Web.onWebView
-import android.support.test.espresso.web.webdriver.DriverAtoms.findElement
-import android.support.test.espresso.web.webdriver.DriverAtoms.webClick
-import android.support.test.espresso.web.webdriver.Locator
-import android.support.test.rule.ActivityTestRule
-import android.support.test.runner.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.espresso.web.sugar.Web.onWebView
+import androidx.test.espresso.web.webdriver.DriverAtoms.findElement
+import androidx.test.espresso.web.webdriver.DriverAtoms.webClick
+import androidx.test.espresso.web.webdriver.Locator
+import androidx.test.rule.ActivityTestRule
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import android.webkit.WebViewClient
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.IsEqual.equalTo
@@ -52,7 +52,7 @@ class WebViewActivityTest {
     @Test
     fun shouldEndsWith_ResultOk_When_RedirectUrlReached() {
         // preapre
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
         val intent = Checkout.create3dsIntent(
             context = context,
             url = "file:///android_asset/test.html"
@@ -71,7 +71,7 @@ class WebViewActivityTest {
     @Test
     fun shouldEndsWith_ResultError_When_RequestExecutionFailed() {
         // preapre
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
         val url = "file:///android_asset/test.html"
         val intent = Checkout.create3dsIntent(
             context = context,

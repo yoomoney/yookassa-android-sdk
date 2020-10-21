@@ -23,7 +23,7 @@ package ru.yandex.money.android.sdk.impl
 
 import android.content.Context
 import android.util.Log
-import com.yandex.authsdk.YandexAuthSdk
+import ru.yoo.sdk.auth.YooMoneyAuth
 import ru.yandex.money.android.sdk.PaymentMethodType
 import ru.yandex.money.android.sdk.PaymentParameters
 import ru.yandex.money.android.sdk.TestParameters
@@ -83,16 +83,23 @@ internal object CheckoutInternal {
 
         if (shopParameters.paymentMethodTypes.let { PaymentMethodType.YANDEX_MONEY in it }) {
             try {
-                val yandexAuth = YandexAuthSdk::class.java
+                val moneyAuth = YooMoneyAuth::class.java
                 if (testParameters.showLogs) {
-                    Log.d(MsdkLogger.TAG, "yandex auth found: ${yandexAuth.canonicalName}")
+                    Log.d(MsdkLogger.TAG, "YooMoney auth found: ${moneyAuth.canonicalName}")
+                }
+                if (shopParameters.authCenterClientId.isNullOrEmpty()) {
+                    throw IllegalStateException(
+                        "You should pass authCenterClientId to PaymentParameters if you want to allow PaymentMethodType.YANDEX_MONEY. " +
+                                "If you don't want to use PaymentMethodType.YANDEX_MONEY, specify your payment methods " +
+                                "explicitly in PaymentParameters.paymentMethodTypes \n" +
+                                "Visit https://github.com/yandex-money/yandex-checkout-android-sdk for more information."
+                    )
                 }
             } catch (e: NoClassDefFoundError) {
                 throw IllegalStateException(
-                    "You should add Yandex Login SDK if you want to allow PaymentMethodType.YANDEX_MONEY. " +
-                            "Check if you have com.yandex.android:authsdk in your dependencies " +
-                            "and YANDEX_CLIENT_ID as your manifest placeholder. \n" +
-                            "If you don't want to use PaymentMethodType.YANDEX_MONEY, specify your payment methods" +
+                    "You should add ru.yoo.sdk.auth:auth if you want to allow PaymentMethodType.YANDEX_MONEY. " +
+                            "Check if you have ru.money.auth:auth in your dependencies and you pass authCenterClientId to PaymentParameters.\n" +
+                            "If you don't want to use PaymentMethodType.YANDEX_MONEY, specify your payment methods " +
                             "explicitly in PaymentParameters.paymentMethodTypes \n" +
                             "Visit https://github.com/yandex-money/yandex-checkout-android-sdk for more information."
                 )

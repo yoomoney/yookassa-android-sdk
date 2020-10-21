@@ -58,7 +58,7 @@ import java.math.BigDecimal
 @RunWith(MockitoJUnitRunner.StrictStubs::class)
 internal class LoadPaymentOptionListUseCaseTest {
 
-    private val testUser = AuthorizedUser("username")
+    private val testUser = AuthorizedUser()
     private val testInputModel = Amount(BigDecimal.TEN, RUB)
     private val testCharge = Amount(testInputModel.value + BigDecimal.ONE, RUB)
     private val testFee = Fee(
@@ -70,9 +70,9 @@ internal class LoadPaymentOptionListUseCaseTest {
         NewCard(0, testCharge, testFee, true),
         Wallet(
             1, testCharge, testFee, "123456787654321",
-            Amount(BigDecimal.TEN, RUB), "test user", true
+            Amount(BigDecimal.TEN, RUB), true, PaymentMethodType.YANDEX_MONEY
         ),
-        AbstractWallet(2, testCharge, testFee, false),
+        AbstractWallet(2, testCharge, testFee, false, PaymentMethodType.YANDEX_MONEY),
         LinkedCard(
             3,
             testCharge,
@@ -81,7 +81,8 @@ internal class LoadPaymentOptionListUseCaseTest {
             CardBrand.VISA,
             "123456787654321",
             null,
-            true
+            true,
+            PaymentMethodType.YANDEX_MONEY
         ),
         LinkedCard(
             4,
@@ -91,7 +92,8 @@ internal class LoadPaymentOptionListUseCaseTest {
             CardBrand.VISA,
             "123456787654321",
             "test name",
-            true
+            true,
+            PaymentMethodType.YANDEX_MONEY
         ),
         SbolSmsInvoicing(5, testCharge, testFee, false),
         GooglePay(6, testCharge, testFee, false)
@@ -156,10 +158,10 @@ internal class LoadPaymentOptionListUseCaseTest {
         )
 
         // invoke
-        val outputModel = useCase(PaymentOptionPaymentMethodInputModel(testInputModel, testPaymentMethodId))
+        val outputModel = useCase(PaymentOptionPaymentMethodInputModel(testInputModel, testPaymentMethodId)) as PaymentOptionListSuccessOutputModel
 
         // assert
-        assertThat(outputModel, contains(instanceOf(PaymentIdCscConfirmation::class.java)))
+        assertThat(outputModel.options, contains(instanceOf(PaymentIdCscConfirmation::class.java)))
 
         val captor = argumentCaptor<List<PaymentOption>>()
 
@@ -180,10 +182,10 @@ internal class LoadPaymentOptionListUseCaseTest {
         availableOptions.removeIf { it is Wallet }
 
         // invoke
-        val outputModel = useCase(PaymentOptionAmountInputModel(testInputModel))
+        val outputModel = useCase(PaymentOptionAmountInputModel(testInputModel)) as PaymentOptionListSuccessOutputModel
 
         // assert
-        assertThat(outputModel, contains(*availableOptions.toTypedArray()))
+        assertThat(outputModel.options, contains(*availableOptions.toTypedArray()))
 
         inOrder(paymentOptionListGateway, paymentOptionListGateway, currentUserGateway, saveLoadedPaymentOptionsListGateway).apply {
             verify(currentUserGateway).currentUser
@@ -198,10 +200,10 @@ internal class LoadPaymentOptionListUseCaseTest {
         // prepare
 
         // invoke
-        val outputModel = useCase(PaymentOptionAmountInputModel(testInputModel))
+        val outputModel = useCase(PaymentOptionAmountInputModel(testInputModel)) as PaymentOptionListSuccessOutputModel
 
         // assert
-        assertThat(outputModel, contains(*availableOptions.toTypedArray()))
+        assertThat(outputModel.options, contains(*availableOptions.toTypedArray()))
 
         inOrder(paymentOptionListGateway, currentUserGateway, saveLoadedPaymentOptionsListGateway).apply {
             verify(currentUserGateway).currentUser
@@ -217,10 +219,10 @@ internal class LoadPaymentOptionListUseCaseTest {
         restrictions.add(PaymentMethodType.BANK_CARD)
 
         // invoke
-        val outputModel = useCase(PaymentOptionAmountInputModel(testInputModel))
+        val outputModel = useCase(PaymentOptionAmountInputModel(testInputModel)) as PaymentOptionListSuccessOutputModel
 
         // assert
-        assertThat(outputModel, contains(instanceOf(NewCard::class.java)))
+        assertThat(outputModel.options, contains(instanceOf(NewCard::class.java)))
 
         inOrder(paymentOptionListGateway, currentUserGateway).apply {
             verify(currentUserGateway).currentUser
@@ -235,11 +237,11 @@ internal class LoadPaymentOptionListUseCaseTest {
         restrictions.add(PaymentMethodType.GOOGLE_PAY)
 
         // invoke
-        val outputModel = useCase(PaymentOptionAmountInputModel(testInputModel))
+        val outputModel = useCase(PaymentOptionAmountInputModel(testInputModel)) as PaymentOptionListSuccessOutputModel
 
         // assert
-        assertThat(outputModel.size, equalTo(1))
-        assertThat(outputModel[0], instanceOf(GooglePay::class.java))
+        assertThat(outputModel.options.size, equalTo(1))
+        assertThat(outputModel.options[0], instanceOf(GooglePay::class.java))
 
         inOrder(paymentOptionListGateway, currentUserGateway).apply {
             verify(currentUserGateway).currentUser
@@ -254,10 +256,10 @@ internal class LoadPaymentOptionListUseCaseTest {
         restrictions.add(PaymentMethodType.SBERBANK)
 
         // invoke
-        val outputModel = useCase(PaymentOptionAmountInputModel(testInputModel))
+        val outputModel = useCase(PaymentOptionAmountInputModel(testInputModel)) as PaymentOptionListSuccessOutputModel
 
         // assert
-        assertThat(outputModel, contains(instanceOf(SbolSmsInvoicing::class.java)))
+        assertThat(outputModel.options, contains(instanceOf(SbolSmsInvoicing::class.java)))
 
         inOrder(paymentOptionListGateway, currentUserGateway, saveLoadedPaymentOptionsListGateway).apply {
             verify(currentUserGateway).currentUser
@@ -274,11 +276,11 @@ internal class LoadPaymentOptionListUseCaseTest {
         restrictions.add(PaymentMethodType.YANDEX_MONEY)
 
         // invoke
-        val outputModel = useCase(PaymentOptionAmountInputModel(testInputModel))
+        val outputModel = useCase(PaymentOptionAmountInputModel(testInputModel)) as PaymentOptionListSuccessOutputModel
 
         // assert
         assertThat(
-            outputModel,
+            outputModel.options,
             contains(
                 instanceOf(Wallet::class.java),
                 instanceOf(AbstractWallet::class.java),
@@ -297,7 +299,7 @@ internal class LoadPaymentOptionListUseCaseTest {
     }
 
     @Test
-    fun `should return payment option list when yandex money restriction and no Wallet`() {
+    fun `should show no wallet message when yandex money restriction and no Wallet`() {
         // prepare
         restrictions.add(PaymentMethodType.YANDEX_MONEY)
         availableOptions.removeIf { it is Wallet }
@@ -306,14 +308,7 @@ internal class LoadPaymentOptionListUseCaseTest {
         val outputModel = useCase(PaymentOptionAmountInputModel(testInputModel))
 
         // assert
-        assertThat(
-            outputModel,
-            contains(
-                instanceOf(AbstractWallet::class.java),
-                instanceOf(LinkedCard::class.java),
-                instanceOf(LinkedCard::class.java)
-            )
-        )
+        assertThat(outputModel, instanceOf(PaymentOptionListNoWalletOutputModel::class.java))
 
         inOrder(paymentOptionListGateway, currentUserGateway, saveLoadedPaymentOptionsListGateway).apply {
             verify(currentUserGateway).currentUser
@@ -325,7 +320,7 @@ internal class LoadPaymentOptionListUseCaseTest {
     }
 
     @Test
-    fun `should return payment option list when all restrictions set and no Wallet`() {
+    fun `should show no wallet message when all restrictions set and no Wallet`() {
         // prepare
         restrictions.addAll(PaymentMethodType.values())
         availableOptions.removeIf { it is Wallet }
@@ -334,16 +329,7 @@ internal class LoadPaymentOptionListUseCaseTest {
         val outputModel = useCase(PaymentOptionAmountInputModel(testInputModel))
 
         // assert
-        assertThat(
-            outputModel, contains(
-                instanceOf(NewCard::class.java),
-                instanceOf(AbstractWallet::class.java),
-                instanceOf(LinkedCard::class.java),
-                instanceOf(LinkedCard::class.java),
-                instanceOf(SbolSmsInvoicing::class.java),
-                instanceOf(GooglePay::class.java)
-            )
-        )
+        assertThat(outputModel, instanceOf(PaymentOptionListNoWalletOutputModel::class.java))
 
         inOrder(paymentOptionListGateway, currentUserGateway, saveLoadedPaymentOptionsListGateway).apply {
             verify(currentUserGateway).currentUser
@@ -360,11 +346,11 @@ internal class LoadPaymentOptionListUseCaseTest {
         restrictions.addAll(PaymentMethodType.values())
 
         // invoke
-        val outputModel = useCase(PaymentOptionAmountInputModel(testInputModel))
+        val outputModel = useCase(PaymentOptionAmountInputModel(testInputModel)) as PaymentOptionListSuccessOutputModel
 
         // assert
         assertThat(
-            outputModel,
+            outputModel.options,
             contains(
                 instanceOf(NewCard::class.java),
                 instanceOf(Wallet::class.java),
@@ -389,16 +375,16 @@ internal class LoadPaymentOptionListUseCaseTest {
         // prepare noRestrictionsOutput
 
         // invoke noRestrictionsOutput
-        val noRestrictionsOutput = useCase(PaymentOptionAmountInputModel(testInputModel))
+        val noRestrictionsOutput = useCase(PaymentOptionAmountInputModel(testInputModel)) as PaymentOptionListSuccessOutputModel
 
         // prepare fullRestrictionsOutput
         restrictions.addAll(PaymentMethodType.values())
 
         // invoke fullRestrictionsOutput
-        val fullRestrictionsOutput = useCase(PaymentOptionAmountInputModel(testInputModel))
+        val fullRestrictionsOutput = useCase(PaymentOptionAmountInputModel(testInputModel)) as PaymentOptionListSuccessOutputModel
 
         // assert
-        assertThat(noRestrictionsOutput, contains(*fullRestrictionsOutput.toTypedArray()))
+        assertThat(noRestrictionsOutput.options, contains(*fullRestrictionsOutput.options.toTypedArray()))
     }
 
     @Test(expected = PaymentOptionListIsEmptyException::class)

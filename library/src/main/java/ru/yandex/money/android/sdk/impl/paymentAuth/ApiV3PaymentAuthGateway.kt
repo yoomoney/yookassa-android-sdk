@@ -27,6 +27,7 @@ import ru.yandex.money.android.sdk.Amount
 import ru.yandex.money.android.sdk.impl.ApiMethodException
 import ru.yandex.money.android.sdk.impl.ProfilingTool
 import ru.yandex.money.android.sdk.impl.ThreatMetrixProfilingTool
+import ru.yandex.money.android.sdk.impl.TmxSessionIdStorage
 import ru.yandex.money.android.sdk.impl.TokensStorage
 import ru.yandex.money.android.sdk.impl.extensions.execute
 import ru.yandex.money.android.sdk.methods.paymentAuth.CheckoutAuthCheckRequest
@@ -39,6 +40,7 @@ import ru.yandex.money.android.sdk.model.AuthType
 import ru.yandex.money.android.sdk.model.AuthTypeState
 import ru.yandex.money.android.sdk.model.CurrentUser
 import ru.yandex.money.android.sdk.model.ErrorCode
+import ru.yandex.money.android.sdk.model.ExtendedStatus
 import ru.yandex.money.android.sdk.paymentAuth.PaymentAuthToken
 import ru.yandex.money.android.sdk.paymentAuth.PaymentAuthTypeGateway
 import ru.yandex.money.android.sdk.paymentAuth.PaymentAuthWrongAnswer
@@ -51,6 +53,7 @@ internal class ApiV3PaymentAuthGateway(
     private val httpClient: Lazy<OkHttpClient>,
     private val tokensStorage: TokensStorage,
     private val shopToken: String,
+    private val tmxSessionIdStorage: TmxSessionIdStorage,
     private val tmxProfilingTool: ThreatMetrixProfilingTool,
     private val selectAppropriateAuthType: (AuthType, Array<AuthTypeState>) -> AuthTypeState
 ) : PaymentAuthTypeGateway, ProcessPaymentAuthGateway, ProfilingTool.SessionIdListener, SmsSessionRetryGateway {
@@ -70,6 +73,12 @@ internal class ApiV3PaymentAuthGateway(
         } else {
             PaymentAuthWrongAnswer()
         }
+    }
+
+    override fun getPaymentAuthToken(currentUser: CurrentUser): ProcessPaymentAuthGatewayResponse {
+        val userAuthToken: String = checkNotNull(tokensStorage.userAuthToken)
+        val currentProcessId: String = checkNotNull(processId)
+        return PaymentAuthToken(tokenIssueExecute(currentProcessId, userAuthToken))
     }
 
     private fun authCheck(passphrase: String, userAuthToken: String): Boolean {
@@ -118,6 +127,10 @@ internal class ApiV3PaymentAuthGateway(
         processId = tokenIssueInitResponse.processId
         authContextId = tokenIssueInitResponse.authContextId
 
+        if (tokenIssueInitResponse.status == ExtendedStatus.SUCCESS) {
+            return AuthTypeState(AuthType.NOT_NEEDED, null)
+        }
+
         val localAuthContextId: String = checkNotNull(authContextId)
         val authTypeState = authContextGet(localAuthContextId, userAuthToken)
         authType = authTypeState.type
@@ -133,8 +146,11 @@ internal class ApiV3PaymentAuthGateway(
         amount: Amount,
         multipleUsage: Boolean
     ): CheckoutTokenIssueInitResponse {
-        tmxProfilingTool.requestSessionId(this)
-        tmxSessionIdSemaphore.acquire()
+        tmxSessionId = tmxSessionIdStorage.tmxSessionId
+        if (tmxSessionId.isNullOrEmpty()) {
+            tmxProfilingTool.requestSessionId(this)
+            tmxSessionIdSemaphore.acquire()
+        }
 
         val request = CheckoutTokenIssueInitRequest(
             instanceName = Build.MANUFACTURER + ", " + Build.MODEL,
@@ -150,7 +166,6 @@ internal class ApiV3PaymentAuthGateway(
             throw ApiMethodException(response.errorCode)
         }
 
-        checkNotNull(response.authContextId)
         checkNotNull(response.processId)
 
         return response

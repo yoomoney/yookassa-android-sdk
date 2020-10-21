@@ -28,6 +28,6 @@ internal object MockAuthorizeUserGateway : AuthorizeUserGateway {
 
     override fun authorizeUser(): AuthorizeUserGateway.User {
         SystemClock.sleep(1000L)
-        return AuthorizeUserGateway.User("John", "user auth token")
+        return AuthorizeUserGateway.User("user auth token")
     }
 }

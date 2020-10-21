@@ -25,9 +25,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,16 +34,21 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import ru.yandex.money.android.example.settings.Settings;
 import ru.yandex.money.android.example.settings.SettingsActivity;
 import ru.yandex.money.android.example.utils.AmountFormatter;
 import ru.yandex.money.android.sdk.Amount;
 import ru.yandex.money.android.sdk.Checkout;
 import ru.yandex.money.android.sdk.ColorScheme;
+import ru.yandex.money.android.sdk.GooglePayParameters;
 import ru.yandex.money.android.sdk.PaymentMethodType;
 import ru.yandex.money.android.sdk.PaymentParameters;
 import ru.yandex.money.android.sdk.MockConfiguration;
-import ru.yandex.money.android.sdk.SavePaymentMethod;
 import ru.yandex.money.android.sdk.TestParameters;
 import ru.yandex.money.android.sdk.TokenizationResult;
 import ru.yandex.money.android.sdk.UiParameters;
@@ -170,7 +172,9 @@ public final class MainActivity extends AppCompatActivity {
                     paymentMethodTypes,
                     BuildConfig.GATEWAY_ID,
                     getString(R.string.test_redirect_url),
-                    settings.autofillUserPhoneNumber() ? getString(R.string.test_phone_number) : null
+                    settings.autofillUserPhoneNumber() ? getString(R.string.test_phone_number) : null,
+                    new GooglePayParameters(),
+                    BuildConfig.CLIENT_ID
             );
 
             final UiParameters uiParameters = new UiParameters(

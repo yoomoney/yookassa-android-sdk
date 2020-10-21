@@ -37,12 +37,7 @@ internal class SharedPreferencesCurrentUserGateway(
     override var currentUser: CurrentUser
         get() {
             return if (sharedPreferences.contains(KEY_CURRENT_USER_NAME)) {
-                AuthorizedUser(
-                    sharedPreferences.getString(
-                        KEY_CURRENT_USER_NAME,
-                        null
-                    )
-                )
+                AuthorizedUser()
             } else {
                 AnonymousUser
             }
@@ -51,7 +46,7 @@ internal class SharedPreferencesCurrentUserGateway(
             sharedPreferences.edit {
                 when (value) {
                     AnonymousUser -> remove(KEY_CURRENT_USER_NAME)
-                    is AuthorizedUser -> putString(KEY_CURRENT_USER_NAME, value.userName)
+                    is AuthorizedUser -> putString(KEY_CURRENT_USER_NAME, "")
                 }
             }
         }

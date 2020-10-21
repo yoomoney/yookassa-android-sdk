@@ -35,13 +35,13 @@ import ru.yandex.money.android.sdk.payment.CurrentUserGateway
 import ru.yandex.money.android.sdk.payment.InMemoryPaymentOptionListGateway
 import ru.yandex.money.android.sdk.payment.loadOptionList.LoadPaymentOptionListUseCase
 import ru.yandex.money.android.sdk.payment.loadOptionList.PaymentOptionAmountInputModel
+import ru.yandex.money.android.sdk.payment.loadOptionList.PaymentOptionListSuccessOutputModel
 
 class ChangePaymentOptionIntegrationTest {
 
-    private val userName = "test name"
     private val paymentOptionsGateway = MockPaymentOptionListGateway(3, null)
     private val currentUserGateway = mock(CurrentUserGateway::class.java).apply {
-        on(currentUser).thenReturn(AuthorizedUser(userName))
+        on(currentUser).thenReturn(AuthorizedUser())
     }
     private val paymentMethodInfoGateway = MockPaymentInfoGateway()
     private val restrictions = mutableSetOf<PaymentMethodType>()
@@ -59,11 +59,11 @@ class ChangePaymentOptionIntegrationTest {
         // prepare
 
         // invoke
-        val paymentOptions = loadUseCase(PaymentOptionAmountInputModel(createAmount()))
+        val paymentOptions = loadUseCase(PaymentOptionAmountInputModel(createAmount())) as PaymentOptionListSuccessOutputModel
         val paymentOptionsAfterChange = changeUseCase(ChangePaymentOptionInputModel)
 
         // assert
-        assertThat(paymentOptions, equalTo(paymentOptionsAfterChange))
+        assertThat(paymentOptions.options, equalTo(paymentOptionsAfterChange))
     }
 
     @Test
@@ -72,10 +72,10 @@ class ChangePaymentOptionIntegrationTest {
         restrictions.add(PaymentMethodType.YANDEX_MONEY)
 
         // invoke
-        val paymentOptions = loadUseCase(PaymentOptionAmountInputModel(createAmount()))
+        val paymentOptions = loadUseCase(PaymentOptionAmountInputModel(createAmount())) as PaymentOptionListSuccessOutputModel
         val paymentOptionsAfterChange = changeUseCase(ChangePaymentOptionInputModel)
 
         // assert
-        assertThat(paymentOptions, equalTo(paymentOptionsAfterChange))
+        assertThat(paymentOptions.options, equalTo(paymentOptionsAfterChange))
     }
 }

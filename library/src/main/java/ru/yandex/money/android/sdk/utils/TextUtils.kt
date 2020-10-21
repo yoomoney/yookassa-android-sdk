@@ -22,7 +22,7 @@
 package ru.yandex.money.android.sdk.utils
 
 import android.content.Context
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.TextPaint

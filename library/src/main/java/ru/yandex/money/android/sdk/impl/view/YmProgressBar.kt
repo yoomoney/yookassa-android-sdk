@@ -23,8 +23,8 @@ package ru.yandex.money.android.sdk.impl.view
 
 import android.content.Context
 import android.graphics.PorterDuff
-import android.support.v4.widget.ContentLoadingProgressBar
 import android.util.AttributeSet
+import androidx.core.widget.ContentLoadingProgressBar
 import ru.yandex.money.android.sdk.impl.InMemoryColorSchemeRepository.colorScheme
 
 internal class YmProgressBar

@@ -26,7 +26,6 @@ import org.hamcrest.core.IsEqual.equalTo
 import org.junit.Test
 import ru.yandex.money.android.sdk.model.AuthorizedUser
 import ru.yandex.money.android.sdk.userAuth.UserAuthCancelledOutputModel
-import ru.yandex.money.android.sdk.userAuth.UserAuthNoWalletOutputModel
 import ru.yandex.money.android.sdk.userAuth.UserAuthSuccessOutputModel
 
 class UserAuthPresenterTest {
@@ -36,7 +35,7 @@ class UserAuthPresenterTest {
     @Test
     fun `should return UserAuthSuccessViewModel when UserAuthSuccessOutputModel`() {
         // prepare
-        val user = AuthorizedUser("name")
+        val user = AuthorizedUser()
         val outputModel = UserAuthSuccessOutputModel(user)
 
         // invoke
@@ -56,18 +55,5 @@ class UserAuthPresenterTest {
 
         // assert
         assertThat(viewModel, equalTo(UserAuthCancelledViewModel as UserAuthViewModel))
-    }
-
-    @Test
-    fun `should return UserAuthNoWalletViewModel when UserAuthNoWalletOutputModel`() {
-        // prepare
-        val accountName = "name"
-        val outputModel = UserAuthNoWalletOutputModel(accountName)
-
-        // invoke
-        val viewModel = presenter(outputModel)
-
-        // assert
-        assertThat(viewModel, equalTo(UserAuthNoWalletViewModel(accountName) as UserAuthViewModel))
     }
 }

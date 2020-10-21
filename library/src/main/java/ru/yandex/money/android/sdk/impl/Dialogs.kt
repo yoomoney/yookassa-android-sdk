@@ -22,8 +22,8 @@
 package ru.yandex.money.android.sdk.impl
 
 import android.content.Context
-import android.support.design.widget.BottomSheetDialog
-import android.support.v7.app.AppCompatDialog
+import androidx.appcompat.app.AppCompatDialog
+import com.google.android.material.bottomsheet.BottomSheetDialog
 
 internal interface WithBackPressedListener {
     var onBackPressed: (() -> Boolean)?

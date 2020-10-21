@@ -26,4 +26,4 @@ internal sealed class CurrentUser
 internal object AnonymousUser : CurrentUser() {
     override fun toString() = javaClass.simpleName
 }
-internal data class AuthorizedUser(val userName: String) : CurrentUser()
+internal class AuthorizedUser : CurrentUser()

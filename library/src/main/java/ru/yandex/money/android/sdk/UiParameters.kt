@@ -23,7 +23,7 @@ package ru.yandex.money.android.sdk
 
 import android.annotation.SuppressLint
 import android.os.Parcelable
-import android.support.annotation.Keep
+import androidx.annotation.Keep
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -32,7 +32,7 @@ import kotlinx.android.parcel.Parcelize
  * @param showLogo (optional) show or hide Yandex.Checkout logo on payment options screen
  * @param colorScheme (optional) set custom color scheme. See [ColorScheme]
  */
-@[Parcelize SuppressLint("ParcelCreator")]
+@[Parcelize Keep SuppressLint("ParcelCreator")]
 data class UiParameters
 @[JvmOverloads Keep] constructor(
     @Keep val showLogo: Boolean = true,

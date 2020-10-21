@@ -27,14 +27,12 @@
 # ThreatMetrix SDK wants OkHttp to be available like this
 -keep class okhttp3.** { *; }
 -keep class okio.** { *; }
+-keep class org.threeten.bp.** { *; }
+-keep class ru.yoo.sdk.auth.model.** { *; }
+-keep class ru.yoo.sdk.auth.ProcessType** { *; }
 
 -dontwarn javax.annotation.Nullable
 -dontwarn org.conscrypt.OpenSSLProvider
 -dontwarn org.conscrypt.Conscrypt
 -dontwarn javax.annotation.ParametersAreNonnullByDefault
 -dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
-
--dontwarn com.yandex.authsdk.YandexAuthSdk
--dontwarn com.yandex.authsdk.YandexAuthOptions
--dontwarn com.yandex.authsdk.YandexAuthException
--dontwarn com.yandex.authsdk.YandexAuthToken

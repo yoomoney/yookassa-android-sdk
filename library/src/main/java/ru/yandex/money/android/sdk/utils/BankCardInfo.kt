@@ -21,7 +21,7 @@
 
 package ru.yandex.money.android.sdk.utils
 
-import android.support.annotation.DrawableRes
+import androidx.annotation.DrawableRes
 import ru.yandex.money.android.sdk.R
 
 data class Bank(

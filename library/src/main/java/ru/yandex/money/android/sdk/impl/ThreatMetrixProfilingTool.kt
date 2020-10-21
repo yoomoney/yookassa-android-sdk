@@ -27,6 +27,7 @@ import android.content.Context
 //import com.threatmetrix.TrustDefender.THMStatusCode
 //import com.threatmetrix.TrustDefender.TrustDefender
 import ru.yandex.money.android.sdk.BuildConfig
+import java.util.concurrent.TimeUnit
 
 /**
  * Current implementation of [ProfilingTool].
@@ -38,9 +39,8 @@ internal class ThreatMetrixProfilingTool : ProfilingTool {
 //            Config()
 //                .setContext(context.applicationContext)
 //                .setOrgId(BuildConfig.THREAT_METRIX_ORIG_ID)
-//                .setTimeout(10)
+//                .setTimeout(10, TimeUnit.SECONDS)
 //                .setRegisterForLocationServices(false)
-//                .setEnableCallbackOnFailure(true)
 //                .setFPServer(BuildConfig.THREAT_METRIX_FP_SERVER)
 //        )
     }

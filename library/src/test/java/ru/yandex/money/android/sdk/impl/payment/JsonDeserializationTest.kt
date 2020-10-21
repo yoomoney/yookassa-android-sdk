@@ -246,12 +246,14 @@ class JsonDeserializationTest {
         val newCard = NewCard(0, Amount(BigDecimal("2.00"), RUB), null, true)
         val wallet = Wallet(
             1, Amount(BigDecimal("3.00"), RUB),
-            null, "123456789", Amount(BigDecimal("5.00"), RUB), "Tony", true
+            null, "123456789", Amount(BigDecimal("5.00"), RUB), true, PaymentMethodType.YANDEX_MONEY
         )
-        val abstractWallet = AbstractWallet(2, Amount(BigDecimal("4.00"), RUB), null, true)
+        val abstractWallet = AbstractWallet(2, Amount(BigDecimal("4.00"), RUB), null, true,
+            PaymentMethodType.YANDEX_MONEY
+        )
         val bankCard = LinkedCard(
             3, Amount(BigDecimal("5.00"), RUB), null,
-            "123456789", CardBrand.MASTER_CARD, "518901******0446", "My card", true
+            "123456789", CardBrand.MASTER_CARD, "518901******0446", "My card", true, PaymentMethodType.YANDEX_MONEY
         )
         val sberbank = SbolSmsInvoicing(4, Amount(BigDecimal("2.00"), RUB), null, false)
         val googlePay = GooglePay(5, Amount(BigDecimal("5.00"), RUB), null, false)
@@ -259,7 +261,7 @@ class JsonDeserializationTest {
         val paymentOptions =
             PaymentOptionsResponse(listOf(newCard, wallet, abstractWallet, bankCard, sberbank, googlePay), null)
 
-        assertThat(jsonObject.toPaymentOptionResponse("Tony"), equalTo(paymentOptions))
+        assertThat(jsonObject.toPaymentOptionResponse(), equalTo(paymentOptions))
     }
 
     @Test
@@ -324,7 +326,7 @@ class JsonDeserializationTest {
                 1800
             )
         )
-        assertThat(jsonObject.toPaymentOptionResponse("Tony"), equalTo(paymentOptions))
+        assertThat(jsonObject.toPaymentOptionResponse(), equalTo(paymentOptions))
     }
 
     @Test
