@@ -1,0 +1,10 @@
+The demo app allows you to see the payment process interfaces as they will appear in your app if you sign up for Yandex.Checkout and complete the integration process via API and Yandex.Checkout SDK.
+
+Scenarios you can see in this demo app:
+— payment made from a Yandex.Money Wallet,
+— payment made from a linked card (a card that the user has previously linked to their Wallet),
+— payment made from Google Pay
+— payment made from Sberbank Online
+— payment made from any bank card (the user enters the card's number and other details during the payment process).
+
+You can also change the payment parameters to your liking: customize the set of available payment methods, indicate the specifics of the payment process (for instance, whether or not it is successfully completed). You can go through almost the entire payment process: from choosing the product to sending the token to your app.

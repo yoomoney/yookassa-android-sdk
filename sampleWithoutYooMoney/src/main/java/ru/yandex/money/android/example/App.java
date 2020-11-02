@@ -19,35 +19,17 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-apply from: rootProject.file("sensitive.gradle")
+package ru.yandex.money.android.example;
 
-ext {
-    versionMajor = 4
-    versionMinor = 0
-    versionPatch = 1
+import android.app.Application;
 
-    versionAlpha = null
+import ru.yandex.money.android.example.utils.Currencies;
 
-    versionCode = [versionMajor, versionMinor, versionPatch, versionAlpha ?: 0].inject { result, i -> result * 100 + i }
-    versionName = "$versionMajor.$versionMinor.$versionPatch" + ( versionAlpha ? "-alpha-$versionAlpha" : "" )
+public class App extends Application {
 
-    generateFileName = { project, variant ->
-        def fileNameParts = [
-                "msdk",
-                getBuildBranch().replaceAll(/[^\w-.]/, "-"),
-                variant.getFlavorName(),
-                variant.buildType.name,
-                project.versionName,
-                getBuildNumber()
-        ]
-        return fileNameParts.join('-')
-    }
-
-    getBuildBranch = {
-        System.getenv('BUILD_BRANCH') ?: 'local'
-    }
-
-    getBuildNumber = {
-        System.getenv('BUILD_NUMBER') ?: '0'
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Currencies.RoubleTypefaceSpan.init(this);
     }
 }

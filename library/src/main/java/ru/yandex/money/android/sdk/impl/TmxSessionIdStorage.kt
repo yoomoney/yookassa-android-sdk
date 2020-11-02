@@ -19,35 +19,8 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-apply from: rootProject.file("sensitive.gradle")
+package ru.yandex.money.android.sdk.impl
 
-ext {
-    versionMajor = 4
-    versionMinor = 0
-    versionPatch = 1
-
-    versionAlpha = null
-
-    versionCode = [versionMajor, versionMinor, versionPatch, versionAlpha ?: 0].inject { result, i -> result * 100 + i }
-    versionName = "$versionMajor.$versionMinor.$versionPatch" + ( versionAlpha ? "-alpha-$versionAlpha" : "" )
-
-    generateFileName = { project, variant ->
-        def fileNameParts = [
-                "msdk",
-                getBuildBranch().replaceAll(/[^\w-.]/, "-"),
-                variant.getFlavorName(),
-                variant.buildType.name,
-                project.versionName,
-                getBuildNumber()
-        ]
-        return fileNameParts.join('-')
-    }
-
-    getBuildBranch = {
-        System.getenv('BUILD_BRANCH') ?: 'local'
-    }
-
-    getBuildNumber = {
-        System.getenv('BUILD_NUMBER') ?: '0'
-    }
+internal class TmxSessionIdStorage {
+    var tmxSessionId: String? = null
 }

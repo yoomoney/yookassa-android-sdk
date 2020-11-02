@@ -1,0 +1,33 @@
+<!--
+  ~ The MIT License (MIT)
+  ~ Copyright © 2018 NBCO Yandex.Money LLC
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+  ~ associated documentation files (the “Software”), to deal in the Software without restriction, including
+  ~ without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+  ~ of the Software, and to permit persons to whom the Software is furnished to do so, subject to the
+  ~ following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all copies or substantial
+  ~ portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+  ~ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+  ~ PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+  ~ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+  ~ OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+  ~ OTHER DEALINGS IN THE SOFTWARE.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="81dp"
+    android:height="80dp"
+    android:viewportHeight="80"
+    android:viewportWidth="81">
+    <path
+        android:fillColor="#009961"
+        android:fillType="nonZero"
+        android:pathData="M40,80C17.9086,80 0,62.0914 0,40C0,17.9086 17.9086,0 40,0C62.0914,0 80,17.9086 80,40C80,62.0914 62.0914,80 40,80ZM40,77C60.4345,77 77,60.4345 77,40C77,19.5655 60.4345,3 40,3C19.5655,3 3,19.5655 3,40C3,60.4345 19.5655,77 40,77ZM49.6073,32.7216L50.7784,33.8607C51.0674,34.1491 51.0747,34.6099 50.7948,34.8892C50.7948,34.8892 39.2646,46.6903 39.2622,46.6921L38.1402,47.8822C37.8561,48.176 37.4011,48.1832 37.1255,47.899L31.2023,42.0174C30.9266,41.7321 30.9333,41.2629 31.2186,40.9691L32.3412,39.7795C32.6254,39.4858 33.0797,39.4786 33.3554,39.7627L37.5798,43.9579L48.5768,32.7048C48.8567,32.4254 49.3184,32.4327 49.6073,32.7216Z"
+        android:strokeColor="#00000000"
+        android:strokeWidth="1" />
+</vector>
