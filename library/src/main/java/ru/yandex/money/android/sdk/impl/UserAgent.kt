@@ -1,6 +1,6 @@
 /*
  * The MIT License (MIT)
- * Copyright © 2018 NBCO Yandex.Money LLC
+ * Copyright © 2020 NBCO Yandex.Money LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
  * associated documentation files (the “Software”), to deal in the Software without restriction, including
@@ -19,35 +19,23 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-apply from: rootProject.file("sensitive.gradle")
+package ru.yandex.money.android.sdk.impl
 
-ext {
-    versionMajor = 4
-    versionMinor = 1
-    versionPatch = 0
+import android.content.Context
+import android.os.Build
+import ru.yandex.money.android.sdk.BuildConfig
+import ru.yandex.money.android.sdk.impl.extensions.isTablet
 
-    versionAlpha = null
-
-    versionCode = [versionMajor, versionMinor, versionPatch, versionAlpha ?: 0].inject { result, i -> result * 100 + i }
-    versionName = "$versionMajor.$versionMinor.$versionPatch" + ( versionAlpha ? "-alpha-$versionAlpha" : "" )
-
-    generateFileName = { project, variant ->
-        def fileNameParts = [
-                "msdk",
-                getBuildBranch().replaceAll(/[^\w-.]/, "-"),
-                variant.getFlavorName(),
-                variant.buildType.name,
-                project.versionName,
-                getBuildNumber()
-        ]
-        return fileNameParts.join('-')
+object UserAgent {
+    fun getUserAgent(context: Context): String {
+        val version = BuildConfig.VERSION_NAME + if (BuildConfig.DEBUG) "-debug" else ""
+        val osVersion =  Build.VERSION.RELEASE
+        return "YooKassa.SDK.Client.Android/$version Android/$osVersion ${getDeviceType(context.isTablet)}"
     }
 
-    getBuildBranch = {
-        System.getenv('BUILD_BRANCH') ?: 'local'
-    }
-
-    getBuildNumber = {
-        System.getenv('BUILD_NUMBER') ?: '0'
+    private fun getDeviceType(isTablet: Boolean) = if (isTablet) {
+        "tablet"
+    } else {
+        "smartphone"
     }
 }

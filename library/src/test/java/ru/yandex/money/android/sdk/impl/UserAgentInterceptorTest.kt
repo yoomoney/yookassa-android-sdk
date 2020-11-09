@@ -36,8 +36,7 @@ import ru.yandex.money.android.sdk.on
 
 class UserAgentInterceptorTest {
 
-    private val sdkVersion = "sdkVersion"
-    private val osVersion = "osVersion"
+    private val tetstUserAgent = "testUserAgent"
     private val chain = mock(Interceptor.Chain::class.java)
     private val request = Request.Builder()
         .url("http://test/")
@@ -58,7 +57,7 @@ class UserAgentInterceptorTest {
     @Test
     fun `should be with smartphone when on smartphone`() {
         // prepare
-        val userAgentInterceptor = UserAgentInterceptor(sdkVersion, osVersion, false)
+        val userAgentInterceptor = UserAgentInterceptor(tetstUserAgent)
 
         // invoke
         val response = userAgentInterceptor.intercept(chain)
@@ -68,14 +67,14 @@ class UserAgentInterceptorTest {
         assertThat(userAgent, notNullValue())
         assertThat(
             userAgent,
-            equalTo("Yandex.Checkout.SDK.Android/$sdkVersion Android/$osVersion smartphone")
+            equalTo(userAgent)
         )
     }
 
     @[Test Config(qualifiers = "sw600dp")]
     fun `should be with tablet when smallest width more then 320 dp`() {
         // prepare
-        val userAgentInterceptor = UserAgentInterceptor(sdkVersion, osVersion, true)
+        val userAgentInterceptor = UserAgentInterceptor(tetstUserAgent)
 
         // invoke
         val response = userAgentInterceptor.intercept(chain)
@@ -85,7 +84,7 @@ class UserAgentInterceptorTest {
         assertThat(userAgent, notNullValue())
         assertThat(
             userAgent,
-            equalTo("Yandex.Checkout.SDK.Android/$sdkVersion Android/$osVersion tablet")
+            equalTo(tetstUserAgent)
         )
     }
 }

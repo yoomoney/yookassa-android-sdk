@@ -83,4 +83,6 @@
     <string name="ym_support_email">supp@money.yandex.ru</string>
     <string name="ym_support_help_url">https://money.yandex.ru/page?id=536720</string>
     <string name="ym_support_phone">+78002506699</string>
+    <string name='ym_migration_banner_text'>Если вы регистрировались до 21 октября — нужно перейти в ЮMoney</string>
+    <string name='ym_migration_banner_button_text'>Подробнее</string>
 </resources>

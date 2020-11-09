@@ -14,8 +14,10 @@
 
 #  Документация
 
-Android Checkout mobile SDK - версия 4.0.1 ([changelog](https://github.com/yandex-money/yandex-checkout-android-sdk/blob/master/CHANGELOG.md))
+Android Checkout mobile SDK - версия 4.1.0 ([changelog](https://github.com/yandex-money/yandex-checkout-android-sdk/blob/master/CHANGELOG.md))
 
+* [Changelog](#changelog)
+* [Migration guide](#migration-guide)
 * [Подключение зависимостей](#подключение-зависимостей)
     * [Подключение через Gradle](#подключение-через-Gradle)
     * [Подключение ru.yoo.sdk.auth (для платежей из кошелька)](#подключение-ru.yoo.sdk.auth)
@@ -32,6 +34,14 @@ Android Checkout mobile SDK - версия 4.0.1 ([changelog](https://github.com
     * [Сканирование банковской карты](#сканирование-банковской-карты)
 * [Полезные ссылки](#полезные-ссылки)
 
+# Changelog
+
+[Ссылка на Changelog](https://github.com/yandex-money/yandex-checkout-android-sdk/blob/master/CHANGELOG.md)
+
+# Migration guide
+
+[Ссылка на Migration guide](https://github.com/yandex-money/yandex-checkout-android-sdk/blob/master/MIGRATION.md)
+
 # Подключение зависимостей
 
 ## Подключение через Gradle
@@ -43,7 +53,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.yandex.money:checkout:4.0.1'
+    implementation 'com.yandex.money:checkout:4.1.0'
 }
 ```
 
@@ -55,7 +65,7 @@ dependencies {
 }
 ```
 
-## Подключение ru.yoo.sdk.auth
+## Подключение ru.yoo.sdk.auth (для платежей из кошелька)
 Если среди платёжных методов есть кошелёк Яндекс.Денег, необходимо подключить `ru.yoo.sdk.auth`.
 В остальных случаях этот шаг можно пропустить.
 
@@ -66,12 +76,12 @@ repositories {
     maven { url 'https://dl.bintray.com/yoomoney/maven' }
 }
 dependencies {
-    implementation "ru.yoo.sdk.auth:auth:1.0.19"
+    implementation "ru.yoo.sdk.auth:auth:1.0.29"
 }
 ```
 
-Попросите у менеджера по подключению библиотеку `ui-lib-1.19.4.aar`. 
-Создайте папку `libs` в модуле где подключаете sdk и положите туда файл `ui-lib-1.19.4.aar`. В `build.gradle` того же модуля в dependencies добавьте:
+Попросите у менеджера по подключению библиотеку `ui-lib-1.19.5.aar`.
+Создайте папку `libs` в модуле где подключаете sdk и положите туда файл `ui-lib-1.19.5.aar`. В `build.gradle` того же модуля в dependencies добавьте:
 ```groovy
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.aar"])

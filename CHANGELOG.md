@@ -1,8 +1,8 @@
 ## Changelog
 
-### 4.0.1
-2020-11-02
-- Fixed bug with dependencies
+### 4.1.0
+2020-11-6
+- Updated auth-sdk version
 
 ### 4.0.0
 2020-10-20

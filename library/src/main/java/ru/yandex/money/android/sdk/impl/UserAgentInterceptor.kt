@@ -22,19 +22,13 @@
 package ru.yandex.money.android.sdk.impl
 
 import android.content.Context
-import android.os.Build
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
-import ru.yandex.money.android.sdk.BuildConfig
-import ru.yandex.money.android.sdk.impl.extensions.isTablet
 
 internal class UserAgentInterceptor(
-    version: String,
-    osVersion: String,
-    isTablet: Boolean
+    private val userAgent: String
 ) : Interceptor {
-    private val userAgent = "Yandex.Checkout.SDK.Android/$version Android/$osVersion ${getDeviceType(isTablet)}"
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
@@ -43,16 +37,8 @@ internal class UserAgentInterceptor(
             .build()
         return chain.proceed(request)
     }
-
-    private fun getDeviceType(isTablet: Boolean) = if (isTablet) {
-        "tablet"
-    } else {
-        "smartphone"
-    }
 }
 
 internal fun OkHttpClient.Builder.addUserAgent(context: Context): OkHttpClient.Builder {
-    val versionName = BuildConfig.VERSION_NAME
-    val debugSuffix = if (BuildConfig.DEBUG) "-debug" else ""
-    return addInterceptor(UserAgentInterceptor(versionName + debugSuffix, Build.VERSION.RELEASE, context.isTablet))
+    return addInterceptor(UserAgentInterceptor(UserAgent.getUserAgent(context)))
 }

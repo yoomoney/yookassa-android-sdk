@@ -35,6 +35,8 @@ import ru.yandex.money.android.sdk.BuildConfig.YANDEX_CLIENT_ID
 import ru.yandex.money.android.sdk.R
 import ru.yandex.money.android.sdk.impl.AppModel
 import ru.yandex.money.android.sdk.impl.InMemoryColorSchemeRepository
+import ru.yandex.money.android.sdk.impl.UserAgent
+import ru.yoo.sdk.auth.RemoteConfig
 import ru.yoo.sdk.auth.analytics.AnalyticsEvent
 import ru.yoo.sdk.auth.analytics.AnalyticsLogger
 
@@ -80,7 +82,24 @@ internal class YandexAuthFragment : Fragment(), YandexAuthorizeUserGateway.Liste
             debugApiHost = if (AUTH_HOST.isNotEmpty()) AUTH_HOST else null,
             supportEmail = getString(R.string.ym_support_email),
             supportHelpUrl = getString(R.string.ym_support_help_url),
-            supportPhone = getString(R.string.ym_support_phone)
+            supportPhone = getString(R.string.ym_support_phone),
+            migrationBannerVisible = true,
+            migrationBannerText = getString(R.string.ym_migration_banner_text),
+            migrationBannerButtonText = getString(R.string.ym_migration_banner_button_text),
+            migrationBannerImageUrl = "https://static.yoomoney.ru/files-front/mobile/img/android_migration_banner_logo.png",
+            applicationUserAgent = UserAgent.getUserAgent(requireContext()),
+            remoteConfig = RemoteConfig(
+                restorePasswordEnabled = false,
+                userAgreementTitle = getString(R.string.auth_remote_config_offer_no_email),
+                userWithEmailAgreementTitle = getString(R.string.auth_remote_config_offer_has_email),
+                emailCheckboxVisible = true,
+                migrationScreenTitle = getString(R.string.auth_soft_migration_title),
+                migrationScreenSubtitle = getString(R.string.auth_soft_migration_subtitle),
+                migrationScreenButtonSubtitle = getString(R.string.auth_soft_migration_action_subtitle),
+                hardMigrationScreenTitle = getString(R.string.auth_hard_migration_title),
+                hardMigrationScreenSubtitle = getString(R.string.auth_hard_migration_subtitle),
+                hardMigrationScreenButtonSubtitle = getString(R.string.auth_hard_migration_action_subtitle)
+            )
         )
         startActivityForResult(YooMoneyAuth.auth(requireContext(), config), REQUEST_MONEY_AUTHORIZATION)
     }

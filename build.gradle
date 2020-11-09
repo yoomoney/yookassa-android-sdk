@@ -29,7 +29,7 @@ buildscript {
     ext.mockito_version = '2.19.0'
     ext.espresso_version = '3.0.1'
     ext.gson_version = '2.8.6'
-    ext.yoo_sdk_auth_version = '1.0.19'
+    ext.yoo_sdk_auth_version = '1.0.29'
 
     ext.junit = '4.13'
     ext.appcompat = '1.2.0'

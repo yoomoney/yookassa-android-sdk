@@ -78,16 +78,14 @@ repositories {
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.aar"])
     implementation "androidx.appcompat:appcompat:$appcompat"
     implementation "com.google.android.material:material:$material"
     implementation "androidx.recyclerview:recyclerview:$recyclerview"
     implementation "androidx.constraintlayout:constraintlayout:$constraintlayout"
     implementation 'com.facebook.device.yearclass:yearclass:2.1.0'
-    implementation "ru.yoo.sdk.auth:auth:$yoo_sdk_auth_version"
+    implementation (project(':library')) 
 
-    releaseImplementation (project(':library'))
-    debugImplementation (project(':library')) 
+    implementation (fileTree(dir: "libs", include: ["*.aar"]))
     implementation 'io.card:android-sdk:5.5.1'
 
     testImplementation "junit:junit:$junit"
