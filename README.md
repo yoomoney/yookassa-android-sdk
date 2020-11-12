@@ -18,9 +18,10 @@ Android Checkout mobile SDK - версия 4.1.0 ([changelog](https://github.com
 
 * [Changelog](#changelog)
 * [Migration guide](#migration-guide)
+* [Регистрация приложения для платежей из кошелька](#регистрация-приложения-для-платежей-из-кошелька)
 * [Подключение зависимостей](#подключение-зависимостей)
     * [Подключение через Gradle](#подключение-через-Gradle)
-    * [Подключение ru.yoo.sdk.auth (для платежей из кошелька)](#подключение-ru.yoo.sdk.auth)
+    * [Подключение sdk авторизации для платежей из кошелька](#подключение-sdk-авторизации-для-платежей-из-кошелька)
     * [Настройка приложения при продаже цифровых товаров](#настройка-приложения-при-продаже-цифровых-товаров)
 * [Использование библиотеки](#использование-библиотеки)
     * [Токенизация](#токенизация)
@@ -42,6 +43,25 @@ Android Checkout mobile SDK - версия 4.1.0 ([changelog](https://github.com
 
 [Ссылка на Migration guide](https://github.com/yandex-money/yandex-checkout-android-sdk/blob/master/MIGRATION.md)
 
+# Регистрация приложения для платежей из кошелька
+> Если среди платёжных методов есть кошелёк Яндекс.Денег, необходимо зарегистрировать приложение и получить `clientId`.
+В остальных случаях этот шаг можно пропустить.
+
+Если вы ранее уже регистрировали приложение для **oAuth-авторизации**, то список ваших приложений можно найти на странице https://yookassa.ru/oauth/v2/client
+Если вы ещё не регистрировали приложение для **oAuth-авторизации**, то нужно выполнить следующие инструкции.
+1. Для регистрации нового приложения необходимо авторизоваться на сайте https://yookassa.ru
+2. После авторизации перейдите на страницу регистрации клиентов СЦА – https://yookassa.ru/oauth/v2/client
+3. Нажмите на кнопку создать приложение и задайте значение параметрам:
+    * Название;
+    * Описание. По желанию;
+    * Ссылка на сайт;
+    * Сallback URL – любой, можно указать ссылку на сайт;
+    * Доступы. Тут есть три раздела `API ЮKassa`, `Кошелёк ЮMoney`, `Профиль ЮMoney`.
+        * В разделе `Кошелёк ЮMoney` выдайте разрешение на чтение баланса кошелька пользователя. Для этого в разделе **БАЛАНС КОШЕЛЬКА** поставьте галку на против поля **Просмотр**;
+        * Откройте раздел `Профиль ЮMoney` и выдайте разрешение на чтение телефона, почты, имени и аватара пользователя. Для этого в разделе **ТЕЛЕФОН, ПОЧТА, ИМЯ И АВАТАР ПОЛЬЗОВАТЕЛЯ** поставьте галку на против поля **Просмотр**;
+3. Нажмите на кнопку "Зарегистрировать" и завершите регистрацию;
+4. В открывшемся окне появится информация о зарегистрированном приложении. Вам понадобится `Client ID` для запуска токенизации см. [(Запуск токенизации)](#запуск-токенизации);
+
 # Подключение зависимостей
 
 ## Подключение через Gradle
@@ -57,20 +77,18 @@ dependencies {
 }
 ```
 
-Попросите у менеджера по подключению библиотеку `ThreatMetrix Android SDK 5.4-73.aar`. 
+Попросите у менеджера по подключению библиотеку `ThreatMetrix Android SDK 5.4-73.aar`.
 Создайте папку libs в модуле где подключаете sdk и добавьте туда файл `ThreatMetrix Android SDK 5.4-73.aar`. В build.gradle того же модуля в dependencies добавьте:
 ```groovy
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.aar"])
 }
 ```
-
-## Подключение ru.yoo.sdk.auth (для платежей из кошелька)
-Если среди платёжных методов есть кошелёк Яндекс.Денег, необходимо подключить `ru.yoo.sdk.auth`.
+## Подключение sdk авторизации для платежей из кошелька
+> Если среди платёжных методов есть кошелёк Яндекс.Денег, необходимо подключить sdk авторизации `ru.yoo.sdk.auth`.
 В остальных случаях этот шаг можно пропустить.
 
-Попросить менеджера по подключению зарегистрировать для вас приложение в центре авторизации.
-
+Добавьте необходимые зависимости в gradle файлы:
 ```groovy
 repositories {
     maven { url 'https://dl.bintray.com/yoomoney/maven' }
@@ -124,7 +142,7 @@ dependencies {
 * clientApplicationKey (String) - ключ для клиентских приложений из личного кабинета Яндекс.Кассы ([раздел Настройки — Ключи API](https://kassa.yandex.ru/my/api-keys-settings)).;
 * shopId (String) - идентификатор магазина в Яндекс.Кассе.
 * savePaymentMethod (SavePaymentMethod) - настройка сохранения платёжного метода. Сохранённые платёжные методы можно использовать для проведения рекуррентных платежей.
-* clientId (String) - идентификатор приложения для sdk авторизации `ru.yoo.sdk.auth`, нужно запросить у менеджера по подключению.
+* clientId (String) - идентификатор приложения для sdk авторизации `ru.yoo.sdk.auth`, см. [Регистрация приложения для платежей из кошелька](#регистрация-приложения-для-платежей-из-кошелька).
 
 Необязательные:
 * paymentMethodTypes (Set of PaymentMethodType) - ограничения способов оплаты. Если оставить поле пустым или передать в него null,
@@ -257,7 +275,7 @@ class MyActivity extends AppCompatActivity {
 
 ```java
 public final class MainActivity extends AppCompatActivity {
-    
+
     ...
 
      @Override
@@ -282,15 +300,15 @@ public final class MainActivity extends AppCompatActivity {
 ```
 
 ### Использование платежного токена
-Необходимо получить у менеджера Яндекс.Кассы разрешение на проведение платежей с использованием токена. 
+Необходимо получить у менеджера Яндекс.Кассы разрешение на проведение платежей с использованием токена.
 Токен одноразовый, срок действия — 1 час. Если не создать платеж в течение часа, токен нужно будет запрашивать заново.
 
 В платежном токене содержатся данные о [сценарии подтверждения](https://kassa.yandex.ru/developers/payments/payment-process#user-confirmation) платежа.
 После получения платежного токена Вы можете [создать платеж](https://kassa.yandex.ru/developers/api#create_payment), в параметре `payment_token` передайте платежный токен.
-Если платеж проводится с аутентификацией по 3-D Secure, используйте `confirmation_url`, который придет в объекте [Платежа](https://kassa.yandex.ru/developers/api#payment_object). 
+Если платеж проводится с аутентификацией по 3-D Secure, используйте `confirmation_url`, который придет в объекте [Платежа](https://kassa.yandex.ru/developers/api#payment_object).
 Используйте `confirmation_url` для запуска 3-D Secure, см. [3DSecure](#3DSecure).
 
-Так же, Вы можете получить [информацию о платеже](https://kassa.yandex.ru/developers/api#get_payment) 
+Так же, Вы можете получить [информацию о платеже](https://kassa.yandex.ru/developers/api#get_payment)
 
 ### Тестовые параметры и отладка
 
@@ -298,7 +316,7 @@ public final class MainActivity extends AppCompatActivity {
 
 Поля класса `TestParameters:`
 * showLogs (Boolean) - включить отображение логов SDK. Все логи начинаются с тега 'Yandex.Checkout.SDK'
-* googlePayTestEnvironment (Boolean) - использовать тестовую среду Google Pay - все транзакции, проведенные через Google Pay, будут использовать `WalletConstants.ENVIRONMENT_TEST`. Имейте ввиду, что при попытке оплаты с параметром googlePayTestEnvironment=true произойдет ошибка токенизации. Подробнее см. на https://developers.google.com/pay/api/android/guides/test-and-deploy/integration-checklist#about-the-test-environment. 
+* googlePayTestEnvironment (Boolean) - использовать тестовую среду Google Pay - все транзакции, проведенные через Google Pay, будут использовать `WalletConstants.ENVIRONMENT_TEST`. Имейте ввиду, что при попытке оплаты с параметром googlePayTestEnvironment=true произойдет ошибка токенизации. Подробнее см. на https://developers.google.com/pay/api/android/guides/test-and-deploy/integration-checklist#about-the-test-environment.
 * mockConfiguration (MockConfiguration) - использовать моковую конфигурацию. Если этот параметр присутствует, SDK будет работать в оффлайн режиме и генерировать тестовый токен. Этот токен нельзя использовать для платежей.
 
 `MockConfiguration`
@@ -335,7 +353,7 @@ class MyActivity extends AppCompatActivity {
 * colorScheme (ColorScheme) - цветовая схема.
 
 Поля класса `ColorScheme`:
-* primaryColor (ColorInt) - основной цвет приложения. В этот цвет будут краситься кнопки, переключатели, поля для ввода и т.д. 
+* primaryColor (ColorInt) - основной цвет приложения. В этот цвет будут краситься кнопки, переключатели, поля для ввода и т.д.
 Не рекомендуется задавать в качестве этого цвета слишком светлые цвета (они будут не видны на белом фоне) и красный цвет (он будет пересекаться с цветом ошибки).
 
 ```java
@@ -372,7 +390,7 @@ class MyActivity extends AppCompatActivity {
 **Запуск 3ds и получение результата**
 ```java
 class MyActivity extends AppCompatActivity {
-    
+
     void timeToStart3DS() {
         Intent intent = Checkout.create3dsIntent(
                 this,
@@ -380,7 +398,7 @@ class MyActivity extends AppCompatActivity {
         );
         startActivityForResult(intent, 1);
     }
-    
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -427,17 +445,17 @@ class MyActivity extends AppCompatActivity {
 ***Возвращение результата с activity***
 ```java
 public class ScanBankCardActivity extends Activity {
-    
+
     private void onScanningDone(final String cardNumber, final int expirationMonth, final int expirationYear) {
-    
+
         final Intent result = Checkout.createScanBankCardResult(cardNumber, expirationMonth, expirationYear);
-    
+
         setResult(Activity.RESULT_OK, result);
-    
+
         finish();
-    
+
     }
-    
+
 }
 ```
 
