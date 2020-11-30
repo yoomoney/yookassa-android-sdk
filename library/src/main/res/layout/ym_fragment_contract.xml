@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ The MIT License (MIT)
-  ~ Copyright © 2018 NBCO Yandex.Money LLC
+  ~ Copyright © 2020 NBCO YooMoney LLC
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
   ~ associated documentation files (the “Software”), to deal in the Software without restriction, including
@@ -102,7 +102,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <ru.yandex.money.android.sdk.impl.view.YmSwitch
+                        <ru.yoo.sdk.kassa.payments.impl.view.YmSwitch
                             style="@style/ym_Switch"
                             android:id="@+id/allowWalletLinking"
                             android:layout_width="match_parent"
@@ -138,7 +138,7 @@
                                 android:layout_weight="1"
                                 android:layout_margin="@dimen/ym_space_m" />
 
-                            <ru.yandex.money.android.sdk.impl.view.YmSwitch
+                            <ru.yoo.sdk.kassa.payments.impl.view.YmSwitch
                                 style="@style/ym_Switch"
                                 android:id="@+id/savePaymentMethodSwitch"
                                 android:layout_width="wrap_content"
@@ -191,25 +191,25 @@
                     android:layout_marginTop="@dimen/ym_decor_marginTop_m"
                     android:measureAllChildren="false">
 
-                    <ru.yandex.money.android.sdk.impl.view.YmProgressBar
+                    <ru.yoo.sdk.kassa.payments.impl.view.YmProgressBar
                         style="?android:progressBarStyle"
                         android:id="@+id/paymentAuthLoading"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
-                    <ru.yandex.money.android.sdk.impl.paymentAuth.PaymentAuthView
+                    <ru.yoo.sdk.kassa.payments.impl.paymentAuth.PaymentAuthView
                         android:id="@+id/paymentAuth"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
-                    <ru.yandex.money.android.sdk.impl.view.YmTextInputLayout
+                    <ru.yoo.sdk.kassa.payments.impl.view.YmTextInputLayout
                         android:id="@+id/phoneInputContainer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:hintEnabled="false"
                         app:hintTextAppearance="@style/ym_TextAppearance.TextInputLayout">
 
-                        <ru.yandex.money.android.sdk.impl.view.YmEditText
+                        <ru.yoo.sdk.kassa.payments.impl.view.YmEditText
                             style="@style/ym_EditText"
                             android:id="@+id/phoneInput"
                             android:layout_width="match_parent"
@@ -218,7 +218,7 @@
                             android:imeOptions="actionDone"
                             android:inputType="phone" />
 
-                    </ru.yandex.money.android.sdk.impl.view.YmTextInputLayout>
+                    </ru.yoo.sdk.kassa.payments.impl.view.YmTextInputLayout>
                 </ViewAnimator>
             </ViewSwitcher>
 
@@ -286,7 +286,7 @@
                 android:layout_marginTop="@dimen/ym_decor_marginTop_2xl"
                 android:maxLines="3" />
 
-            <ru.yandex.money.android.sdk.impl.view.YmButton
+            <ru.yoo.sdk.kassa.payments.impl.view.YmButton
                 style="@style/ym_Button.Rounded"
                 android:id="@+id/nextButton"
                 android:layout_width="match_parent"
@@ -301,14 +301,14 @@
         </LinearLayout>
     </ScrollView>
 
-    <ru.yandex.money.android.sdk.impl.view.LoadingView
+    <ru.yoo.sdk.kassa.payments.impl.view.LoadingView
         android:id="@+id/loadingView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/ym_bottomDialog_maxHeight"
         android:background="@drawable/ym_dialog_background"
         android:visibility="gone" />
 
-    <ru.yandex.money.android.sdk.impl.view.ErrorView
+    <ru.yoo.sdk.kassa.payments.impl.view.ErrorView
         android:id="@+id/errorView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/ym_bottomDialog_maxHeight"

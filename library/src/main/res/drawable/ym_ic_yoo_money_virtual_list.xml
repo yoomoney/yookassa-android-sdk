@@ -1,0 +1,37 @@
+<!--
+  ~ The MIT License (MIT)
+  ~ Copyright © 2020 NBCO YooMoney LLC
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+  ~ associated documentation files (the “Software”), to deal in the Software without restriction, including
+  ~ without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+  ~ of the Software, and to permit persons to whom the Software is furnished to do so, subject to the
+  ~ following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all copies or substantial
+  ~ portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+  ~ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+  ~ PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+  ~ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+  ~ OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+  ~ OTHER DEALINGS IN THE SOFTWARE.
+  -->
+
+<vector android:height="24dp" android:viewportHeight="40"
+    android:viewportWidth="40" android:width="24dp"
+    xmlns:aapt="http://schemas.android.com/aapt" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillType="evenOdd" android:pathData="M4,6h32a4,4 0,0 1,4 4v20a4,4 0,0 1,-4 4L4,34a4,4 0,0 1,-4 -4L0,10a4,4 0,0 1,4 -4z">
+        <aapt:attr name="android:fillColor">
+            <gradient android:endX="30.47" android:endY="25.41128"
+                android:startX="2.69" android:startY="13.14" android:type="linear">
+                <item android:color="#FF8199BC" android:offset="0"/>
+                <item android:color="#FF6B809E" android:offset="1"/>
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:fillAlpha="0.3" android:fillColor="#FFF"
+        android:fillType="evenOdd"
+        android:pathData="M31.047,13.053v6.024L20.215,26.331l13.293,-4.234L33.508,13.053L36,13.053v14.524L19.603,27.577C18.03,27.577 18,25.93 18,25.93L18.03,14.186c0,-1.69 0.804,-2.37 1.573,-2.863 0.769,-0.493 11.428,-7.285 11.428,-7.285v9.015h0.016zM28.397,13.146c0.016,-0.888 -0.738,-1.311 -1.645,-0.917 -0.907,0.394 -1.687,1.406 -1.703,2.363 -0.016,0.888 0.739,1.312 1.645,0.917 0.907,-0.394 1.688,-1.474 1.703,-2.363z" android:strokeAlpha="0.3"/>
+</vector>

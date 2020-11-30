@@ -1,8 +1,6 @@
-import org.apache.tools.ant.DirectoryScanner
-
 /*
  * The MIT License (MIT)
- * Copyright © 2018 NBCO Yandex.Money LLC
+ * Copyright © 2020 NBCO YooMoney LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
  * associated documentation files (the “Software”), to deal in the Software without restriction, including
@@ -20,6 +18,8 @@ import org.apache.tools.ant.DirectoryScanner
  * OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  */
+
+import org.apache.tools.ant.DirectoryScanner
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
@@ -43,13 +43,11 @@ android {
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
-        buildConfigField "String", "DEFAULT_YANDEX_AUTH_TOKEN", "${optionalProperty('defaultYandexAuthToken')}"
-
         buildConfigField "String", "THREAT_METRIX_ORIG_ID", "${optionalProperty('threatMetrixOrigId')}"
         buildConfigField "String", "THREAT_METRIX_FP_SERVER", "${optionalProperty('threatMetrixFPServer')}"
         buildConfigField "String", "THREAT_METRIX_CERTIFICATE_HASHES", "${optionalProperty('threatMetrixCertificateHashes')}"
 
-        buildConfigField "String", "HOST", "\"https://payment.yandex.net/frontend-api/v3\""
+        buildConfigField "String", "HOST", "\"https://sdk.yookassa.ru/api/frontend/v3\""
         buildConfigField "String", "PAYMENT_AUTHORIZATION_HOST", "\"https://yoomoney.ru/api/wallet-auth/v1\""
         buildConfigField "String", "API_V1_HOST", "\"https://yoomoney.ru/api\""
         buildConfigField "String", "AUTH_HOST", "\"\""
@@ -116,6 +114,8 @@ dependencies {
 
     implementation 'commons-io:commons-io:2.5'
     implementation 'commons-codec:commons-codec:1.15'
+    compileOnly("ru.yoo.sdk.auth:auth:$yoo_sdk_auth_version")
+
     testImplementation "junit:junit:$junit"
     testImplementation "org.mockito:mockito-core:$mockito_version"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0"

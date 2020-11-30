@@ -1,0 +1,99 @@
+/*
+ * The MIT License (MIT)
+ * Copyright © 2020 NBCO YooMoney LLC
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the “Software”), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+ * of the Software, and to permit persons to whom the Software is furnished to do so, subject to the
+ * following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ * PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+ * OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply from: rootProject.file('common.gradle')
+
+android {
+    compileSdkVersion target_sdk_version
+    buildToolsVersion '28.0.3'
+    defaultConfig {
+        applicationId "ru.yoo.sdk.kassa.payments.example"
+        minSdkVersion 21
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        vectorDrawables.useSupportLibrary = true
+
+        def buildDateMillis = Calendar.getInstance().toInstant().toEpochMilli()
+        buildConfigField "long", "BUILD_DATE", "${buildDateMillis}L"
+
+        buildConfigField "String", "MERCHANT_TOKEN", "${optionalProperty('merchantToken')}"
+        buildConfigField "String", "GATEWAY_ID", "${optionalProperty('gatewayId')}"
+        buildConfigField "String", "SHOP_ID", "${optionalProperty('shopId')}"
+        buildConfigField "String", "CLIENT_ID", "${optionalProperty('cliendId')}"
+
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    buildTypes {
+        debug {
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro', '../library/proguard-rules.pro'
+        }
+    }
+
+    flavorDimensions "payment_type"
+
+    productFlavors {
+        withYooMoney {
+            dimension "payment_type"
+        }
+        withoutYooMoney {
+            dimension "payment_type"
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "${generateFileName(project, variant)}.apk"
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "androidx.appcompat:appcompat:$appcompat"
+    implementation "com.google.android.material:material:$material"
+    implementation "androidx.recyclerview:recyclerview:$recyclerview"
+    implementation "androidx.constraintlayout:constraintlayout:$constraintlayout"
+    implementation 'com.facebook.device.yearclass:yearclass:2.1.0'
+    implementation project(':library')
+
+    withoutYooMoneyImplementation(fileTree(dir: "libs", include: ["profiling-tool.aar"]))
+
+    withYooMoneyImplementation(fileTree(dir: "libs", include: ["profiling-tool.aar", "gui-release.aar"]))
+    withYooMoneyImplementation("ru.yoo.sdk.auth:auth:$yoo_sdk_auth_version")
+
+    implementation 'io.card:android-sdk:5.5.1'
+
+    testImplementation "junit:junit:$junit"
+    testImplementation "org.mockito:mockito-core:$mockito_version"
+    testImplementation "org.robolectric:robolectric:3.8"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}

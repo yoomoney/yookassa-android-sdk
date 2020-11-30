@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ The MIT License (MIT)
-  ~ Copyright © 2018 NBCO Yandex.Money LLC
+  ~ Copyright © 2020 NBCO YooMoney LLC
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
   ~ associated documentation files (the “Software”), to deal in the Software without restriction, including
@@ -25,7 +25,7 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ru.yandex.money.android.sdk.impl.view.YmProgressBar
+    <ru.yoo.sdk.kassa.payments.impl.view.YmProgressBar
         style="?android:progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <!--
   ~ The MIT License (MIT)
-  ~ Copyright © 2018 NBCO Yandex.Money LLC
+  ~ Copyright © 2020 NBCO YooMoney LLC
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
   ~ associated documentation files (the “Software”), to deal in the Software without restriction, including
@@ -22,7 +22,7 @@
 
 <resources>
     <string name="ym_payment_option_new_card">Банковская карта</string>
-    <string name="ym_payment_option_yamoney">Яндекс.Деньги</string>
+    <string name="ym_payment_option_yoomoney">ЮMoney</string>
     <string name="ym_payment_options_title">Способ оплаты</string>
     <string name="ym_payment_options_error_message">Проблема с интернетом. Попробуйте ещё раз, когда будете онлайн</string>
     <string name="ym_payment_options_error_button">Повторить попытку</string>
@@ -33,7 +33,7 @@
     <string name="ym_bank_card_title_existing">Банковская карта</string>
     <string name="ym_bank_card_title_new">Банковская карта</string>
     <string name="ym_bank_card_title_edit">Привязанная карта</string>
-    <string name="ym_payment_options_yamoney">Яндекс.Деньги</string>
+    <string name="ym_payment_options_yoomoney">ЮMoney</string>
     <string name="ym_payment_options_android_pay">Google Pay</string>
     <string name="ym_contract_amount">К оплате</string>
     <string name="ym_contract_fee">Включая комиссию</string>
@@ -50,13 +50,13 @@
     <string name="ym_logout_dialog_button_negative">Отмена</string>
     <string name="ym_logout_dialog_message">Уверены, что хотите выйти из аккаунта %1$s?</string>
     <string name="ym_retry">Попробовать ещё раз</string>
-    <string name="ym_no_wallet_dialog_message">У вас нет кошелька на Яндексе</string>
+    <string name="ym_no_wallet_dialog_message">У вас нет кошелька на ЮMoney</string>
     <string name="ym_no_wallet_dialog_shoose_payment_option">Выбрать способ оплаты</string>
     <string name="ym_error_something_went_wrong">Похоже, это техническая ошибка</string>
     <string name="ym_error_no_internet">Проблема с интернетом. Попробуйте ещё раз, когда будете онлайн</string>
     <string name="ym_no_payment_options_error">Нет доступных способов оплаты</string>
     <string name="ym_wrong_passcode_error">Неправильный пароль</string>
-    <string name="ym_login_error">Что-то не так с логином в сервисе Яндекс.Деньги</string>
+    <string name="ym_login_error">Что-то не так с логином в сервисе ЮMoney</string>
     <string name="ym_server_error">Похоже, это техническая ошибка</string>
     <string name="ym_unknown_error">Похоже, это техническая ошибка</string>
     <string name="ym_unhandled_error">Что-то пошло не так, мы чиним, можете попробовать еще раз</string>
@@ -67,21 +67,21 @@
     <string name="ym_payment_option_google_pay">Google Pay</string>
     <string name="ym_license_agreement_part_1">Нажимая кнопку, вы принимаете</string>
     <string name="ym_license_agreement_part_2">условия сервиса</string>
-    <string name="ym_license_agreement_url">https://money.yandex.ru/page?id=526623</string>
+    <string name="ym_license_agreement_url">https://yoomoney.ru/page?id=526623</string>
     <string name="ym_save_payment_method_wallet_info_title">Разрешение списывать деньги без вашего участия</string>
-    <string name="ym_save_payment_method_wallet_info_text">Это значит, что вы даёте Яндекс.Деньгам предварительное согласие списывать деньги с кошелька по запросу магазина — без дополнительного подтверждения с вашей стороны. Отменить такие списания можно в любой момент: в настройках кошелька (на сайте Яндекс.Денег).</string>
+    <string name="ym_save_payment_method_wallet_info_text">Это значит, что вы даёте ЮMoney предварительное согласие списывать деньги с кошелька по запросу магазина — без дополнительного подтверждения с вашей стороны. Отменить такие списания можно в любой момент: в настройках кошелька (на сайте ЮMoney).</string>
     <string name="ym_save_payment_method_wallet_switch_text_part_1">Разрешить магазину</string>
     <string name="ym_save_payment_method_wallet_switch_text_part_2">списывать деньги без моего участия</string>
     <string name="ym_save_payment_method_wallet_message_text_part_1">После оплаты привяжем кошелёк: магазин сможет</string>
     <string name="ym_save_payment_method_wallet_message_text_part_2">списывать деньги без вашего участия</string>
     <string name="ym_save_payment_method_bank_card_info_title">Разрешение списывать деньги по запросу магазина</string>
-    <string name="ym_save_payment_method_bank_card_info_text">Это значит, что предварительно вы разрешаете Яндекс.Деньгам списывать деньги по запросу магазина, без отдельного подтверждения — с этой карты или с новой, при перевыпуске (если ваш банк умеет автоматически обновлять данные). Отменить привязку можно в любой момент, через службу поддержки магазина.</string>
+    <string name="ym_save_payment_method_bank_card_info_text">Это значит, что предварительно вы разрешаете ЮMoney списывать деньги по запросу магазина, без отдельного подтверждения — с этой карты или с новой, при перевыпуске (если ваш банк умеет автоматически обновлять данные). Отменить привязку можно в любой момент, через службу поддержки магазина.</string>
     <string name="ym_save_payment_method_bank_card_switch_text_part_1">Привязать карту и</string>
     <string name="ym_save_payment_method_bank_card_switch_text_part_2">списывать деньги по запросу магазина</string>
     <string name="ym_save_payment_method_bank_card_message_text_part_1">После оплаты привяжем карту, чтобы</string>
     <string name="ym_save_payment_method_bank_card_message_text_part_2">списывать деньги по запросу магазина</string>
-    <string name="ym_support_email">supp@money.yandex.ru</string>
-    <string name="ym_support_help_url">https://money.yandex.ru/page?id=536720</string>
+    <string name="ym_support_email">support@yoomoney.ru</string>
+    <string name="ym_support_help_url">https://yoomoney.ru/page?id=536720</string>
     <string name="ym_support_phone">+78002506699</string>
     <string name='ym_migration_banner_text'>Если вы регистрировались до 21 октября — нужно перейти в ЮMoney</string>
     <string name='ym_migration_banner_button_text'>Подробнее</string>

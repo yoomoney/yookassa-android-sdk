@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ The MIT License (MIT)
-  ~ Copyright © 2018 NBCO Yandex.Money LLC
+  ~ Copyright © 2020 NBCO YooMoney LLC
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
   ~ associated documentation files (the “Software”), to deal in the Software without restriction, including
@@ -65,13 +65,13 @@
             android:layout_marginRight="@dimen/ym_screen_indentEnd"
             android:layout_marginStart="@dimen/ym_screen_indentStart">
 
-            <ru.yandex.money.android.sdk.impl.view.YmTextInputLayout
+            <ru.yoo.sdk.kassa.payments.impl.view.YmTextInputLayout
                 android:id="@+id/cardNumberInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:hintTextAppearance="@style/ym_TextAppearance.TextInputLayout">
 
-                <ru.yandex.money.android.sdk.impl.view.YmEditText
+                <ru.yoo.sdk.kassa.payments.impl.view.YmEditText
                     style="@style/ym_EditText"
                     android:id="@+id/cardNumberEditText"
                     android:layout_width="match_parent"
@@ -83,7 +83,7 @@
                     android:maxLength="23"
                     android:nextFocusForward="@+id/card_expiry_edit_text" />
 
-        </ru.yandex.money.android.sdk.impl.view.YmTextInputLayout>
+        </ru.yoo.sdk.kassa.payments.impl.view.YmTextInputLayout>
 
     </FrameLayout>
 
@@ -104,13 +104,13 @@
                 android:layout_marginRight="@dimen/ym_decor_marginEnd_2xl"
                 android:layout_weight="1">
 
-                <ru.yandex.money.android.sdk.impl.view.YmTextInputLayout
+                <ru.yoo.sdk.kassa.payments.impl.view.YmTextInputLayout
                     android:id="@+id/expiryInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:hintTextAppearance="@style/ym_TextAppearance.TextInputLayout">
 
-                    <ru.yandex.money.android.sdk.impl.view.YmEditText
+                    <ru.yoo.sdk.kassa.payments.impl.view.YmEditText
                         style="@style/ym_EditText"
                         android:id="@+id/expiryEditText"
                         android:layout_width="match_parent"
@@ -120,7 +120,7 @@
                         android:inputType="text|number"
                         android:maxLength="5"
                         android:nextFocusForward="@+id/card_csc_edit_text" />
-                </ru.yandex.money.android.sdk.impl.view.YmTextInputLayout>
+                </ru.yoo.sdk.kassa.payments.impl.view.YmTextInputLayout>
             </FrameLayout>
 
             <FrameLayout
@@ -129,13 +129,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
 
-                <ru.yandex.money.android.sdk.impl.view.YmTextInputLayout
+                <ru.yoo.sdk.kassa.payments.impl.view.YmTextInputLayout
                     android:id="@+id/cscInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:hintTextAppearance="@style/ym_TextAppearance.TextInputLayout">
 
-                    <ru.yandex.money.android.sdk.impl.view.YmEditText
+                    <ru.yoo.sdk.kassa.payments.impl.view.YmEditText
                         style="@style/ym_EditText"
                         android:id="@+id/cscEditText"
                         android:layout_width="match_parent"
@@ -145,7 +145,7 @@
                         android:inputType="numberPassword"
                         android:maxLength="4" />
 
-                </ru.yandex.money.android.sdk.impl.view.YmTextInputLayout>
+                </ru.yoo.sdk.kassa.payments.impl.view.YmTextInputLayout>
             </FrameLayout>
         </LinearLayout>
 
@@ -154,7 +154,7 @@
             android:layout_height="0dp"
             android:layout_weight="1" />
 
-        <ru.yandex.money.android.sdk.impl.view.YmButton
+        <ru.yoo.sdk.kassa.payments.impl.view.YmButton
             style="@style/ym_Button.Rounded"
             android:id="@+id/payButton"
             android:layout_width="match_parent"

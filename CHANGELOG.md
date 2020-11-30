@@ -58,14 +58,14 @@
 2019-04-25
 - Add new parameter "userPhoneNumber" in PaymentParameters.
 - Add setting of supported card networks in Google Pay.
-- Fix crash on 3-DS screen (https://github.com/yandex-money/yandex-checkout-android-sdk/issues/26).
+- Fix crash on 3-DS screen (https://github.com/yoomoney/yookassa-android-sdk/issues/26).
 - Update README.
 
 ### 2.1.0
 2019-04-01
 - Add color customization.
-- Add support for AndroidX (https://github.com/yandex-money/yandex-checkout-android-sdk/issues/21).
-- Fix Google Pay disabling from AndroidManifest (https://github.com/yandex-money/yandex-checkout-android-sdk/issues/20).
+- Add support for AndroidX (https://github.com/yoomoney/yookassa-android-sdk/issues/21).
+- Fix Google Pay disabling from AndroidManifest (https://github.com/yoomoney/yookassa-android-sdk/issues/20).
 
 ### 2.0.0
 2019-01-25
@@ -81,7 +81,7 @@
 
 ### 1.3.0.6
 2018-12-27
-- Fix 3ds for test payments (https://github.com/yandex-money/yandex-checkout-android-sdk/issues/9).
+- Fix 3ds for test payments (https://github.com/yoomoney/yookassa-android-sdk/issues/9).
 
 ### 1.3.0.5
 2018-12-18
@@ -94,12 +94,12 @@
 
 ### 1.3.0.3
 2018-08-15
-- Fix crash on bank card screen when user clicks "done" without filling in a card number (https://github.com/yandex-money/yandex-checkout-android-sdk/issues/5).
-- Fix keyboard opening automatically after MSDK dismiss (https://github.com/yandex-money/yandex-checkout-android-sdk/issues/3).
+- Fix crash on bank card screen when user clicks "done" without filling in a card number (https://github.com/yoomoney/yookassa-android-sdk/issues/5).
+- Fix keyboard opening automatically after MSDK dismiss (https://github.com/yoomoney/yookassa-android-sdk/issues/3).
 
 ### 1.3.0.2
 2018-08-02
-- Fix 3ds screen crash (https://github.com/yandex-money/yandex-checkout-android-sdk/issues/4).
+- Fix 3ds screen crash (https://github.com/yoomoney/yookassa-android-sdk/issues/4).
 
 ### 1.3.0.1
 2018-07-17

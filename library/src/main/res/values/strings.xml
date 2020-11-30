@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <!--
   ~ The MIT License (MIT)
-  ~ Copyright © 2018 NBCO Yandex.Money LLC
+  ~ Copyright © 2020 NBCO YooMoney LLC
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
   ~ associated documentation files (the “Software”), to deal in the Software without restriction, including
@@ -22,7 +22,7 @@
 
 <resources>
     <string name="ym_payment_option_new_card">Bank card</string>
-    <string name="ym_payment_option_yamoney">Yandex.Money</string>
+    <string name="ym_payment_option_yoomoney">YooMoney</string>
     <string name="ym_payment_options_title">Payment methods</string>
     <string name="ym_payment_options_error_message">Connection error. Try again once you\'re online.</string>
     <string name="ym_payment_options_error_button">Try again</string>
@@ -33,7 +33,7 @@
     <string name="ym_bank_card_title_existing">Bank card</string>
     <string name="ym_bank_card_title_new">Bank card</string>
     <string name="ym_bank_card_title_edit">Linked bank card</string>
-    <string name="ym_payment_options_yamoney">Yandex.Money</string>
+    <string name="ym_payment_options_yoomoney">YooMoney</string>
     <string name="ym_payment_options_android_pay">Google Pay</string>
     <string name="ym_contract_amount">Amount to be paid</string>
     <string name="ym_contract_fee">Including fee</string>
@@ -50,13 +50,13 @@
     <string name="ym_logout_dialog_button_negative">Cancel</string>
     <string name="ym_logout_dialog_message">Are you sure you want to log out of account %1$s?</string>
     <string name="ym_retry">Try again</string>
-    <string name="ym_no_wallet_dialog_message">You do not have a Yandex.Money Wallet</string>
+    <string name="ym_no_wallet_dialog_message">You do not have a YooMoney Wallet</string>
     <string name="ym_no_wallet_dialog_shoose_payment_option">Select payment method</string>
     <string name="ym_error_something_went_wrong">Seems we\'ve had a technical error</string>
     <string name="ym_error_no_internet">Connection error. Try again once you\'re online.</string>
     <string name="ym_no_payment_options_error">No available payment methods</string>
     <string name="ym_wrong_passcode_error">Incorrect password</string>
-    <string name="ym_login_error">Something is wrong with the Yandex.Money service login</string>
+    <string name="ym_login_error">Something is wrong with the YooMoney service login</string>
     <string name="ym_server_error">Seems we\'ve had a technical error</string>
     <string name="ym_unknown_error">Seems we\'ve had a technical error</string>
     <string name="ym_unhandled_error">Something went wrong. We\'re already working on it—please try again</string>
@@ -67,21 +67,21 @@
     <string name="ym_payment_option_google_pay">Google Pay</string>
     <string name="ym_license_agreement_part_1">By clicking this button, you accept</string>
     <string name="ym_license_agreement_part_2">terms and conditions of the service</string>
-    <string name="ym_license_agreement_url">https://money.yandex.ru/page?id=526623</string>
+    <string name="ym_license_agreement_url">https://yoomoney.ru/page?id=526623</string>
     <string name="ym_save_payment_method_wallet_info_title">Permission to debit money without your participation</string>
-    <string name="ym_save_payment_method_wallet_info_text">It means that you are giving Yandex.Money your prior consent to debit money from your wallet upon store\'s request without any additional confirmation from your side. You can disable this permission at any moment in the wallet settings (on the Yandex.Money website).</string>
+    <string name="ym_save_payment_method_wallet_info_text">It means that you are giving YooMoney your prior consent to debit money from your wallet upon store\'s request without any additional confirmation from your side. You can disable this permission at any moment in the wallet settings (on the YooMoney website).</string>
     <string name="ym_save_payment_method_wallet_switch_text_part_1">Allow the store</string>
     <string name="ym_save_payment_method_wallet_switch_text_part_2">to debit money without my participation</string>
     <string name="ym_save_payment_method_wallet_message_text_part_1">After the payment, we will link the wallet: the store will be able</string>
     <string name="ym_save_payment_method_wallet_message_text_part_2">to debit money without your participation</string>
     <string name="ym_save_payment_method_bank_card_info_title">Permission to debit money upon store\'s request</string>
-    <string name="ym_save_payment_method_bank_card_info_text">It means that you are giving Yandex.Money your prior consent to debit money upon store\'s request without any additional confirmation from your side from this card or a new one in case it is reissued (if your bank can update the data automatically). You can unlink the card at any moment via store\'s support service.</string>
+    <string name="ym_save_payment_method_bank_card_info_text">It means that you are giving YooMoney your prior consent to debit money upon store\'s request without any additional confirmation from your side from this card or a new one in case it is reissued (if your bank can update the data automatically). You can unlink the card at any moment via store\'s support service.</string>
     <string name="ym_save_payment_method_bank_card_switch_text_part_1">Link the card and</string>
     <string name="ym_save_payment_method_bank_card_switch_text_part_2">debit money upon store\'s request</string>
     <string name="ym_save_payment_method_bank_card_message_text_part_1">After the payment, we will link the card so that</string>
     <string name="ym_save_payment_method_bank_card_message_text_part_2">money could be debited upon store\'s request</string>
-    <string name="ym_support_email">supp@money.yandex.ru</string>
-    <string name="ym_support_help_url">https://money.yandex.ru/page?id=536720</string>
+    <string name="ym_support_email">support@yoomoney.ru</string>
+    <string name="ym_support_help_url">https://yoomoney.ru/page?id=536720</string>
     <string name="ym_support_phone">+78002506699</string>
     <string name="ym_migration_banner_text">If you signed up before October 21, you need to switch to YooMoney</string>
     <string name="ym_migration_banner_button_text">Learn more</string>

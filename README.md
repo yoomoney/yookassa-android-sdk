@@ -1,20 +1,22 @@
 # Android Checkout mobile SDK
 
 Эта библиотека позволяет встроить прием платежей в мобильные приложения на Android.
-Она работает как дополнение к API Яндекс.Кассы.
+Она работает как дополнение к API ЮKassa.
 
 В SDK входят готовые платежные интерфейсы (форма оплаты и всё, что с ней связано).
 
-С помощью SDK можно получать токены для проведения оплаты с банковской карты, Google Pay, Сбербанка или из кошелька в Яндекс.Деньгах.
+С помощью SDK можно получать токены для проведения оплаты с банковской карты, Google Pay, Сбербанка или из кошелька в ЮMoney.
+
+Минимально поддерживаемая версия android sdk: 21(Android 5).
 
 В этом репозитории лежит код SDK и пример приложения, которое его интегрирует.
-* [Код библиотеки](https://github.com/yandex-money/yandex-checkout-android-sdk/tree/master/library)
-* [Код демо-приложения, которое интегрирует SDK](https://github.com/yandex-money/yandex-checkout-android-sdk/tree/master/sample)
+* [Код библиотеки](https://github.com/yoomoney/yookassa-android-sdk/tree/master/library)
+* [Код демо-приложения, которое интегрирует SDK](https://github.com/yoomoney/yookassa-android-sdk/tree/master/sample)
 
 
 #  Документация
 
-Android Checkout mobile SDK - версия 4.1.0 ([changelog](https://github.com/yandex-money/yandex-checkout-android-sdk/blob/master/CHANGELOG.md))
+Android Checkout mobile SDK - версия 5.0.1 ([changelog](https://github.com/yoomoney/yookassa-android-sdk/blob/master/CHANGELOG.md))
 
 * [Changelog](#changelog)
 * [Migration guide](#migration-guide)
@@ -37,14 +39,14 @@ Android Checkout mobile SDK - версия 4.1.0 ([changelog](https://github.com
 
 # Changelog
 
-[Ссылка на Changelog](https://github.com/yandex-money/yandex-checkout-android-sdk/blob/master/CHANGELOG.md)
+[Ссылка на Changelog](https://github.com/yoomoney/yookassa-android-sdk/blob/master/CHANGELOG.md)
 
 # Migration guide
 
-[Ссылка на Migration guide](https://github.com/yandex-money/yandex-checkout-android-sdk/blob/master/MIGRATION.md)
+[Ссылка на Migration guide](https://github.com/yoomoney/yookassa-android-sdk/blob/master/MIGRATION.md)
 
 # Регистрация приложения для платежей из кошелька
-> Если среди платёжных методов есть кошелёк Яндекс.Денег, необходимо зарегистрировать приложение и получить `clientId`.
+> Если среди платёжных методов есть кошелёк ЮMoney, необходимо зарегистрировать приложение и получить `clientId`.
 В остальных случаях этот шаг можно пропустить.
 
 Если вы ранее уже регистрировали приложение для **oAuth-авторизации**, то список ваших приложений можно найти на странице https://yookassa.ru/oauth/v2/client
@@ -69,11 +71,11 @@ Android Checkout mobile SDK - версия 4.1.0 ([changelog](https://github.com
 
 ```groovy
 repositories {
-    maven { url 'https://dl.bintray.com/yandex-money/maven' }
+    maven { url 'https://dl.bintray.com/yoomoney/maven' }
 }
 
 dependencies {
-    implementation 'com.yandex.money:checkout:4.1.0'
+    implementation 'ru.yoo.sdk.kassa.payments:5.0.1'
 }
 ```
 
@@ -84,8 +86,9 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.aar"])
 }
 ```
+
 ## Подключение sdk авторизации для платежей из кошелька
-> Если среди платёжных методов есть кошелёк Яндекс.Денег, необходимо подключить sdk авторизации `ru.yoo.sdk.auth`.
+> Если среди платёжных методов есть кошелёк ЮMoney, необходимо подключить sdk авторизации `ru.yoo.sdk.auth`.
 В остальных случаях этот шаг можно пропустить.
 
 Добавьте необходимые зависимости в gradle файлы:
@@ -94,7 +97,7 @@ repositories {
     maven { url 'https://dl.bintray.com/yoomoney/maven' }
 }
 dependencies {
-    implementation "ru.yoo.sdk.auth:auth:1.0.29"
+    implementation "ru.yoo.sdk.auth:auth:1.0.35"
 }
 ```
 
@@ -118,7 +121,7 @@ dependencies {
 
 # Использование библиотеки
 
-Вся работа с библиотекой происходит через обращения к классу `ru.yandex.money.android.sdk.Checkout`
+Вся работа с библиотекой происходит через обращения к классу `ru.yoo.sdk.kassa.payments.Checkout`
 
 ## Токенизация
 
@@ -139,8 +142,8 @@ dependencies {
 * amount (Amount) - стоимость товара. Допустимые способы оплаты могут меняться в зависимости от этого параметра;
 * title (String) - название товара;
 * subtitle (String) - описание товара;
-* clientApplicationKey (String) - ключ для клиентских приложений из личного кабинета Яндекс.Кассы ([раздел Настройки — Ключи API](https://kassa.yandex.ru/my/api-keys-settings)).;
-* shopId (String) - идентификатор магазина в Яндекс.Кассе.
+* clientApplicationKey (String) - ключ для клиентских приложений из личного кабинета ЮKassa ([раздел Настройки — Ключи API](https://yookassa.ru/my/api-keys-settings)).;
+* shopId (String) - идентификатор магазина в ЮKassa.
 * savePaymentMethod (SavePaymentMethod) - настройка сохранения платёжного метода. Сохранённые платёжные методы можно использовать для проведения рекуррентных платежей.
 * clientId (String) - идентификатор приложения для sdk авторизации `ru.yoo.sdk.auth`, см. [Регистрация приложения для платежей из кошелька](#регистрация-приложения-для-платежей-из-кошелька).
 
@@ -162,7 +165,7 @@ dependencies {
 * USER_SELECTS - Пользователь выбирает, сохранять платёжный метод или нет. Если метод можно сохранить, на экране контракта появится переключатель.
 
 Значения `PaymentMethodType`:
-* YANDEX_MONEY - оплата произведена с кошелька Яндекс.денег;
+* YOO_MONEY - оплата произведена с кошелька ЮMoney;
 * BANK_CARD - оплата произведена с банковской карты;
 * SBERBANK - оплата произведена через Сбербанк (SMS invoicing или Сбербанк онлайн);
 * GOOGLE_PAY - оплата произведена через Google Pay.
@@ -218,8 +221,8 @@ class MyActivity extends AppCompatActivity {
 * amount (Amount) - стоимость товара. Допустимые способы оплаты могут меняться в зависимости от этого параметра;
 * title (String) - название товара;
 * subtitle (String) - описание товара;
-* clientApplicationKey (String) - токен магазина, полученный в Яндекс.Кассе;
-* shopId (String) - идентификатор магазина в Яндекс.Кассе;
+* clientApplicationKey (String) - токен магазина, полученный в ЮKassa;
+* shopId (String) - идентификатор магазина в ЮKassa;
 * paymentId (String) - идентификатор платежа.
 * savePaymentMethod (SavePaymentMethod) - настройка сохранения платёжного метода. Сохранённые платёжные методы можно использовать для проведения рекуррентных платежей.
 
@@ -268,7 +271,7 @@ class MyActivity extends AppCompatActivity {
 * paymentMethodType (PaymentMethodType) - тип платежного средства.
 
 Значения `PaymentMethodType`:
-* YANDEX_MONEY - оплата произведена с кошелька Яндекс.денег;
+* YOO_MONEY - оплата произведена с кошелька ЮMoney;
 * BANK_CARD - оплата произведена с банковской карты;
 * SBERBANK - оплата произведена через Сбербанк (SMS invoicing или Сбербанк онлайн);
 * GOOGLE_PAY - оплата произведена через Google Pay.
@@ -300,22 +303,22 @@ public final class MainActivity extends AppCompatActivity {
 ```
 
 ### Использование платежного токена
-Необходимо получить у менеджера Яндекс.Кассы разрешение на проведение платежей с использованием токена.
+Необходимо получить у менеджера ЮKassa разрешение на проведение платежей с использованием токена.
 Токен одноразовый, срок действия — 1 час. Если не создать платеж в течение часа, токен нужно будет запрашивать заново.
 
-В платежном токене содержатся данные о [сценарии подтверждения](https://kassa.yandex.ru/developers/payments/payment-process#user-confirmation) платежа.
-После получения платежного токена Вы можете [создать платеж](https://kassa.yandex.ru/developers/api#create_payment), в параметре `payment_token` передайте платежный токен.
-Если платеж проводится с аутентификацией по 3-D Secure, используйте `confirmation_url`, который придет в объекте [Платежа](https://kassa.yandex.ru/developers/api#payment_object).
+В платежном токене содержатся данные о [сценарии подтверждения](https://yookassa.ru/developers/payments/payment-process#user-confirmation) платежа.
+После получения платежного токена Вы можете [создать платеж](https://yookassa.ru/developers/api#create_payment), в параметре `payment_token` передайте платежный токен.
+Если платеж проводится с аутентификацией по 3-D Secure, используйте `confirmation_url`, который придет в объекте [Платежа](https://yookassa.ru/developers/api#payment_object).
 Используйте `confirmation_url` для запуска 3-D Secure, см. [3DSecure](#3DSecure).
 
-Так же, Вы можете получить [информацию о платеже](https://kassa.yandex.ru/developers/api#get_payment)
+Так же, Вы можете получить [информацию о платеже](https://yookassa.ru/developers/api#get_payment)
 
 ### Тестовые параметры и отладка
 
 Для отладки токенизации в вызов `Checkout.createTokenizeIntent()` можно добавить объект `TestParameters`.
 
 Поля класса `TestParameters:`
-* showLogs (Boolean) - включить отображение логов SDK. Все логи начинаются с тега 'Yandex.Checkout.SDK'
+* showLogs (Boolean) - включить отображение логов SDK. Все логи начинаются с тега 'YooKassa.SDK'
 * googlePayTestEnvironment (Boolean) - использовать тестовую среду Google Pay - все транзакции, проведенные через Google Pay, будут использовать `WalletConstants.ENVIRONMENT_TEST`. Имейте ввиду, что при попытке оплаты с параметром googlePayTestEnvironment=true произойдет ошибка токенизации. Подробнее см. на https://developers.google.com/pay/api/android/guides/test-and-deploy/integration-checklist#about-the-test-environment.
 * mockConfiguration (MockConfiguration) - использовать моковую конфигурацию. Если этот параметр присутствует, SDK будет работать в оффлайн режиме и генерировать тестовый токен. Этот токен нельзя использовать для платежей.
 
@@ -346,10 +349,10 @@ class MyActivity extends AppCompatActivity {
 
 ### Настройка интерфейса
 
-Для настройки интерфейса SDK можно использовать объект `UiParameters`. Можно настроить цвета интерфейса и показ/скрытие логотипа Яндекс.Кассы.
+Для настройки интерфейса SDK можно использовать объект `UiParameters`. Можно настроить цвета интерфейса и показ/скрытие логотипа ЮKassa.
 
 Поля класса `UiParameters`:
-* showLogo (Boolean) - показать/скрыть лого Яндекс.Кассы на экране способов оплаты.
+* showLogo (Boolean) - показать/скрыть лого ЮKassa на экране способов оплаты.
 * colorScheme (ColorScheme) - цветовая схема.
 
 Поля класса `ColorScheme`:
@@ -425,14 +428,14 @@ class MyActivity extends AppCompatActivity {
 
 ## Сканирование банковской карты
 
-Создайте `Activity`, обрабатывающую action `ru.yandex.money.android.sdk.action.SCAN_BANK_CARD`
+Создайте `Activity`, обрабатывающую action `ru.yoo.sdk.kassa.payments.action.SCAN_BANK_CARD`
 
 ***Подключение activity для сканирования***
 ```xml
 <activity android:name=".ScanBankCardActivity">
 
     <intent-filter>
-        <action android:name="ru.yandex.money.android.sdk.action.SCAN_BANK_CARD"/>
+        <action android:name="ru.yoo.sdk.kassa.payments.action.SCAN_BANK_CARD"/>
     </intent-filter>
 
 </activity>
@@ -460,7 +463,7 @@ public class ScanBankCardActivity extends Activity {
 ```
 
 # Полезные ссылки
-* [Сайт Яндекс.Кассы](https://kassa.yandex.ru)
-* [Документация мобильных SDK на сайте Яндекс.Кассы](https://kassa.yandex.ru/docs/client-sdks/#mobil-nye-sdk)
-* [Демо-приложение в Google Play](https://play.google.com/store/apps/details?id=ru.yandex.money.android.example.prod)
-* [SDK для iOS](https://github.com/yandex-money/yandex-checkout-payments-swift)
+* [Сайт ЮKassa](https://yookassa.ru)
+* [Документация мобильных SDK на сайте ЮKassa](https://yookassa.ru/docs/client-sdks/#mobil-nye-sdk)
+* [Демо-приложение в Google Play](https://play.google.com/store/apps/details?id=ru.yoo.sdk.kassa.payments.example)
+* [SDK для iOS](https://github.com/yoomoney/yookassa-payments-swift)

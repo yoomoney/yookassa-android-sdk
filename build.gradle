@@ -1,6 +1,6 @@
 /*
  * The MIT License (MIT)
- * Copyright © 2018 NBCO Yandex.Money LLC
+ * Copyright © 2020 NBCO YooMoney LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
  * associated documentation files (the “Software”), to deal in the Software without restriction, including
@@ -29,7 +29,7 @@ buildscript {
     ext.mockito_version = '2.19.0'
     ext.espresso_version = '3.0.1'
     ext.gson_version = '2.8.6'
-    ext.yoo_sdk_auth_version = '1.0.29'
+    ext.yoo_sdk_auth_version = '1.0.35'
 
     ext.junit = '4.13'
     ext.appcompat = '1.2.0'
@@ -41,7 +41,7 @@ buildscript {
     ext.espresso_web = '3.3.0'
     ext.androidx_junit = '1.1.2'
 
-    ext.target_sdk_version = 28
+    ext.target_sdk_version = 29
 
     repositories {
         google()
@@ -54,7 +54,6 @@ buildscript {
         classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:$dokka_version"
         classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6'
         classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.2'
-        classpath 'com.github.triplet.gradle:play-publisher:1.2.2'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }

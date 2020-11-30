@@ -1,6 +1,6 @@
 <!--
   ~ The MIT License (MIT)
-  ~ Copyright © 2018 NBCO Yandex.Money LLC
+  ~ Copyright © 2020 NBCO YooMoney LLC
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
   ~ associated documentation files (the “Software”), to deal in the Software without restriction, including
@@ -20,26 +20,26 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ru.yandex.money.android.sdk">
+    package="ru.yoo.sdk.kassa.payments">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application>
         <activity
-            android:name=".utils.WebViewActivity"
+            android:name="ru.yoo.sdk.kassa.payments.utils.WebViewActivity"
             android:theme="@style/ym_Theme" />
 
         <activity
-            android:name=".impl.PendingIntentActivity"
+            android:name="ru.yoo.sdk.kassa.payments.impl.PendingIntentActivity"
             android:theme="@style/ym_Theme.Translucent" />
 
         <activity
-            android:name=".impl.CheckoutActivity"
+            android:name="ru.yoo.sdk.kassa.payments.impl.CheckoutActivity"
             android:theme="@style/ym_Theme.Translucent" />
 
         <activity
-            android:name=".impl.contract.SavePaymentMethodInfoActivity"
+            android:name="ru.yoo.sdk.kassa.payments.impl.contract.SavePaymentMethodInfoActivity"
             android:theme="@style/ym_Theme" />
 
         <meta-data

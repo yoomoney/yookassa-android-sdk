@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ The MIT License (MIT)
-  ~ Copyright © 2018 NBCO Yandex.Money LLC
+  ~ Copyright © 2020 NBCO YooMoney LLC
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
   ~ associated documentation files (the “Software”), to deal in the Software without restriction, including
@@ -28,14 +28,14 @@
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <ru.yandex.money.android.sdk.impl.view.YmTextInputLayout
+    <ru.yoo.sdk.kassa.payments.impl.view.YmTextInputLayout
         android:id="@+id/accessCodeContainer"
         app:hintTextAppearance="@style/ym_TextAppearance.TextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:hintEnabled="false">
 
-        <ru.yandex.money.android.sdk.impl.view.YmEditText
+        <ru.yoo.sdk.kassa.payments.impl.view.YmEditText
             style="@style/ym_EditText"
             android:id="@+id/accessCode"
             android:layout_width="match_parent"
@@ -43,7 +43,7 @@
             android:imeOptions="actionDone"
             android:inputType="text" />
 
-    </ru.yandex.money.android.sdk.impl.view.YmTextInputLayout>
+    </ru.yoo.sdk.kassa.payments.impl.view.YmTextInputLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -58,7 +58,7 @@
             android:layout_marginStart="@dimen/ym_space_2xs"
             android:text="@string/ym_payment_auth_repeat" />
 
-        <androidx.legacy.widget.Space
+        <Space
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
@@ -67,6 +67,7 @@
             style="@style/ym_FlatButton"
             android:id="@+id/timerText"
             android:layout_width="wrap_content"
+            android:textColor="@color/ym_color_ghost"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/ym_space_2xs"
             android:layout_marginEnd="@dimen/ym_space_2xs"
