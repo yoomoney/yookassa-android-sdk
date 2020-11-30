@@ -75,7 +75,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'ru.yoo.sdk.kassa.payments:5.0.1'
+    implementation 'ru.yoo.sdk.kassa.payments:yookassa-android-sdk:5.0.1'
 }
 ```
 
