@@ -101,8 +101,8 @@ dependencies {
 }
 ```
 
-Попросите у менеджера по подключению библиотеку `ui-lib-1.19.5.aar`.
-Создайте папку `libs` в модуле где подключаете sdk и положите туда файл `ui-lib-1.19.5.aar`. В `build.gradle` того же модуля в dependencies добавьте:
+Попросите у менеджера по подключению библиотеку `ui-lib-1.20.2.aar`.
+Создайте папку `libs` в модуле где подключаете sdk и положите туда файл `ui-lib-1.20.2.aar`. В `build.gradle` того же модуля в dependencies добавьте:
 ```groovy
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.aar"])
