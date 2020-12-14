@@ -40,7 +40,7 @@ import ru.yoo.sdk.kassa.payments.userAuth.UserAuthSuccessOutputModel
 @RunWith(MockitoJUnitRunner.StrictStubs::class)
 class ActionYooMoneyLoginAuthorizationReporterTest {
 
-    private val name = "actionYaLoginAuthorization"
+    private val name = "actionLoginAuthorization"
 
     @Mock
     private lateinit var presenter: Presenter<UserAuthOutputModel, UserAuthViewModel>
@@ -72,7 +72,7 @@ class ActionYooMoneyLoginAuthorizationReporterTest {
     }
 
     @Test
-    fun `should report AuthYaLoginStatusCanceled when UserAuthCancelledOutputModel`() {
+    fun `should report AuthLoginStatusCanceled when UserAuthCancelledOutputModel`() {
         // prepare
         val outputModel = UserAuthCancelledOutputModel()
         on(presenter(outputModel)).thenReturn(UserAuthCancelledViewModel)

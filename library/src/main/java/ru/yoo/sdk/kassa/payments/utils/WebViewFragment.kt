@@ -23,14 +23,12 @@ package ru.yoo.sdk.kassa.payments.utils
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
-import android.net.http.SslError
 import android.os.Build
 import android.os.Bundle
 import androidx.annotation.Keep
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.webkit.SslErrorHandler
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -150,14 +148,6 @@ internal class WebViewFragment : Fragment() {
 
         override fun onPageFinished(view: WebView?, url: String?) {
             listener?.onHideProgress()
-        }
-
-        override fun onReceivedSslError(view: WebView?, handler: SslErrorHandler?, error: SslError?) {
-            if (error?.url?.startsWith("https://demo-scrat.yamoney.ru:8443/merchant-test-card-stub/3ds") == true) {
-                handler?.proceed()
-            } else {
-                super.onReceivedSslError(view, handler, error)
-            }
         }
 
         @Suppress("OverridingDeprecatedMember")

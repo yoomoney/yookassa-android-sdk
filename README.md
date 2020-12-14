@@ -1,5 +1,9 @@
 # Android Checkout mobile SDK
 
+[![Platform](https://img.shields.io/badge/Support-SDK%2021+-brightgreen.svg)](https://img.shields.io/badge/Support-SDK%2021+-brightgreen.svg)
+[![GitHub tag](https://img.shields.io/github/v/tag/yoomoney/yookassa-android-sdk.svg?sort=semver)](https://img.shields.io/github/v/tag/yoomoney/yookassa-android-sdk.svg?sort=semver)
+[![License](https://img.shields.io/github/license/yoomoney/yookassa-android-sdk.svg)](https://img.shields.io/github/license/yoomoney/yookassa-android-sdk.svg)
+
 Эта библиотека позволяет встроить прием платежей в мобильные приложения на Android.
 Она работает как дополнение к API ЮKassa.
 
@@ -16,7 +20,7 @@
 
 #  Документация
 
-Android Checkout mobile SDK - версия 5.0.1 ([changelog](https://github.com/yoomoney/yookassa-android-sdk/blob/master/CHANGELOG.md))
+Android Checkout mobile SDK - версия 5.0.2 ([changelog](https://github.com/yoomoney/yookassa-android-sdk/blob/master/CHANGELOG.md))
 
 * [Changelog](#changelog)
 * [Migration guide](#migration-guide)
@@ -75,7 +79,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'ru.yoo.sdk.kassa.payments:yookassa-android-sdk:5.0.1'
+    implementation 'ru.yoo.sdk.kassa.payments:yookassa-android-sdk:5.0.2'
 }
 ```
 
@@ -97,7 +101,7 @@ repositories {
     maven { url 'https://dl.bintray.com/yoomoney/maven' }
 }
 dependencies {
-    implementation "ru.yoo.sdk.auth:auth:1.0.35"
+    implementation "ru.yoo.sdk.auth:auth:1.0.39"
 }
 ```
 

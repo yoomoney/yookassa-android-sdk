@@ -30,6 +30,7 @@
 -keep class org.threeten.bp.** { *; }
 -keep class ru.yoo.sdk.auth.model.** { *; }
 -keep class ru.yoo.sdk.auth.ProcessType** { *; }
+-keep class ru.yoo.sdk.kassa.payments.Checkout { *; }
 
 -dontwarn javax.annotation.Nullable
 -dontwarn org.conscrypt.OpenSSLProvider

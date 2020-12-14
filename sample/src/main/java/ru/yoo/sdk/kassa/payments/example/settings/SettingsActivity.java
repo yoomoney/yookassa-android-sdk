@@ -64,6 +64,7 @@ import static ru.yoo.sdk.kassa.payments.Checkout.EXTRA_ERROR_FAILING_URL;
 public final class SettingsActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int START_CONFIRMATION_REQUEST_CODE = 1;
+    private static final String THREE_D_S_URL = "https://3ds-gate.yoomoney.ru/card-auth?acsUri=https%3A%2F%2Fyookassa.ru%2Fsandbox%2Fbank-card%2F3ds&MD=1607599033071-1950966794250138null&PaReq=Q1VSUkVOQ1k9UlVCJlRFUk1JTkFMPTk5OTk5OCZFWFBfWUVBUj0yNCZDQVJEX1RZUEU9UEFOJk1FUkNIQU5UPTc5MDM2NzY4NjIxOTk5OSZDQVJEPTU1NTU1NTU1NTU1NTQ0NzcmTkFNRT0mT1JERVI9Mjc2NDE3NzgtMDAwZi01MDAwLTkwMDAtMWY3ZDJhN2UxNDJlJkFNT1VOVD0xMC4wMCZCQUNLUkVGPTg3OTY2ODE0OTI4ODYmVFJUWVBFPTAmRVhQPTEy&TermUrl=https%3A%2F%2Fpaymentcard.yoomoney.ru%3A443%2F3ds%2Fchallenge%2F241%2FoWLmSc43A_xzdIhndK7_nogfOJgZ..002.202012";
 
     private List<Pair<String, Integer>> keysToIds = Arrays.asList(
             new Pair<>(KEY_YOO_MONEY_ALLOWED, R.id.payment_option_yoomoney),
@@ -144,7 +145,7 @@ public final class SettingsActivity extends AppCompatActivity implements View.On
                     v -> {
                         try {
                             startActivityForResult(
-                                    Checkout.create3dsIntent(this, "https://yoomoney.ru/api-pages/v3/3ds?acsUri=https%3A%2F%2Fdemo-scrat.yamoney.ru%3A8443%2Fmerchant-test-card-stub%2F3ds%3Ftes11%3D1%26amp%3Btest2%3D2&MD=1536663442128-3079210364026365123&PaReq=Q1VSUkVOQ1k9UlVSJlRFUk1JTkFMPTk5OTk5OCZFWFBfWUVBUj0yNSZQX1NJR049M2E3MmM2MGNhMjIyNjU4MTJhOTgwNmUzMjFmMTQyZTQ1NzVjMmQ0OCZSRVNQT05TRV9SUk49MjEwMzYzOTA5MzExJkVNQUlMPW5vcmVwbHklNDBtb25leS55YW5kZXgucnUmTUVSQ0hfTkFNRT1ZTSZERVNDPTIzMjliMzUxLTAwMGYtNTAwMC1hMDAwLTFlYTA0NWQzZjc5MSZSRVNQT05TRV9BVVRIQ09ERT05MDUwNTMmTUVSQ0hBTlQ9NzkwMzY3Njg2MjE5OTk5JkNBUkQ9MTExMTExMTExMTExMTAyNiZOQU1FPSZPUkRFUj01MDk2MzU0MTYyJk1FUkNIX1VSTD1tb25leS55YW5kZXgucnUmQU1PVU5UPTEuMDAmQkFDS1JFRj1odHRwJTNBJTJGJTJGcmVkaXJlY3QudXJsLmNvbSUyRiZUSU1FU1RBTVA9MjAxODA5MTExMDU3MjImVFJUWVBFPTAmRVhQPTEyJkNWQzI9MTIzJk5PTkNFPTEyMzQ1Njc4OTBBQkNERUZlMjNhZGNlNTg4OGE4&TermUrl=https%3A%2F%2Fpaymentcard.yamoney.ru%3A443%2Fgates%2Fmb3dsdemoprovider"),
+                                    Checkout.create3dsIntent(this, THREE_D_S_URL),
                                     START_CONFIRMATION_REQUEST_CODE);
                         } catch (IllegalStateException e) {
                             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();

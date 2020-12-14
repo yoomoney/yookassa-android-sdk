@@ -28,7 +28,7 @@ import ru.yoo.sdk.kassa.payments.userAuth.UserAuthCancelledOutputModel
 import ru.yoo.sdk.kassa.payments.userAuth.UserAuthOutputModel
 import ru.yoo.sdk.kassa.payments.userAuth.UserAuthSuccessOutputModel
 
-private const val NAME = "actionYaLoginAuthorization"
+private const val NAME = "actionLoginAuthorization"
 
 internal class ActionYooMoneyLoginAuthorizationReporter(
     presenter: Presenter<UserAuthOutputModel, UserAuthViewModel>,
@@ -47,7 +47,7 @@ internal class ActionYooMoneyLoginAuthorizationReporter(
     override fun reportingAllowed(outputModel: UserAuthOutputModel, viewModel: UserAuthViewModel) = true
 }
 
-internal class ActionYaLoginAuthorizationFailedReporter(
+internal class ActionLoginAuthorizationFailedReporter(
     presenter: Presenter<Exception, UserAuthFailViewModel>,
     reporter: Reporter
 ) : PresenterReporter<Exception, UserAuthFailViewModel>(presenter, reporter) {

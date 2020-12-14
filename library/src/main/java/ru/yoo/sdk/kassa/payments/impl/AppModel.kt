@@ -48,7 +48,7 @@ import ru.yoo.sdk.kassa.payments.impl.metrics.ActionLogoutReporter
 import ru.yoo.sdk.kassa.payments.impl.metrics.ActionPaymentAuthorizationErrorReporter
 import ru.yoo.sdk.kassa.payments.impl.metrics.ActionPaymentAuthorizationReporter
 import ru.yoo.sdk.kassa.payments.impl.metrics.ActionTokenizeReporter
-import ru.yoo.sdk.kassa.payments.impl.metrics.ActionYaLoginAuthorizationFailedReporter
+import ru.yoo.sdk.kassa.payments.impl.metrics.ActionLoginAuthorizationFailedReporter
 import ru.yoo.sdk.kassa.payments.impl.metrics.ActionYooMoneyLoginAuthorizationReporter
 import ru.yoo.sdk.kassa.payments.impl.metrics.ContractOpenedReporter
 import ru.yoo.sdk.kassa.payments.impl.metrics.ErrorReportingLogger
@@ -558,7 +558,7 @@ internal object AppModel {
             errorPresenter = ErrorScreenOpenedReporter(
                 getAuthType = userAuthTypeParamProvider,
                 getTokenizeScheme = tokenizeSchemeParamProvider,
-                presenter = ActionYaLoginAuthorizationFailedReporter(
+                presenter = ActionLoginAuthorizationFailedReporter(
                     presenter = UserAuthErrorPresenter(errorPresenter),
                     reporter = reporter
                 ),

@@ -32,21 +32,21 @@ import ru.yoo.sdk.kassa.payments.model.Presenter
 import ru.yoo.sdk.kassa.payments.on
 
 @RunWith(MockitoJUnitRunner.StrictStubs::class)
-class ActionYaLoginAuthorizationFailedReporterTest {
+class ActionLoginAuthorizationFailedReporterTest {
 
     @Mock
     private lateinit var presenter: Presenter<Exception, UserAuthFailViewModel>
     @Mock
     private lateinit var reporter: Reporter
-    private lateinit var actionReporter: ActionYaLoginAuthorizationFailedReporter
+    private lateinit var actionReporter: ActionLoginAuthorizationFailedReporter
 
     @Before
     fun setUp() {
-        actionReporter = ActionYaLoginAuthorizationFailedReporter(presenter, reporter)
+        actionReporter = ActionLoginAuthorizationFailedReporter(presenter, reporter)
     }
 
     @Test
-    fun `should report AuthYaLoginStatusFail when Exception`() {
+    fun `should report AuthLoginStatusFail when Exception`() {
         // prepare
         val exception = Exception()
         on(presenter(exception)).thenReturn(UserAuthFailViewModel("err"))
@@ -57,7 +57,7 @@ class ActionYaLoginAuthorizationFailedReporterTest {
         // assert
         inOrder(presenter, reporter).apply {
             verify(presenter).invoke(exception)
-            verify(reporter).report("actionYaLoginAuthorization", listOf(AuthYooMoneyLoginStatusFail()))
+            verify(reporter).report("actionLoginAuthorization", listOf(AuthYooMoneyLoginStatusFail()))
             verifyNoMoreInteractions()
         }
     }

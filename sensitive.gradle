@@ -32,7 +32,7 @@ ext {
     metricaKey = "YOUR_METRICA_KEY"
 
     threatMetrixOrigId = 'fsymclue'
-    threatMetrixFPServer = 's4.money.yandex.net'
+    threatMetrixFPServer = 's4.partner.yoomoney.ru'
 
     optionalProperty = { name ->
         if (!project.hasProperty(name)) {

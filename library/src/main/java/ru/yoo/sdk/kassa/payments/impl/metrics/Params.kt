@@ -97,7 +97,7 @@ internal class AuthTokenTypeMultiple : AuthTokenType() {
 }
 
 internal sealed class AuthYooMoneyLoginStatus : Param() {
-    final override val name = "authYaLoginStatus"
+    final override val name = "authLoginStatus"
 }
 
 internal class AuthYooMoneyLoginStatusSuccess : AuthYooMoneyLoginStatus() {
