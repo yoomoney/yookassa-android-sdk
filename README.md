@@ -20,7 +20,7 @@
 
 #  Документация
 
-YooKassa Payments SDK - версия 5.0.2 ([changelog](https://github.com/yoomoney/yookassa-android-sdk/blob/master/CHANGELOG.md))
+Android Checkout mobile SDK - версия 5.0.3 ([changelog](https://github.com/yoomoney/yookassa-android-sdk/blob/master/CHANGELOG.md))
 
 * [Changelog](#changelog)
 * [Migration guide](#migration-guide)
@@ -79,7 +79,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'ru.yoo.sdk.kassa.payments:yookassa-android-sdk:5.0.2'
+    implementation 'ru.yoo.sdk.kassa.payments:yookassa-android-sdk:5.0.3'
 }
 ```
 

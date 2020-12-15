@@ -58,7 +58,7 @@ import java.util.Set;
 /**
  * All calls to MSDK library are handled through the Checkout class.
  *
- * @see ru.yoo.sdk.kassa.payments.Checkout
+ * @see Checkout
  */
 public final class MainActivity extends AppCompatActivity {
 

@@ -46,6 +46,10 @@ public class PaymentMethodTypes {
             paymentMethodTypes.add(PaymentMethodType.SBERBANK);
         }
 
+        if (settings.isGooglePayAllowed()) {
+            paymentMethodTypes.add(PaymentMethodType.GOOGLE_PAY);
+        }
+
         return paymentMethodTypes;
     }
 }

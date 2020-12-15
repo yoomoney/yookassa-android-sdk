@@ -69,6 +69,7 @@ public final class SettingsActivity extends AppCompatActivity implements View.On
     private List<Pair<String, Integer>> keysToIds = Arrays.asList(
             new Pair<>(KEY_YOO_MONEY_ALLOWED, R.id.payment_option_yoomoney),
             new Pair<>(KEY_SBERBANK_ONLINE_ALLOWED, R.id.payment_option_sberbank_online),
+            new Pair<>(KEY_GOOGLE_PAY_ALLOWED, R.id.payment_option_google_pay),
             new Pair<>(KEY_NEW_CARD_ALLOWED, R.id.payment_option_new_card),
             new Pair<>(KEY_SHOW_CHECKOUT_LOGO, R.id.checkout_logo),
             new Pair<>(KEY_AUTOFILL_USER_PHONE_NUMBER, R.id.enable_default_user_phone_number),

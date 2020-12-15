@@ -79,6 +79,13 @@
 
             <View style="@style/Divider" />
 
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/payment_option_google_pay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/google_pay"
+                tools:checked="true" />
+
             <View style="@style/Divider" />
 
             <androidx.appcompat.widget.SwitchCompat

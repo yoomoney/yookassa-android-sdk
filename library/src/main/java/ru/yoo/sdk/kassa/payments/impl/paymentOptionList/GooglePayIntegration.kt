@@ -130,7 +130,7 @@ internal class GooglePayIntegration(
             .setPaymentMethodTokenizationParameters(
                 PaymentMethodTokenizationParameters.newBuilder()
                     .setPaymentMethodTokenizationType(WalletConstants.PAYMENT_METHOD_TOKENIZATION_TYPE_PAYMENT_GATEWAY)
-                    .addParameter("gateway", "yandexcheckout")
+                    .addParameter("gateway", "yoomoney")
                     .addParameter("gatewayMerchantId", shopId)
                     .build()
             )
