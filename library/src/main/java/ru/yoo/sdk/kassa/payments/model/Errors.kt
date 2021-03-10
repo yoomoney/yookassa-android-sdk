@@ -21,6 +21,11 @@
 
 package ru.yoo.sdk.kassa.payments.model
 
+import okhttp3.Request
+import okhttp3.Response
+import org.json.JSONException
+import java.io.IOException
+
 internal open class SdkException : Exception {
     constructor() : super()
     constructor(message: String?) : super(message)
@@ -28,3 +33,36 @@ internal open class SdkException : Exception {
 }
 
 internal data class SelectedOptionNotFoundException(val optionId: Int) : SdkException()
+
+internal class UnhandledException(cause: Throwable?) : Exception(cause)
+
+internal class NoInternetException : SdkException()
+
+internal data class RequestExecutionException(val request: Request, val e: IOException) : SdkException(e)
+
+internal data class ResponseReadingException(val response: Response, val e: IOException) : SdkException(e)
+
+internal data class ResponseParsingException(val stringBody: String, val e: JSONException) : SdkException(e)
+
+internal open class ApiMethodException(open val error: Error) : SdkException() {
+    constructor(errorCode: ErrorCode) : this(Error(errorCode))
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as ApiMethodException
+
+        if (error != other.error) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return error.hashCode()
+    }
+}
+
+internal data class AuthCheckApiMethodException(override val error: Error, val authState: AuthTypeState?) : ApiMethodException(error)
+
+internal class PassphraseCheckFailedException : SdkException()

@@ -20,7 +20,7 @@
   -->
 
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@color/ym_background" />
+    <solid android:color="@color/ym_background_color" />
     <corners
         android:topLeftRadius="@dimen/ym_radius_s"
         android:topRightRadius="@dimen/ym_radius_s"/>

@@ -119,6 +119,7 @@ public final class SettingsActivity extends AppCompatActivity implements View.On
         final Settings settings = new Settings(this);
 
         this.<CompoundButton>findViewById(R.id.payment_option_yoomoney).setChecked(settings.isYooMoneyAllowed());
+        this.<CompoundButton>findViewById(R.id.payment_option_google_pay).setChecked(settings.isGooglePayAllowed());
         this.<CompoundButton>findViewById(R.id.payment_option_new_card).setChecked(settings.isNewCardAllowed());
         this.<CompoundButton>findViewById(R.id.payment_option_sberbank_online)
                 .setChecked(settings.isSberbankOnlineAllowed());

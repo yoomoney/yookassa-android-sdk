@@ -28,25 +28,32 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
+import ru.yoo.sdk.kassa.payments.metrics.AuthTokenType
+import ru.yoo.sdk.kassa.payments.metrics.AuthTokenTypeMultiple
+import ru.yoo.sdk.kassa.payments.metrics.AuthTokenTypeSingle
+import ru.yoo.sdk.kassa.payments.metrics.UserAuthTokenTypeParamProvider
 import ru.yoo.sdk.kassa.payments.on
-import ru.yoo.sdk.kassa.payments.paymentAuth.PaymentAuthTokenGateway
+import ru.yoo.sdk.kassa.payments.paymentAuth.PaymentAuthTokenRepository
 
 @RunWith(MockitoJUnitRunner.StrictStubs::class)
 class UserAuthTokenTypeParamProviderTest {
 
     @Mock
-    private lateinit var paymentAuthTokenGateway: PaymentAuthTokenGateway
+    private lateinit var paymentAuthTokenRepository: PaymentAuthTokenRepository
     private lateinit var userAuthTokenTypeParamProvider: UserAuthTokenTypeParamProvider
 
     @Before
     fun setUp() {
-        userAuthTokenTypeParamProvider = UserAuthTokenTypeParamProvider(paymentAuthTokenGateway)
+        userAuthTokenTypeParamProvider =
+            UserAuthTokenTypeParamProvider(
+                paymentAuthTokenRepository
+            )
     }
 
     @Test
     fun `should return AuthTokenTypeSingle if paymentAuthToken not persisted`() {
         // prepare
-        on(paymentAuthTokenGateway.isPaymentAuthPersisted).thenReturn(false)
+        on(paymentAuthTokenRepository.isPaymentAuthPersisted).thenReturn(false)
 
         // invoke
         val tokenTypeParam = userAuthTokenTypeParamProvider()
@@ -58,7 +65,7 @@ class UserAuthTokenTypeParamProviderTest {
     @Test
     fun `should return AuthTokenTypeMultiple if paymentAuthToken persisted`() {
         // prepare
-        on(paymentAuthTokenGateway.isPaymentAuthPersisted).thenReturn(true)
+        on(paymentAuthTokenRepository.isPaymentAuthPersisted).thenReturn(true)
 
         // invoke
         val tokenTypeParam = userAuthTokenTypeParamProvider()

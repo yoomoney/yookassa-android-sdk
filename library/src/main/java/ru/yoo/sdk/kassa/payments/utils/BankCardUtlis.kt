@@ -26,7 +26,7 @@ import ru.yoo.sdk.kassa.payments.R
 
 private const val VISA = "4"
 private const val MASTERCARD = "5"
-private var UNKNOWN_CARD_ICON = R.drawable.ym_ic_unknown_list
+var UNKNOWN_CARD_ICON = R.drawable.ym_ic_unknown_list
 
 private val banks by lazy { initBanks() }
 

@@ -23,6 +23,8 @@ package ru.yoo.sdk.kassa.payments.impl.logout
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.nhaarman.mockitokotlin2.mock
+import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.nullValue
 import org.hamcrest.MatcherAssert.assertThat
@@ -32,11 +34,12 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
-import ru.yoo.sdk.kassa.payments.impl.TmxSessionIdStorage
-import ru.yoo.sdk.kassa.payments.impl.TokensStorage
-import ru.yoo.sdk.kassa.payments.impl.extensions.edit
-import ru.yoo.sdk.kassa.payments.impl.payment.SharedPreferencesCurrentUserGateway
-import ru.yoo.sdk.kassa.payments.logout.LogoutGateway
+import ru.yoo.sdk.kassa.payments.tmx.TmxSessionIdStorage
+import ru.yoo.sdk.kassa.payments.secure.TokensStorage
+import ru.yoo.sdk.kassa.payments.extensions.edit
+import ru.yoo.sdk.kassa.payments.payment.SharedPreferencesCurrentUserRepository
+import ru.yoo.sdk.kassa.payments.logout.LogoutRepository
+import ru.yoo.sdk.kassa.payments.logout.LogoutRepositoryImpl
 import ru.yoo.sdk.kassa.payments.model.AnonymousUser
 import ru.yoo.sdk.kassa.payments.model.AuthorizedUser
 import ru.yoo.sdk.kassa.payments.model.CurrentUser
@@ -45,9 +48,9 @@ import ru.yoo.sdk.kassa.payments.model.CurrentUser
 class LogoutGatewayImplTest {
 
     private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var logoutGateway: LogoutGateway
+    private lateinit var logoutRepository: LogoutRepository
     private lateinit var tokensStorage: TokensStorage
-    private lateinit var currentUserGateway: SharedPreferencesCurrentUserGateway
+    private lateinit var currentUserRepository: SharedPreferencesCurrentUserRepository
     private val tmxSessionIdStorage = TmxSessionIdStorage()
 
     @Before
@@ -58,14 +61,19 @@ class LogoutGatewayImplTest {
             encrypt = { it },
             decrypt = { it }
         )
-        currentUserGateway = SharedPreferencesCurrentUserGateway(tokensStorage, sharedPreferences)
-        logoutGateway = LogoutGatewayImpl(
-            currentUserGateway = currentUserGateway,
-            userAuthTokenGateway = tokensStorage,
-            paymentAuthTokenGateway = tokensStorage,
+        currentUserRepository =
+            SharedPreferencesCurrentUserRepository(
+                tokensStorage,
+                sharedPreferences
+            )
+        logoutRepository = LogoutRepositoryImpl(
+            currentUserRepository = currentUserRepository,
+            userAuthInfoRepository = tokensStorage,
+            paymentAuthTokenRepository = tokensStorage,
             removeKeys = { },
             tmxSessionIdStorage = tmxSessionIdStorage,
-            revokeUserAuthToken = {}
+            revokeUserAuthToken = {},
+            loadedPaymentOptionListRepository = mock()
         )
     }
 
@@ -77,17 +85,17 @@ class LogoutGatewayImplTest {
     }
 
     @Test
-    fun shouldRemoveUserData() {
+     fun shouldRemoveUserData() = runBlocking<Unit> {
         // prepare
-        currentUserGateway.currentUser = AuthorizedUser()
+        currentUserRepository.currentUser = AuthorizedUser()
         tokensStorage.paymentAuthToken = "12345"
         tokensStorage.userAuthToken = "12345"
 
         // invoke
-        logoutGateway.logout()
+        logoutRepository.logout()
 
         // assert
-        assertThat(currentUserGateway.currentUser, equalTo(AnonymousUser as CurrentUser))
+        assertThat(currentUserRepository.currentUser, equalTo(AnonymousUser as CurrentUser))
         assertThat(tokensStorage.paymentAuthToken, nullValue())
         assertThat(tokensStorage.userAuthToken, nullValue())
     }

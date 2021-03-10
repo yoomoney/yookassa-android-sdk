@@ -31,9 +31,8 @@
 
     <ImageView
         android:id="@+id/image"
-        android:layout_width="@dimen/ym_icon_size_3xl"
-        android:layout_height="@dimen/ym_icon_size_3xl"
-        android:layout_marginLeft="@dimen/ym_space_m"
+        android:layout_width="@dimen/ym_space3XL"
+        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/ym_space_m"
         android:scaleType="fitCenter"
         android:contentDescription="@null"
@@ -43,7 +42,7 @@
         tools:src="@drawable/ym_ic_cardbrand_cup"/>
 
     <TextView
-        style="@style/ym_Text.Common"
+        style="@style/Text.Body.Medium"
         android:id="@+id/primaryText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -60,7 +59,7 @@
         tools:targetApi="jelly_bean" />
 
     <TextView
-        style="@style/ym_Text.Common"
+        style="@style/Text.Caption1"
         android:id="@+id/secondaryText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

@@ -25,11 +25,11 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
-import ru.yoo.sdk.kassa.payments.Amount
+import ru.yoo.sdk.kassa.payments.checkoutParameters.Amount
 import ru.yoo.sdk.kassa.payments.Checkout
-import ru.yoo.sdk.kassa.payments.PaymentParameters
-import ru.yoo.sdk.kassa.payments.SavePaymentMethod
-import ru.yoo.sdk.kassa.payments.impl.extensions.RUB
+import ru.yoo.sdk.kassa.payments.checkoutParameters.PaymentParameters
+import ru.yoo.sdk.kassa.payments.checkoutParameters.SavePaymentMethod
+import ru.yoo.sdk.kassa.payments.extensions.RUB
 import java.math.BigDecimal
 
 @RunWith(RobolectricTestRunner::class)

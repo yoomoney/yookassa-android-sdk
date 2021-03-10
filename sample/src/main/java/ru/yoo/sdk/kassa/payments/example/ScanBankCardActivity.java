@@ -22,15 +22,23 @@
 package ru.yoo.sdk.kassa.payments.example;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
 import ru.yoo.sdk.kassa.payments.Checkout;
+
+import static android.Manifest.permission.CAMERA;
 
 public class ScanBankCardActivity extends AppCompatActivity {
 
@@ -39,10 +47,34 @@ public class ScanBankCardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActivityCompat.requestPermissions(this, new String[]{CAMERA}, REQUEST_CODE);
+    }
 
-        Intent scanIntent = new Intent(this, CardIOActivity.class);
-        scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_EXPIRY, true);
-        startActivityForResult(scanIntent, REQUEST_CODE);
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode,
+            @NonNull String[] permissions,
+            @NonNull int[] grantResults
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == REQUEST_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_DENIED &&
+                    !ActivityCompat.shouldShowRequestPermissionRationale(this, CAMERA)
+            ) {
+                Toast.makeText(
+                        this,
+                        R.string.allow_camera_permission_in_settings,
+                        Toast.LENGTH_SHORT
+                ).show();
+
+                finish();
+            } else {
+                Intent scanIntent = new Intent(this, CardIOActivity.class);
+                scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_EXPIRY, true);
+                startActivityForResult(scanIntent, REQUEST_CODE);
+            }
+        }
     }
 
     @Override

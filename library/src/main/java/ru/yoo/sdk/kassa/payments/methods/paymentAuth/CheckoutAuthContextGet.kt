@@ -22,12 +22,10 @@
 package ru.yoo.sdk.kassa.payments.methods.paymentAuth
 
 import org.json.JSONObject
-import ru.yoo.sdk.kassa.payments.impl.extensions.toAuthContextGetResponse
+import ru.yoo.sdk.kassa.payments.extensions.toAuthContextGetResponse
 import ru.yoo.sdk.kassa.payments.model.AuthType
 import ru.yoo.sdk.kassa.payments.model.AuthTypeState
-import ru.yoo.sdk.kassa.payments.model.ErrorCode
-import ru.yoo.sdk.kassa.payments.model.Status
-import java.util.Arrays
+import ru.yoo.sdk.kassa.payments.model.Result
 
 private const val AUTH_CONTEXT_GET_PATH = "/checkout/auth-context-get"
 
@@ -37,7 +35,7 @@ internal class CheckoutAuthContextGetRequest(
         private val authContextId: String,
         userAuthToken: String,
         shopToken: String
-) : CheckoutRequest<CheckoutAuthContextGetResponse>(userAuthToken, shopToken) {
+) : CheckoutRequest<Result<CheckoutAuthContextGetResponse>>(userAuthToken, shopToken) {
 
     override fun getUrl(): String = host + AUTH_CONTEXT_GET_PATH
 
@@ -46,11 +44,7 @@ internal class CheckoutAuthContextGetRequest(
     override fun getPayload() = listOf(AUTH_CONTEXT_ID to authContextId)
 }
 
-private const val HASH_SEED = 31
-
 internal data class CheckoutAuthContextGetResponse(
-    val status: Status,
-    val errorCode: ErrorCode?,
     val authTypeStates: Array<AuthTypeState>,
     val defaultAuthType: AuthType
 ) {
@@ -60,19 +54,15 @@ internal data class CheckoutAuthContextGetResponse(
 
         other as CheckoutAuthContextGetResponse
 
-        if (status != other.status) return false
-        if (errorCode != other.errorCode) return false
-        if (!Arrays.equals(authTypeStates, other.authTypeStates)) return false
+        if (!authTypeStates.contentEquals(other.authTypeStates)) return false
         if (defaultAuthType != other.defaultAuthType) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        var result = status.hashCode()
-        result = HASH_SEED * result + (errorCode?.hashCode() ?: 0)
-        result = HASH_SEED * result + Arrays.hashCode(authTypeStates)
-        result = HASH_SEED * result + defaultAuthType.hashCode()
+        var result = authTypeStates.contentHashCode()
+        result = 31 * result + defaultAuthType.hashCode()
         return result
     }
 }

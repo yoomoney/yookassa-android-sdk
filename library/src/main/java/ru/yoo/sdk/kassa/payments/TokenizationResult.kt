@@ -22,6 +22,7 @@
 package ru.yoo.sdk.kassa.payments
 
 import androidx.annotation.Keep
+import ru.yoo.sdk.kassa.payments.checkoutParameters.PaymentMethodType
 
 /**
  * Result for payment tokenization.

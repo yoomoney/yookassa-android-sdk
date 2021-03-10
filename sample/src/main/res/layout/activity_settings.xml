@@ -127,6 +127,7 @@
             <Button
                 style="?attr/borderlessButtonStyle"
                 android:id="@+id/colorScheme"
+                android:textColor="@color/colorPrimary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/color_scheme_title" />

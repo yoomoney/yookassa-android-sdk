@@ -31,6 +31,7 @@ import ru.yoo.sdk.kassa.payments.model.AuthType.EMERGENCY
 import ru.yoo.sdk.kassa.payments.model.AuthType.SECURE_PASSWORD
 import ru.yoo.sdk.kassa.payments.model.AuthType.SMS
 import ru.yoo.sdk.kassa.payments.model.AuthType.TOTP
+import ru.yoo.sdk.kassa.payments.paymentAuth.AllowedAuthTypesComparator
 
 @RunWith(Parameterized::class)
 internal class AllowedAuthTypesComparatorComparationsTests(

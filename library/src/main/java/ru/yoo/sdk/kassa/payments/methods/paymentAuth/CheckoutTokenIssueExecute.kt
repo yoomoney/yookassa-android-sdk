@@ -22,9 +22,8 @@
 package ru.yoo.sdk.kassa.payments.methods.paymentAuth
 
 import org.json.JSONObject
-import ru.yoo.sdk.kassa.payments.impl.extensions.toCheckoutTokenIssueExecuteResponse
-import ru.yoo.sdk.kassa.payments.model.ErrorCode
-import ru.yoo.sdk.kassa.payments.model.Status
+import ru.yoo.sdk.kassa.payments.extensions.toCheckoutTokenIssueExecuteResponse
+import ru.yoo.sdk.kassa.payments.model.Result
 
 private const val CHECKOUT_TOKEN_ISSUE_EXECUTE_PATH = "/checkout/token-issue-execute"
 
@@ -34,7 +33,7 @@ internal class CheckoutTokenIssueExecuteRequest(
         private val processId: String,
         userAuthToken: String,
         shopToken: String
-) : CheckoutRequest<CheckoutTokenIssueExecuteResponse>(userAuthToken, shopToken) {
+) : CheckoutRequest<Result<String>>(userAuthToken, shopToken) {
 
     override fun getUrl(): String = host + CHECKOUT_TOKEN_ISSUE_EXECUTE_PATH
 
@@ -42,9 +41,3 @@ internal class CheckoutTokenIssueExecuteRequest(
 
     override fun getPayload() = listOf(PROCESS_ID to processId)
 }
-
-internal data class CheckoutTokenIssueExecuteResponse(
-    val status: Status,
-    val errorCode: ErrorCode?,
-    val accessToken: String?
-)

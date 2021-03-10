@@ -72,4 +72,5 @@
     <string name="save_payment_method_selector_user_decide">User can save payment method</string>
     <string name="save_payment_method_selector_save">Save payment method</string>
     <string name="save_payment_method_selector_dont_save">Do not save payment method</string>
+    <string name="allow_camera_permission_in_settings">Grant permission to use the camera in the settings</string>
 </resources>

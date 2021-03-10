@@ -21,6 +21,6 @@
   -->
 
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@color/buttonPrimaryDisabled"/>
+    <solid android:color="@color/color_action_disable"/>
     <corners android:radius="@dimen/ym_radius_m" />
 </shape>

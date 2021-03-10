@@ -28,7 +28,7 @@ import android.preference.PreferenceManager;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 
-import ru.yoo.sdk.kassa.payments.SavePaymentMethod;
+import ru.yoo.sdk.kassa.payments.checkoutParameters.SavePaymentMethod;
 
 public final class Settings {
 
@@ -92,6 +92,10 @@ public final class Settings {
 
     public int getLinkedCardsCount() {
         return sp.getInt(KEY_LINKED_CARDS_COUNT, 1);
+    }
+
+    SharedPreferences getSp() {
+        return sp;
     }
 
     public SavePaymentMethod getSavePaymentMethod() {

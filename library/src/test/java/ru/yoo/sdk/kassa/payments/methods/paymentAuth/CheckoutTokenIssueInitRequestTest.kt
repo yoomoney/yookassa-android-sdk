@@ -29,9 +29,9 @@ import org.json.JSONObject
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import ru.yoo.sdk.kassa.payments.Amount
-import ru.yoo.sdk.kassa.payments.impl.extensions.RUB
-import ru.yoo.sdk.kassa.payments.impl.extensions.toJsonObject
+import ru.yoo.sdk.kassa.payments.checkoutParameters.Amount
+import ru.yoo.sdk.kassa.payments.extensions.RUB
+import ru.yoo.sdk.kassa.payments.extensions.toJsonObject
 import java.math.BigDecimal
 
 @RunWith(RobolectricTestRunner::class)

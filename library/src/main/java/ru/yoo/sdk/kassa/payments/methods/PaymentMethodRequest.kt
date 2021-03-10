@@ -24,10 +24,10 @@ package ru.yoo.sdk.kassa.payments.methods
 import okhttp3.Credentials
 import org.json.JSONObject
 import ru.yoo.sdk.kassa.payments.BuildConfig
-import ru.yoo.sdk.kassa.payments.impl.extensions.toPaymentMethodResponse
+import ru.yoo.sdk.kassa.payments.extensions.toPaymentMethodResponse
 import ru.yoo.sdk.kassa.payments.methods.base.GetRequest
-import ru.yoo.sdk.kassa.payments.model.Error
 import ru.yoo.sdk.kassa.payments.model.PaymentMethodBankCard
+import ru.yoo.sdk.kassa.payments.model.Result
 
 private const val PAYMENT_METHOD_PATH = "/payment_method"
 private const val PAYMENT_METHOD_PARAM_NAME = "payment_method_id"
@@ -36,7 +36,7 @@ internal class PaymentMethodRequest(
     private val paymentMethodId: String,
     private val shopToken: String,
     private val userAuthToken: String?
-) : GetRequest<PaymentMethodResponse> {
+) : GetRequest<Result<PaymentMethodBankCard>> {
 
     override fun getUrl(): String {
         return BuildConfig.HOST + PAYMENT_METHOD_PATH + "?$PAYMENT_METHOD_PARAM_NAME=" + paymentMethodId
@@ -50,12 +50,7 @@ internal class PaymentMethodRequest(
         return headers
     }
 
-    override fun convertJsonToResponse(jsonObject: JSONObject): PaymentMethodResponse {
+    override fun convertJsonToResponse(jsonObject: JSONObject): Result<PaymentMethodBankCard> {
         return jsonObject.toPaymentMethodResponse()
     }
 }
-
-internal data class PaymentMethodResponse(
-    val paymentMethodBankCard: PaymentMethodBankCard?,
-    val error: Error?
-)

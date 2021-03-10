@@ -25,7 +25,7 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ru.yoo.sdk.kassa.payments.impl.view.YmProgressBar
+    <ru.yoo.sdk.kassa.payments.ui.view.YmProgressBar
         style="?android:progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

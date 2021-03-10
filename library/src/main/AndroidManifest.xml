@@ -31,15 +31,15 @@
             android:theme="@style/ym_Theme" />
 
         <activity
-            android:name="ru.yoo.sdk.kassa.payments.impl.PendingIntentActivity"
+            android:name="ru.yoo.sdk.kassa.payments.ui.PendingIntentActivity"
             android:theme="@style/ym_Theme.Translucent" />
 
         <activity
-            android:name="ru.yoo.sdk.kassa.payments.impl.CheckoutActivity"
+            android:name="ru.yoo.sdk.kassa.payments.ui.CheckoutActivity"
             android:theme="@style/ym_Theme.Translucent" />
 
         <activity
-            android:name="ru.yoo.sdk.kassa.payments.impl.contract.SavePaymentMethodInfoActivity"
+            android:name="ru.yoo.sdk.kassa.payments.contract.SavePaymentMethodInfoActivity"
             android:theme="@style/ym_Theme" />
 
         <meta-data

@@ -22,13 +22,12 @@
 package ru.yoo.sdk.kassa.payments.utils
 
 import android.content.Context
-import androidx.core.content.ContextCompat
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.TextPaint
 import android.text.style.ClickableSpan
 import android.view.View
-import ru.yoo.sdk.kassa.payments.R
+import ru.yoo.sdk.kassa.payments.ui.color.InMemoryColorSchemeRepository
 
 fun getMessageWithLink(
     context: Context,
@@ -50,7 +49,7 @@ fun getMessageWithLink(
                 override fun updateDrawState(ds: TextPaint) {
                     super.updateDrawState(ds)
                     ds.apply {
-                        color = ContextCompat.getColor(context, R.color.ym_button_text_link)
+                        color = InMemoryColorSchemeRepository.colorScheme.primaryColor
                         isUnderlineText = false
                     }
                 }

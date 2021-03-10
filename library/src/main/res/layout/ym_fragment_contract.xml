@@ -26,291 +26,269 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootContainer"
     android:layout_width="@dimen/ym_dialogWidth"
-    android:layout_height="wrap_content"
-    android:measureAllChildren="false">
+    android:layout_height="3dp"
+    tools:layout_width="match_parent"
+    android:measureAllChildren="false"
+    android:transitionName="@string/ym_transition_name">
 
-    <ScrollView
+    <ru.yoo.sdk.kassa.payments.ui.view.LoadingView
+        android:id="@+id/loadingView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/ym_bottomDialog_maxHeight"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+    <FrameLayout
         android:id="@+id/contentView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/contractScrollView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:paddingTop="52dp">
 
-            <TextView
-                style="@style/ym_Text.Header3"
-                android:id="@+id/title"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/ym_screen_indentEnd"
-                android:layout_marginLeft="@dimen/ym_screen_indentStart"
-                android:layout_marginRight="@dimen/ym_screen_indentEnd"
-                android:layout_marginStart="@dimen/ym_screen_indentStart"
-                android:layout_marginTop="@dimen/ym_screen_indentTop"
-                android:ellipsize="end"
-                tools:text="Комета" />
+                android:orientation="vertical">
 
-            <TextView
-                style="@style/ym_Text.Common2"
-                android:id="@+id/subtitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/ym_screen_indentEnd"
-                android:layout_marginLeft="@dimen/ym_screen_indentStart"
-                android:layout_marginRight="@dimen/ym_screen_indentEnd"
-                android:layout_marginStart="@dimen/ym_screen_indentStart"
-                android:ellipsize="end"
-                tools:text="Программа лояльности, не меняя концепции, изложенной выше, развивает медиабизнес." />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="@dimen/ym_screen_indentStart"
-                android:layout_marginStart="@dimen/ym_screen_indentStart"
-                android:layout_marginTop="@dimen/ym_decor_marginTop_m"
-                android:background="@color/ym_divider" />
-
-            <include
-                android:id="@+id/paymentOption"
-                layout="@layout/ym_item_common"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="@dimen/ym_screen_indentStart"
-                android:layout_marginStart="@dimen/ym_screen_indentStart"
-                android:background="@color/ym_divider" />
-
-            <ViewSwitcher
-                android:id="@+id/switchesAndPaymentAuthContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:measureAllChildren="false">
-
-                <LinearLayout
-                    android:id="@+id/switchesContainer"
+                <TextView
+                    style="@style/Text.Title3"
+                    android:id="@+id/title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_marginEnd="@dimen/ym_screen_indentEnd"
+                    android:layout_marginStart="@dimen/ym_screen_indentStart"
+                    android:layout_marginTop="@dimen/ym_space_l"
+                    android:ellipsize="end"
+                    tools:text="Комета" />
 
-                    <FrameLayout
-                        android:id="@+id/allowWalletLinkingContainer"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                <ru.yoo.sdk.gui.widget.text.TextBodyView
+                    style="@style/Text.Body.Secondary"
+                    android:id="@+id/subtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/ym_screen_indentEnd"
+                    android:layout_marginStart="@dimen/ym_screen_indentStart"
+                    android:ellipsize="end"
+                    tools:text="Программа лояльности, не меняя концепции, изложенной выше, развивает медиабизнес." />
 
-                        <ru.yoo.sdk.kassa.payments.impl.view.YmSwitch
-                            style="@style/ym_Switch"
-                            android:id="@+id/allowWalletLinking"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:checked="true"
-                            tools:text="@string/ym_allow_wallet_linking" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_gravity="bottom"
-                            android:layout_marginLeft="@dimen/ym_screen_indentStart"
-                            android:layout_marginStart="@dimen/ym_screen_indentStart"
-                            android:background="@color/ym_divider" />
-                    </FrameLayout>
-
-                    <FrameLayout
-                        android:id="@+id/savePaymentMethodSelectionContainer"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                style="@style/ym_Text.Common2"
-                                android:id="@+id/savePaymentMethodSwitchMessage"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:layout_margin="@dimen/ym_space_m" />
-
-                            <ru.yoo.sdk.kassa.payments.impl.view.YmSwitch
-                                style="@style/ym_Switch"
-                                android:id="@+id/savePaymentMethodSwitch"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:checked="false" />
-                        </LinearLayout>
+                <TextView
+                    style="@style/Text.Title2"
+                    android:id="@+id/sum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:layout_marginTop="@dimen/ym_space_xs"
+                    android:layout_marginEnd="@dimen/ym_screen_indentEnd"
+                    android:layout_marginStart="@dimen/ym_screen_indentStart"
+                    tools:text="29 675,50 Р" />
 
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_gravity="bottom"
-                            android:layout_marginLeft="@dimen/ym_screen_indentStart"
-                            android:layout_marginStart="@dimen/ym_screen_indentStart"
-                            android:background="@color/ym_divider" />
-                    </FrameLayout>
-
-                    <FrameLayout
-                        android:id="@+id/savePaymentMethodInfoContainer"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone">
-
-                        <TextView
-                            style="@style/ym_Text.Common2"
-                            android:id="@+id/savePaymentMethodMessage"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/ym_space_m" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_gravity="bottom"
-                            android:layout_marginLeft="@dimen/ym_screen_indentStart"
-                            android:layout_marginStart="@dimen/ym_screen_indentStart"
-                            android:background="@color/ym_divider" />
-                    </FrameLayout>
-                </LinearLayout>
-
-                <ViewAnimator
-                    android:id="@+id/additionalInfoInputViewContainer"
+                <LinearLayout
+                    android:id="@+id/feeLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/ym_screen_indentEnd"
                     android:layout_marginLeft="@dimen/ym_screen_indentStart"
                     android:layout_marginRight="@dimen/ym_screen_indentEnd"
                     android:layout_marginStart="@dimen/ym_screen_indentStart"
-                    android:layout_marginTop="@dimen/ym_decor_marginTop_m"
+                    android:layout_marginTop="@dimen/ym_space_3xs"
+                    android:visibility="gone"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/Text.Body"
+                        android:textColor="@color/color_type_secondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ym_contract_fee" />
+
+                    <TextView
+                        style="@style/Text.Body"
+                        android:id="@+id/feeView"
+                        android:textColor="@color/color_type_secondary"
+                        android:layout_width="wrap_content"
+                        android:layout_marginLeft="@dimen/ym_space_2xs"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        tools:text="3 Р" />
+                </LinearLayout>
+
+                <include
+                    android:id="@+id/paymentOption"
+                    android:visibility="gone"
+                    layout="@layout/ym_item_common"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <include
+                    android:id="@+id/yooMoneyAccountView"
+                    android:visibility="gone"
+                    layout="@layout/ym_yoo_money_info_view"
+                    android:layout_marginStart="@dimen/ym_space_m"
+                    android:layout_marginEnd="@dimen/ym_space_m"
+                    android:layout_marginTop="@dimen/ym_space_2xl"
+                    android:layout_marginBottom="@dimen/ym_space_2xl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <include
+                    android:id="@+id/googlePayView"
+                    android:visibility="gone"
+                    layout="@layout/ym_google_pay_info"
+                    android:layout_marginStart="@dimen/ym_space_m"
+                    android:layout_marginEnd="@dimen/ym_space_m"
+                    android:layout_marginTop="@dimen/ym_space_2xl"
+                    android:layout_marginBottom="@dimen/ym_space_2xl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <ru.yoo.sdk.kassa.payments.ui.view.BankCardView
+                    android:id="@+id/bankCardView"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ym_spaceXL"
+                    android:layout_marginEnd="@dimen/ym_space_m"
+                    android:layout_marginStart="@dimen/ym_space_m"/>
+
+                <ViewSwitcher
+                    android:id="@+id/switches"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/ym_spaceM"
                     android:measureAllChildren="false">
 
-                    <ru.yoo.sdk.kassa.payments.impl.view.YmProgressBar
-                        style="?android:progressBarStyle"
-                        android:id="@+id/paymentAuthLoading"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
-                    <ru.yoo.sdk.kassa.payments.impl.paymentAuth.PaymentAuthView
-                        android:id="@+id/paymentAuth"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
-                    <ru.yoo.sdk.kassa.payments.impl.view.YmTextInputLayout
-                        android:id="@+id/phoneInputContainer"
+                    <LinearLayout
+                        android:id="@+id/switchesContainer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:hintEnabled="false"
-                        app:hintTextAppearance="@style/ym_TextAppearance.TextInputLayout">
+                        android:orientation="vertical">
 
-                        <ru.yoo.sdk.kassa.payments.impl.view.YmEditText
-                            style="@style/ym_EditText"
-                            android:id="@+id/phoneInput"
+                        <ru.yoo.sdk.kassa.payments.ui.SwitchWithDescriptionView
+                            android:id="@+id/allowWalletLinking"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/ym_phone_hint"
-                            android:imeOptions="actionDone"
-                            android:inputType="phone" />
+                            tools:ym_title="allowWalletLinking"
+                            tools:ym_description="@string/ym_allow_wallet_linking"/>
 
-                    </ru.yoo.sdk.kassa.payments.impl.view.YmTextInputLayout>
-                </ViewAnimator>
-            </ViewSwitcher>
+                        <ru.yoo.sdk.kassa.payments.ui.SwitchWithDescriptionView
+                            android:id="@+id/savePaymentMethodSelection"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            tools:ym_title="savePaymentMethodSelection"
+                            tools:ym_description="savePaymentMethodSelection description"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/ym_screen_indentEnd"
-                android:layout_marginLeft="@dimen/ym_screen_indentStart"
-                android:layout_marginRight="@dimen/ym_screen_indentEnd"
-                android:layout_marginStart="@dimen/ym_screen_indentStart"
-                android:layout_marginTop="@dimen/ym_space_2xl"
-                android:orientation="horizontal">
+                        <ru.yoo.sdk.gui.widget.text.TextBodyView
+                            android:id="@+id/savePaymentMethodMessageTitle"
+                            style="?ym_TitleTextAppearance"
+                            android:layout_marginStart="@dimen/ym_screen_indentStart"
+                            android:layout_marginEnd="@dimen/ym_screen_indentEnd"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            tools:text="Title"/>
 
-                <TextView
-                    style="@style/ym_Text.Common2"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="@string/ym_contract_amount" />
+                        <ru.yoo.sdk.gui.widget.text.TextCaption1View
+                            android:id="@+id/savePaymentMethodMessageSubTitle"
+                            style="?ym_SubtitleTextAppearance"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/ym_space3XS"
+                            android:layout_marginStart="@dimen/ym_screen_indentStart"
+                            android:layout_marginEnd="@dimen/ym_space_l"
+                            tools:text="SubTitle"
+                            tools:visibility="visible"/>
 
-                <TextView
-                    style="@style/ym_Text.Sum"
-                    android:id="@+id/sum"
-                    android:layout_width="wrap_content"
+                    </LinearLayout>
+
+                    <ViewAnimator
+                        android:id="@+id/additionalInfoInputViewContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/ym_screen_indentEnd"
+                        android:layout_marginLeft="@dimen/ym_screen_indentStart"
+                        android:layout_marginRight="@dimen/ym_screen_indentEnd"
+                        android:layout_marginStart="@dimen/ym_screen_indentStart"
+                        android:layout_marginTop="@dimen/ym_space2XL"
+                        android:measureAllChildren="false">
+
+                        <ru.yoo.sdk.kassa.payments.ui.view.YmProgressBar
+                            style="?android:progressBarStyle"
+                            android:id="@+id/paymentAuthLoading"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <LinearLayout
+                            android:id="@+id/phoneInputContainer"
+                            android:layout_width="match_parent"
+                            android:orientation="vertical"
+                            android:layout_height="wrap_content">
+
+                            <ru.yoo.sdk.kassa.payments.ui.CheckoutTextInputView
+                                android:id="@+id/phoneInput"
+                                app:label="@string/ym_label_phone_in_sbol"
+                                android:layout_width="match_parent"
+                                android:layout_height="60dp"
+                                android:inputType="phone"
+                                app:hint="+7 900 000 00 00" />
+
+                            <TextView
+                                style="@style/Text.Body"
+                                android:textSize="@dimen/ym_text_caption2"
+                                android:textColor="@color/color_type_ghost"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/ym_sber_phone_input_info"
+                                android:includeFontPadding="false"/>
+
+                        </LinearLayout>
+                    </ViewAnimator>
+                </ViewSwitcher>
+
+                <ru.yoo.sdk.kassa.payments.ui.PrimaryButtonView
+                    android:id="@+id/nextButton"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:includeFontPadding="false"
-                    tools:text="29 675,50 Р" />
+                    android:layout_marginEnd="@dimen/ym_screen_indentEnd"
+                    android:layout_marginStart="@dimen/ym_screen_indentStart"
+                    android:layout_marginTop="@dimen/ym_decor_marginTop_m"
+                    android:layout_marginBottom="@dimen/ym_space_m"
+                    app:ym_text="@string/ym_contract_continue" />
+
+                <TextView
+                    style="@style/Text.Caption1.Secondary"
+                    android:id="@+id/licenseAgreement"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:textColor="@color/color_type_secondary"
+                    android:layout_marginStart="@dimen/ym_screen_indentStart"
+                    android:layout_marginEnd="@dimen/ym_screen_indentEnd"
+                    android:layout_marginBottom="@dimen/ym_screen_indentBottom"
+                    android:maxLines="3" />
+
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/feeLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/ym_screen_indentEnd"
-                android:layout_marginLeft="@dimen/ym_screen_indentStart"
-                android:layout_marginRight="@dimen/ym_screen_indentEnd"
-                android:layout_marginStart="@dimen/ym_screen_indentStart"
-                android:layout_marginTop="@dimen/ym_space_xs"
-                android:orientation="horizontal"
-                android:visibility="gone">
+        </androidx.core.widget.NestedScrollView>
 
-                <TextView
-                    style="@style/ym_Text.Common2"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="@string/ym_contract_fee" />
+        <ru.yoo.sdk.kassa.payments.ui.DialogTopBar
+            android:id="@+id/topBar"
+            android:layout_width="match_parent"
+            android:background="@drawable/ym_bottom_sheet_dialog_rounded_top_corners"
+            android:layout_height="wrap_content"/>
 
-                <TextView
-                    style="@style/ym_Text.Common2"
-                    android:id="@+id/feeView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:includeFontPadding="false"
-                    tools:text="3 Р" />
-            </LinearLayout>
+    </FrameLayout>
 
-            <TextView
-                style="@style/ym_Text.Hint"
-                android:id="@+id/licenseAgreement"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/ym_space_m"
-                android:layout_marginRight="@dimen/ym_space_m"
-                android:layout_marginTop="@dimen/ym_decor_marginTop_2xl"
-                android:maxLines="3" />
-
-            <ru.yoo.sdk.kassa.payments.impl.view.YmButton
-                style="@style/ym_Button.Rounded"
-                android:id="@+id/nextButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/ym_decor_marginBottom_m"
-                android:layout_marginEnd="@dimen/ym_screen_indentEnd"
-                android:layout_marginLeft="@dimen/ym_screen_indentStart"
-                android:layout_marginRight="@dimen/ym_screen_indentEnd"
-                android:layout_marginStart="@dimen/ym_screen_indentStart"
-                android:layout_marginTop="@dimen/ym_decor_marginTop_m"
-                android:text="@string/ym_contract_continue" />
-        </LinearLayout>
-    </ScrollView>
-
-    <ru.yoo.sdk.kassa.payments.impl.view.LoadingView
-        android:id="@+id/loadingView"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/ym_bottomDialog_maxHeight"
-        android:background="@drawable/ym_dialog_background"
-        android:visibility="gone" />
-
-    <ru.yoo.sdk.kassa.payments.impl.view.ErrorView
+    <ru.yoo.sdk.kassa.payments.ui.view.ErrorView
         android:id="@+id/errorView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/ym_bottomDialog_maxHeight"
+        android:visibility="gone"
         app:ym_error_button_text="@string/ym_retry" />
 </ViewAnimator>

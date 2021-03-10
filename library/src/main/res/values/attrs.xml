@@ -35,4 +35,10 @@
         <attr name="ym_maxHeight" format="dimension" />
     </declare-styleable>
 
+    <declare-styleable name="ym_ListItemSwitchWithDescription">
+        <attr name="ym_ListItemSwitch_Style" format="reference"/>
+        <attr name="ym_title" format="string"/>
+        <attr name="ym_description" format="string"/>
+        <attr name="ym_isChecked" format="boolean"/>
+    </declare-styleable>
 </resources>

@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ The MIT License (MIT)
+  ~ Copyright © 2021 NBCO YooMoney LLC
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+  ~ associated documentation files (the “Software”), to deal in the Software without restriction, including
+  ~ without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+  ~ of the Software, and to permit persons to whom the Software is furnished to do so, subject to the
+  ~ following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all copies or substantial
+  ~ portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+  ~ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+  ~ PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+  ~ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+  ~ OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+  ~ OTHER DEALINGS IN THE SOFTWARE.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bankCardRootView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="83dp"
+        android:background="@color/ym_bank_card_color"
+        app:cardBackgroundColor="@color/ym_bank_card_color"
+        app:strokeWidth="1dp"
+        app:cardUseCompatPadding="true"
+        app:strokeColor="@color/ym_bank_card_stroke_color"
+        app:cardCornerRadius="@dimen/ym_radius_m"
+        app:cardMaxElevation="1dp"
+        app:cardElevation="3dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bankCardConstraint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusableInTouchMode="true"
+            android:paddingStart="@dimen/ym_space_m"
+            android:paddingTop="@dimen/ym_space_s"
+            android:paddingEnd="@dimen/ym_space_m">
+
+            <ImageView
+                android:id="@+id/bankCard"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:paddingTop="7dp"
+                android:src="@drawable/ym_ic_add_card"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/cardNumberTitle"
+                style="@style/Text.Caption1"
+                android:textColor="@color/color_type_secondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ym_card_number_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <EditText
+                android:id="@+id/cardNumber"
+                style="@style/ym_BankCardEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:background="@null"
+                android:imeOptions="actionDone"
+                android:hint="@string/ym_card_number_hint"
+                android:inputType="text|number"
+                android:maxLength="23"
+                android:nextFocusForward="@+id/expiryEditText"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardNumberTitle"/>
+
+            <EditText
+                android:id="@+id/cardNumberDone"
+                style="@style/ym_BankCardEditText"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:background="@null"
+                android:maxLength="23"
+                android:visibility="gone"
+                android:layout_marginStart="@dimen/ym_spaceXL"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardNumberTitle"/>
+
+            <TextView
+                android:id="@+id/expiryTitle"
+                style="@style/Text.Caption1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ym_expiry_title"
+                android:layout_marginStart="@dimen/ym_space_xl"
+                android:textColor="@color/color_ghost"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <EditText
+                android:id="@+id/expiry"
+                style="@style/ym_BankCardEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:background="@null"
+                android:hint="@string/ym_expiry_mm_yy_hint"
+                android:imeOptions="actionNext"
+                android:inputType="text|number"
+                android:maxLength="5"
+                android:nextFocusForward="@+id/cvc"
+                app:layout_constraintStart_toStartOf="@+id/expiryTitle"
+                app:layout_constraintTop_toBottomOf="@+id/expiryTitle"/>
+
+            <TextView
+                android:id="@+id/cvcTitle"
+                style="@style/Text.Caption1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/ym_space_2xl"
+                android:text="@string/ym_cvc_title"
+                android:textColor="@color/color_type_ghost"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <EditText
+                android:id="@+id/cvc"
+                style="@style/ym_BankCardEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:background="@null"
+                android:hint="@string/ym_cvc_hint"
+                android:imeOptions="actionDone"
+                android:inputType="numberPassword"
+                android:maxLength="4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/cvcTitle"
+                app:layout_constraintTop_toBottomOf="@+id/cvcTitle"/>
+
+            <ImageView
+                android:id="@+id/cardScan"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:src="@drawable/ym_ic_scanner_m"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <ImageView
+                android:id="@+id/continueWithCard"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:src="@drawable/ym_ic_chevron_right"
+                android:layout_marginBottom="4dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/cardNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <ImageView
+                android:id="@+id/clear"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:visibility="gone"
+                android:src="@drawable/ym_ic_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/detailsGroup"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:constraint_referenced_ids="expiry, expiryTitle, cvc, cvcTitle"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/error"
+        style="@style/Text.Caption1"
+        android:paddingStart="@dimen/ym_space_2xs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ym_space_xs"
+        android:textColor="@color/color_type_alert"
+        android:visibility="invisible"/>
+
+</LinearLayout>

@@ -21,6 +21,6 @@
 
 package ru.yoo.sdk.kassa.payments.model
 
-import ru.yoo.sdk.kassa.payments.Amount
+import ru.yoo.sdk.kassa.payments.checkoutParameters.Amount
 
 internal data class Fee(val service: Amount? = null, val counterparty: Amount? = null)

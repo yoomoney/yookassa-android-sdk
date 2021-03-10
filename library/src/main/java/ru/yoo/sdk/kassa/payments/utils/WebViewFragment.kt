@@ -168,7 +168,8 @@ internal class WebViewFragment : Fragment() {
         override fun onReceivedError(view: WebView?, errorCode: Int, description: String?, failingUrl: String?) {
             listener?.apply {
                 onHideProgress()
-                onError(errorCode, description, failingUrl)
+                takeUnless { errorCode == ERROR_HOST_LOOKUP || errorCode ==  ERROR_CONNECT}
+                    ?.onError(errorCode, description, failingUrl)
             }
         }
     }

@@ -24,16 +24,16 @@ package ru.yoo.sdk.kassa.payments.methods
 import okhttp3.Credentials
 import org.json.JSONObject
 import ru.yoo.sdk.kassa.payments.BuildConfig
-import ru.yoo.sdk.kassa.payments.impl.extensions.toJsonObject
-import ru.yoo.sdk.kassa.payments.impl.extensions.toTokenResponse
+import ru.yoo.sdk.kassa.payments.extensions.toJsonObject
+import ru.yoo.sdk.kassa.payments.extensions.toTokenResponse
 import ru.yoo.sdk.kassa.payments.methods.base.MimeType
 import ru.yoo.sdk.kassa.payments.methods.base.PostRequest
 import ru.yoo.sdk.kassa.payments.model.Confirmation
-import ru.yoo.sdk.kassa.payments.model.Error
 import ru.yoo.sdk.kassa.payments.model.LinkedCardInfo
 import ru.yoo.sdk.kassa.payments.model.PaymentOption
 import ru.yoo.sdk.kassa.payments.model.PaymentOptionInfo
 import ru.yoo.sdk.kassa.payments.model.PaymentIdCscConfirmation
+import ru.yoo.sdk.kassa.payments.model.Result
 
 private const val TOKEN_METHOD_PATH = "/tokens"
 private const val PAYMENT_METHOD_DATA = "payment_method_data"
@@ -52,7 +52,7 @@ internal data class TokenRequest(
     private val paymentAuthToken: String?,
     private val confirmation: Confirmation,
     private val savePaymentMethod: Boolean
-) : PostRequest<TokenResponse> {
+) : PostRequest<Result<String>> {
 
     override fun getHeaders() = listOf("Authorization" to Credentials.basic(shopToken, "")).let { headers ->
         headers.takeIf { paymentAuthTokenPresent() }?.plus("Wallet-Authorization" to "Bearer $paymentAuthToken")
@@ -82,8 +82,3 @@ internal data class TokenRequest(
 
     private fun paymentAuthTokenPresent() = paymentAuthToken != null
 }
-
-internal data class TokenResponse(
-    val paymentToken: String?,
-    val error: Error?
-)

@@ -1,0 +1,31 @@
+<!--
+  ~ The MIT License (MIT)
+  ~ Copyright © 2021 NBCO YooMoney LLC
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+  ~ associated documentation files (the “Software”), to deal in the Software without restriction, including
+  ~ without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+  ~ of the Software, and to permit persons to whom the Software is furnished to do so, subject to the
+  ~ following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all copies or substantial
+  ~ portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+  ~ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+  ~ PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+  ~ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+  ~ OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+  ~ OTHER DEALINGS IN THE SOFTWARE.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="25dp"
+    android:viewportWidth="24"
+    android:viewportHeight="25">
+  <path
+      android:pathData="M5.1429,6.1786V9.2143H3V6.1786C3,5.4345 3.2678,4.8021 3.8036,4.2813C4.3393,3.7604 4.9792,3.5 5.7232,3.5H8.7143V5.6429H5.6786C5.3214,5.6429 5.1429,5.8214 5.1429,6.1786ZM18.3209,3.5C19.0649,3.5 19.6974,3.7604 20.2182,4.2813C20.739,4.8021 20.9994,5.4345 20.9994,6.1786V9.2143H18.8566V6.1786C18.8566,5.8214 18.6631,5.6429 18.2762,5.6429H15.2852V3.5H18.3209ZM18.8576,15.9287V18.9198C18.8576,19.2769 18.679,19.4555 18.3218,19.4555H15.2861V21.643H18.3218C19.0659,21.643 19.6983,21.3751 20.2192,20.8394C20.74,20.3037 21.0004,19.6638 21.0004,18.9198V15.9287H18.8576ZM5.6786,19.4555H8.7143V21.643H5.7232C4.9792,21.643 4.3393,21.3751 3.8036,20.8394C3.2678,20.3037 3,19.6638 3,18.9198V15.9287H5.1429V18.9198C5.1429,19.2769 5.3214,19.4555 5.6786,19.4555ZM17,11.5H7V13.5H17V11.5Z"
+      android:fillColor="#00A884"
+      android:fillType="evenOdd"/>
+</vector>

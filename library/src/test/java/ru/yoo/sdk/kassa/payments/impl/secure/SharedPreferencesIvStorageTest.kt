@@ -32,8 +32,9 @@ import org.junit.rules.Timeout
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
-import ru.yoo.sdk.kassa.payments.impl.extensions.edit
-import ru.yoo.sdk.kassa.payments.impl.extensions.set
+import ru.yoo.sdk.kassa.payments.extensions.edit
+import ru.yoo.sdk.kassa.payments.extensions.set
+import ru.yoo.sdk.kassa.payments.secure.SharedPreferencesIvStorage
 import java.util.Arrays
 import java.util.concurrent.TimeUnit
 
@@ -63,6 +64,7 @@ class SharedPreferencesIvStorageTest {
 
     @Test
     fun getShouldReturnByteArrayIfWrote() {
+        //
         // prepare
         val value = ByteArray(6, Int::toByte)
         sp[KEY] = Base64.encodeToString(value, Base64.DEFAULT)

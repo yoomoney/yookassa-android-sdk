@@ -23,13 +23,23 @@ apply from: rootProject.file("sensitive.gradle")
 
 ext {
     versionMajor = 5
-    versionMinor = 0
-    versionPatch = 3
+    versionMinor = 1
+    versionPatch = 0
 
     versionAlpha = null
 
     versionCode = [versionMajor, versionMinor, versionPatch, versionAlpha ?: 0].inject { result, i -> result * 100 + i }
     versionName = "$versionMajor.$versionMinor.$versionPatch" + ( versionAlpha ? "-alpha-$versionAlpha" : "" )
+
+    versionEnding = {
+        currentBranchName = System.getenv('BUILD_BRANCH') ?: ''
+
+        if (currentBranchName != 'master') {
+            return '-SNAPSHOT'
+        } else {
+            return ''
+        }
+    }
 
     generateFileName = { project, variant ->
         def fileNameParts = [

@@ -1,26 +1,12 @@
-<!--
-  ~ The MIT License (MIT)
-  ~ Copyright © 2020 NBCO YooMoney LLC
-  ~
-  ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
-  ~ associated documentation files (the “Software”), to deal in the Software without restriction, including
-  ~ without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-  ~ of the Software, and to permit persons to whom the Software is furnished to do so, subject to the
-  ~ following conditions:
-  ~
-  ~ The above copyright notice and this permission notice shall be included in all copies or substantial
-  ~ portions of the Software.
-  ~
-  ~ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
-  ~ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
-  ~ PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-  ~ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
-  ~ OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-  ~ OTHER DEALINGS IN THE SOFTWARE.
-  -->
-
-<vector android:height="24dp" android:viewportHeight="40"
-    android:viewportWidth="41" android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
-    <path android:fillColor="#982B31" android:fillType="evenOdd" android:pathData="M4,6L36,6A4,4 0,0 1,40 10L40,30A4,4 0,0 1,36 34L4,34A4,4 0,0 1,0 30L0,10A4,4 0,0 1,4 6z"/>
-    <path android:fillColor="#FFF" android:fillType="nonZero" android:pathData="M12,13.031l1.883,0.001c0,4.033 -0.002,8.065 0,12.098h3.504c1.076,-3.168 2.15,-6.337 3.227,-9.504h4.778v8.784h-4.96c0.196,-0.614 0.398,-1.227 0.594,-1.841 0.816,-0.004 1.633,0 2.45,-0.002v-5.098l-1.424,0.001 -3.208,9.503h-6.843c-0.002,-4.647 0,-9.294 0,-13.942zM14.556,13.001c0.632,0.002 1.263,0.002 1.895,0 -0.001,2.382 -0.002,4.765 0,7.146 0.787,-2.344 1.557,-4.694 2.339,-7.04 0.013,-0.143 0.183,-0.097 0.28,-0.107 2.977,0.004 5.953,0.001 8.93,0.002L28,27h-8.336c0.212,-0.633 0.409,-1.27 0.62,-1.902 1.924,0.002 3.849,-0.001 5.773,0.001 -0.002,-3.4 0.002,-6.798 -0.002,-10.197 -1.953,-0.004 -3.906,0.004 -5.858,-0.004 -1.112,3.175 -2.187,6.363 -3.283,9.543 -0.786,0.004 -1.572,-0.001 -2.357,0.003L14.556,13z"/>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="40dp"
+    android:height="40dp"
+    android:viewportWidth="40"
+    android:viewportHeight="40">
+  <path
+      android:pathData="M36,6H4C1.7909,6 0,7.7909 0,10V30C0,32.2091 1.7909,34 4,34H36C38.2091,34 40,32.2091 40,30V10C40,7.7909 38.2091,6 36,6Z"
+      android:fillColor="#982B31"/>
+  <path
+      android:pathData="M12.0002,13.0315C12.6276,13.0315 13.2551,13.0308 13.8825,13.0321C13.8832,17.0647 13.8811,21.0972 13.8832,25.1297C15.0512,25.129 16.2192,25.1297 17.3872,25.1297C18.4633,21.9616 19.5373,18.7934 20.6141,15.6259C22.2067,15.6259 23.7994,15.6252 25.392,15.6259C25.392,18.5534 25.3927,21.4815 25.392,24.4097C23.7386,24.411 22.0859,24.4097 20.4325,24.4097C20.6282,23.7956 20.8296,23.1829 21.026,22.5688C21.8421,22.5647 22.659,22.5688 23.4758,22.5667C23.4758,20.8681 23.4765,19.1688 23.4758,17.4695C23.0009,17.4695 22.5268,17.4688 22.052,17.4702C20.9829,20.6377 19.9132,23.8052 18.8441,26.9733C16.5626,26.974 14.2817,26.9733 12.0009,26.9733C11.9995,22.326 12.0002,17.6787 12.0002,13.0315ZM14.5559,13.0014C15.1876,13.0027 15.8192,13.0027 16.4509,13.0014C16.4495,15.3831 16.4488,17.7656 16.4509,20.1474C17.2381,17.8032 18.0082,15.4529 18.7897,13.1074C18.8031,12.9644 18.9727,13.0103 19.0702,13C22.0471,13.0041 25.0232,13.0014 28,13.0021C27.9986,17.6678 27.9993,22.3342 27.9993,27C25.221,26.9986 22.442,27 19.6638,26.9993C19.8764,26.3675 20.0729,25.7301 20.2834,25.0976C22.2082,25.0996 24.1329,25.0969 26.0569,25.099C26.0548,21.6997 26.059,18.301 26.0548,14.9024C24.1018,14.8976 22.1488,14.9058 20.1965,14.8983C19.0851,18.0733 18.0096,21.2606 16.9137,24.4411C16.128,24.4445 15.3423,24.4397 14.5566,24.4439C14.5573,20.6295 14.5573,16.8151 14.5559,13.0014Z"
+      android:fillColor="#ffffff"/>
 </vector>

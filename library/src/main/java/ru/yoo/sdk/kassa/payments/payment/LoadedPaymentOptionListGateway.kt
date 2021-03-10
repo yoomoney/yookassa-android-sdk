@@ -23,16 +23,19 @@ package ru.yoo.sdk.kassa.payments.payment
 
 import ru.yoo.sdk.kassa.payments.model.PaymentOption
 
-internal interface GetLoadedPaymentOptionListGateway {
+internal interface GetLoadedPaymentOptionListRepository {
+    var isActual: Boolean
     fun getLoadedPaymentOptions(): List<PaymentOption>
 }
 
-internal interface SaveLoadedPaymentOptionsListGateway {
+internal interface SaveLoadedPaymentOptionsListRepository {
     fun saveLoadedPaymentOptionsList(paymentOptions: List<PaymentOption>)
 }
 
-internal object InMemoryPaymentOptionListGateway :
-    GetLoadedPaymentOptionListGateway, SaveLoadedPaymentOptionsListGateway {
+internal class InMemoryPaymentOptionListRepository :
+    GetLoadedPaymentOptionListRepository, SaveLoadedPaymentOptionsListRepository {
+
+    override var isActual: Boolean = false
 
     private var paymentOptions: List<PaymentOption> = emptyList()
 

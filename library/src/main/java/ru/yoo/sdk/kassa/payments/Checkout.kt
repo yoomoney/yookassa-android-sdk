@@ -25,19 +25,25 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.annotation.Keep
-import ru.yoo.sdk.kassa.payments.impl.CheckoutActivity
-import ru.yoo.sdk.kassa.payments.impl.CheckoutInternal
-import ru.yoo.sdk.kassa.payments.impl.EXTRA_CREATED_WITH_CHECKOUT_METHOD
-import ru.yoo.sdk.kassa.payments.impl.EXTRA_CSC_PARAMETERS
-import ru.yoo.sdk.kassa.payments.impl.EXTRA_PAYMENT_METHOD_TYPE
-import ru.yoo.sdk.kassa.payments.impl.EXTRA_PAYMENT_PARAMETERS
-import ru.yoo.sdk.kassa.payments.impl.EXTRA_PAYMENT_TOKEN
-import ru.yoo.sdk.kassa.payments.impl.EXTRA_TEST_PARAMETERS
-import ru.yoo.sdk.kassa.payments.impl.EXTRA_UI_PARAMETERS
-import ru.yoo.sdk.kassa.payments.impl.InMemoryColorSchemeRepository
-import ru.yoo.sdk.kassa.payments.impl.paymentOptionInfo.EXTRA_CARD_NUMBER
-import ru.yoo.sdk.kassa.payments.impl.paymentOptionInfo.EXTRA_EXPIRY_MONTH
-import ru.yoo.sdk.kassa.payments.impl.paymentOptionInfo.EXTRA_EXPIRY_YEAR
+import ru.yoo.sdk.kassa.payments.ui.CheckoutActivity
+import ru.yoo.sdk.kassa.payments.ui.EXTRA_CREATED_WITH_CHECKOUT_METHOD
+import ru.yoo.sdk.kassa.payments.ui.EXTRA_CSC_PARAMETERS
+import ru.yoo.sdk.kassa.payments.ui.EXTRA_PAYMENT_METHOD_TYPE
+import ru.yoo.sdk.kassa.payments.ui.EXTRA_PAYMENT_PARAMETERS
+import ru.yoo.sdk.kassa.payments.ui.EXTRA_PAYMENT_TOKEN
+import ru.yoo.sdk.kassa.payments.ui.EXTRA_TEST_PARAMETERS
+import ru.yoo.sdk.kassa.payments.ui.EXTRA_UI_PARAMETERS
+import ru.yoo.sdk.kassa.payments.ui.color.InMemoryColorSchemeRepository
+import ru.yoo.sdk.kassa.payments.utils.checkUrl
+import ru.yoo.sdk.kassa.payments.checkoutParameters.PaymentMethodType
+import ru.yoo.sdk.kassa.payments.checkoutParameters.PaymentParameters
+import ru.yoo.sdk.kassa.payments.checkoutParameters.SavedBankCardPaymentParameters
+import ru.yoo.sdk.kassa.payments.checkoutParameters.TestParameters
+import ru.yoo.sdk.kassa.payments.checkoutParameters.UiParameters
+import ru.yoo.sdk.kassa.payments.ui.color.ColorScheme
+import ru.yoo.sdk.kassa.payments.ui.view.EXTRA_CARD_NUMBER
+import ru.yoo.sdk.kassa.payments.ui.view.EXTRA_EXPIRY_MONTH
+import ru.yoo.sdk.kassa.payments.ui.view.EXTRA_EXPIRY_YEAR
 import ru.yoo.sdk.kassa.payments.utils.WebViewActivity
 
 /**
@@ -109,7 +115,7 @@ object Checkout {
         url: String,
         colorScheme: ColorScheme = ColorScheme.getDefaultScheme()
     ): Intent {
-        CheckoutInternal.checkUrl(url)
+        checkUrl(url)
         InMemoryColorSchemeRepository.colorScheme = colorScheme
         return WebViewActivity.create(
             context = context,

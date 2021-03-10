@@ -23,6 +23,8 @@ package ru.yoo.sdk.kassa.payments.example;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.InputType;
@@ -34,26 +36,29 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import ru.yoo.kassa.payments.example.PaymentMethodTypes;
-import ru.yoo.sdk.kassa.payments.example.settings.Settings;
-import ru.yoo.sdk.kassa.payments.example.settings.SettingsActivity;
-import ru.yoo.sdk.kassa.payments.example.utils.AmountFormatter;
-import ru.yoo.sdk.kassa.payments.Amount;
-import ru.yoo.sdk.kassa.payments.Checkout;
-import ru.yoo.sdk.kassa.payments.ColorScheme;
-import ru.yoo.sdk.kassa.payments.GooglePayParameters;
-import ru.yoo.sdk.kassa.payments.PaymentMethodType;
-import ru.yoo.sdk.kassa.payments.PaymentParameters;
-import ru.yoo.sdk.kassa.payments.MockConfiguration;
-import ru.yoo.sdk.kassa.payments.TestParameters;
-import ru.yoo.sdk.kassa.payments.TokenizationResult;
-import ru.yoo.sdk.kassa.payments.UiParameters;
+
 import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.Set;
+
+import ru.yoo.kassa.payments.example.PaymentMethodTypes;
+import ru.yoo.sdk.kassa.payments.checkoutParameters.Amount;
+import ru.yoo.sdk.kassa.payments.Checkout;
+import ru.yoo.sdk.kassa.payments.ui.color.ColorScheme;
+import ru.yoo.sdk.kassa.payments.checkoutParameters.GooglePayParameters;
+import ru.yoo.sdk.kassa.payments.checkoutParameters.MockConfiguration;
+import ru.yoo.sdk.kassa.payments.checkoutParameters.PaymentMethodType;
+import ru.yoo.sdk.kassa.payments.checkoutParameters.PaymentParameters;
+import ru.yoo.sdk.kassa.payments.checkoutParameters.TestParameters;
+import ru.yoo.sdk.kassa.payments.TokenizationResult;
+import ru.yoo.sdk.kassa.payments.checkoutParameters.UiParameters;
+import ru.yoo.sdk.kassa.payments.example.settings.Settings;
+import ru.yoo.sdk.kassa.payments.example.settings.SettingsActivity;
+import ru.yoo.sdk.kassa.payments.example.utils.AmountFormatter;
 
 /**
  * All calls to MSDK library are handled through the Checkout class.
@@ -75,6 +80,7 @@ public final class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLACK));
         initUi();
     }
 
@@ -187,7 +193,7 @@ public final class MainActivity extends AppCompatActivity {
                 mockConfiguration = null;
             }
 
-            final TestParameters testParameters = new TestParameters(true, false, mockConfiguration);
+            final TestParameters testParameters = new TestParameters(true, true, mockConfiguration);
 
             // Start MSDK to get payment token
 

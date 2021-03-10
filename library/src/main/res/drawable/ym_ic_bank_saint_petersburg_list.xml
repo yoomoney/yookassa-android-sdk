@@ -1,38 +1,45 @@
-<!--
-  ~ The MIT License (MIT)
-  ~ Copyright © 2020 NBCO YooMoney LLC
-  ~
-  ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
-  ~ associated documentation files (the “Software”), to deal in the Software without restriction, including
-  ~ without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-  ~ of the Software, and to permit persons to whom the Software is furnished to do so, subject to the
-  ~ following conditions:
-  ~
-  ~ The above copyright notice and this permission notice shall be included in all copies or substantial
-  ~ portions of the Software.
-  ~
-  ~ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
-  ~ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
-  ~ PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-  ~ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
-  ~ OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-  ~ OTHER DEALINGS IN THE SOFTWARE.
-  -->
-
-<vector android:height="24dp" android:viewportHeight="40"
-    android:viewportWidth="40" android:width="24dp"
-    xmlns:aapt="http://schemas.android.com/aapt" xmlns:android="http://schemas.android.com/apk/res/android">
-    <path android:fillType="nonZero" android:pathData="M4,6L36,6A4,4 0,0 1,40 10L40,30A4,4 0,0 1,36 34L4,34A4,4 0,0 1,0 30L0,10A4,4 0,0 1,4 6z">
-        <aapt:attr name="android:fillColor">
-            <gradient android:endX="3.9656" android:endY="12.63516"
-                android:startX="1.5056" android:startY="18.6658" android:type="linear">
-                <item android:color="#FFD12139" android:offset="0"/>
-                <item android:color="#FFE0572A" android:offset="1"/>
-            </gradient>
-        </aapt:attr>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="40dp"
+    android:height="40dp"
+    android:viewportWidth="40"
+    android:viewportHeight="40">
+  <group>
+    <clip-path
+        android:pathData="M36,6H4C1.7909,6 0,7.7909 0,10V30C0,32.2091 1.7909,34 4,34H36C38.2091,34 40,32.2091 40,30V10C40,7.7909 38.2091,6 36,6Z"/>
+    <path
+        android:pathData="M36,6H4C1.7909,6 0,7.7909 0,10V30C0,32.2091 1.7909,34 4,34H36C38.2091,34 40,32.2091 40,30V10C40,7.7909 38.2091,6 36,6Z">
+      <aapt:attr name="android:fillColor">
+        <gradient 
+            android:startY="18.6658"
+            android:startX="1.5058"
+            android:endY="4.56121"
+            android:endX="3.78708"
+            android:type="linear">
+          <item android:offset="0" android:color="#FFD12139"/>
+          <item android:offset="1" android:color="#FFE0572A"/>
+        </gradient>
+      </aapt:attr>
     </path>
-    <path android:fillColor="#FFF" android:fillType="evenOdd" android:pathData="M25.626,17.61c-1.09,2.94 -4.48,4.48 -7.572,3.445C14.964,20.02 13.34,16.8 14.432,13.861 15.522,10.92 18.912,9.38 22.002,10.417c3.092,1.035 4.712,4.256 3.624,7.194z"/>
-    <path android:fillColor="#D0D0D0" android:fillType="nonZero" android:pathData="M25.963,24.924l0.002,0.571c0.003,1.083 -2.651,1.972 -5.928,1.984 -3.277,0.01 -5.939,-0.86 -5.942,-1.944l-0.003,-0.57 11.87,-0.041"/>
-    <path android:fillColor="#FFF" android:fillType="nonZero" android:pathData="M25.963,24.924c0.004,1.085 -2.65,1.972 -5.929,1.984C16.757,26.917 14.095,26.047 14.092,24.964 14.09,23.881 16.742,22.991 20.02,22.981c3.277,-0.01 5.94,0.86 5.943,1.943"/>
-    <path android:fillColor="#D0D0D0" android:fillType="nonZero" android:pathData="M14.095,29.284c0,-0.16 2.655,-0.316 5.935,-0.316 3.277,0 5.935,0.157 5.935,0.316v0.34c0,0.156 -2.658,0.314 -5.935,0.314 -3.28,0 -5.935,-0.158 -5.935,-0.314v-0.34"/>
+  </group>
+  <group>
+    <clip-path
+        android:pathData="M25.6256,17.6109C24.5369,20.5497 21.1457,22.0895 18.0543,21.0554C14.9637,20.0188 13.3404,16.7989 14.4318,13.8605C15.5212,10.9218 18.9115,9.3805 22.002,10.4167C25.0937,11.4521 26.7141,14.6733 25.6256,17.6109Z"/>
+    <path
+        android:pathData="M25.6256,17.6109C24.5369,20.5497 21.1457,22.0895 18.0543,21.0554C14.9637,20.0188 13.3404,16.7989 14.4318,13.8605C15.5212,10.9218 18.9115,9.3805 22.002,10.4167C25.0937,11.4521 26.7141,14.6733 25.6256,17.6109Z"
+        android:fillColor="#ffffff"/>
+  </group>
+  <path
+      android:pathData="M25.9629,24.924L25.9648,25.4951C25.9675,26.5783 23.3137,27.4668 20.037,27.479C16.76,27.4891 14.0983,26.6181 14.0946,25.5349L14.0925,24.9644L25.9629,24.924Z"
+      android:fillColor="#D0D0D0"/>
+  <group>
+    <clip-path
+        android:pathData="M25.9629,24.924C25.9666,26.0089 23.313,26.8961 20.0342,26.9075C16.7575,26.9186 14.0953,26.0486 14.0925,24.9644C14.0888,23.8807 16.7427,22.9912 20.0203,22.9809C23.2973,22.9702 25.9592,23.8405 25.9629,24.924Z"/>
+    <path
+        android:pathData="M25.9629,24.924C25.9666,26.0089 23.313,26.8961 20.0342,26.9075C16.7575,26.9186 14.0953,26.0486 14.0925,24.9644C14.0888,23.8807 16.7427,22.9912 20.0203,22.9809C23.2973,22.9702 25.9592,23.8405 25.9629,24.924Z"
+        android:fillColor="#ffffff"/>
+  </group>
+  <path
+      android:pathData="M14.0945,29.2844C14.0945,29.1249 16.75,28.9682 20.0304,28.9682C23.3072,28.9682 25.9647,29.1249 25.9647,29.2844V29.6239C25.9647,29.7802 23.3072,29.9379 20.0304,29.9379C16.75,29.9379 14.0945,29.7802 14.0945,29.6239V29.2844Z"
+      android:fillColor="#D0D0D0"/>
 </vector>

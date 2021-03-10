@@ -28,9 +28,9 @@
     android:orientation="vertical"
     android:padding="@dimen/ym_space_m">
 
-    <TextView
-        style="@style/ym_Text.Common2"
+    <ru.yoo.sdk.gui.widget.text.TextBodyView
         android:id="@+id/textView"
+        style="@style/Text.Body.Secondary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -38,13 +38,12 @@
         android:gravity="center"
         tools:text="Проблема с интернетом. Попробуйте ещё раз, когда будете онлайн"/>
 
-    <TextView
-        style="@style/ym_FlatButton"
+    <ru.yoo.sdk.kassa.payments.ui.FlatButtonView
         android:id="@+id/button"
         android:textAllCaps="true"
         android:layout_marginTop="@dimen/ym_decor_marginTop_xl"
         android:gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="Повторить попытку"/>
+        tools:ym_text="Повторить попытку"/>
 </LinearLayout>

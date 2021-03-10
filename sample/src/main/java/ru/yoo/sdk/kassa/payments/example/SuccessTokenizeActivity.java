@@ -33,14 +33,10 @@ import android.view.View;
 import android.webkit.URLUtil;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
-import ru.yoo.sdk.kassa.payments.example.BuildConfig;
-import ru.yoo.sdk.kassa.payments.example.R;
 import ru.yoo.sdk.kassa.payments.Checkout;
 
 public final class SuccessTokenizeActivity extends AppCompatActivity {
@@ -92,7 +88,7 @@ public final class SuccessTokenizeActivity extends AppCompatActivity {
             final Intent intent = getIntent();
             final String token = intent.getStringExtra(TOKEN_EXTRA);
             final String type = intent.getStringExtra(TYPE_EXTRA);
-            new AlertDialog.Builder(this, R.style.DialogToken)
+            new AlertDialog.Builder(this, R.style.ym_DialogStyle)
                     .setMessage("Token: " + token + "\nType: " + type)
                     .setPositiveButton(R.string.token_copy, (dialog, which) -> {
                         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
@@ -134,7 +130,7 @@ public final class SuccessTokenizeActivity extends AppCompatActivity {
     }
 
     private void show3dsAlertDialog(@NonNull String message) {
-        new AlertDialog.Builder(this, R.style.DialogToken)
+        new AlertDialog.Builder(this, R.style.ym_DialogStyle)
                 .setMessage(message)
                 .setPositiveButton(R.string.token_cancel, (dialog, which) -> { })
                 .show();

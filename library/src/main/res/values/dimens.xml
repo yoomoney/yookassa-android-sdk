@@ -60,10 +60,19 @@
 
     <!--Bottom dialog-->
     <dimen name="ym_viewAnimator_maxHeight">352dp</dimen>
-    <dimen name="ym_bottomDialog_maxHeight">400dp</dimen>
+    <dimen name="ym_bottomDialog_maxHeight">352dp</dimen>
+
+    <dimen name="ym_payment_options_loading_min_height">144dp</dimen>
+
+    <dimen name="ym_payment_auth_max_height">348dp</dimen>
     
     <dimen name="ym_edittext_bottom_offset">12dp</dimen>
 
     <!--WebView-->
     <dimen name="ym_checkout_web_view_activity_progress_size">48dp</dimen>
+
+    <!--MARK: ui-lib resources-->
+    <dimen name="ym_item_min_height_normal">56dp</dimen>
+    <dimen name="ym_payment_auth_height">356dp</dimen>
+    <dimen name="ym_dialog_top_bar_logo_height">20dp</dimen>
 </resources>

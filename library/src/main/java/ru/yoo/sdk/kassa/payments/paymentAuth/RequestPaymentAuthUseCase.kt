@@ -1,6 +1,6 @@
 /*
  * The MIT License (MIT)
- * Copyright © 2020 NBCO YooMoney LLC
+ * Copyright © 2021 NBCO YooMoney LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
  * associated documentation files (the “Software”), to deal in the Software without restriction, including
@@ -21,21 +21,8 @@
 
 package ru.yoo.sdk.kassa.payments.paymentAuth
 
-import ru.yoo.sdk.kassa.payments.Amount
-import ru.yoo.sdk.kassa.payments.model.AuthTypeState
-import ru.yoo.sdk.kassa.payments.model.UseCase
+import ru.yoo.sdk.kassa.payments.checkoutParameters.Amount
 
-internal class RequestPaymentAuthUseCase(
-        private val paymentAuthTypeGateway: PaymentAuthTypeGateway
-) : UseCase<RequestPaymentAuthInputModel, RequestPaymentAuthOutputModel> {
-
-    override fun invoke(inputModel: RequestPaymentAuthInputModel): RequestPaymentAuthOutputModel {
-        val paymentAuthType = paymentAuthTypeGateway.getPaymentAuthType(
-                inputModel.linkWalletToApp,
-                inputModel.amount)
-        return RequestPaymentAuthOutputModel(paymentAuthType)
-    }
+internal interface RequestPaymentAuthUseCase {
+    suspend fun startPaymentAuth(linkWalletToApp: Boolean, amount: Amount): PaymentAuth.Action
 }
-
-internal data class RequestPaymentAuthInputModel(val linkWalletToApp: Boolean, val amount: Amount)
-internal data class RequestPaymentAuthOutputModel(val authTypeState: AuthTypeState)

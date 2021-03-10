@@ -27,38 +27,42 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import com.nhaarman.mockitokotlin2.mock
 import org.hamcrest.BaseMatcher
+import org.hamcrest.CoreMatchers
 import org.hamcrest.Description
 import org.hamcrest.Matcher
+import org.junit.Assert
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
 import org.mockito.Mockito.`when`
-import org.mockito.Mockito.mock
 import org.mockito.stubbing.OngoingStubbing
-import ru.yoo.sdk.kassa.payments.impl.contract.ContractSuccessViewModel
-import ru.yoo.sdk.kassa.payments.impl.contract.SavePaymentMethodViewModel
-import ru.yoo.sdk.kassa.payments.impl.extensions.RUB
-import ru.yoo.sdk.kassa.payments.impl.payment.PaymentOptionViewModel
+import ru.yoo.sdk.kassa.payments.extensions.RUB
 import ru.yoo.sdk.kassa.payments.model.AbstractWallet
 import ru.yoo.sdk.kassa.payments.model.CardBrand
 import ru.yoo.sdk.kassa.payments.model.Fee
 import ru.yoo.sdk.kassa.payments.model.GooglePay
 import ru.yoo.sdk.kassa.payments.model.LinkedCard
-import ru.yoo.sdk.kassa.payments.model.LinkedCardInfo
 import ru.yoo.sdk.kassa.payments.model.NewCard
-import ru.yoo.sdk.kassa.payments.model.NewCardInfo
 import ru.yoo.sdk.kassa.payments.model.PaymentOption
-import ru.yoo.sdk.kassa.payments.model.PaymentOptionInfo
 import ru.yoo.sdk.kassa.payments.model.SbolSmsInvoicing
 import ru.yoo.sdk.kassa.payments.model.Wallet
+import ru.yoo.sdk.kassa.payments.checkoutParameters.Amount
+import ru.yoo.sdk.kassa.payments.checkoutParameters.PaymentParameters
+import ru.yoo.sdk.kassa.payments.checkoutParameters.SavePaymentMethod
+import ru.yoo.sdk.kassa.payments.contract.Contract
+import ru.yoo.sdk.kassa.payments.contract.ContractBusinessLogic
+import ru.yoo.sdk.kassa.payments.model.NewCardInfo
+import ru.yoo.sdk.kassa.payments.payment.selectOption.SelectedPaymentOptionOutputModel
+import ru.yoo.sdk.kassa.payments.payment.tokenize.TokenOutputModel
+import ru.yoo.sdk.kassa.payments.payment.tokenize.TokenizeInputModel
+import ru.yoo.sdk.march.generateBusinessLogicTests
 import java.math.BigDecimal
 import java.util.Arrays
-import java.util.concurrent.BlockingQueue
-import java.util.concurrent.TimeUnit
+import java.util.Currency
 
 fun <T> on(arg: T): OngoingStubbing<T> = `when`(arg)
-
-fun waitUntilEmpty(queue: BlockingQueue<Any>) {
-    while (queue.poll(1, TimeUnit.SECONDS) != null);
-}
 
 internal fun createNewCardPaymentOption(id: Int): PaymentOption =
     NewCard(
@@ -130,49 +134,6 @@ internal fun createGooglePayPaymentOptionWithFee(id: Int): PaymentOption =
         ),
         savePaymentMethodAllowed = false
     )
-
-internal fun createGooglePayPaymentOptionWithoutFee(id: Int): PaymentOption =
-    GooglePay(
-        id = id,
-        charge = Amount(BigDecimal.TEN, RUB),
-        fee = null,
-        savePaymentMethodAllowed = false
-    )
-
-internal fun createNewCardInfo(): PaymentOptionInfo =
-    NewCardInfo(
-        number = "1234567887654321",
-        expirationMonth = "01",
-        expirationYear = "2020",
-        csc = "000"
-    )
-
-internal fun createLinkedCardInfo(): PaymentOptionInfo =
-    LinkedCardInfo(csc = "000")
-
-internal fun createAmount() = Amount(BigDecimal.TEN, RUB)
-
-internal val savePaymentMethodMessage: (PaymentOption) -> CharSequence = { "message" }
-internal val savePaymentMethodViewModelTurnOn = SavePaymentMethodViewModel.On("message")
-
-internal fun stubContractSuccessViewModel() = ContractSuccessViewModel(
-    shopTitle = "title",
-    shopSubtitle = "subtitle",
-    paymentOption = stubPaymentOptionViewModel(),
-    licenseAgreement = "licenseAgreement",
-    showChangeButton = false,
-    showAllowWalletLinking = false,
-    savePaymentMethodViewModel = savePaymentMethodViewModelTurnOn,
-    paymentAuth = null,
-    showPhoneInput = false
-)
-
-internal fun stubPaymentOptionViewModel() = PaymentOptionViewModel(
-    optionId = 1,
-    icon = mock(Drawable::class.java),
-    name = "name",
-    amount = "10,0 P"
-)
 
 internal fun equalToDrawable(drawable: Drawable?): Matcher<Drawable?> = object : BaseMatcher<Drawable?>() {
     override fun describeTo(description: Description?) {

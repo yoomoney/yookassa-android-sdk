@@ -1,5 +1,22 @@
 ## Changelog
 
+### 5.1.0
+2021-03-09
+- Updated library architecture, improved stability
+- Updated the library's user interface
+
+### 5.0.3
+2020-12-15
+- Updated gpay gateway
+
+### 5.0.2
+2020-12-14
+- Updated auth-sdk, changed 3ds urls
+
+### 5.0.1
+2020-11-30
+- Renamed packages
+
 ### 4.1.0
 2020-11-6
 - Updated auth-sdk version

@@ -23,7 +23,7 @@ package ru.yoo.sdk.kassa.payments.methods
 
 import org.json.JSONObject
 import ru.yoo.sdk.kassa.payments.BuildConfig
-import ru.yoo.sdk.kassa.payments.impl.extensions.toWalletCheckResponse
+import ru.yoo.sdk.kassa.payments.extensions.toWalletCheckResponse
 import ru.yoo.sdk.kassa.payments.methods.base.MimeType
 import ru.yoo.sdk.kassa.payments.methods.base.PostRequest
 import ru.yoo.sdk.kassa.payments.model.Status

@@ -39,7 +39,7 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
         <TextView
-            style="@style/ym_Text.Header4"
+            style="@style/Text.Title1"
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -48,12 +48,24 @@
             android:layout_marginTop="@dimen/ym_space_l" />
 
         <TextView
-            style="@style/ym_Text.Common3"
+            style="@style/Text.Body"
             android:id="@+id/info"
+            android:textColor="@color/color_type_secondary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/ym_space_m"
             android:layout_marginRight="@dimen/ym_space_m"
             android:layout_marginTop="@dimen/ym_space_l" />
+
+        <TextView
+            style="@style/Text.Body"
+            android:id="@+id/additionalInfo"
+            android:textColor="@color/color_type_secondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/ym_space_m"
+            android:layout_marginRight="@dimen/ym_space_m"
+            android:layout_marginTop="@dimen/ym_space_xs" />
       </LinearLayout>
+
 </ScrollView>

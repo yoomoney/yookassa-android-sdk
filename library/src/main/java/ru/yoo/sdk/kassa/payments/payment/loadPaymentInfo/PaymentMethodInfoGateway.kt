@@ -22,7 +22,8 @@
 package ru.yoo.sdk.kassa.payments.payment.loadPaymentInfo
 
 import ru.yoo.sdk.kassa.payments.model.PaymentMethodBankCard
+import ru.yoo.sdk.kassa.payments.model.Result
 
 internal interface PaymentMethodInfoGateway {
-    fun getPaymentMethodInfo(paymentMethodId: String): PaymentMethodBankCard
+    fun getPaymentMethodInfo(paymentMethodId: String): Result<PaymentMethodBankCard>
 }

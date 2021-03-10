@@ -21,15 +21,16 @@
   -->
 
 <resources>
+    <color name="ym_colorPrimary">#000000</color>
     <color name="ym_palette_accent">#b3b3b3</color>
-    <color name="ym_loading">#666666</color>
-    <color name="ym_background">#f7f7f7</color>
-    <color name="ym_button_text_link">#0070F0</color>
+    <color name="ym_background_color">#ffffff</color>
     <color name="ym_button_text_alert">#ff3333</color>
     <color name="ym_button_primary_disabled">#ffe1e1e1</color>
     <color name="ym_hint">#b3b3b3</color>
     <color name="ym_control_normal">#ebebeb</color>
     <color name="ym_text_primary">#000000</color>
     <color name="ym_divider">#ebebeb</color>
-    <color name="ym_color_ghost">#9A9EA7</color>
+    <color name="ym_bank_card_color">#ffffff</color>
+    <color name="ym_bank_card_stroke_color">@color/ym_bank_card_color</color>
+    <color name="ym_color_cursor">#00A884</color>
 </resources>

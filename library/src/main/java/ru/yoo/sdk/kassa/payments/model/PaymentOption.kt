@@ -21,7 +21,8 @@
 
 package ru.yoo.sdk.kassa.payments.model
 
-import ru.yoo.sdk.kassa.payments.Amount
+import ru.yoo.sdk.kassa.payments.checkoutParameters.Amount
+import ru.yoo.sdk.kassa.payments.checkoutParameters.PaymentMethodType
 
 internal sealed class PaymentOption {
     abstract val id: Int
@@ -70,6 +71,7 @@ internal data class LinkedCard(
     val brand: CardBrand,
     val pan: String,
     val name: String? = null,
+    val isLinkedToWallet: Boolean = false,
     override val savePaymentMethodAllowed: Boolean
 ) : YooMoney()
 
@@ -91,3 +93,11 @@ internal data class PaymentIdCscConfirmation(
     val expiryMonth: String,
     override val savePaymentMethodAllowed: Boolean
 ) : PaymentOption()
+
+internal fun PaymentOption.toType() = when (this) {
+    is NewCard -> PaymentMethodType.BANK_CARD
+    is YooMoney -> PaymentMethodType.YOO_MONEY
+    is SbolSmsInvoicing -> PaymentMethodType.SBERBANK
+    is GooglePay -> PaymentMethodType.GOOGLE_PAY
+    is PaymentIdCscConfirmation -> PaymentMethodType.BANK_CARD
+}

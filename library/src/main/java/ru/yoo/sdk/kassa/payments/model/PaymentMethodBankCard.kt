@@ -21,7 +21,7 @@
 
 package ru.yoo.sdk.kassa.payments.model
 
-import ru.yoo.sdk.kassa.payments.PaymentMethodType
+import ru.yoo.sdk.kassa.payments.checkoutParameters.PaymentMethodType
 
 internal data class PaymentMethodBankCard(
     val type: PaymentMethodType,

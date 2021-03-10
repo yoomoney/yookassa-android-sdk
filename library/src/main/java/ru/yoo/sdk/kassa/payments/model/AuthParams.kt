@@ -21,10 +21,24 @@
 
 package ru.yoo.sdk.kassa.payments.model
 
-internal data class AuthTypeState(
-    val type: AuthType,
-    val nextSessionTimeLeft: Int?
-)
+internal sealed class AuthTypeState {
+    internal data class SMS(
+        val nextSessionTimeLeft: Int,
+        val codeLength: Int,
+        val attemptsCount: Int?,
+        val attemptsLeft: Int?
+    ): AuthTypeState()
+
+    object NotRequired: AuthTypeState()
+
+    object UNKNOWN: AuthTypeState()
+
+    val type: AuthType get() = when(this) {
+        is SMS -> AuthType.SMS
+        is NotRequired -> AuthType.NOT_NEEDED
+        else -> AuthType.UNKNOWN
+    }
+}
 
 internal enum class AuthType {
     SMS,

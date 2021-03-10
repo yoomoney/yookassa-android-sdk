@@ -22,26 +22,25 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="ym_Theme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="ym_Theme" parent="Theme.Yoo">
         <item name="android:windowLightStatusBar" tools:ignore="NewApi">true</item>
         <item name="colorAccent">@color/ym_palette_accent</item>
         <item name="colorControlNormal">#1e000000</item>
-        <item name="android:alertDialogTheme">@style/ym_DialogLogout</item>
     </style>
 
-    <style name="ym_Theme.Toolbar" parent="ThemeOverlay.AppCompat.ActionBar" />
+    <style name="ym_Theme.Toolbar" parent="Theme.Yoo" />
 
-    <style name="ym_FullscreenDialogTheme" parent="android:Theme.Light.NoTitleBar">
+    <style name="ym_FullscreenDialogTheme" parent="Theme.Yoo.BottomSheetDialog">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:windowBackground">@color/ym_background</item>
+        <item name="android:windowBackground">@color/ym_background_color</item>
     </style>
 
     <style name="ym_Theme.Toolbar.Transparent">
         <item name="colorPrimary">@android:color/transparent</item>
     </style>
 
-    <style name="ym_Theme.Translucent" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="ym_Theme.Translucent" parent="Theme.Yoo">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
@@ -54,129 +53,6 @@
         <item name="colorAccent">@color/ym_palette_accent</item>
     </style>
 
-    <style name="ym_Text" />
-
-    <style name="ym_EditText" parent="@android:style/Widget.EditText">
-        <item name="android:letterSpacing" tools:ignore="NewApi">0.06</item>
-        <item name="android:lineSpacingExtra">4.5sp</item>
-        <item name="android:textCursorDrawable">@drawable/ym_edit_text_cursor</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:selectAllOnFocus">true</item>
-        <item name="android:textColorHint">@color/ym_hint</item>
-        <item name="android:textSize">19sp</item>
-    </style>
-
-    <style name="ym_TextAppearance.TextInputLayout" parent="@android:style/TextAppearance">
-        <item name="android:textColor">@color/ym_hint</item>
-    </style>
-
-    <style name="ym_Text.Common">
-        <item name="android:textColor">#000000</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:lines">1</item>
-        <item name="android:gravity">center_vertical</item>
-    </style>
-
-    <style name="ym_Text.Common2">
-        <item name="android:textColor">@color/ym_loading</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif</item>
-    </style>
-
-    <style name="ym_Text.Common3">
-        <item name="android:textColor">#000000</item>
-        <item name="android:textSize">16sp</item>
-    </style>
-
-    <style name="ym_Text.Hint">
-        <item name="android:textColor">@color/ym_loading</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif</item>
-        <item name="android:letterSpacing" tools:targetApi="lollipop">-0.02</item>
-    </style>
-
-    <style name="ym_Text.Header">
-        <item name="android:textColor">@color/ym_text_primary</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif</item>
-        <item name="android:letterSpacing" tools:targetApi="lollipop">0.02</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="ym_Text.Header2">
-        <item name="android:textColor">@color/ym_text_primary</item>
-        <item name="android:textSize">34sp</item>
-        <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif</item>
-        <item name="android:letterSpacing" tools:targetApi="lollipop">0.01</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="ym_Text.Header3">
-        <item name="android:textColor">@color/ym_text_primary</item>
-        <item name="android:textSize">22sp</item>
-        <item name="android:letterSpacing" tools:ignore="NewApi">0.02</item>
-    </style>
-
-    <style name="ym_Text.Header4">
-        <item name="android:textColor">@color/ym_text_primary</item>
-        <item name="android:textSize">19sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="ym_Text.Sum">
-        <item name="android:textColor">@color/ym_text_primary</item>
-        <item name="android:textSize">25sp</item>
-        <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif-light</item>
-        <item name="android:letterSpacing" tools:ignore="NewApi">0.01</item>
-    </style>
-
-    <!-- Buttons -->
-    <style name="ym_Button">
-        <item name="android:gravity">center</item>
-        <item name="android:lines">1</item>
-        <item name="android:textColor">@color/ym_text_primary</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:minHeight">@dimen/ym_button_minHeight</item>
-    </style>
-
-    <style name="ym_Button.Rounded">
-        <item name="android:textColor">@color/ym_btn_primary</item>
-    </style>
-
-    <style name="ym_FlatButton">
-        <item name="android:textSize">13sp</item>
-        <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif</item>
-        <item name="android:textColor">@color/ym_button_text_link</item>
-        <item name="android:letterSpacing" tools:targetApi="lollipop">-0.01</item>
-    </style>
-
-    <style name="ym_Switch" parent="ym_Text.Common2">
-        <item name="android:minHeight">72dp</item>
-        <item name="android:padding">@dimen/ym_space_m</item>
-        <item name="switchPadding">@dimen/ym_space_m</item>
-    </style>
-
-    <style name="ym_DialogLogout" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="buttonBarNegativeButtonStyle">@style/ym_ButtonStyleBlue</item>
-        <item name="buttonBarPositiveButtonStyle">@style/ym_ButtonStyleRed</item>
-    </style>
-
-    <style name="ym_DialogNoWallet" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="buttonBarPositiveButtonStyle">@style/ym_ButtonStyleBlue</item>
-    </style>
-
-    <style name="ym_ButtonStyleBlue" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
-        <item name="android:textColor">@color/ym_button_text_link</item>
-    </style>
-
-    <style name="ym_ButtonStyleRed" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
-        <item name="android:textColor">@color/ym_button_text_alert</item>
-    </style>
-
     <style name="ym_MainDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/ym_MainDialogSheetStyle</item>
         <item name="android:windowIsFloating">false</item>
@@ -185,5 +61,16 @@
 
     <style name="ym_MainDialogSheetStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/ym_dialog_background</item>
+    </style>
+
+    <style name="ym_BankCardEditText">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColorHint">@color/color_type_ghost</item>
+        <item name="android:textColor">@color/color_type_primary</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:lineSpacingMultiplier">1.15</item>
+        <item name="android:letterSpacing" tools:ignore="NewApi">0.01</item>
     </style>
 </resources>

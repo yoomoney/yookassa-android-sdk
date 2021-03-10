@@ -27,12 +27,17 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import org.mockito.Mockito.mock
+import ru.yoo.sdk.kassa.payments.metrics.AuthType
+import ru.yoo.sdk.kassa.payments.metrics.AuthTypePaymentAuth
+import ru.yoo.sdk.kassa.payments.metrics.AuthTypeWithoutAuth
+import ru.yoo.sdk.kassa.payments.metrics.AuthTypeYooMoneyLogin
+import ru.yoo.sdk.kassa.payments.metrics.UserAuthTypeParamProvider
 import ru.yoo.sdk.kassa.payments.model.AnonymousUser
 import ru.yoo.sdk.kassa.payments.model.AuthorizedUser
 import ru.yoo.sdk.kassa.payments.model.CurrentUser
 import ru.yoo.sdk.kassa.payments.on
 import ru.yoo.sdk.kassa.payments.payment.CheckPaymentAuthRequiredGateway
-import ru.yoo.sdk.kassa.payments.payment.CurrentUserGateway
+import ru.yoo.sdk.kassa.payments.payment.CurrentUserRepository
 
 @RunWith(Parameterized::class)
 internal class UserAuthTypeParamProviderTest(
@@ -45,17 +50,28 @@ internal class UserAuthTypeParamProviderTest(
         @[Parameterized.Parameters(name = "{0},{1},{2}") JvmStatic]
         fun data(): Collection<Array<Any>> {
             return listOf(
-                    arrayOf(AnonymousUser, true, AuthTypeWithoutAuth()),
-                    arrayOf(AnonymousUser, false, AuthTypeWithoutAuth()),
-                    arrayOf(AuthorizedUser(), true, AuthTypeYooMoneyLogin()),
-                    arrayOf(AuthorizedUser(), false, AuthTypePaymentAuth())
+                    arrayOf(AnonymousUser, true,
+                        AuthTypeWithoutAuth()
+                    ),
+                    arrayOf(AnonymousUser, false,
+                        AuthTypeWithoutAuth()
+                    ),
+                    arrayOf(AuthorizedUser(), true,
+                        AuthTypeYooMoneyLogin()
+                    ),
+                    arrayOf(AuthorizedUser(), false,
+                        AuthTypePaymentAuth()
+                    )
             )
         }
     }
 
-    private val currentUserGateway = mock(CurrentUserGateway::class.java)
+    private val currentUserGateway = mock(CurrentUserRepository::class.java)
     private val paymentAuthRequiredGateway = mock(CheckPaymentAuthRequiredGateway::class.java)
-    private val getUserAuthTypeParam = UserAuthTypeParamProvider(currentUserGateway, paymentAuthRequiredGateway)
+    private val getUserAuthTypeParam = UserAuthTypeParamProvider(
+        currentUserGateway,
+        paymentAuthRequiredGateway
+    )
 
     @Test
     fun test() {

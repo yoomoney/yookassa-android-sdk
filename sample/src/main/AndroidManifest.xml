@@ -98,7 +98,7 @@
                 android:value="ru.yoo.sdk.kassa.payments.example.MainActivity" />
         </activity>
 
-        <activity android:name="ru.yoo.sdk.kassa.payments.example.ScanBankCardActivity">
+        <activity android:name="ru.yoo.sdk.kassa.payments.example.ScanBankCardActivity" android:theme="@style/Theme.Transparent">
 
             <intent-filter>
                 <action android:name="ru.yoo.sdk.kassa.payments.action.SCAN_BANK_CARD" />

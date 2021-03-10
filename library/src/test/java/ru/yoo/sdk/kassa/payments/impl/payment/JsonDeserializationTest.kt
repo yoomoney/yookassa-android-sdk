@@ -29,31 +29,27 @@ import org.junit.Test
 import org.junit.rules.Timeout
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import ru.yoo.sdk.kassa.payments.Amount
-import ru.yoo.sdk.kassa.payments.PaymentMethodType
-import ru.yoo.sdk.kassa.payments.impl.extensions.RUB
-import ru.yoo.sdk.kassa.payments.impl.extensions.getStatus
-import ru.yoo.sdk.kassa.payments.impl.extensions.toAmount
-import ru.yoo.sdk.kassa.payments.impl.extensions.toAuthCheckResponse
-import ru.yoo.sdk.kassa.payments.impl.extensions.toAuthContextGetResponse
-import ru.yoo.sdk.kassa.payments.impl.extensions.toAuthSessionGenerateResponse
-import ru.yoo.sdk.kassa.payments.impl.extensions.toAuthTypeState
-import ru.yoo.sdk.kassa.payments.impl.extensions.toCheckoutTokenIssueExecuteResponse
-import ru.yoo.sdk.kassa.payments.impl.extensions.toCheckoutTokenIssueInitResponse
-import ru.yoo.sdk.kassa.payments.impl.extensions.toError
-import ru.yoo.sdk.kassa.payments.impl.extensions.getFee
-import ru.yoo.sdk.kassa.payments.impl.extensions.toPaymentMethodResponse
-import ru.yoo.sdk.kassa.payments.impl.extensions.toPaymentOptionResponse
-import ru.yoo.sdk.kassa.payments.impl.extensions.toTokenResponse
-import ru.yoo.sdk.kassa.payments.impl.extensions.toWalletCheckResponse
-import ru.yoo.sdk.kassa.payments.methods.PaymentMethodResponse
-import ru.yoo.sdk.kassa.payments.methods.PaymentOptionsResponse
-import ru.yoo.sdk.kassa.payments.methods.TokenResponse
+import ru.yoo.sdk.kassa.payments.checkoutParameters.Amount
+import ru.yoo.sdk.kassa.payments.checkoutParameters.PaymentMethodType
+import ru.yoo.sdk.kassa.payments.model.ApiMethodException
+import ru.yoo.sdk.kassa.payments.model.AuthCheckApiMethodException
+import ru.yoo.sdk.kassa.payments.extensions.RUB
+import ru.yoo.sdk.kassa.payments.extensions.getFee
+import ru.yoo.sdk.kassa.payments.extensions.getStatus
+import ru.yoo.sdk.kassa.payments.extensions.toAmount
+import ru.yoo.sdk.kassa.payments.extensions.toAuthCheckResponse
+import ru.yoo.sdk.kassa.payments.extensions.toAuthContextGetResponse
+import ru.yoo.sdk.kassa.payments.extensions.toAuthSessionGenerateResponse
+import ru.yoo.sdk.kassa.payments.extensions.toAuthTypeState
+import ru.yoo.sdk.kassa.payments.extensions.toCheckoutTokenIssueExecuteResponse
+import ru.yoo.sdk.kassa.payments.extensions.toCheckoutTokenIssueInitResponse
+import ru.yoo.sdk.kassa.payments.extensions.toError
+import ru.yoo.sdk.kassa.payments.extensions.toPaymentMethodResponse
+import ru.yoo.sdk.kassa.payments.extensions.toPaymentOptionResponse
+import ru.yoo.sdk.kassa.payments.extensions.toTokenResponse
+import ru.yoo.sdk.kassa.payments.extensions.toWalletCheckResponse
 import ru.yoo.sdk.kassa.payments.methods.WalletCheckResponse
-import ru.yoo.sdk.kassa.payments.methods.paymentAuth.CheckoutAuthCheckResponse
 import ru.yoo.sdk.kassa.payments.methods.paymentAuth.CheckoutAuthContextGetResponse
-import ru.yoo.sdk.kassa.payments.methods.paymentAuth.CheckoutAuthSessionGenerateResponse
-import ru.yoo.sdk.kassa.payments.methods.paymentAuth.CheckoutTokenIssueExecuteResponse
 import ru.yoo.sdk.kassa.payments.methods.paymentAuth.CheckoutTokenIssueInitResponse
 import ru.yoo.sdk.kassa.payments.model.AbstractWallet
 import ru.yoo.sdk.kassa.payments.model.AuthType
@@ -62,12 +58,13 @@ import ru.yoo.sdk.kassa.payments.model.CardBrand
 import ru.yoo.sdk.kassa.payments.model.CardInfo
 import ru.yoo.sdk.kassa.payments.model.Error
 import ru.yoo.sdk.kassa.payments.model.ErrorCode
-import ru.yoo.sdk.kassa.payments.model.ExtendedStatus
 import ru.yoo.sdk.kassa.payments.model.Fee
 import ru.yoo.sdk.kassa.payments.model.GooglePay
 import ru.yoo.sdk.kassa.payments.model.LinkedCard
 import ru.yoo.sdk.kassa.payments.model.NewCard
 import ru.yoo.sdk.kassa.payments.model.PaymentMethodBankCard
+import ru.yoo.sdk.kassa.payments.model.PaymentOption
+import ru.yoo.sdk.kassa.payments.model.Result
 import ru.yoo.sdk.kassa.payments.model.SbolSmsInvoicing
 import ru.yoo.sdk.kassa.payments.model.Status
 import ru.yoo.sdk.kassa.payments.model.Wallet
@@ -253,8 +250,10 @@ class JsonDeserializationTest {
             Amount(BigDecimal("2.00"), RUB), null, true
         )
         val wallet = Wallet(
-            1, Amount(BigDecimal("3.00"), RUB),
-            null, "123456789", Amount(BigDecimal("5.00"), RUB), true
+            1,
+            Amount(BigDecimal("3.00"), RUB),
+            null, "123456789",
+            Amount(BigDecimal("5.00"), RUB), true
         )
         val abstractWallet = AbstractWallet(
             2,
@@ -262,7 +261,7 @@ class JsonDeserializationTest {
         )
         val bankCard = LinkedCard(
             3, Amount(BigDecimal("5.00"), RUB), null,
-            "123456789", CardBrand.MASTER_CARD, "518901******0446", "My card", true
+            "123456789", CardBrand.MASTER_CARD, "518901******0446", "My card", true, true
         )
         val sberbank = SbolSmsInvoicing(
             4,
@@ -273,8 +272,7 @@ class JsonDeserializationTest {
             Amount(BigDecimal("5.00"), RUB), null, false
         )
 
-        val paymentOptions =
-            PaymentOptionsResponse(listOf(newCard, wallet, abstractWallet, bankCard, sberbank, googlePay), null)
+        val paymentOptions: Result<List<PaymentOption>> = Result.Success(listOf(newCard, wallet, abstractWallet, bankCard, sberbank, googlePay))
 
         assertThat(jsonObject.toPaymentOptionResponse(), equalTo(paymentOptions))
     }
@@ -298,24 +296,21 @@ class JsonDeserializationTest {
                 }
             }"""
         )
-        val paymentMethod = PaymentMethodResponse(
-            paymentMethodBankCard = PaymentMethodBankCard(
-                type = PaymentMethodType.BANK_CARD,
-                id = "1da5c87d-0984-50e8-a7f3-8de646dd9ec9",
-                saved = true,
-                cscRequired = true,
-                title = "Основная карта",
-                card = CardInfo(
-                    first = "427918",
-                    last = "7918",
-                    expiryYear = "2017",
-                    expiryMonth = "07",
-                    cardType = CardBrand.MASTER_CARD,
-                    source = PaymentMethodType.GOOGLE_PAY
-                )
-            ),
-            error = null
-        )
+        val paymentMethod: Result<PaymentMethodBankCard> = Result.Success(PaymentMethodBankCard(
+            type = PaymentMethodType.BANK_CARD,
+            id = "1da5c87d-0984-50e8-a7f3-8de646dd9ec9",
+            saved = true,
+            cscRequired = true,
+            title = "Основная карта",
+            card = CardInfo(
+                first = "427918",
+                last = "7918",
+                expiryYear = "2017",
+                expiryMonth = "07",
+                cardType = CardBrand.MASTER_CARD,
+                source = PaymentMethodType.GOOGLE_PAY
+            )
+        ))
 
         assertThat(jsonObject.toPaymentMethodResponse(), equalTo(paymentMethod))
     }
@@ -332,14 +327,15 @@ class JsonDeserializationTest {
             "code": "forbidden"
         }"""
         )
-        val paymentOptions = PaymentOptionsResponse(
-            listOf(),
-            Error(
-                ErrorCode.FORBIDDEN,
-                "ecf255db-cce8-4f15-8fc2-3d7a4678c867",
-                "Invalid API key provided",
-                "payment_method",
-                1800
+        val paymentOptions: Result<List<PaymentOption>> = Result.Fail(
+            ApiMethodException(
+                Error(
+                    ErrorCode.FORBIDDEN,
+                    "ecf255db-cce8-4f15-8fc2-3d7a4678c867",
+                    "Invalid API key provided",
+                    "payment_method",
+                    1800
+                )
             )
         )
         assertThat(jsonObject.toPaymentOptionResponse(), equalTo(paymentOptions))
@@ -353,7 +349,7 @@ class JsonDeserializationTest {
               "confirmative": false
             }"""
         )
-        val tokenResponse = TokenResponse("+u7PDjMTkf08NtD66P6+eYWa2yjU3gsSIhOOO+OWsOg=", null)
+        val tokenResponse: Result<String> = Result.Success("+u7PDjMTkf08NtD66P6+eYWa2yjU3gsSIhOOO+OWsOg=")
         assertThat(jsonObject.toTokenResponse(), equalTo(tokenResponse))
     }
 
@@ -384,15 +380,19 @@ class JsonDeserializationTest {
               }
             }"""
         )
-        val authContextGetResponse =
+        val authContextGetResponse: Result<CheckoutAuthContextGetResponse> = Result.Success(
             CheckoutAuthContextGetResponse(
-                Status.SUCCESS, null, arrayOf(
-                    AuthTypeState(
-                        AuthType.SMS,
-                        30
+                arrayOf(
+                    AuthTypeState.SMS(
+                        nextSessionTimeLeft = 30,
+                        codeLength = 6,
+                        attemptsCount = 10,
+                        attemptsLeft = 10
                     )
-                ), AuthType.SMS
+                ),
+                AuthType.SMS
             )
+        )
         assertThat(jsonObject.toAuthContextGetResponse(), equalTo(authContextGetResponse))
     }
 
@@ -437,15 +437,19 @@ class JsonDeserializationTest {
               }
             }"""
         )
-        val authContextGetResponse =
+        val authContextGetResponse: Result<CheckoutAuthContextGetResponse> = Result.Success(
             CheckoutAuthContextGetResponse(
-                Status.SUCCESS, null, arrayOf(
-                    AuthTypeState(
-                        AuthType.SMS,
-                        30
+                arrayOf(
+                    AuthTypeState.SMS(
+                        nextSessionTimeLeft = 30,
+                        codeLength = 6,
+                        attemptsCount = 10,
+                        attemptsLeft = 10
                     )
-                ), AuthType.SMS
+                ),
+                AuthType.SMS
             )
+        )
         assertThat(jsonObject.toAuthContextGetResponse(), equalTo(authContextGetResponse))
     }
 
@@ -457,8 +461,11 @@ class JsonDeserializationTest {
               "error": "InvalidContext"
             }"""
         )
-        val authContextGetResponse =
-            CheckoutAuthContextGetResponse(Status.REFUSED, ErrorCode.INVALID_CONTEXT, emptyArray(), AuthType.UNKNOWN)
+        val authContextGetResponse: Result<CheckoutAuthContextGetResponse> = Result.Fail(
+            ApiMethodException(
+                ErrorCode.INVALID_CONTEXT
+            )
+        )
         assertThat(jsonObject.toAuthContextGetResponse(), equalTo(authContextGetResponse))
     }
 
@@ -471,8 +478,11 @@ class JsonDeserializationTest {
               }
             }"""
         )
-        val authContextGetResponse =
-            CheckoutAuthContextGetResponse(Status.UNKNOWN, ErrorCode.INVALID_SCOPE, emptyArray(), AuthType.UNKNOWN)
+        val authContextGetResponse: Result<CheckoutAuthContextGetResponse> = Result.Fail(
+            ApiMethodException(
+                ErrorCode.INVALID_SCOPE
+            )
+        )
         assertThat(jsonObject.toAuthContextGetResponse(), equalTo(authContextGetResponse))
     }
 
@@ -487,8 +497,9 @@ class JsonDeserializationTest {
               }
             }"""
         )
-        val checkoutTokenIssueInitResponse =
-            CheckoutTokenIssueInitResponse(ExtendedStatus.SUCCESS, null, "12345", "6789")
+        val checkoutTokenIssueInitResponse: Result<CheckoutTokenIssueInitResponse> = Result.Success(
+            CheckoutTokenIssueInitResponse.Success("6789")
+        )
         assertThat(jsonObject.toCheckoutTokenIssueInitResponse(), equalTo(checkoutTokenIssueInitResponse))
     }
 
@@ -500,8 +511,9 @@ class JsonDeserializationTest {
               "error": "IllegalParameters"
             }"""
         )
-        val checkoutTokenIssueInitResponse =
-            CheckoutTokenIssueInitResponse(ExtendedStatus.REFUSED, ErrorCode.ILLEGAL_PARAMETERS, null, null)
+        val checkoutTokenIssueInitResponse: Result<CheckoutTokenIssueInitResponse> = Result.Fail(
+            ApiMethodException(ErrorCode.ILLEGAL_PARAMETERS)
+        )
         assertThat(jsonObject.toCheckoutTokenIssueInitResponse(), equalTo(checkoutTokenIssueInitResponse))
     }
 
@@ -517,8 +529,10 @@ class JsonDeserializationTest {
               }
             }"""
         )
-        val checkoutTokenIssueInitResponse =
-            CheckoutTokenIssueInitResponse(ExtendedStatus.AUTH_REQUIRED, null, "string", "string")
+        val checkoutTokenIssueInitResponse: Result<CheckoutTokenIssueInitResponse> =  Result.Success(CheckoutTokenIssueInitResponse.AuthRequired(
+            authContextId = "string",
+            processId = "string"
+        ))
         assertThat(jsonObject.toCheckoutTokenIssueInitResponse(), equalTo(checkoutTokenIssueInitResponse))
     }
 
@@ -531,8 +545,9 @@ class JsonDeserializationTest {
               }
             }"""
         )
-        val checkoutTokenIssueInitResponse =
-            CheckoutTokenIssueInitResponse(ExtendedStatus.UNKNOWN, ErrorCode.FORBIDDEN, null, null)
+        val checkoutTokenIssueInitResponse: Result<CheckoutTokenIssueInitResponse> = Result.Fail(
+            ApiMethodException(ErrorCode.FORBIDDEN)
+        )
         assertThat(jsonObject.toCheckoutTokenIssueInitResponse(), equalTo(checkoutTokenIssueInitResponse))
     }
 
@@ -546,7 +561,7 @@ class JsonDeserializationTest {
               }
             }"""
         )
-        val checkoutTokenIssueExecuteResponse = CheckoutTokenIssueExecuteResponse(Status.SUCCESS, null, "token")
+        val checkoutTokenIssueExecuteResponse: Result<String> = Result.Success("token")
         assertThat(jsonObject.toCheckoutTokenIssueExecuteResponse(), equalTo(checkoutTokenIssueExecuteResponse))
     }
 
@@ -558,8 +573,11 @@ class JsonDeserializationTest {
               "error": "AuthRequired"
             }"""
         )
-        val checkoutTokenIssueExecuteResponse =
-            CheckoutTokenIssueExecuteResponse(Status.REFUSED, ErrorCode.AUTH_REQUIRED, null)
+        val checkoutTokenIssueExecuteResponse: Result<String> = Result.Fail(
+            ApiMethodException(
+                ErrorCode.AUTH_REQUIRED
+            )
+        )
         assertThat(jsonObject.toCheckoutTokenIssueExecuteResponse(), equalTo(checkoutTokenIssueExecuteResponse))
     }
 
@@ -572,8 +590,11 @@ class JsonDeserializationTest {
               }
             }"""
         )
-        val checkoutTokenIssueExecuteResponse =
-            CheckoutTokenIssueExecuteResponse(Status.UNKNOWN, ErrorCode.TECHNICAL_ERROR, null)
+        val checkoutTokenIssueExecuteResponse: Result<String> = Result.Fail(
+            ApiMethodException(
+                ErrorCode.TECHNICAL_ERROR
+            )
+        )
         assertThat(jsonObject.toCheckoutTokenIssueExecuteResponse(), equalTo(checkoutTokenIssueExecuteResponse))
     }
 
@@ -595,10 +616,12 @@ class JsonDeserializationTest {
                     "nextSessionTimeLeft": 30
                   }"""
         )
-        val authTypeState =
-            AuthTypeState(
-                AuthType.SMS,
-                30
+        val authTypeState: AuthTypeState =
+            AuthTypeState.SMS(
+                nextSessionTimeLeft = 30,
+                codeLength = 6,
+                attemptsCount = 10,
+                attemptsLeft = 10
             )
         assertThat(jsonObject.toAuthTypeState(), equalTo(authTypeState))
     }
@@ -615,38 +638,6 @@ class JsonDeserializationTest {
     }
 
     @Test
-    fun deserializeAuthCheckWithSuccessStatus() {
-        val jsonObject = JSONObject(
-            """{
-              "status": "Success",
-              "result": {
-                "type": "Totp",
-                "attemptsCount": 10,
-                "attemptsLeft": 10,
-                "canBeIssued": false,
-                "codeLength": 6,
-                "codesLeft": 10,
-                "enabled": false,
-                "hasActiveSession": false,
-                "sessionsLeft": 10,
-                "isSessionRequired": true,
-                "sessionTimeLeft": 20,
-                "nextSessionTimeLeft": 30
-              }
-            }"""
-        )
-        val authSessionGenerateResponse =
-            CheckoutAuthCheckResponse(
-                Status.SUCCESS, null,
-                AuthTypeState(
-                    AuthType.TOTP,
-                    30
-                )
-            )
-        assertThat(jsonObject.toAuthCheckResponse(), equalTo(authSessionGenerateResponse))
-    }
-
-    @Test
     fun deserializeAuthCheckWithRefusedStatus() {
         val jsonObject = JSONObject(
             """{
@@ -654,8 +645,12 @@ class JsonDeserializationTest {
               "error": "VerifyAttemptsExceeded"
             }"""
         )
-        val authSessionGenerateResponse =
-            CheckoutAuthCheckResponse(Status.REFUSED, ErrorCode.VERIFY_ATTEMPTS_EXCEEDED, null)
+        val authSessionGenerateResponse: Result<Unit> = Result.Fail(
+            AuthCheckApiMethodException(
+                Error(ErrorCode.VERIFY_ATTEMPTS_EXCEEDED),
+                null
+            )
+        )
         assertThat(jsonObject.toAuthCheckResponse(), equalTo(authSessionGenerateResponse))
     }
 
@@ -668,7 +663,11 @@ class JsonDeserializationTest {
               }
             }"""
         )
-        val authSessionGenerateResponse = CheckoutAuthCheckResponse(Status.UNKNOWN, ErrorCode.INVALID_TOKEN, null)
+        val authSessionGenerateResponse: Result<Unit> = Result.Fail(
+            ApiMethodException(
+                ErrorCode.INVALID_TOKEN
+            )
+        )
         assertThat(jsonObject.toAuthCheckResponse(), equalTo(authSessionGenerateResponse))
     }
 
@@ -694,14 +693,14 @@ class JsonDeserializationTest {
               }
             }"""
         )
-        val authSessionGenerateResponse =
-            CheckoutAuthSessionGenerateResponse(
-                Status.SUCCESS, null,
-                AuthTypeState(
-                    AuthType.SMS,
-                    20
-                )
+        val authSessionGenerateResponse: Result<AuthTypeState> = Result.Success(
+            AuthTypeState.SMS(
+                nextSessionTimeLeft = 20,
+                codeLength = 6,
+                attemptsCount = 10,
+                attemptsLeft = 10
             )
+        )
         assertThat(jsonObject.toAuthSessionGenerateResponse(), equalTo(authSessionGenerateResponse))
     }
 
@@ -713,8 +712,11 @@ class JsonDeserializationTest {
               "error": "CreateTimeoutNotExpired"
             }"""
         )
-        val authSessionGenerateResponse =
-            CheckoutAuthSessionGenerateResponse(Status.REFUSED, ErrorCode.CREATE_TIMEOUT_NOT_EXPIRED, null)
+        val authSessionGenerateResponse: Result<AuthTypeState> = Result.Fail(
+            ApiMethodException(
+                ErrorCode.CREATE_TIMEOUT_NOT_EXPIRED
+            )
+        )
         assertThat(jsonObject.toAuthSessionGenerateResponse(), equalTo(authSessionGenerateResponse))
     }
 
@@ -727,8 +729,11 @@ class JsonDeserializationTest {
               }
             }"""
         )
-        val authSessionGenerateResponse =
-            CheckoutAuthSessionGenerateResponse(Status.UNKNOWN, ErrorCode.INVALID_LOGIN, null)
+        val authSessionGenerateResponse: Result<AuthTypeState> = Result.Fail(
+            ApiMethodException(
+                ErrorCode.INVALID_LOGIN
+            )
+        )
         assertThat(jsonObject.toAuthSessionGenerateResponse(), equalTo(authSessionGenerateResponse))
     }
 

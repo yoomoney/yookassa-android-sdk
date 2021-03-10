@@ -32,6 +32,7 @@ import android.webkit.URLUtil
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.google.android.material.appbar.CollapsingToolbarLayout
+import com.yandex.metrica.YandexMetrica
 import ru.yoo.sdk.kassa.payments.BuildConfig
 import ru.yoo.sdk.kassa.payments.Checkout
 import ru.yoo.sdk.kassa.payments.Checkout.EXTRA_ERROR_CODE
@@ -39,10 +40,9 @@ import ru.yoo.sdk.kassa.payments.Checkout.EXTRA_ERROR_DESCRIPTION
 import ru.yoo.sdk.kassa.payments.Checkout.EXTRA_ERROR_FAILING_URL
 import ru.yoo.sdk.kassa.payments.Checkout.RESULT_ERROR
 import ru.yoo.sdk.kassa.payments.R
-import ru.yoo.sdk.kassa.payments.impl.DEFAULT_REDIRECT_URL
-import ru.yoo.sdk.kassa.payments.impl.extensions.visible
-import ru.yoo.sdk.kassa.payments.impl.logging.ReporterLogger
-import ru.yoo.sdk.kassa.payments.impl.metrics.YandexMetricaReporter
+import ru.yoo.sdk.kassa.payments.extensions.visible
+import ru.yoo.sdk.kassa.payments.logging.ReporterLogger
+import ru.yoo.sdk.kassa.payments.metrics.YandexMetricaReporter
 
 const val EXTRA_URL = "ru.yoo.sdk.kassa.payments.extra.URL"
 const val EXTRA_LOG_PARAM = "ru.yoo.sdk.kassa.payments.extra.LOG_PARAM"
@@ -64,7 +64,9 @@ class WebViewActivity : AppCompatActivity(),
 
         if (checkUrl(url)) {
             if (savedInstanceState == null && logParam != null) {
-                ReporterLogger(YandexMetricaReporter(this)).report(logParam)
+                ReporterLogger(YandexMetricaReporter(
+                    YandexMetrica.getReporter(applicationContext, BuildConfig.APP_METRICA_KEY)
+                )).report(logParam)
             }
 
             setContentView(R.layout.ym_activity_web_view)

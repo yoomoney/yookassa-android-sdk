@@ -24,7 +24,7 @@
     <bool name="ym_isTablet">true</bool>
     <dimen name="ym_dialogWidth">450dp</dimen>
     <dimen name="ym_dialogHeight">394dp</dimen>
-    <dimen name="ym_payment_options_container_height">0dp</dimen>
+    <dimen name="ym_payment_options_container_height">-1px</dimen>
     <!-- -1px == match_parent -->
     <dimen name="ym_bottomDialog_contract_view_height">-1px</dimen>
 </resources>

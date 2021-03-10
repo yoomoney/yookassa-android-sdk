@@ -23,14 +23,14 @@ package ru.yoo.sdk.kassa.payments.methods
 
 import okhttp3.Credentials
 import org.json.JSONObject
-import ru.yoo.sdk.kassa.payments.Amount
+import ru.yoo.sdk.kassa.payments.checkoutParameters.Amount
 import ru.yoo.sdk.kassa.payments.BuildConfig
-import ru.yoo.sdk.kassa.payments.SavePaymentMethod
-import ru.yoo.sdk.kassa.payments.impl.extensions.toPaymentOptionResponse
+import ru.yoo.sdk.kassa.payments.checkoutParameters.SavePaymentMethod
+import ru.yoo.sdk.kassa.payments.extensions.toPaymentOptionResponse
 import ru.yoo.sdk.kassa.payments.methods.base.GetRequest
 import ru.yoo.sdk.kassa.payments.model.CurrentUser
-import ru.yoo.sdk.kassa.payments.model.Error
 import ru.yoo.sdk.kassa.payments.model.PaymentOption
+import ru.yoo.sdk.kassa.payments.model.Result
 
 private const val PAYMENT_OPTIONS_METHOD_PATH = "/payment_options"
 private const val AMOUNT = "amount"
@@ -45,7 +45,7 @@ internal data class PaymentOptionsRequest(
     private val userAuthToken: String?,
     private val shopToken: String,
     private val savePaymentMethod: SavePaymentMethod
-) : GetRequest<PaymentOptionsResponse> {
+) : GetRequest<Result<List<PaymentOption>>> {
 
     override fun getHeaders(): List<Pair<String, String>> {
         val headers = mutableListOf("Authorization" to Credentials.basic(shopToken, ""))
@@ -82,12 +82,7 @@ internal data class PaymentOptionsRequest(
                 .joinToString(prefix = "?", separator = "&"))
             ?: path
 
-    override fun convertJsonToResponse(jsonObject: JSONObject): PaymentOptionsResponse {
+    override fun convertJsonToResponse(jsonObject: JSONObject): Result<List<PaymentOption>> {
         return jsonObject.toPaymentOptionResponse()
     }
 }
-
-internal data class PaymentOptionsResponse(
-    val paymentOptions: List<PaymentOption>,
-    val error: Error?
-)

@@ -22,12 +22,10 @@
 package ru.yoo.sdk.kassa.payments.methods.paymentAuth
 
 import org.json.JSONObject
-import ru.yoo.sdk.kassa.payments.impl.extensions.toAuthCheckResponse
-import ru.yoo.sdk.kassa.payments.impl.extensions.toJsonString
+import ru.yoo.sdk.kassa.payments.extensions.toAuthCheckResponse
+import ru.yoo.sdk.kassa.payments.extensions.toJsonString
 import ru.yoo.sdk.kassa.payments.model.AuthType
-import ru.yoo.sdk.kassa.payments.model.AuthTypeState
-import ru.yoo.sdk.kassa.payments.model.ErrorCode
-import ru.yoo.sdk.kassa.payments.model.Status
+import ru.yoo.sdk.kassa.payments.model.Result
 
 private const val AUTH_CHECK_PATH = "/checkout/auth-check"
 
@@ -41,7 +39,7 @@ internal class CheckoutAuthCheckRequest(
     private val answer: String,
     userAuthToken: String,
     shopToken: String
-) : CheckoutRequest<CheckoutAuthCheckResponse>(userAuthToken, shopToken) {
+) : CheckoutRequest<Result<Unit>>(userAuthToken, shopToken) {
 
     override fun getUrl(): String = host + AUTH_CHECK_PATH
 
@@ -52,9 +50,3 @@ internal class CheckoutAuthCheckRequest(
             AUTH_TYPE to authType.toJsonString(),
             ANSWER to answer)
 }
-
-internal data class CheckoutAuthCheckResponse(
-    val status: Status,
-    val errorCode: ErrorCode?,
-    val authTypeState: AuthTypeState?
-)

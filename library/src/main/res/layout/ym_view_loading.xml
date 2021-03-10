@@ -28,7 +28,7 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <ru.yoo.sdk.kassa.payments.impl.view.YmProgressBar
+    <ru.yoo.sdk.kassa.payments.ui.view.YmProgressBar
         style="?android:progressBarStyle"
         android:id="@+id/progressBar"
         android:layout_width="@dimen/ym_icon_size_4xl"
@@ -36,8 +36,8 @@
         android:layout_gravity="center"
         android:layout_marginBottom="@dimen/ym_iconPlusText_iconMargin_xl" />
 
-    <TextView
-        style="@style/ym_Text.Common2"
+    <ru.yoo.sdk.gui.widget.text.TextBodyView
+        style="@style/Text.Body.Secondary"
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

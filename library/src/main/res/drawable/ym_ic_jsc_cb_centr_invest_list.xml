@@ -1,36 +1,43 @@
-<!--
-  ~ The MIT License (MIT)
-  ~ Copyright © 2020 NBCO YooMoney LLC
-  ~
-  ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
-  ~ associated documentation files (the “Software”), to deal in the Software without restriction, including
-  ~ without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-  ~ of the Software, and to permit persons to whom the Software is furnished to do so, subject to the
-  ~ following conditions:
-  ~
-  ~ The above copyright notice and this permission notice shall be included in all copies or substantial
-  ~ portions of the Software.
-  ~
-  ~ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
-  ~ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
-  ~ PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-  ~ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
-  ~ OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-  ~ OTHER DEALINGS IN THE SOFTWARE.
-  -->
-
-<vector android:height="24dp" android:viewportHeight="40"
-    android:viewportWidth="40" android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
-    <path android:fillColor="#55B956" android:fillType="evenOdd" android:pathData="M4,6L36,6A4,4 0,0 1,40 10L40,30A4,4 0,0 1,36 34L4,34A4,4 0,0 1,0 30L0,10A4,4 0,0 1,4 6z"/>
-    <path android:fillColor="#FEED4A" android:fillType="evenOdd" android:pathData="M12.548,11h6.26v15.2L12.548,26.2L12.548,11zM15.678,19.8c1.729,0 3.13,-1.79 3.13,-4s-1.401,-4 -3.13,-4C13.949,11.8 12.548,13.59 12.548,15.8s1.401,4 3.13,4z"/>
-    <path android:fillColor="#00000000" android:fillType="evenOdd"
-        android:pathData="M13.678,15.8a2,2.852 0,1 0,4 0a2,2.852 0,1 0,-4 0z"
-        android:strokeColor="#FEED4A" android:strokeWidth=".697"/>
-    <path android:fillColor="#FEED4A" android:fillType="evenOdd" android:pathData="M20.374,26.2h6.26L26.634,11h-6.26v15.2zM23.504,17.4c1.729,0 3.13,1.79 3.13,4s-1.401,4 -3.13,4c-1.729,0 -3.13,-1.79 -3.13,-4s1.401,-4 3.13,-4zM19.213,25.4h0.77v0.8h-0.77z"/>
-    <path android:fillColor="#00000000" android:fillType="evenOdd"
-        android:pathData="M21.504,21.4a2.852,2 90,1 1,4 -0a2.852,2 90,1 1,-4 -0z"
-        android:strokeColor="#FEED4A" android:strokeWidth=".697"/>
-    <path android:fillColor="#FEED4A" android:fillType="evenOdd" android:pathData="M26.963,25.132L26.963,26.2c0.955,0.12 1.345,0.578 1.172,1.373 -0.26,1.191 -1.35,0.904 -2.011,0.904 -0.662,0 -5.956,-1.574 -9.598,-1.73 -3.642,-0.157 -3.8,2.028 -3.978,2.205h1.018c0.153,-0.515 0.727,-0.823 1.723,-0.924 1.492,-0.153 6.7,1.291 9.632,2.066 2.603,0.441 3.612,-0.396 3.625,-0.407 2.6,-2.114 0.42,-4.555 -1.583,-4.555z"/>
-    <path android:fillColor="#55B956" android:fillType="evenOdd" android:pathData="M26.662,11h-2.344L12,26.351l2.783,-0.151z"/>
-    <path android:fillColor="#FEED4A" android:fillType="evenOdd" android:pathData="M26.203,11L24.8,11L12.848,26.2h1.265z"/>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="40dp"
+    android:height="40dp"
+    android:viewportWidth="40"
+    android:viewportHeight="40">
+  <path
+      android:pathData="M36,6H4C1.7909,6 0,7.7909 0,10V30C0,32.2091 1.7909,34 4,34H36C38.2091,34 40,32.2091 40,30V10C40,7.7909 38.2091,6 36,6Z"
+      android:fillColor="#55B956"/>
+  <path
+      android:pathData="M12.5476,11H18.8085V26.2H12.5476V11ZM15.678,19.8C17.4069,19.8 18.8085,18.0091 18.8085,15.8C18.8085,13.5909 17.4069,11.8 15.678,11.8C13.9492,11.8 12.5476,13.5909 12.5476,15.8C12.5476,18.0091 13.9492,19.8 15.678,19.8Z"
+      android:fillColor="#FEED4A"
+      android:fillType="evenOdd"/>
+  <path
+      android:pathData="M15.678,18.6517C16.7824,18.6517 17.6776,17.375 17.6776,15.8C17.6776,14.225 16.7824,12.9483 15.678,12.9483C14.5737,12.9483 13.6785,14.225 13.6785,15.8C13.6785,17.375 14.5737,18.6517 15.678,18.6517Z"
+      android:strokeWidth="0.696522"
+      android:fillColor="#00000000"
+      android:strokeColor="#FEED4A"/>
+  <path
+      android:pathData="M20.3735,26.2H26.6344V11H20.3735V26.2ZM23.504,17.4C25.2329,17.4 26.6344,19.1909 26.6344,21.4C26.6344,23.6091 25.2329,25.4 23.504,25.4C21.7751,25.4 20.3735,23.6091 20.3735,21.4C20.3735,19.1909 21.7751,17.4 23.504,17.4Z"
+      android:fillColor="#FEED4A"
+      android:fillType="evenOdd"/>
+  <path
+      android:pathData="M19.2131,25.4H19.9822V26.2H19.2131V25.4Z"
+      android:fillColor="#FEED4A"
+      android:fillType="evenOdd"/>
+  <path
+      android:pathData="M23.504,18.5483C24.6083,18.5483 25.5035,19.825 25.5035,21.4C25.5035,22.975 24.6083,24.2517 23.504,24.2517C22.3996,24.2517 21.5044,22.975 21.5044,21.4C21.5044,19.825 22.3996,18.5483 23.504,18.5483Z"
+      android:strokeWidth="0.696522"
+      android:fillColor="#00000000"
+      android:strokeColor="#FEED4A"/>
+  <path
+      android:pathData="M26.963,25.1321C26.963,25.3371 26.963,25.6931 26.963,26.2C27.9178,26.3207 28.3084,26.7783 28.1347,27.5728C27.8742,28.7644 26.7851,28.4771 26.1238,28.4771C25.4625,28.4771 20.1685,26.9028 16.5265,26.7464C12.8846,26.5901 12.7253,28.7749 12.5476,28.9521C12.5476,28.9521 12.8871,28.9521 13.5661,28.9521C13.7194,28.4374 14.2936,28.1292 15.2887,28.0277C16.7814,27.8753 21.9889,29.3192 24.9213,30.094C27.5239,30.5351 28.5329,29.6984 28.5466,29.6873C31.1455,27.5728 28.9659,25.1321 26.963,25.1321Z"
+      android:fillColor="#FEED4A"
+      android:fillType="evenOdd"/>
+  <path
+      android:pathData="M26.6616,11L24.3183,11L12,26.3512L14.7832,26.2L26.6616,11Z"
+      android:fillColor="#55B956"
+      android:fillType="evenOdd"/>
+  <path
+      android:pathData="M26.2029,11H24.8005L12.8484,26.2H14.1131L26.2029,11Z"
+      android:fillColor="#FEED4A"
+      android:fillType="evenOdd"/>
 </vector>

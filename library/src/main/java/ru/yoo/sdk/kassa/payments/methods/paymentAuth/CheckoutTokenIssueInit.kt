@@ -22,11 +22,10 @@
 package ru.yoo.sdk.kassa.payments.methods.paymentAuth
 
 import org.json.JSONObject
-import ru.yoo.sdk.kassa.payments.Amount
-import ru.yoo.sdk.kassa.payments.impl.extensions.toCheckoutTokenIssueInitResponse
-import ru.yoo.sdk.kassa.payments.impl.extensions.toJsonObject
-import ru.yoo.sdk.kassa.payments.model.ErrorCode
-import ru.yoo.sdk.kassa.payments.model.ExtendedStatus
+import ru.yoo.sdk.kassa.payments.checkoutParameters.Amount
+import ru.yoo.sdk.kassa.payments.extensions.toCheckoutTokenIssueInitResponse
+import ru.yoo.sdk.kassa.payments.extensions.toJsonObject
+import ru.yoo.sdk.kassa.payments.model.Result
 
 private const val CHECKOUT_TOKEN_ISSUE_INIT_PATH = "/checkout/token-issue-init"
 
@@ -44,7 +43,7 @@ internal class CheckoutTokenIssueInitRequest(
     private val tmxSessionId: String,
     userAuthToken: String,
     shopToken: String
-) : CheckoutRequest<CheckoutTokenIssueInitResponse>(userAuthToken, shopToken) {
+) : CheckoutRequest<Result<CheckoutTokenIssueInitResponse>>(userAuthToken, shopToken) {
 
     override fun getUrl(): String = host + CHECKOUT_TOKEN_ISSUE_INIT_PATH
 
@@ -57,9 +56,7 @@ internal class CheckoutTokenIssueInitRequest(
         .let { it.takeIf { multipleUsage } ?: it.plus(SINGLE_AMOUNT_MAX to singleAmountMax.toJsonObject()) }
 }
 
-internal data class CheckoutTokenIssueInitResponse(
-    val status: ExtendedStatus,
-    val errorCode: ErrorCode?,
-    val authContextId: String?,
-    val processId: String?
-)
+internal sealed class CheckoutTokenIssueInitResponse {
+    data class Success(val processId: String): CheckoutTokenIssueInitResponse()
+    data class AuthRequired(val authContextId: String, val processId: String): CheckoutTokenIssueInitResponse()
+}

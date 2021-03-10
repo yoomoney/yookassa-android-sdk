@@ -32,6 +32,7 @@ import org.junit.Test
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.mock
 import org.robolectric.annotation.Config
+import ru.yoo.sdk.kassa.payments.http.UserAgentInterceptor
 import ru.yoo.sdk.kassa.payments.on
 
 class UserAgentInterceptorTest {
@@ -57,7 +58,8 @@ class UserAgentInterceptorTest {
     @Test
     fun `should be with smartphone when on smartphone`() {
         // prepare
-        val userAgentInterceptor = UserAgentInterceptor(tetstUserAgent)
+        val userAgentInterceptor =
+            UserAgentInterceptor(tetstUserAgent)
 
         // invoke
         val response = userAgentInterceptor.intercept(chain)
@@ -74,7 +76,8 @@ class UserAgentInterceptorTest {
     @[Test Config(qualifiers = "sw600dp")]
     fun `should be with tablet when smallest width more then 320 dp`() {
         // prepare
-        val userAgentInterceptor = UserAgentInterceptor(tetstUserAgent)
+        val userAgentInterceptor =
+            UserAgentInterceptor(tetstUserAgent)
 
         // invoke
         val response = userAgentInterceptor.intercept(chain)

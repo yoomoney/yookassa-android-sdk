@@ -2369,7 +2369,7 @@ fun initBanks(): List<Bank> {
             "unknown",
             BankName("Неизвестная карта", "Unknown Card"),
             listOf(),
-            R.drawable.ym_ic_cardbrand_unknown
+            R.drawable.ym_ic_unknown_list
         )
     )
 }

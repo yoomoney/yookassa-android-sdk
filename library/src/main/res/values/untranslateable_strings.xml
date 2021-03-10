@@ -22,4 +22,5 @@
 
 <resources>
     <string name="ym_phone_hint" translatable="false">+7 987 654-32-10</string>
+    <string name="ym_transition_name" translatable="false">bottom sheet transition</string>
 </resources>

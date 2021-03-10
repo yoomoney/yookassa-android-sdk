@@ -1,6 +1,6 @@
 /*
  * The MIT License (MIT)
- * Copyright © 2020 NBCO YooMoney LLC
+ * Copyright © 2021 NBCO YooMoney LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
  * associated documentation files (the “Software”), to deal in the Software without restriction, including
@@ -21,66 +21,8 @@
 
 package ru.yoo.sdk.kassa.payments.paymentAuth
 
-import ru.yoo.sdk.kassa.payments.model.AuthorizedUser
-import ru.yoo.sdk.kassa.payments.model.UseCase
-import ru.yoo.sdk.kassa.payments.payment.CurrentUserGateway
+import ru.yoo.sdk.kassa.payments.paymentAuth.PaymentAuth
 
-internal class ProcessPaymentAuthUseCase(
-    private val processPaymentAuthGateway: ProcessPaymentAuthGateway,
-    private val currentUserGateway: CurrentUserGateway,
-    private val paymentAuthTokenGateway: PaymentAuthTokenGateway
-) : UseCase<ProcessPaymentAuthInputModel, ProcessPaymentAuthOutputModel> {
-
-    override fun invoke(inputModel: ProcessPaymentAuthInputModel): ProcessPaymentAuthOutputModel {
-        val currentUser = currentUserGateway.currentUser
-
-        check(currentUser is AuthorizedUser) { "can't submit payment auth for anonymous user" }
-
-        return when(inputModel) {
-            is RequiredProcessPaymentAuthInputModel -> {
-                when (val response = processPaymentAuthGateway.getPaymentAuthToken(currentUser, inputModel.passphrase)) {
-                    is PaymentAuthToken -> {
-                        handlePaymentAuthToken(inputModel, response)
-                        ProcessPaymentAuthSuccessOutputModel()
-                    }
-                    is PaymentAuthWrongAnswer -> ProcessPaymentAuthWrongAnswerOutputModel(inputModel.passphrase)
-                }
-            }
-            is NotRequiredProcessPaymentAuthInputModel -> {
-                when (val response = processPaymentAuthGateway.getPaymentAuthToken(currentUser)) {
-                    is PaymentAuthToken -> handlePaymentAuthToken(inputModel, response)
-                }
-                ProcessPaymentAuthSuccessOutputModel()
-            }
-        }
-    }
-
-    private fun handlePaymentAuthToken(inputModel: ProcessPaymentAuthInputModel, response: PaymentAuthToken) {
-        with(paymentAuthTokenGateway) {
-            paymentAuthToken = response.token
-            if (inputModel.saveAuth) {
-                persistPaymentAuth()
-            }
-        }
-    }
+internal interface ProcessPaymentAuthUseCase {
+    suspend fun process(passphrase: String?, linkWalletToApp: Boolean): PaymentAuth.Action
 }
-
-internal sealed class ProcessPaymentAuthInputModel {
-    abstract val saveAuth: Boolean
-}
-
-internal data class RequiredProcessPaymentAuthInputModel(
-    val passphrase: String,
-    override val saveAuth: Boolean
-): ProcessPaymentAuthInputModel()
-
-internal data class NotRequiredProcessPaymentAuthInputModel(
-    override val saveAuth: Boolean
-) : ProcessPaymentAuthInputModel()
-
-
-internal sealed class ProcessPaymentAuthOutputModel
-internal class ProcessPaymentAuthSuccessOutputModel : ProcessPaymentAuthOutputModel()
-internal data class ProcessPaymentAuthWrongAnswerOutputModel(
-    val passphrase: String
-) : ProcessPaymentAuthOutputModel()

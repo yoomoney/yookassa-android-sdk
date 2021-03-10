@@ -22,12 +22,11 @@
 package ru.yoo.sdk.kassa.payments.methods.paymentAuth
 
 import org.json.JSONObject
-import ru.yoo.sdk.kassa.payments.impl.extensions.toAuthSessionGenerateResponse
-import ru.yoo.sdk.kassa.payments.impl.extensions.toJsonString
+import ru.yoo.sdk.kassa.payments.extensions.toAuthSessionGenerateResponse
+import ru.yoo.sdk.kassa.payments.extensions.toJsonString
 import ru.yoo.sdk.kassa.payments.model.AuthType
 import ru.yoo.sdk.kassa.payments.model.AuthTypeState
-import ru.yoo.sdk.kassa.payments.model.ErrorCode
-import ru.yoo.sdk.kassa.payments.model.Status
+import ru.yoo.sdk.kassa.payments.model.Result
 
 private const val AUTH_SESSION_GENERATE = "/checkout/auth-session-generate"
 
@@ -39,7 +38,7 @@ internal class CheckoutAuthSessionGenerateRequest(
     private val authType: AuthType,
     userAuthToken: String,
     shopToken: String
-) : CheckoutRequest<CheckoutAuthSessionGenerateResponse>(userAuthToken, shopToken) {
+) : CheckoutRequest<Result<AuthTypeState>>(userAuthToken, shopToken) {
 
     override fun getUrl(): String = host + AUTH_SESSION_GENERATE
 
@@ -49,9 +48,3 @@ internal class CheckoutAuthSessionGenerateRequest(
             AUTH_CONTEXT_ID to authContextId,
             AUTH_TYPE to authType.toJsonString())
 }
-
-internal data class CheckoutAuthSessionGenerateResponse(
-    val status: Status,
-    val errorCode: ErrorCode?,
-    val authTypeState: AuthTypeState?
-)

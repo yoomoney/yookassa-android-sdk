@@ -39,7 +39,8 @@ import org.mockito.Mockito.verifyNoMoreInteractions
 import org.mockito.MockitoAnnotations
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
-import ru.yoo.sdk.kassa.payments.impl.extensions.edit
+import ru.yoo.sdk.kassa.payments.extensions.edit
+import ru.yoo.sdk.kassa.payments.secure.TokensStorage
 import ru.yoo.sdk.kassa.payments.on
 import java.util.concurrent.TimeUnit
 
@@ -67,7 +68,8 @@ internal class TokensStorageTest {
         on(encrypt(any() ?: "")).then { it.arguments[0] }
         on(decrypt(any() ?: "")).then { it.arguments[0] }
 
-        tokensStorage = TokensStorage(sp, encrypt::invoke, decrypt::invoke)
+        tokensStorage =
+            TokensStorage(sp, encrypt::invoke, decrypt::invoke)
     }
 
     @Test
@@ -203,7 +205,8 @@ internal class TokensStorageTest {
         tokensStorage.paymentAuthToken = token
         tokensStorage.persistPaymentAuth()
         clearInvocations(encrypt)
-        tokensStorage = TokensStorage(sp, encrypt::invoke, decrypt::invoke)
+        tokensStorage =
+            TokensStorage(sp, encrypt::invoke, decrypt::invoke)
 
         // invoke
         val resultToken = tokensStorage.paymentAuthToken

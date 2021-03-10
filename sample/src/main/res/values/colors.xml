@@ -22,20 +22,18 @@
 
 <resources>
     <color name="colorPrimary">#000000</color>
+    <color name="colorPrimaryInverse">#ffffff</color>
     <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#0070F0</color>
-
-    <color name="colorPrimaryDarkGray">#303F9F</color>
+    <color name="colorAccent">#00A884</color>
 
     <color name="colorLightGrayDivider">#e4e4e4</color>
-    <color name="buttonPrimaryDisabled">#ffe1e1e1</color>
+    <color name="buttonPrimaryDisabled">@color/color_type_disable</color>
     <color name="buttonPrimaryEnabled">@color/colorAccent</color>
     <color name="buttonPrimaryPressed">#008a6c</color>
 
-    <color name="textColor">#ffffff</color>
-    <color name="textColorGrayLight">#b4b4b4</color>
     <color name="textColorGray">#99000000</color>
     <color name="white">#ffffff</color>
-    <color name="palette_accent">#0070f0</color>
+    <color name="palette_accent">#00A884</color>
 
+    <color name="ym_background">#ffffff</color>
 </resources>
