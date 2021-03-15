@@ -24,7 +24,7 @@ package ru.yoo.sdk.kassa.payments.ui.color
 import android.content.Context
 import android.content.res.ColorStateList
 import androidx.core.content.ContextCompat
-import ru.yoo.sdk.auth.ui.R
+import ru.yoo.sdk.kassa.payments.R
 
 object InMemoryColorSchemeRepository {
     var colorScheme: ColorScheme = ColorScheme.getDefaultScheme()

@@ -32,6 +32,7 @@
 -keep class ru.yoo.sdk.auth.ProcessType** { *; }
 -keep class ru.yoo.sdk.kassa.payments.Checkout { *; }
 -keep class ru.yoo.sdk.kassa.payments.ui.** { *; }
+-keep class androidx.lifecycle.ViewModelKeyedFactory { *; }
 
 -dontwarn javax.annotation.Nullable
 -dontwarn org.conscrypt.OpenSSLProvider

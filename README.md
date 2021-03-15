@@ -20,7 +20,7 @@
 
 #  Документация
 
-Android Checkout mobile SDK - версия 5.1.0 ([changelog](https://github.com/yoomoney/yookassa-android-sdk/blob/master/CHANGELOG.md))
+Android Checkout mobile SDK - версия 5.1.1 ([changelog](https://github.com/yoomoney/yookassa-android-sdk/blob/master/CHANGELOG.md))
 
 * [Changelog](#changelog)
 * [Migration guide](#migration-guide)
@@ -79,7 +79,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'ru.yoo.sdk.kassa.payments:yookassa-android-sdk:5.1.0'
+    implementation 'ru.yoo.sdk.kassa.payments:yookassa-android-sdk:5.1.1'
 }
 ```
 
@@ -104,6 +104,7 @@ dependencies {
     implementation "ru.yoo.sdk.auth:auth:1.0.47"
 }
 ```
+
 
 ## Настройка приложения при продаже цифровых товаров
 Если в вашем приложении продаются цифровые товары, нужно отключить Google Pay из списка платежных опций.
