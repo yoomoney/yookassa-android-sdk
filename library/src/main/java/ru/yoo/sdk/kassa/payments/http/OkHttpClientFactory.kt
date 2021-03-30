@@ -25,6 +25,7 @@ import android.content.Context
 import okhttp3.ConnectionPool
 import okhttp3.OkHttpClient
 import ru.yoo.sdk.kassa.payments.impl.applyLogging
+import ru.yoo.sdk.kassa.payments.impl.applySsl
 import java.util.concurrent.TimeUnit
 
 private const val DEFAULT_TIMEOUT: Long = 30
@@ -35,6 +36,7 @@ internal fun newHttpClient(context: Context): OkHttpClient = OkHttpClient.Builde
     .connectionPool(ConnectionPool(4, 10L, TimeUnit.MINUTES))
     .followSslRedirects(false)
     .followRedirects(false)
+    .applySsl(context)
     .addUserAgent(context)
     .applyLogging()
     .build()

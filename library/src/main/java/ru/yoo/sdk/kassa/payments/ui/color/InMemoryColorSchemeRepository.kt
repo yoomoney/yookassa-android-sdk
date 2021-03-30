@@ -31,7 +31,7 @@ object InMemoryColorSchemeRepository {
 
     fun backgroundStateList(context: Context): ColorStateList {
         val color = intArrayOf(
-            ContextCompat.getColor(context, R.color.color_action_disable),
+            ContextCompat.getColor(context, R.color.color_ghost),
             colorScheme.primaryColor
         )
         return ColorStateList(stateArray(), color)
@@ -39,7 +39,7 @@ object InMemoryColorSchemeRepository {
 
     fun typeColorStateList(context: Context): ColorStateList {
         val color = intArrayOf(
-            ContextCompat.getColor(context, R.color.color_type_disable),
+            ContextCompat.getColor(context, R.color.color_type_ghost),
             colorScheme.primaryColor
         )
         return ColorStateList(stateArray(), color)

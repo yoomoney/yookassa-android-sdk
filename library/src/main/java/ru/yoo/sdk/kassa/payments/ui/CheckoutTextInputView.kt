@@ -48,7 +48,7 @@ class CheckoutTextInputView @JvmOverloads constructor(
 
     private fun typeColorStateList(context: Context): ColorStateList {
         val color = intArrayOf(
-            ContextCompat.getColor(context, R.color.color_type_disable),
+            ContextCompat.getColor(context, R.color.color_type_ghost),
             InMemoryColorSchemeRepository.colorScheme.primaryColor
         )
         return ColorStateList(stateArray(), color)

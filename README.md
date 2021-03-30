@@ -20,7 +20,7 @@
 
 #  Документация
 
-Android Checkout mobile SDK - версия 5.1.1 ([changelog](https://github.com/yoomoney/yookassa-android-sdk/blob/master/CHANGELOG.md))
+Android Checkout mobile SDK - версия 5.1.2 ([changelog](https://github.com/yoomoney/yookassa-android-sdk/blob/master/CHANGELOG.md))
 
 * [Changelog](#changelog)
 * [Migration guide](#migration-guide)
@@ -79,7 +79,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'ru.yoo.sdk.kassa.payments:yookassa-android-sdk:5.1.1'
+    implementation 'ru.yoo.sdk.kassa.payments:yookassa-android-sdk:5.1.2'
 }
 ```
 
@@ -101,7 +101,7 @@ repositories {
     maven { url 'https://dl.bintray.com/yoomoney/maven' }
 }
 dependencies {
-    implementation "ru.yoo.sdk.auth:auth:1.0.47"
+    implementation "ru.yoo.sdk.auth:auth:1.0.51"
 }
 ```
 

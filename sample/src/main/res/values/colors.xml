@@ -27,7 +27,7 @@
     <color name="colorAccent">#00A884</color>
 
     <color name="colorLightGrayDivider">#e4e4e4</color>
-    <color name="buttonPrimaryDisabled">@color/color_type_disable</color>
+    <color name="buttonPrimaryDisabled">@color/color_type_ghost</color>
     <color name="buttonPrimaryEnabled">@color/colorAccent</color>
     <color name="buttonPrimaryPressed">#008a6c</color>
 
