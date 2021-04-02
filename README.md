@@ -462,5 +462,5 @@ public class ScanBankCardActivity extends Activity {
 # Полезные ссылки
 * [Сайт ЮKassa](https://yookassa.ru)
 * [Документация мобильных SDK на сайте ЮKassa](https://yookassa.ru/docs/client-sdks/#mobil-nye-sdk)
-* [Демо-приложение в Google Play](https://play.google.com/store/apps/details?id=ru.yoo.sdk.kassa.payments.example)
+* [Демо-приложение в Google Play](https://play.google.com/store/apps/details?id=ru.yoo.sdk.kassa.payments.example.release)
 * [SDK для iOS](https://github.com/yoomoney/yookassa-payments-swift)
