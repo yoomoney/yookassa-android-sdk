@@ -28,7 +28,8 @@ import android.preference.PreferenceManager;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 
-import ru.yoo.sdk.kassa.payments.checkoutParameters.SavePaymentMethod;
+import ru.yoomoney.sdk.kassa.payments.BuildConfig;
+import ru.yoomoney.sdk.kassa.payments.checkoutParameters.SavePaymentMethod;
 
 public final class Settings {
 
@@ -47,6 +48,7 @@ public final class Settings {
     static final String KEY_SERVICE_FEE = "fee";
     static final String KEY_SHOULD_COMPLETE_PAYMENT_WITH_ERROR = "should_complete_with_error";
     static final String KEY_SAVE_PAYMENT_METHOD = "save_payment_method";
+    static final String KEY_ENABLE_LOGGING = "enable_logging";
 
     private SharedPreferences sp;
 
@@ -63,7 +65,7 @@ public final class Settings {
     }
 
     public boolean isGooglePayAllowed() {
-        return sp.getBoolean(KEY_GOOGLE_PAY_ALLOWED, true);
+        return BuildConfig.DEBUG && sp.getBoolean(KEY_GOOGLE_PAY_ALLOWED, true);
     }
 
     public boolean isNewCardAllowed() {
@@ -94,6 +96,10 @@ public final class Settings {
         return sp.getInt(KEY_LINKED_CARDS_COUNT, 1);
     }
 
+    public boolean isLoggingEnable() {
+        return sp.getBoolean(KEY_ENABLE_LOGGING, false);
+    }
+
     SharedPreferences getSp() {
         return sp;
     }
@@ -119,7 +125,7 @@ public final class Settings {
         return sp.getBoolean(KEY_SHOULD_COMPLETE_PAYMENT_WITH_ERROR, false);
     }
 
-    private static SavePaymentMethod getSavePaymentMethod(int value) {
+    public static SavePaymentMethod getSavePaymentMethod(int value) {
         SavePaymentMethod savePaymentMethod;
         switch (value) {
             case 0:
@@ -135,5 +141,20 @@ public final class Settings {
                 savePaymentMethod = SavePaymentMethod.USER_SELECTS;
         }
         return savePaymentMethod;
+    }
+
+    public static int getSavePaymentMethodId(SavePaymentMethod value) {
+        int savePaymentMethodId;
+        switch (value) {
+            case ON:
+                savePaymentMethodId = 1;
+                break;
+            case OFF:
+                savePaymentMethodId = 2;
+                break;
+            default:
+                savePaymentMethodId = 0;
+        }
+        return savePaymentMethodId;
     }
 }

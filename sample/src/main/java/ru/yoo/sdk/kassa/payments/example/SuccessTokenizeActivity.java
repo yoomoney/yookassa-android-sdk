@@ -37,7 +37,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import ru.yoo.sdk.kassa.payments.Checkout;
+import ru.yoomoney.sdk.kassa.payments.Checkout;
 
 public final class SuccessTokenizeActivity extends AppCompatActivity {
 

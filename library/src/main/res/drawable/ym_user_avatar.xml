@@ -26,12 +26,11 @@
     android:viewportHeight="40">
   <path
       android:pathData="M20,20m-20,0a20,20 0,1 1,40 0a20,20 0,1 1,-40 0"
-      android:fillColor="#0A2540"
-      android:fillAlpha="0.1"/>
+      android:fillColor="@color/ym_avatar_background"/>
   <path
       android:pathData="M8,33.4166V32C8,27.5817 11.5817,24 16,24H24C28.4183,24 32,27.5817 32,32V33.4166C28.8155,36.2669 24.6101,38 20,38C15.3899,38 11.1845,36.2669 8,33.4166Z"
-      android:fillColor="#ffffff"/>
+      android:fillColor="@color/ym_avatar_foreground"/>
   <path
       android:pathData="M27,15C27,18.866 23.866,22 20,22C16.134,22 13,18.866 13,15C13,11.134 16.134,8 20,8C23.866,8 27,11.134 27,15Z"
-      android:fillColor="#ffffff"/>
+      android:fillColor="@color/ym_avatar_foreground"/>
 </vector>

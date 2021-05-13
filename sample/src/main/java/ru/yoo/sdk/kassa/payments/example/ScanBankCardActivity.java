@@ -36,7 +36,7 @@ import androidx.core.app.ActivityCompat;
 
 import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
-import ru.yoo.sdk.kassa.payments.Checkout;
+import ru.yoomoney.sdk.kassa.payments.Checkout;
 
 import static android.Manifest.permission.CAMERA;
 

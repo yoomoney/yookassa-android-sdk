@@ -28,10 +28,10 @@
 -keep class okhttp3.** { *; }
 -keep class okio.** { *; }
 -keep class org.threeten.bp.** { *; }
--keep class ru.yoo.sdk.auth.model.** { *; }
--keep class ru.yoo.sdk.auth.ProcessType** { *; }
--keep class ru.yoo.sdk.kassa.payments.Checkout { *; }
--keep class ru.yoo.sdk.kassa.payments.ui.** { *; }
+-keep class ru.yoomoney.sdk.auth.model.** { *; }
+-keep class ru.yoomoney.sdk.auth.ProcessType** { *; }
+-keep class ru.yoomoney.sdk.kassa.payments.Checkout { *; }
+-keep class ru.yoomoney.sdk.kassa.payments.ui.** { *; }
 -keep class androidx.lifecycle.ViewModelKeyedFactory { *; }
 
 -dontwarn javax.annotation.Nullable

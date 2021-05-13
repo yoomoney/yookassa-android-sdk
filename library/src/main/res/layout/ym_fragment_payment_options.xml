@@ -28,7 +28,7 @@
     android:orientation="vertical"
     android:transitionName="@string/ym_transition_name">
 
-    <ru.yoo.sdk.kassa.payments.ui.DialogTopBar
+    <ru.yoomoney.sdk.kassa.payments.ui.DialogTopBar
         android:id="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

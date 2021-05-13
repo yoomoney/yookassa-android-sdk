@@ -31,7 +31,7 @@
     android:focusableInTouchMode="true"
     android:transitionName="@string/ym_transition_name">
 
-    <ru.yoo.sdk.kassa.payments.ui.view.LoadingView
+    <ru.yoomoney.sdk.kassa.payments.ui.view.LoadingView
         android:id="@+id/loadingView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -44,12 +44,12 @@
         android:orientation="vertical"
         android:visibility="gone">
 
-        <ru.yoo.sdk.kassa.payments.ui.DialogTopBar
+        <ru.yoomoney.sdk.kassa.payments.ui.DialogTopBar
             android:id="@+id/topBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <ru.yoo.sdk.gui.widget.text.TextTitle1View
+        <ru.yoomoney.sdk.gui.widget.text.TextTitle1View
             android:id="@+id/titleView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
             android:layout_marginEnd="@dimen/ym_spaceM"
             tools:text="Введите код из смс"/>
 
-        <ru.yoo.sdk.gui.widget.ConfirmCodeInputView
+        <ru.yoomoney.sdk.gui.widget.ConfirmCodeInputView
             android:id="@+id/confirmCode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -69,7 +69,7 @@
             android:layout_marginTop="@dimen/ym_space2XL"
             android:layout_marginEnd="@dimen/ym_spaceM"/>
 
-        <ru.yoo.sdk.gui.widget.text.TextCaption2View
+        <ru.yoomoney.sdk.gui.widget.text.TextCaption2View
             android:id="@+id/codeConfirmError"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -82,7 +82,7 @@
             tools:text="Это не тот код. Проверьте и введите ещё раз"
             tools:visibility="visible"/>
 
-        <ru.yoo.sdk.kassa.payments.ui.FlatButtonView
+        <ru.yoomoney.sdk.kassa.payments.ui.FlatButtonView
             android:id="@+id/retryAction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -107,7 +107,7 @@
         android:focusable="true"
         android:visibility="gone"/>
 
-    <ru.yoo.sdk.kassa.payments.ui.view.ErrorView
+    <ru.yoomoney.sdk.kassa.payments.ui.view.ErrorView
         android:id="@+id/errorView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -86,7 +86,9 @@
                 android:text="@string/google_pay"
                 tools:checked="true" />
 
-            <View style="@style/Divider" />
+            <View
+                android:id="@+id/googlePlayDivider"
+                style="@style/Divider" />
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/payment_option_new_card"
@@ -132,6 +134,13 @@
                 android:layout_height="wrap_content"
                 android:text="@string/color_scheme_title" />
 
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/enable_logging"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/allow_logging"
+                tools:checked="true" />
+
             <View style="@style/Divider" />
 
             <androidx.appcompat.widget.SwitchCompat
@@ -160,6 +169,7 @@
                 android:id="@+id/linked_cards"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimary"
                 android:text="@string/linked_cards" />
 
             <View
@@ -171,11 +181,12 @@
                 android:id="@+id/fee"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimary"
                 android:text="@string/test_fee" />
 
-           <View
-               style="@style/Divider"
-               android:id="@+id/fee_divider" />
+            <View
+                style="@style/Divider"
+                android:id="@+id/fee_divider" />
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/complete_with_error"

@@ -71,4 +71,5 @@
     <string name="save_payment_method_selector_save">Сохранять платежный метод</string>
     <string name="save_payment_method_selector_dont_save">Не сохранять платежный метод</string>
     <string name="allow_camera_permission_in_settings">Выдайте разрешение на использование камеры в настройках</string>
+    <string name="allow_logging">Логирование запросов</string>
 </resources>

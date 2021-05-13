@@ -48,8 +48,10 @@
     <string name="ym_license_agreement_part_1">By clicking this button, accept</string>
     <string name="ym_license_agreement_part_2">the terms and conditions of the service</string>
     <string name="ym_license_agreement_url">https://yoomoney.ru/page?id=526623</string>
+    <string name="ym_contract_save_payment_method_wallet_title">Разрешим списывать деньги</string>
     <string name="ym_save_payment_method_wallet_info_title">Permission to debit money without your participation</string>
     <string name="ym_save_payment_method_wallet_info_text">It means that you\'re allowing YooMoney to debit money from the wallet upon store\'s request without an additional confirmation from you. You can cancel these autopayments at any moment in the wallet settings (on the YooMoney website).</string>
+    <string name="ym_contract_save_payment_method_wallet_switch_title">Разрешить списывать деньги</string>
     <string name="ym_save_payment_method_wallet_switch_text_part_1">Allow the store</string>
     <string name="ym_save_payment_method_wallet_switch_text_part_2">to debit money without my participation</string>
     <string name="ym_save_payment_method_wallet_message_text_part_1">After the payment, the wallet will be linked: the store will be able</string>

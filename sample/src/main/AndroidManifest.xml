@@ -101,7 +101,7 @@
         <activity android:name="ru.yoo.sdk.kassa.payments.example.ScanBankCardActivity" android:theme="@style/Theme.Transparent">
 
             <intent-filter>
-                <action android:name="ru.yoo.sdk.kassa.payments.action.SCAN_BANK_CARD" />
+                <action android:name="ru.yoomoney.sdk.kassa.payments.action.SCAN_BANK_CARD" />
             </intent-filter>
 
         </activity>

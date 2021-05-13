@@ -20,7 +20,7 @@
 
 #  Документация
 
-Android Checkout mobile SDK - версия 5.1.2 ([changelog](https://github.com/yoomoney/yookassa-android-sdk/blob/master/CHANGELOG.md))
+Android Checkout mobile SDK - версия 5.1.4 ([changelog](https://github.com/yoomoney/yookassa-android-sdk/blob/master/CHANGELOG.md))
 
 * [Changelog](#changelog)
 * [Migration guide](#migration-guide)
@@ -75,11 +75,11 @@ Android Checkout mobile SDK - версия 5.1.2 ([changelog](https://github.com
 
 ```groovy
 repositories {
-    maven { url 'https://dl.bintray.com/yoomoney/maven' }
+    mavenCentral()
 }
 
 dependencies {
-    implementation 'ru.yoo.sdk.kassa.payments:yookassa-android-sdk:5.1.2'
+    implementation 'ru.yoomoney.sdk.kassa.payments:yookassa-android-sdk:5.1.4'
 }
 ```
 
@@ -92,16 +92,16 @@ dependencies {
 ```
 
 ## Подключение sdk авторизации для платежей из кошелька
-> Если среди платёжных методов есть кошелёк ЮMoney, необходимо подключить sdk авторизации `ru.yoo.sdk.auth`.
+> Если среди платёжных методов есть кошелёк ЮMoney, необходимо подключить sdk авторизации `ru.yoomoney.sdk.auth`.
 В остальных случаях этот шаг можно пропустить.
 
 Добавьте необходимые зависимости в gradle файлы:
 ```groovy
 repositories {
-    maven { url 'https://dl.bintray.com/yoomoney/maven' }
+    mavenCentral()
 }
 dependencies {
-    implementation "ru.yoo.sdk.auth:auth:1.0.51"
+    implementation "ru.yoomoney.sdk.auth:auth:1.2.8"
 }
 ```
 
@@ -118,7 +118,7 @@ dependencies {
 
 # Использование библиотеки
 
-Вся работа с библиотекой происходит через обращения к классу `ru.yoo.sdk.kassa.payments.Checkout`
+Вся работа с библиотекой происходит через обращения к классу `ru.yoomoney.sdk.kassa.payments.Checkout`
 
 ## Токенизация
 
@@ -142,7 +142,7 @@ dependencies {
 * clientApplicationKey (String) - ключ для клиентских приложений из личного кабинета ЮKassa ([раздел Настройки — Ключи API](https://yookassa.ru/my/api-keys-settings)).;
 * shopId (String) - идентификатор магазина в ЮKassa.
 * savePaymentMethod (SavePaymentMethod) - настройка сохранения платёжного метода. Сохранённые платёжные методы можно использовать для проведения рекуррентных платежей.
-* clientId (String) - идентификатор приложения для sdk авторизации `ru.yoo.sdk.auth`, см. [Регистрация приложения для платежей из кошелька](#регистрация-приложения-для-платежей-из-кошелька).
+* clientId (String) - идентификатор приложения для sdk авторизации `ru.yoomoney.sdk.auth`, см. [Регистрация приложения для платежей из кошелька](#регистрация-приложения-для-платежей-из-кошелька).
 
 Необязательные:
 * paymentMethodTypes (Set of PaymentMethodType) - ограничения способов оплаты. Если оставить поле пустым или передать в него null,
@@ -425,14 +425,14 @@ class MyActivity extends AppCompatActivity {
 
 ## Сканирование банковской карты
 
-Создайте `Activity`, обрабатывающую action `ru.yoo.sdk.kassa.payments.action.SCAN_BANK_CARD`
+Создайте `Activity`, обрабатывающую action `ru.yoomoney.sdk.kassa.payments.action.SCAN_BANK_CARD`
 
 ***Подключение activity для сканирования***
 ```xml
 <activity android:name=".ScanBankCardActivity">
 
     <intent-filter>
-        <action android:name="ru.yoo.sdk.kassa.payments.action.SCAN_BANK_CARD"/>
+        <action android:name="ru.yoomoney.sdk.kassa.payments.action.SCAN_BANK_CARD"/>
     </intent-filter>
 
 </activity>

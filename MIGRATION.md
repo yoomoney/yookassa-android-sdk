@@ -23,7 +23,7 @@
 Попросить у менеджера по подключению новую библиотеку `ui-lib-1.20.2.aar` и положить её в папку `libs`. Старую версию `ui-lib-1.19.5.aar` нужно удалить.
 
 ### Заменить имена пакетов
-Нужно заменить старые названия пакетов библиотеки на новые `ru.yoo.sdk.kassa.payments.*`
+Нужно заменить старые названия пакетов библиотеки на новые `ru.yoomoney.sdk.kassa.payments.*`
 
 ## 4.0.1 -> 4.1.0
 
@@ -45,7 +45,7 @@
 
 ```groovy
 repositories {
-    maven { url 'https://dl.bintray.com/yoomoney/maven' }
+    mavenCentral()
 }
 dependencies {
     implementation "ru.yoo.sdk.auth:auth:$yoo_sdk_auth_version"

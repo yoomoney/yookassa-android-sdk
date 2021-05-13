@@ -25,7 +25,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
-    <ru.yoo.sdk.kassa.payments.ui.ItemSwitchView
+    <ru.yoomoney.sdk.kassa.payments.ui.ItemSwitchView
         android:id="@+id/switchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

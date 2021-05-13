@@ -31,4 +31,6 @@
     <color name="ym_bank_card_color">#1B1F22</color>
     <color name="ym_background_color">#1B1F22</color>
     <color name="ym_bank_card_stroke_color">#1FFFFFFF</color>
+    <color name="ym_avatar_background">#26ffffff</color>
+    <color name="ym_avatar_foreground">#A3A3A3</color>
 </resources>

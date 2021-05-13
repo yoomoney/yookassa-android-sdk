@@ -31,7 +31,7 @@
     android:measureAllChildren="false"
     android:transitionName="@string/ym_transition_name">
 
-    <ru.yoo.sdk.kassa.payments.ui.view.LoadingView
+    <ru.yoomoney.sdk.kassa.payments.ui.view.LoadingView
         android:id="@+id/loadingView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/ym_bottomDialog_maxHeight"
@@ -66,7 +66,7 @@
                     android:ellipsize="end"
                     tools:text="Комета" />
 
-                <ru.yoo.sdk.gui.widget.text.TextBodyView
+                <ru.yoomoney.sdk.gui.widget.text.TextBodyView
                     style="@style/Text.Body.Secondary"
                     android:id="@+id/subtitle"
                     android:layout_width="match_parent"
@@ -147,7 +147,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
-                <ru.yoo.sdk.kassa.payments.ui.view.BankCardView
+                <ru.yoomoney.sdk.kassa.payments.ui.view.BankCardView
                     android:id="@+id/bankCardView"
                     android:visibility="gone"
                     android:layout_width="match_parent"
@@ -169,21 +169,21 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <ru.yoo.sdk.kassa.payments.ui.SwitchWithDescriptionView
+                        <ru.yoomoney.sdk.kassa.payments.ui.SwitchWithDescriptionView
                             android:id="@+id/allowWalletLinking"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             tools:ym_title="allowWalletLinking"
                             tools:ym_description="@string/ym_allow_wallet_linking"/>
 
-                        <ru.yoo.sdk.kassa.payments.ui.SwitchWithDescriptionView
+                        <ru.yoomoney.sdk.kassa.payments.ui.SwitchWithDescriptionView
                             android:id="@+id/savePaymentMethodSelection"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             tools:ym_title="savePaymentMethodSelection"
                             tools:ym_description="savePaymentMethodSelection description"/>
 
-                        <ru.yoo.sdk.gui.widget.text.TextBodyView
+                        <ru.yoomoney.sdk.gui.widget.text.TextBodyView
                             android:id="@+id/savePaymentMethodMessageTitle"
                             style="?ym_TitleTextAppearance"
                             android:layout_marginStart="@dimen/ym_screen_indentStart"
@@ -194,7 +194,7 @@
                             android:maxLines="1"
                             tools:text="Title"/>
 
-                        <ru.yoo.sdk.gui.widget.text.TextCaption1View
+                        <ru.yoomoney.sdk.gui.widget.text.TextCaption1View
                             android:id="@+id/savePaymentMethodMessageSubTitle"
                             style="?ym_SubtitleTextAppearance"
                             android:layout_width="match_parent"
@@ -218,7 +218,7 @@
                         android:layout_marginTop="@dimen/ym_space2XL"
                         android:measureAllChildren="false">
 
-                        <ru.yoo.sdk.kassa.payments.ui.view.YmProgressBar
+                        <ru.yoomoney.sdk.kassa.payments.ui.view.YmProgressBar
                             style="?android:progressBarStyle"
                             android:id="@+id/paymentAuthLoading"
                             android:layout_width="match_parent"
@@ -230,7 +230,7 @@
                             android:orientation="vertical"
                             android:layout_height="wrap_content">
 
-                            <ru.yoo.sdk.kassa.payments.ui.CheckoutTextInputView
+                            <ru.yoomoney.sdk.kassa.payments.ui.CheckoutTextInputView
                                 android:id="@+id/phoneInput"
                                 app:label="@string/ym_label_phone_in_sbol"
                                 android:layout_width="match_parent"
@@ -251,7 +251,7 @@
                     </ViewAnimator>
                 </ViewSwitcher>
 
-                <ru.yoo.sdk.kassa.payments.ui.PrimaryButtonView
+                <ru.yoomoney.sdk.kassa.payments.ui.PrimaryButtonView
                     android:id="@+id/nextButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -277,7 +277,7 @@
 
         </androidx.core.widget.NestedScrollView>
 
-        <ru.yoo.sdk.kassa.payments.ui.DialogTopBar
+        <ru.yoomoney.sdk.kassa.payments.ui.DialogTopBar
             android:id="@+id/topBar"
             android:layout_width="match_parent"
             android:background="@drawable/ym_bottom_sheet_dialog_rounded_top_corners"
@@ -285,7 +285,7 @@
 
     </FrameLayout>
 
-    <ru.yoo.sdk.kassa.payments.ui.view.ErrorView
+    <ru.yoomoney.sdk.kassa.payments.ui.view.ErrorView
         android:id="@+id/errorView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/ym_bottomDialog_maxHeight"

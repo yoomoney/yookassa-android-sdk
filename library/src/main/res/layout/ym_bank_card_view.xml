@@ -47,7 +47,7 @@
             android:focusableInTouchMode="true"
             android:paddingStart="@dimen/ym_space_m"
             android:paddingTop="@dimen/ym_space_s"
-            android:paddingEnd="@dimen/ym_space_m">
+            android:paddingEnd="@dimen/ym_space_s">
 
             <ImageView
                 android:id="@+id/bankCard"
@@ -162,8 +162,7 @@
             <ImageView
                 android:id="@+id/continueWithCard"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:src="@drawable/ym_ic_chevron_right"
-                android:layout_marginBottom="4dp"
+                android:src="@drawable/ym_ic_forward_m"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/cardNumber"
                 android:layout_width="wrap_content"
@@ -171,8 +170,6 @@
 
             <ImageView
                 android:id="@+id/clear"
-                android:layout_marginBottom="5dp"
-                android:layout_marginEnd="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:visibility="gone"

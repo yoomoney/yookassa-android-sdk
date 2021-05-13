@@ -33,4 +33,6 @@
     <color name="ym_bank_card_color">#ffffff</color>
     <color name="ym_bank_card_stroke_color">@color/ym_bank_card_color</color>
     <color name="ym_color_cursor">#00A884</color>
+    <color name="ym_avatar_background">#1A0A2540</color>
+    <color name="ym_avatar_foreground">#ffffff</color>
 </resources>

@@ -22,12 +22,10 @@
 package ru.yoo.kassa.payments.example;
 
 import androidx.annotation.NonNull;
-
 import java.util.HashSet;
 import java.util.Set;
-
-import ru.yoo.sdk.kassa.payments.checkoutParameters.PaymentMethodType;
 import ru.yoo.sdk.kassa.payments.example.settings.Settings;
+import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentMethodType;
 
 public class PaymentMethodTypes {
     @NonNull

@@ -29,9 +29,9 @@ buildscript {
     ext.mockito_version = '2.19.0'
     ext.espresso_version = '3.0.1'
     ext.gson_version = '2.8.6'
-    ext.yoo_sdk_auth_version = '1.0.51'
-    ext.ui_lib_version = '1.24.1'
-    ext.march_lib_version = "1.0.1"
+    ext.yoo_sdk_auth_version = '1.2.8'
+    ext.ui_lib_version = '1.27.0'
+    ext.march_lib_version = "1.0.4"
 
     ext.junit = '4.13'
     ext.appcompat = '1.2.0'
@@ -56,6 +56,7 @@ buildscript {
         classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:$dokka_version"
         classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6'
         classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.2'
+        classpath 'io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.22.0'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -66,7 +67,6 @@ allprojects {
         google()
         jcenter()
         mavenCentral()
-        maven { url 'https://dl.bintray.com/yoomoney/maven' }
         maven { url "http://pay.cards/maven" }
         maven { url "https://jitpack.io" }
     }
@@ -76,3 +76,4 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
+apply plugin: 'io.codearte.nexus-staging'

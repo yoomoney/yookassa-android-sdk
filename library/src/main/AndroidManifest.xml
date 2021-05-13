@@ -20,26 +20,26 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ru.yoo.sdk.kassa.payments">
+    package="ru.yoomoney.sdk.kassa.payments">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application>
         <activity
-            android:name="ru.yoo.sdk.kassa.payments.utils.WebViewActivity"
+            android:name="ru.yoomoney.sdk.kassa.payments.utils.WebViewActivity"
             android:theme="@style/ym_Theme" />
 
         <activity
-            android:name="ru.yoo.sdk.kassa.payments.ui.PendingIntentActivity"
+            android:name="ru.yoomoney.sdk.kassa.payments.ui.PendingIntentActivity"
             android:theme="@style/ym_Theme.Translucent" />
 
         <activity
-            android:name="ru.yoo.sdk.kassa.payments.ui.CheckoutActivity"
+            android:name="ru.yoomoney.sdk.kassa.payments.ui.CheckoutActivity"
             android:theme="@style/ym_Theme.Translucent" />
 
         <activity
-            android:name="ru.yoo.sdk.kassa.payments.contract.SavePaymentMethodInfoActivity"
+            android:name="ru.yoomoney.sdk.kassa.payments.contract.SavePaymentMethodInfoActivity"
             android:theme="@style/ym_Theme" />
 
         <meta-data

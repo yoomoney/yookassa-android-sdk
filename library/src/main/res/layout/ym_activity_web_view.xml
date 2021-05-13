@@ -26,18 +26,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="ru.yoo.sdk.kassa.payments.utils.WebViewActivity">
+    tools:context="ru.yoomoney.sdk.kassa.payments.utils.WebViewActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/ym_minHeight_m"
         android:theme="@style/ym_Theme.Toolbar.Transparent"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:navigationIcon="@drawable/ym_ic_close" />
 
     <fragment
         android:id="@+id/web_view"
-        android:name="ru.yoo.sdk.kassa.payments.utils.WebViewFragment"
+        android:name="ru.yoomoney.sdk.kassa.payments.utils.WebViewFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

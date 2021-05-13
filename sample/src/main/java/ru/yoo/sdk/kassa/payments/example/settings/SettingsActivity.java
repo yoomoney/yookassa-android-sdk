@@ -40,12 +40,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import ru.yoo.sdk.kassa.payments.example.BuildConfig;
 import ru.yoo.sdk.kassa.payments.example.R;
-import ru.yoo.sdk.kassa.payments.Checkout;
+import ru.yoomoney.sdk.kassa.payments.Checkout;
 
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+import static ru.yoo.sdk.kassa.payments.example.settings.Settings.KEY_ENABLE_LOGGING;
 import static ru.yoo.sdk.kassa.payments.example.settings.Settings.KEY_AUTOFILL_USER_PHONE_NUMBER;
 import static ru.yoo.sdk.kassa.payments.example.settings.Settings.KEY_GOOGLE_PAY_ALLOWED;
 import static ru.yoo.sdk.kassa.payments.example.settings.Settings.KEY_NEW_CARD_ALLOWED;
@@ -56,9 +57,9 @@ import static ru.yoo.sdk.kassa.payments.example.settings.Settings.KEY_SHOULD_COM
 import static ru.yoo.sdk.kassa.payments.example.settings.Settings.KEY_SHOW_CHECKOUT_LOGO;
 import static ru.yoo.sdk.kassa.payments.example.settings.Settings.KEY_TEST_MODE_ENABLED;
 import static ru.yoo.sdk.kassa.payments.example.settings.Settings.KEY_YOO_MONEY_ALLOWED;
-import static ru.yoo.sdk.kassa.payments.Checkout.EXTRA_ERROR_CODE;
-import static ru.yoo.sdk.kassa.payments.Checkout.EXTRA_ERROR_DESCRIPTION;
-import static ru.yoo.sdk.kassa.payments.Checkout.EXTRA_ERROR_FAILING_URL;
+import static ru.yoomoney.sdk.kassa.payments.Checkout.EXTRA_ERROR_CODE;
+import static ru.yoomoney.sdk.kassa.payments.Checkout.EXTRA_ERROR_DESCRIPTION;
+import static ru.yoomoney.sdk.kassa.payments.Checkout.EXTRA_ERROR_FAILING_URL;
 
 @SuppressWarnings("squid:MaximumInheritanceDepth")
 public final class SettingsActivity extends AppCompatActivity implements View.OnClickListener {
@@ -75,16 +76,20 @@ public final class SettingsActivity extends AppCompatActivity implements View.On
             new Pair<>(KEY_AUTOFILL_USER_PHONE_NUMBER, R.id.enable_default_user_phone_number),
             new Pair<>(KEY_TEST_MODE_ENABLED, R.id.enable_test_mode),
             new Pair<>(KEY_PAYMENT_AUTH_PASSED, R.id.payment_auth_passed),
-            new Pair<>(KEY_SHOULD_COMPLETE_PAYMENT_WITH_ERROR, R.id.complete_with_error)
+            new Pair<>(KEY_SHOULD_COMPLETE_PAYMENT_WITH_ERROR, R.id.complete_with_error),
+            new Pair<>(KEY_ENABLE_LOGGING, R.id.enable_logging)
     );
     private View linkedCardsButton;
     private View feeButton;
     private CompoundButton paymentAuthPassedSwitch;
     private CompoundButton completeWithErrorButton;
+    private CompoundButton googlePlayPaymentSwitch;
+    private CompoundButton allowLoggingSwitch;
     private View paymentAuthPassedDivider;
     private View linkedCardsDivider;
     private View feeDivider;
     private View completeWithErrorDivider;
+    private View googlePlayDivider;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -109,6 +114,9 @@ public final class SettingsActivity extends AppCompatActivity implements View.On
         linkedCardsDivider = findViewById(R.id.linked_cards_divider);
         feeDivider = findViewById(R.id.fee_divider);
         completeWithErrorDivider = findViewById(R.id.complete_with_error_divider);
+        googlePlayDivider = findViewById(R.id.googlePlayDivider);
+        googlePlayPaymentSwitch = findViewById(R.id.payment_option_google_pay);
+        allowLoggingSwitch = findViewById(R.id.enable_logging);
         final Spinner savePaymentMethodSelector = findViewById(R.id.savePaymentMethodSelector);
 
         enableTestModeSwitch.setOnCheckedChangeListener(
@@ -119,7 +127,6 @@ public final class SettingsActivity extends AppCompatActivity implements View.On
         final Settings settings = new Settings(this);
 
         this.<CompoundButton>findViewById(R.id.payment_option_yoomoney).setChecked(settings.isYooMoneyAllowed());
-        this.<CompoundButton>findViewById(R.id.payment_option_google_pay).setChecked(settings.isGooglePayAllowed());
         this.<CompoundButton>findViewById(R.id.payment_option_new_card).setChecked(settings.isNewCardAllowed());
         this.<CompoundButton>findViewById(R.id.payment_option_sberbank_online)
                 .setChecked(settings.isSberbankOnlineAllowed());
@@ -141,7 +148,18 @@ public final class SettingsActivity extends AppCompatActivity implements View.On
         this.<TextView>findViewById(R.id.version_info).setText(versionInfo);
 
         final View open3dsButton = findViewById(R.id.open3ds);
+
+        if (settings.isGooglePayAllowed()) {
+            googlePlayDivider.setVisibility(View.VISIBLE);
+            googlePlayPaymentSwitch.setVisibility(View.VISIBLE);
+        } else {
+            googlePlayDivider.setVisibility(View.GONE);
+            googlePlayPaymentSwitch.setVisibility(View.GONE);
+        }
+
         if (BuildConfig.DEBUG) {
+            allowLoggingSwitch.setChecked(settings.isLoggingEnable());
+            allowLoggingSwitch.setVisibility(View.VISIBLE);
             open3dsButton.setVisibility(View.VISIBLE);
             open3dsButton.setOnClickListener(
                     v -> {
@@ -153,6 +171,8 @@ public final class SettingsActivity extends AppCompatActivity implements View.On
                             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
+        } else {
+            allowLoggingSwitch.setVisibility(View.GONE);
         }
     }
 
@@ -213,8 +233,8 @@ public final class SettingsActivity extends AppCompatActivity implements View.On
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this).edit()
-                        .putInt(KEY_SAVE_PAYMENT_METHOD, position)
-                        .apply();
+                                 .putInt(KEY_SAVE_PAYMENT_METHOD, position)
+                                 .apply();
             }
 
             @Override

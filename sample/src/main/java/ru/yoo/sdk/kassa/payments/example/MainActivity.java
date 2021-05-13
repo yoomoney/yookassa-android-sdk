@@ -46,16 +46,16 @@ import java.util.Currency;
 import java.util.Set;
 
 import ru.yoo.kassa.payments.example.PaymentMethodTypes;
-import ru.yoo.sdk.kassa.payments.checkoutParameters.Amount;
-import ru.yoo.sdk.kassa.payments.Checkout;
-import ru.yoo.sdk.kassa.payments.ui.color.ColorScheme;
-import ru.yoo.sdk.kassa.payments.checkoutParameters.GooglePayParameters;
-import ru.yoo.sdk.kassa.payments.checkoutParameters.MockConfiguration;
-import ru.yoo.sdk.kassa.payments.checkoutParameters.PaymentMethodType;
-import ru.yoo.sdk.kassa.payments.checkoutParameters.PaymentParameters;
-import ru.yoo.sdk.kassa.payments.checkoutParameters.TestParameters;
-import ru.yoo.sdk.kassa.payments.TokenizationResult;
-import ru.yoo.sdk.kassa.payments.checkoutParameters.UiParameters;
+import ru.yoomoney.sdk.kassa.payments.checkoutParameters.Amount;
+import ru.yoomoney.sdk.kassa.payments.Checkout;
+import ru.yoomoney.sdk.kassa.payments.ui.color.ColorScheme;
+import ru.yoomoney.sdk.kassa.payments.checkoutParameters.GooglePayParameters;
+import ru.yoomoney.sdk.kassa.payments.checkoutParameters.MockConfiguration;
+import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentMethodType;
+import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters;
+import ru.yoomoney.sdk.kassa.payments.checkoutParameters.TestParameters;
+import ru.yoomoney.sdk.kassa.payments.TokenizationResult;
+import ru.yoomoney.sdk.kassa.payments.checkoutParameters.UiParameters;
 import ru.yoo.sdk.kassa.payments.example.settings.Settings;
 import ru.yoo.sdk.kassa.payments.example.settings.SettingsActivity;
 import ru.yoo.sdk.kassa.payments.example.utils.AmountFormatter;
@@ -157,7 +157,7 @@ public final class MainActivity extends AppCompatActivity {
         });
 
         final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        priceEdit.setText(sp.getString(KEY_AMOUNT, BigDecimal.ZERO.toString()));
+        priceEdit.setText(sp.getString(KEY_AMOUNT, BigDecimal.TEN.toString()));
     }
 
     private void onPaymentButtonClick() {
@@ -193,7 +193,7 @@ public final class MainActivity extends AppCompatActivity {
                 mockConfiguration = null;
             }
 
-            final TestParameters testParameters = new TestParameters(true, true, mockConfiguration);
+            final TestParameters testParameters = new TestParameters(settings.isLoggingEnable(), true, mockConfiguration);
 
             // Start MSDK to get payment token
 
@@ -216,8 +216,8 @@ public final class MainActivity extends AppCompatActivity {
 
     private void saveAmount() {
         PreferenceManager.getDefaultSharedPreferences(this).edit()
-                .putString(KEY_AMOUNT, amount.toPlainString())
-                .apply();
+                         .putString(KEY_AMOUNT, amount.toPlainString())
+                         .apply();
     }
 
     private boolean validateAmount() {

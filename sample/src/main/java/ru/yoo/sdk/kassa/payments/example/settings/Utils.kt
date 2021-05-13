@@ -22,7 +22,6 @@
 package ru.yoo.sdk.kassa.payments.example.settings
 
 import android.content.Context
-import ru.yoo.sdk.kassa.payments.example.App
 import ru.yoo.sdk.kassa.payments.example.settings.Settings.KEY_AUTOFILL_USER_PHONE_NUMBER
 import ru.yoo.sdk.kassa.payments.example.settings.Settings.KEY_GOOGLE_PAY_ALLOWED
 import ru.yoo.sdk.kassa.payments.example.settings.Settings.KEY_LINKED_CARDS_COUNT
@@ -35,6 +34,7 @@ import ru.yoo.sdk.kassa.payments.example.settings.Settings.KEY_SHOULD_COMPLETE_P
 import ru.yoo.sdk.kassa.payments.example.settings.Settings.KEY_SHOW_CHECKOUT_LOGO
 import ru.yoo.sdk.kassa.payments.example.settings.Settings.KEY_TEST_MODE_ENABLED
 import ru.yoo.sdk.kassa.payments.example.settings.Settings.KEY_YOO_MONEY_ALLOWED
+import ru.yoomoney.sdk.kassa.payments.checkoutParameters.SavePaymentMethod
 
 internal fun Context.injectParameters(
     isYooMoneyAllowed: Boolean = true,
@@ -43,7 +43,7 @@ internal fun Context.injectParameters(
     isNewCardAllowed: Boolean = true,
     isTestModeEnabled: Boolean = false,
     serviceFee: Float = 0.00f,
-    savePaymentMethodId: Int = 0,
+    savePaymentMethod: SavePaymentMethod = SavePaymentMethod.ON,
     shouldShowCheckoutLogo: Boolean = true,
     shouldAutoFillUserPhoneNumber: Boolean = true,
     shouldPassPaymentAuth: Boolean = true,
@@ -67,7 +67,7 @@ internal fun Context.injectParameters(
     }
 
     editor.putFloat(KEY_SERVICE_FEE, serviceFee)
-    editor.putInt(KEY_SAVE_PAYMENT_METHOD, savePaymentMethodId)
+    editor.putInt(KEY_SAVE_PAYMENT_METHOD, Settings.getSavePaymentMethodId(savePaymentMethod))
     editor.putInt(KEY_LINKED_CARDS_COUNT, linkedCardsCount)
 
     editor.apply()
