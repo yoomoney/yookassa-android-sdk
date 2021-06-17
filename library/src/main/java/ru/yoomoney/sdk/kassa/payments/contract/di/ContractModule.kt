@@ -27,6 +27,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoMap
 import ru.yoomoney.sdk.auth.YooMoneyAuth
+import ru.yoomoney.sdk.auth.account.AccountRepository
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentMethodType
 import ru.yoomoney.sdk.kassa.payments.payment.PaymentOptionRepository
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
@@ -68,6 +69,8 @@ import ru.yoomoney.sdk.kassa.payments.paymentAuth.PaymentAuthTokenRepository
 import ru.yoomoney.sdk.march.Out
 import ru.yoomoney.sdk.march.RuntimeViewModel
 import ru.yoomoney.sdk.march.input
+import ru.yoomoney.sdk.kassa.payments.R
+import ru.yoomoney.sdk.kassa.payments.extensions.toTokenizeScheme
 
 @Module
 internal class ContractModule {
@@ -99,18 +102,21 @@ internal class ContractModule {
     fun selectPaymentOptionsUseCase(
         getLoadedPaymentOptionListRepository: GetLoadedPaymentOptionListRepository,
         checkPaymentAuthRequiredGateway: CheckPaymentAuthRequiredGateway,
+        accountRepository: AccountRepository,
+        userAuthInfoRepository: TokensStorage,
         paymentOptionRepository: PaymentOptionRepository
     ): SelectPaymentOptionUseCase {
         return SelectPaymentOptionUseCaseImpl(
             getLoadedPaymentOptionListRepository,
             checkPaymentAuthRequiredGateway,
+            accountRepository,
+            userAuthInfoRepository,
             paymentOptionRepository = paymentOptionRepository
         )
     }
 
     @Provides
     fun tokenizeUseCase(
-        paymentParameters: PaymentParameters,
         getLoadedPaymentOptionListRepository: GetLoadedPaymentOptionListRepository,
         tokenizeRepository: TokenizeRepository,
         checkPaymentAuthRequiredGateway: CheckPaymentAuthRequiredGateway,
@@ -120,10 +126,7 @@ internal class ContractModule {
             getLoadedPaymentOptionListRepository,
             tokenizeRepository,
             checkPaymentAuthRequiredGateway,
-            paymenPaymentAuthTokenRepository = paymenPaymentAuthTokenRepository,
-            getConfirmation = {
-                it.getConfirmation(paymentParameters.customReturnUrl ?: DEFAULT_REDIRECT_URL)
-            }
+            paymenPaymentAuthTokenRepository = paymenPaymentAuthTokenRepository
         )
     }
 
@@ -170,6 +173,7 @@ internal class ContractModule {
 
     @[Provides IntoMap ViewModelKey(CONTRACT)]
     fun viewModel(
+        context: Context,
         selectPaymentOptionUseCase: SelectPaymentOptionUseCase,
         tokenizeUseCase: TokenizeUseCase,
         paymentParameters: PaymentParameters,
@@ -198,10 +202,17 @@ internal class ContractModule {
                         source = source,
                         selectPaymentOptionUseCase = selectPaymentOptionUseCase,
                         tokenizeUseCase = tokenizeUseCase,
-                        logoutUseCase = logoutUseCase
+                        logoutUseCase = logoutUseCase,
+                        getConfirmation = {
+                            it.getConfirmation(context,
+                                paymentParameters.customReturnUrl ?: DEFAULT_REDIRECT_URL,
+                                context.resources.getString(R.string.ym_app_scheme)
+                            )
+                        }
                     ),
                     getUserAuthType = userAuthTypeParamProvider,
-                    getUserAuthTokenType = userAuthTokenTypeParamProvider
+                    getUserAuthTokenType = userAuthTokenTypeParamProvider,
+                    getTokenizeScheme = { it.toTokenizeScheme(context) }
                 )
             }
         )

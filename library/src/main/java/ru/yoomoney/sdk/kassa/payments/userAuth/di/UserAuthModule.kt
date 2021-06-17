@@ -21,25 +21,22 @@
 
 package ru.yoomoney.sdk.kassa.payments.userAuth.di
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoMap
+import ru.yoomoney.sdk.auth.YooMoneyAuth
+import ru.yoomoney.sdk.auth.account.AccountRepository
+import ru.yoomoney.sdk.auth.transferData.TransferDataRepository
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentMethodType
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.TestParameters
 import ru.yoomoney.sdk.kassa.payments.di.ViewModelKey
-import ru.yoomoney.sdk.kassa.payments.tmx.TmxSessionIdStorage
-import ru.yoomoney.sdk.kassa.payments.secure.TokensStorage
 import ru.yoomoney.sdk.kassa.payments.metrics.Reporter
 import ru.yoomoney.sdk.kassa.payments.metrics.TokenizeSchemeParamProvider
 import ru.yoomoney.sdk.kassa.payments.metrics.UserAuthTokenTypeParamProvider
 import ru.yoomoney.sdk.kassa.payments.metrics.UserAuthTypeParamProvider
-import ru.yoomoney.sdk.kassa.payments.userAuth.MockAuthorizeUserRepository
-import ru.yoomoney.sdk.kassa.payments.userAuth.MoneyAuth
-import ru.yoomoney.sdk.kassa.payments.userAuth.MoneyAuthAnalytics
-import ru.yoomoney.sdk.kassa.payments.userAuth.MoneyAuthBusinessLogic
-import ru.yoomoney.sdk.kassa.payments.userAuth.YooMoneyAuthorizeUserRepository
 import ru.yoomoney.sdk.kassa.payments.model.Executor
 import ru.yoomoney.sdk.kassa.payments.model.Result
 import ru.yoomoney.sdk.kassa.payments.payment.CheckPaymentAuthRequiredGateway
@@ -47,10 +44,20 @@ import ru.yoomoney.sdk.kassa.payments.payment.CurrentUserRepository
 import ru.yoomoney.sdk.kassa.payments.payment.GetLoadedPaymentOptionListRepository
 import ru.yoomoney.sdk.kassa.payments.paymentAuth.PaymentAuthTokenRepository
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.PaymentOptionsListUseCase
+import ru.yoomoney.sdk.kassa.payments.secure.TokensStorage
+import ru.yoomoney.sdk.kassa.payments.tmx.TmxSessionIdStorage
 import ru.yoomoney.sdk.kassa.payments.userAuth.AuthorizeUserRepository
+import ru.yoomoney.sdk.kassa.payments.userAuth.GetTransferDataUseCase
+import ru.yoomoney.sdk.kassa.payments.userAuth.GetTransferDataUseCaseImpl
+import ru.yoomoney.sdk.kassa.payments.userAuth.MockAuthorizeUserRepository
+import ru.yoomoney.sdk.kassa.payments.userAuth.MoneyAuthAnalytics
+import ru.yoomoney.sdk.kassa.payments.userAuth.MoneyAuthBusinessLogic
 import ru.yoomoney.sdk.kassa.payments.userAuth.User
 import ru.yoomoney.sdk.march.Out
 import ru.yoomoney.sdk.march.RuntimeViewModel
+import ru.yoomoney.sdk.kassa.payments.BuildConfig.AUTH_HOST
+import ru.yoomoney.sdk.kassa.payments.userAuth.MoneyAuth
+import ru.yoomoney.sdk.kassa.payments.userAuth.YooMoneyAuthorizeUserRepository
 import javax.inject.Singleton
 
 @Module
@@ -119,8 +126,36 @@ internal class UserAuthModule {
     fun userAuthTokenTypeParamProvider(
         paymentAuthTokenRepository: PaymentAuthTokenRepository
     ): UserAuthTokenTypeParamProvider {
-        return UserAuthTokenTypeParamProvider(
-            paymentAuthTokenRepository
+        return UserAuthTokenTypeParamProvider(paymentAuthTokenRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun transferDataRepository(
+        context: Context,
+        paymentParameters: PaymentParameters
+    ): TransferDataRepository {
+        return YooMoneyAuth.provideTransferDataRepository(
+            context = context,
+            authCenterClientId = requireNotNull(paymentParameters.authCenterClientId),
+            apiHost = if (AUTH_HOST.isNotEmpty()) AUTH_HOST else null,
+            isDebugMode = AUTH_HOST.isNotEmpty()
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun getTransferDataUseCase(transferDataRepository: TransferDataRepository): GetTransferDataUseCase {
+        return GetTransferDataUseCaseImpl(transferDataRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun accountRepository(context: Context): AccountRepository {
+        return YooMoneyAuth.provideAccountRepository(
+            context = context,
+            apiHost = if (AUTH_HOST.isNotEmpty()) AUTH_HOST else null,
+            isDebugMode = AUTH_HOST.isNotEmpty()
         )
     }
 
@@ -132,9 +167,9 @@ internal class UserAuthModule {
         currentUserRepository: CurrentUserRepository,
         tokensStorage: TokensStorage,
         useCase: PaymentOptionsListUseCase,
+        getTransferDataUseCase: GetTransferDataUseCase,
         loadedPaymentOptionListRepository: GetLoadedPaymentOptionListRepository
     ): ViewModel {
-        val authCenterClientId = requireNotNull(paymentParameters.authCenterClientId)
         return RuntimeViewModel<MoneyAuth.State, MoneyAuth.Action, Unit>(
             featureName = MONEY_AUTH,
             initial = { Out.skip(MoneyAuth.State.WaitingForAuthStarted, source) },
@@ -144,12 +179,12 @@ internal class UserAuthModule {
                     businessLogic = MoneyAuthBusinessLogic(
                         showState = showState,
                         source = source,
-                        authCenterClientId = authCenterClientId,
                         tmxSessionIdStorage = tmxSessionIdStorage,
                         currentUserRepository = currentUserRepository,
                         userAuthInfoRepository = tokensStorage,
                         paymentParameters = paymentParameters,
                         paymentOptionsListUseCase = useCase,
+                        getTransferDataUseCase = getTransferDataUseCase,
                         loadedPaymentOptionListRepository = loadedPaymentOptionListRepository
                     )
                 )

@@ -24,8 +24,11 @@ package ru.yoomoney.sdk.kassa.payments.impl.userAuth
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Test
-import ru.yoomoney.sdk.kassa.payments.metrics.AuthYooMoneyLoginStatusCanceled
-import ru.yoomoney.sdk.kassa.payments.metrics.AuthYooMoneyLoginStatusSuccess
+import ru.yoomoney.sdk.kassa.payments.metrics.ActionMoneyAuthLoginCanceled
+import ru.yoomoney.sdk.kassa.payments.metrics.ActionMoneyAuthLoginFail
+import ru.yoomoney.sdk.kassa.payments.metrics.ActionMoneyAuthLoginSuccess
+import ru.yoomoney.sdk.kassa.payments.metrics.MoneyAuthLoginSchemeAuthSdk
+import ru.yoomoney.sdk.kassa.payments.metrics.MoneyAuthLoginSchemeYooMoney
 import ru.yoomoney.sdk.kassa.payments.metrics.Reporter
 import ru.yoomoney.sdk.kassa.payments.userAuth.MoneyAuth
 import ru.yoomoney.sdk.kassa.payments.userAuth.MoneyAuthAnalytics
@@ -38,21 +41,41 @@ class MoneyAuthAnalyticsTest {
     )
 
     @Test
-    fun `verify money auth success analytics sends`() {
+    fun `verify money auth from auth sdk success analytics sends`() {
         // given
 
         // when
         moneyAuthAnalytics(
             MoneyAuth.State.CompleteAuth,
-            MoneyAuth.Action.Authorized("token", null, null)
+            MoneyAuth.Action.Authorized("token", null, null, MoneyAuthLoginSchemeAuthSdk())
         )
 
         // then
-        verify(reporter).report("actionLoginAuthorization", listOf(AuthYooMoneyLoginStatusSuccess()))
+        verify(reporter).report(
+            "actionMoneyAuthLogin",
+            listOf(ActionMoneyAuthLoginSuccess(), MoneyAuthLoginSchemeAuthSdk())
+        )
     }
 
     @Test
-    fun `verify money auth cancelled analytics sends`() {
+    fun `verify money auth from app success analytics sends`() {
+        // given
+
+        // when
+        moneyAuthAnalytics(
+            MoneyAuth.State.CompleteAuth,
+            MoneyAuth.Action.Authorized("token", null, null, MoneyAuthLoginSchemeYooMoney())
+        )
+
+        // then
+        verify(reporter).report(
+            "actionMoneyAuthLogin",
+            listOf(ActionMoneyAuthLoginSuccess(), MoneyAuthLoginSchemeYooMoney())
+        )
+    }
+
+    @Test
+    fun `verify money auth from auth sdk cancelled analytics sends`() {
         // given
 
         // when
@@ -62,6 +85,26 @@ class MoneyAuthAnalyticsTest {
         )
 
         // then
-        verify(reporter).report("actionLoginAuthorization", listOf(AuthYooMoneyLoginStatusCanceled()))
+        verify(reporter).report(
+            "actionMoneyAuthLogin",
+            listOf(ActionMoneyAuthLoginCanceled(), MoneyAuthLoginSchemeAuthSdk())
+        )
+    }
+
+    @Test
+    fun `verify money auth from app failed analytics sends`() {
+        // given
+
+        // when
+        moneyAuthAnalytics.invoke(
+            MoneyAuth.State.CompleteAuth,
+            MoneyAuth.Action.AuthFailed
+        )
+
+        // then
+        verify(reporter).report(
+            "actionMoneyAuthLogin",
+            listOf(ActionMoneyAuthLoginFail(), MoneyAuthLoginSchemeYooMoney())
+        )
     }
 }

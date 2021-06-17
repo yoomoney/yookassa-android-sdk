@@ -35,6 +35,7 @@ import ru.yoomoney.sdk.auth.YooMoneyAuth.KEY_ACCESS_TOKEN
 import ru.yoomoney.sdk.auth.YooMoneyAuth.REQUEST_MONEY_AUTHORIZATION
 import ru.yoomoney.sdk.auth.analytics.AnalyticsEvent
 import ru.yoomoney.sdk.auth.analytics.AnalyticsLogger
+import ru.yoomoney.sdk.auth.auxAuthorization.model.AuxTokenScope
 import ru.yoomoney.sdk.kassa.payments.BuildConfig.AUTH_HOST
 import ru.yoomoney.sdk.kassa.payments.BuildConfig.YANDEX_CLIENT_ID
 import ru.yoomoney.sdk.kassa.payments.R
@@ -49,7 +50,12 @@ import ru.yoomoney.sdk.kassa.payments.userAuth.di.UserAuthModule
 import ru.yoomoney.sdk.kassa.payments.utils.viewModel
 import ru.yoomoney.sdk.march.RuntimeViewModel
 import ru.yoomoney.sdk.march.observe
+import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
+import ru.yoomoney.sdk.kassa.payments.metrics.MoneyAuthLoginSchemeAuthSdk
+import ru.yoomoney.sdk.kassa.payments.utils.canResolveIntent
 import javax.inject.Inject
+
+private const val REQUEST_CODE_APP_2_APP_AUTHORIZATION = 317
 
 internal typealias MoneyAuthViewModel = RuntimeViewModel<MoneyAuth.State, MoneyAuth.Action, Unit>
 
@@ -63,6 +69,22 @@ internal class MoneyAuthFragment : Fragment() {
 
     @Inject
     lateinit var reporter: Reporter
+
+    @Inject
+    lateinit var paymentParameters: PaymentParameters
+
+    private val yooMoneyIntent by lazy {
+        createYooMoneyAuxDeepLink(
+            requireNotNull(paymentParameters.authCenterClientId),
+            listOf(
+                AuxTokenScope.Wallet.Balance,
+                AuxTokenScope.UserAuthCenter.AccountInfo
+            )
+        )
+    }
+
+    private val isYooMoneyCouldBeOpened: Boolean
+        get() = requireActivity().canResolveIntent(yooMoneyIntent)
 
     private val viewModel: MoneyAuthViewModel by viewModel(UserAuthModule.MONEY_AUTH) { viewModelFactory }
 
@@ -86,12 +108,16 @@ internal class MoneyAuthFragment : Fragment() {
     }
 
     fun authorize() {
-        viewModel.handleAction(RequireAuth)
+        viewModel.handleAction(RequireAuth(isYooMoneyCouldBeOpened))
     }
 
     private fun showState(state: MoneyAuth.State) {
         when (state) {
-            is MoneyAuth.State.Authorize -> collectCurrentUser(state.authCenterClientId)
+            is MoneyAuth.State.Authorize ->
+                when (state.authorizeStrategy) {
+                    is MoneyAuth.AuthorizeStrategy.InApp -> collectCurrentUser()
+                    is MoneyAuth.AuthorizeStrategy.App2App -> collectCurrentUserFromYooMoneyApp()
+                }
             MoneyAuth.State.CompleteAuth -> router.navigateTo(
                 Screen.PaymentOptions(
                     Screen.MoneyAuth.Result.SUCCESS
@@ -108,26 +134,40 @@ internal class MoneyAuthFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_MONEY_AUTHORIZATION) {
 
-            if (data?.getStringExtra(KEY_ACCESS_TOKEN) == null) {
-                router.navigateTo(
-                    Screen.PaymentOptions(
-                        Screen.MoneyAuth.Result.CANCEL))
-                return
-            }
+        when (requestCode) {
+            REQUEST_MONEY_AUTHORIZATION -> {
+                if (data?.getStringExtra(KEY_ACCESS_TOKEN) == null) {
+                    router.navigateTo(
+                        Screen.PaymentOptions(
+                            Screen.MoneyAuth.Result.CANCEL
+                        )
+                    )
+                    return
+                }
 
-            viewModel.handleAction(
-                Authorized(
-                    data.getStringExtra(KEY_ACCESS_TOKEN),
-                    data.getParcelableExtra(YooMoneyAuth.KEY_USER_ACCOUNT),
-                    data.getStringExtra(YooMoneyAuth.KEY_TMX_SESSION_ID)
+                viewModel.handleAction(
+                    Authorized(
+                        token = data.getStringExtra(KEY_ACCESS_TOKEN),
+                        userAccount = data.getParcelableExtra(YooMoneyAuth.KEY_USER_ACCOUNT),
+                        tmxSessionId = data.getStringExtra(YooMoneyAuth.KEY_TMX_SESSION_ID),
+                        typeAuth = MoneyAuthLoginSchemeAuthSdk()
+                    )
                 )
-            )
+            }
+            REQUEST_CODE_APP_2_APP_AUTHORIZATION -> {
+                val cryptogram = data?.getStringExtra(YooMoneyAuth.KEY_CRYPTOGRAM)
+                if (cryptogram == null) {
+                    router.navigateTo(Screen.PaymentOptions(Screen.MoneyAuth.Result.CANCEL))
+                    return
+                }
+                viewModel.handleAction(MoneyAuth.Action.GetTransferData(cryptogram))
+            }
+            else -> Unit
         }
     }
 
-    private fun collectCurrentUser(authCenterClientId: String) {
+    private fun collectCurrentUser() {
         YooMoneyAuth.initAnalyticsLogger(object : AnalyticsLogger {
             override fun onNewEvent(event: AnalyticsEvent) {
                 reporter.report(event.toString())
@@ -136,7 +176,7 @@ internal class MoneyAuthFragment : Fragment() {
         val config = Config(
             origin = Config.Origin.WALLET,
             processType = Config.ProcessType.LOGIN,
-            authCenterClientId = authCenterClientId,
+            authCenterClientId = requireNotNull(paymentParameters.authCenterClientId),
             yandexClientId = YANDEX_CLIENT_ID,
             apiHost = if (AUTH_HOST.isNotEmpty()) AUTH_HOST else null,
             isDebugMode = AUTH_HOST.isNotEmpty(),
@@ -162,5 +202,9 @@ internal class MoneyAuthFragment : Fragment() {
             )
         )
         startActivityForResult(YooMoneyAuth.auth(requireContext(), config), REQUEST_MONEY_AUTHORIZATION)
+    }
+
+    private fun collectCurrentUserFromYooMoneyApp() {
+        startActivityForResult(yooMoneyIntent, REQUEST_CODE_APP_2_APP_AUTHORIZATION)
     }
 }

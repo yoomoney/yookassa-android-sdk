@@ -31,6 +31,7 @@ import ru.yoomoney.sdk.kassa.payments.metrics.TokenizeSchemeBankCard
 import ru.yoomoney.sdk.kassa.payments.metrics.TokenizeSchemeGooglePay
 import ru.yoomoney.sdk.kassa.payments.metrics.TokenizeSchemeLinkedCard
 import ru.yoomoney.sdk.kassa.payments.metrics.TokenizeSchemeRecurring
+import ru.yoomoney.sdk.kassa.payments.metrics.TokenizeSchemeSberPay
 import ru.yoomoney.sdk.kassa.payments.metrics.TokenizeSchemeSbolSms
 import ru.yoomoney.sdk.kassa.payments.metrics.TokenizeSchemeWallet
 import ru.yoomoney.sdk.kassa.payments.model.AbstractWallet
@@ -38,15 +39,19 @@ import ru.yoomoney.sdk.kassa.payments.model.Confirmation
 import ru.yoomoney.sdk.kassa.payments.model.ExternalConfirmation
 import ru.yoomoney.sdk.kassa.payments.model.GooglePay
 import ru.yoomoney.sdk.kassa.payments.model.LinkedCard
+import ru.yoomoney.sdk.kassa.payments.model.MobileApplication
 import ru.yoomoney.sdk.kassa.payments.model.NewCard
 import ru.yoomoney.sdk.kassa.payments.model.PaymentIdCscConfirmation
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
 import ru.yoomoney.sdk.kassa.payments.model.RedirectConfirmation
-import ru.yoomoney.sdk.kassa.payments.model.SbolSmsInvoicing
+import ru.yoomoney.sdk.kassa.payments.model.SberBank
 import ru.yoomoney.sdk.kassa.payments.model.Wallet
 import ru.yoomoney.sdk.kassa.payments.model.YooMoney
+import ru.yoomoney.sdk.kassa.payments.utils.INVOICING_AUTHORITY
+import ru.yoomoney.sdk.kassa.payments.utils.SBERPAY_PATH
 import ru.yoomoney.sdk.kassa.payments.utils.UNKNOWN_CARD_ICON
 import ru.yoomoney.sdk.kassa.payments.utils.getBankLogo
+import ru.yoomoney.sdk.kassa.payments.utils.isSberBankAppInstalled
 
 internal fun PaymentOption.getIcon(context: Context) = checkNotNull(
     when (this) {
@@ -66,7 +71,7 @@ internal fun PaymentOption.getIcon(context: Context) = checkNotNull(
                     context.resources.getDimensionPixelSize(R.dimen.ym_space2XS)
                 )
             }
-            is SbolSmsInvoicing -> AppCompatResources.getDrawable(context, R.drawable.ym_ic_sberbank)
+            is SberBank -> AppCompatResources.getDrawable(context, R.drawable.ym_ic_sberbank)
             is GooglePay -> AppCompatResources.getDrawable(context, R.drawable.ym_ic_google_pay)
     }
 ) { "icon not found for $this" }
@@ -80,7 +85,7 @@ internal fun PaymentOption.getTitle(context: Context): CharSequence = when (this
     } else {
         "•••• " + pan.takeLast(4)
     }
-    is SbolSmsInvoicing -> context.getText(R.string.ym_sberbank)
+    is SberBank -> context.getText(R.string.ym_sberbank)
     is GooglePay -> context.getText(R.string.ym_payment_option_google_pay)
     is PaymentIdCscConfirmation -> context.getText(R.string.ym_saved_card)
 }
@@ -93,20 +98,28 @@ internal fun PaymentOption.getAdditionalInfo(): CharSequence? {
     }
 }
 
-internal fun PaymentOption.toTokenizeScheme() = when (this) {
+internal fun PaymentOption.toTokenizeScheme(context: Context) = when (this) {
     is Wallet, is AbstractWallet -> TokenizeSchemeWallet()
     is LinkedCard -> TokenizeSchemeLinkedCard()
     is NewCard -> TokenizeSchemeBankCard()
-    is SbolSmsInvoicing -> TokenizeSchemeSbolSms()
+    is SberBank -> if (canPayWithSberPay(context)) {
+        TokenizeSchemeSberPay()
+    } else {
+        TokenizeSchemeSbolSms()
+    }
     is GooglePay -> TokenizeSchemeGooglePay()
     is PaymentIdCscConfirmation -> TokenizeSchemeRecurring()
 }
 
-internal fun PaymentOption.getConfirmation(returnUrl: String): Confirmation {
+internal fun PaymentOption.getConfirmation(context: Context, returnUrl: String, appScheme: String): Confirmation {
     return when (this) {
         is YooMoney, is NewCard, is GooglePay, is PaymentIdCscConfirmation -> RedirectConfirmation(
             returnUrl
         )
-        is SbolSmsInvoicing -> ExternalConfirmation
+        is SberBank -> if (canPayWithSberPay(context)) {
+            MobileApplication("$appScheme://$INVOICING_AUTHORITY/$SBERPAY_PATH")
+        } else {
+            ExternalConfirmation
+        }
     }
 }

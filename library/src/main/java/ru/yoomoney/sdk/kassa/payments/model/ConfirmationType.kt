@@ -1,6 +1,6 @@
 /*
  * The MIT License (MIT)
- * Copyright © 2020 NBCO YooMoney LLC
+ * Copyright © 2021 NBCO YooMoney LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
  * associated documentation files (the “Software”), to deal in the Software without restriction, including
@@ -19,28 +19,36 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package ru.yoomoney.sdk.kassa.payments.payment.tokenize
+package ru.yoomoney.sdk.kassa.payments.model
 
-import ru.yoomoney.sdk.kassa.payments.checkoutParameters.Amount
-import ru.yoomoney.sdk.kassa.payments.model.Confirmation
-import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
-import ru.yoomoney.sdk.kassa.payments.model.PaymentOptionInfo
+import androidx.annotation.Keep
 
-internal data class TokenizeInputModel(
-    val paymentOptionId: Int,
-    val savePaymentMethod: Boolean,
-    val confirmation: Confirmation,
-    val paymentOptionInfo: PaymentOptionInfo? = null,
-    val allowWalletLinking: Boolean? = null
-)
+/**
+ * Type of payment confirmation.
+ */
+@Keep
+enum class ConfirmationType(val value: String) {
+    /**
+     * Confirmation with external service
+     */
+    @Keep
+    EXTERNAL("external"),
 
-internal sealed class TokenizeOutputModel
+    /**
+     * Confirmation with webview
+     */
+    @Keep
+    REDIRECT("redirect"),
 
-internal data class TokenOutputModel(
-    val token: String,
-    val option: PaymentOption
-) : TokenizeOutputModel()
+    /**
+     * Confirmation with mobile app
+     */
+    @Keep
+    MOBILE_APPLICATION("mobile_application"),
 
-internal data class TokenizePaymentAuthRequiredOutputModel(
-    val charge: Amount
-) : TokenizeOutputModel()
+    /**
+     * Unknown type of confirmation
+     */
+    @Keep
+    UNKNOWN("unknown")
+}

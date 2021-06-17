@@ -30,7 +30,7 @@ import ru.yoomoney.sdk.kassa.payments.model.NewCard
 import ru.yoomoney.sdk.kassa.payments.model.PaymentIdCscConfirmation
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
 import ru.yoomoney.sdk.kassa.payments.model.Result
-import ru.yoomoney.sdk.kassa.payments.model.SbolSmsInvoicing
+import ru.yoomoney.sdk.kassa.payments.model.SberBank
 import ru.yoomoney.sdk.kassa.payments.model.Wallet
 import ru.yoomoney.sdk.kassa.payments.model.YooMoney
 import ru.yoomoney.sdk.kassa.payments.payment.CurrentUserRepository
@@ -97,7 +97,8 @@ internal class PaymentOptionsListUseCaseImpl(
                                 last = response.value.card.last,
                                 expiryMonth = response.value.card.expiryMonth,
                                 expiryYear = response.value.card.expiryYear,
-                                savePaymentMethodAllowed = paymentOption.savePaymentMethodAllowed
+                                savePaymentMethodAllowed = paymentOption.savePaymentMethodAllowed,
+                                confirmationTypes = paymentOption.confirmationTypes
                             )
                         )
                     } else {
@@ -136,7 +137,7 @@ internal class PaymentOptionsListUseCaseImpl(
 private fun PaymentOption.toAllowed() = when (this) {
     is NewCard -> PaymentMethodType.BANK_CARD
     is YooMoney -> PaymentMethodType.YOO_MONEY
-    is SbolSmsInvoicing -> PaymentMethodType.SBERBANK
+    is SberBank -> PaymentMethodType.SBERBANK
     is GooglePay -> PaymentMethodType.GOOGLE_PAY
     is PaymentIdCscConfirmation -> PaymentMethodType.BANK_CARD
 }

@@ -1,18 +1,37 @@
 # Migration guide
 
 ### Table of Contents
+[5.1.4 -> 6.0.0](##5---6)
+- [Заменить вызов метода Checkout.create3dsIntent на Checkout.createConfirmationIntent](###Заменить-вызов-метода-Checkout.create3dsIntent-на-Checkout.createConfirmationIntent)
+- [Добавить схему вашего приложения, для этого добавить строку ym_app_scheme со значением вашей схемы в strings.xml.]
+Нужно добавить в ваш файл build.gradle в блок android.defaultConfig строку `resValue "string", "ym_app_scheme", "your_unique_app_shceme"`
+```
+android {
+    defaultConfig {
+        resValue "string", "ym_app_scheme", "your_unique_app_shceme"
+    }
+}
+```
+Или добавить в ваш strings.xml строку вида:
+```
+<resources>
+    <string name="ym_app_scheme" translatable="false">your_unique_app_shceme</string>
+</resources>
+```
+
+[4.1.0 -> 5.1.0](##4---5)
 [5.0.3 -> 5.1.0](##5---5)
 - [Удалить библиотеку `ui-lib.aar` из папки libs, она больше не нужна](###Удалить-библиотеку-`ui-lib.aar`-из папки-libs,-она-больше-не-нужна)
 
 [4.1.0 -> 5.0.1](##4---5)
-- [Обновить версию `ui-lib-1.20.2.aar`](###Обновить-версию-`ui-lib-1.20.2.aar`)
+- [Обновить версию `ui-lib-1.20.2.aar`](###Обновить-версию-`ui-lib-1.20.2.a ar`)
 - [Заменить имена пакетов](###заменить-имена-пакетов)
 
 [4.0.1 -> 4.1.0](##4---4)
 - [Обновить версию `ui-lib-1.19.5.aar`](###Обновить-версию-`ui-lib-1.19.5.aar`)
 
 [3.\*.\* -> 4.0.0](##3---4)
-- [Подключить ru.yoo.sdk.auth](###Подключить-sdk-авторизации)
+- [Подключить ru.yoomoney.sdk.auth](###Подключить-sdk-авторизации)
 - [Подключить ThreatMetrix Android SDK 5.4-73.aar](###Подключить-ThreatMetrix-Android-SDK-`5.4-73.aar`)
 - [Подключить ui-lib-1.19.4.aar](###Подключить-`ui-lib-1.19.4.aar`)
 
@@ -48,7 +67,7 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    implementation "ru.yoo.sdk.auth:auth:$yoo_sdk_auth_version"
+    implementation "ru.yoomoney.sdk.auth:auth:$yoo_sdk_auth_version"
 }
 ```
 

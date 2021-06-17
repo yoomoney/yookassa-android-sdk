@@ -1,6 +1,6 @@
 /*
  * The MIT License (MIT)
- * Copyright © 2020 NBCO YooMoney LLC
+ * Copyright © 2021 NBCO YooMoney LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
  * associated documentation files (the “Software”), to deal in the Software without restriction, including
@@ -19,28 +19,6 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package ru.yoomoney.sdk.kassa.payments.payment.tokenize
+package ru.yoomoney.sdk.kassa.payments.impl
 
-import ru.yoomoney.sdk.kassa.payments.checkoutParameters.Amount
-import ru.yoomoney.sdk.kassa.payments.model.Confirmation
-import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
-import ru.yoomoney.sdk.kassa.payments.model.PaymentOptionInfo
-
-internal data class TokenizeInputModel(
-    val paymentOptionId: Int,
-    val savePaymentMethod: Boolean,
-    val confirmation: Confirmation,
-    val paymentOptionInfo: PaymentOptionInfo? = null,
-    val allowWalletLinking: Boolean? = null
-)
-
-internal sealed class TokenizeOutputModel
-
-internal data class TokenOutputModel(
-    val token: String,
-    val option: PaymentOption
-) : TokenizeOutputModel()
-
-internal data class TokenizePaymentAuthRequiredOutputModel(
-    val charge: Amount
-) : TokenizeOutputModel()
+internal const val SBERBANK_ONLINE_PACKAGE = "ru.sberbankmobile"

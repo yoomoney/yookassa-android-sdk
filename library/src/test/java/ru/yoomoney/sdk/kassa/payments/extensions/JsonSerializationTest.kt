@@ -30,6 +30,7 @@ import org.robolectric.RobolectricTestRunner
 import ru.yoomoney.sdk.kassa.payments.extensions.toJsonObject
 import ru.yoomoney.sdk.kassa.payments.model.Confirmation
 import ru.yoomoney.sdk.kassa.payments.model.ExternalConfirmation
+import ru.yoomoney.sdk.kassa.payments.model.MobileApplication
 import ru.yoomoney.sdk.kassa.payments.model.NoConfirmation
 import ru.yoomoney.sdk.kassa.payments.model.RedirectConfirmation
 
@@ -42,12 +43,14 @@ class JsonSerializationTest {
         val confirmations = listOf(
             NoConfirmation,
             ExternalConfirmation,
-            RedirectConfirmation(returnUrl)
+            RedirectConfirmation(returnUrl),
+            MobileApplication(returnUrl)
         )
         val expectedJsons = arrayOf(
             null.toString(),
             """{"type":"external"}""",
-            """{"type":"redirect","return_url":"$returnUrl"}"""
+            """{"type":"redirect","return_url":"$returnUrl"}""",
+            """{"type":"mobile_application","return_url":"$returnUrl","app_os_type":"android"}"""
         )
 
         // invoke

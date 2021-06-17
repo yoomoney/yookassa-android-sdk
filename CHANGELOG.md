@@ -1,5 +1,10 @@
 ## Changelog
 
+### 6.0.0
+2021-05-28
+- Added authentication with YooMoney app
+- Added payments with Sberpay app
+
 ### 5.1.0
 2021-03-09
 - Updated library architecture, improved stability

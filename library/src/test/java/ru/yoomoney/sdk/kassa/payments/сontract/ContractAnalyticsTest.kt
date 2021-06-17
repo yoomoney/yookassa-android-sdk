@@ -21,24 +21,29 @@
 
 package ru.yoomoney.sdk.kassa.payments.сontract
 
+import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Test
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.Amount
 import ru.yoomoney.sdk.kassa.payments.contract.Contract
 import ru.yoomoney.sdk.kassa.payments.contract.ContractAnalytics
 import ru.yoomoney.sdk.kassa.payments.extensions.RUB
-import ru.yoomoney.sdk.kassa.payments.extensions.toTokenizeScheme
 import ru.yoomoney.sdk.kassa.payments.metrics.AuthTokenTypeSingle
 import ru.yoomoney.sdk.kassa.payments.metrics.AuthTypeYooMoneyLogin
 import ru.yoomoney.sdk.kassa.payments.metrics.ErrorScreenReporterImpl
 import ru.yoomoney.sdk.kassa.payments.metrics.Reporter
+import ru.yoomoney.sdk.kassa.payments.metrics.TokenizeScheme
 import ru.yoomoney.sdk.kassa.payments.metrics.TokenizeSchemeLinkedCard
+import ru.yoomoney.sdk.kassa.payments.metrics.TokenizeSchemeSberPay
 import ru.yoomoney.sdk.kassa.payments.model.CardBrand
+import ru.yoomoney.sdk.kassa.payments.model.ConfirmationType
 import ru.yoomoney.sdk.kassa.payments.model.Fee
 import ru.yoomoney.sdk.kassa.payments.model.LinkedCard
 import ru.yoomoney.sdk.kassa.payments.model.NewCard
 import ru.yoomoney.sdk.kassa.payments.model.PaymentIdCscConfirmation
+import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
 import ru.yoomoney.sdk.kassa.payments.model.SdkException
 import ru.yoomoney.sdk.kassa.payments.model.Wallet
 import ru.yoomoney.sdk.kassa.payments.payment.selectOption.SelectedPaymentOptionOutputModel
@@ -55,13 +60,15 @@ class ContractAnalyticsTest {
         getAuthType = { userAuthType },
         getTokenizeScheme = { null }
     )
+    private val getTokenizeScheme: (PaymentOption) -> TokenizeScheme = mock()
 
     private val contractAnalytics = ContractAnalytics(
         reporter = reporter,
         errorScreenReporter = errorScreenReporter,
         businessLogic = mock(),
         getUserAuthType = { userAuthType },
-        getUserAuthTokenType = { userAuthTokenType }
+        getUserAuthTokenType = { userAuthTokenType },
+        getTokenizeScheme = getTokenizeScheme
     )
 
     @Test
@@ -85,8 +92,11 @@ class ContractAnalyticsTest {
             1,
             Amount(BigDecimal("3.00"), RUB),
             null, "123456789",
-            Amount(BigDecimal("5.00"), RUB), true
+            Amount(BigDecimal("5.00"), RUB), true,
+            confirmationTypes = listOf(ConfirmationType.REDIRECT)
         )
+
+        whenever(getTokenizeScheme(any())).thenReturn(TokenizeSchemeSberPay())
 
         // when
         contractAnalytics(
@@ -102,7 +112,7 @@ class ContractAnalyticsTest {
         // then
         verify(reporter).report(
             "actionTokenize", listOf(
-                wallet.toTokenizeScheme(),
+                TokenizeSchemeSberPay(),
                 userAuthType,
                 userAuthTokenType
             )
@@ -114,7 +124,8 @@ class ContractAnalyticsTest {
         // given
         val newCard = NewCard(
             0,
-            Amount(BigDecimal("2.00"), RUB), null, true
+            Amount(BigDecimal("2.00"), RUB), null, true,
+            confirmationTypes = listOf(ConfirmationType.REDIRECT)
         )
 
         // when
@@ -142,7 +153,8 @@ class ContractAnalyticsTest {
             cardId = "12345654321",
             brand = CardBrand.MASTER_CARD,
             pan = "1234567887654321",
-            savePaymentMethodAllowed = true
+            savePaymentMethodAllowed = true,
+            confirmationTypes = listOf(ConfirmationType.REDIRECT)
         )
 
 
@@ -171,7 +183,8 @@ class ContractAnalyticsTest {
             last = "7890",
             expiryYear = "2020",
             expiryMonth = "12",
-            savePaymentMethodAllowed = true
+            savePaymentMethodAllowed = true,
+            confirmationTypes = emptyList()
         )
 
         // when
@@ -213,8 +226,11 @@ class ContractAnalyticsTest {
             cardId = "12345654321",
             brand = CardBrand.MASTER_CARD,
             pan = "1234567887654321",
-            savePaymentMethodAllowed = true
+            savePaymentMethodAllowed = true,
+            confirmationTypes = listOf(ConfirmationType.REDIRECT)
         )
+
+        whenever(getTokenizeScheme(any())).thenReturn(TokenizeSchemeLinkedCard())
 
         // when
         contractAnalytics(

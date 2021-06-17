@@ -21,16 +21,28 @@
 
 package ru.yoomoney.sdk.kassa.payments.contract
 
+import ru.yoomoney.sdk.auth.Result
+import ru.yoomoney.sdk.auth.account.AccountRepository
+import ru.yoomoney.sdk.auth.account.model.UserAccount
+import ru.yoomoney.sdk.kassa.payments.checkoutParameters.Amount
+import ru.yoomoney.sdk.kassa.payments.model.ConfirmationType
+import ru.yoomoney.sdk.kassa.payments.model.Fee
+import ru.yoomoney.sdk.kassa.payments.model.LinkedCard
+import ru.yoomoney.sdk.kassa.payments.model.SberBank
 import ru.yoomoney.sdk.kassa.payments.payment.PaymentOptionRepository
 import ru.yoomoney.sdk.kassa.payments.model.SelectedOptionNotFoundException
+import ru.yoomoney.sdk.kassa.payments.model.Wallet
 import ru.yoomoney.sdk.kassa.payments.model.YooMoney
 import ru.yoomoney.sdk.kassa.payments.payment.CheckPaymentAuthRequiredGateway
 import ru.yoomoney.sdk.kassa.payments.payment.GetLoadedPaymentOptionListRepository
 import ru.yoomoney.sdk.kassa.payments.payment.selectOption.SelectedPaymentOptionOutputModel
+import ru.yoomoney.sdk.kassa.payments.userAuth.UserAuthInfoRepository
 
 internal class SelectPaymentOptionUseCaseImpl(
     private val getLoadedPaymentOptionListRepository: GetLoadedPaymentOptionListRepository,
     private val checkPaymentAuthRequiredGateway: CheckPaymentAuthRequiredGateway,
+    private val accountRepository: AccountRepository,
+    private val userAuthInfoRepository: UserAuthInfoRepository,
     private val paymentOptionRepository: PaymentOptionRepository
 ) : SelectPaymentOptionUseCase {
 
@@ -42,7 +54,17 @@ internal class SelectPaymentOptionUseCaseImpl(
             SelectedOptionNotFoundException(paymentOptionId)
         )
 
-        val walletLinkingPossible = option is YooMoney && checkPaymentAuthRequiredGateway.checkPaymentAuthRequired()
+        val token = userAuthInfoRepository.userAuthToken
+
+        if (token != null && option is Wallet) {
+            when(val response = accountRepository.account(token)) {
+                is Result.Success -> updateUserData(response.value)
+            }
+        }
+
+        val walletLinkingPossible = option is YooMoney
+                && checkPaymentAuthRequiredGateway.checkPaymentAuthRequired()
+                || option is LinkedCard
 
         return Contract.Action.LoadContractSuccess(
             SelectedPaymentOptionOutputModel(
@@ -50,5 +72,10 @@ internal class SelectPaymentOptionUseCaseImpl(
                 walletLinkingPossible = walletLinkingPossible
             )
         )
+    }
+
+    private fun updateUserData(userAccount: UserAccount) {
+        userAuthInfoRepository.userAuthName = userAccount.displayName.title
+        userAuthInfoRepository.userAvatarUrl = userAccount.avatar.url
     }
 }

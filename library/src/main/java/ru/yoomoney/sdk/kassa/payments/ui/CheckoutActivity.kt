@@ -34,18 +34,13 @@ import ru.yoomoney.sdk.kassa.payments.errorFormatter.ErrorFormatter
 import ru.yoomoney.sdk.kassa.payments.metrics.YandexMetricaExceptionReporter
 import javax.inject.Inject
 
+internal const val EXTRA_CREATED_WITH_CHECKOUT_METHOD = "ru.yoomoney.sdk.kassa.payments.extra.CREATED_WITH_CHECKOUT_METHOD"
 internal const val EXTRA_PAYMENT_PARAMETERS = "ru.yoomoney.sdk.kassa.payments.extra.PAYMENT_PARAMETERS"
 internal const val EXTRA_CSC_PARAMETERS = "ru.yoomoney.sdk.kassa.payments.extra.CSC_PARAMETERS"
 internal const val EXTRA_TEST_PARAMETERS = "ru.yoomoney.sdk.kassa.payments.extra.TEST_PARAMETERS"
 internal const val EXTRA_UI_PARAMETERS = "ru.yoomoney.sdk.kassa.payments.extra.UI_PARAMETERS"
-internal const val EXTRA_CREATED_WITH_CHECKOUT_METHOD = "ru.yoomoney.sdk.kassa.payments.extra.CREATED_WITH_CHECKOUT_METHOD"
 
 internal const val EXTRA_PAYMENT_TOKEN = "ru.yoomoney.sdk.kassa.payments.extra.PAYMENT_TOKEN"
-internal const val EXTRA_PAYMENT_METHOD_TYPE = "ru.yoomoney.sdk.kassa.payments.extra.PAYMENT_METHOD_TYPE"
-
-internal const val EXTRA_CARD_NUMBER = "cardNumber"
-internal const val EXTRA_EXPIRY_MONTH = "expiryMonth"
-internal const val EXTRA_EXPIRY_YEAR = "expiryYear"
 
 private val TAG_BOTTOM_SHEET = MainDialogFragment::class.java.name
 
@@ -73,11 +68,8 @@ internal class CheckoutActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (!intent.hasExtra(EXTRA_CREATED_WITH_CHECKOUT_METHOD)) {
-            throw IllegalArgumentException(
-                "Intent for CheckoutActivity should be created only with Checkout.createTokenizeIntent()."
-            )
-        }
+        checkStartedWithCreateTokenizeIntent()
+
         val paymentMethodId: String? = if (!intent.hasExtra(EXTRA_PAYMENT_PARAMETERS)) {
             (intent.getParcelableExtra(EXTRA_CSC_PARAMETERS) as SavedBankCardPaymentParameters).paymentMethodId
         } else {
@@ -116,4 +108,12 @@ internal class CheckoutActivity : AppCompatActivity() {
 
     private fun findDialog(supportFragmentManager: FragmentManager) =
         supportFragmentManager.findFragmentByTag(TAG_BOTTOM_SHEET) as MainDialogFragment?
+
+    private fun checkStartedWithCreateTokenizeIntent() {
+        if (!intent.hasExtra(EXTRA_CREATED_WITH_CHECKOUT_METHOD)) {
+            throw IllegalArgumentException(
+                "Intent for CheckoutActivity should be created only with Checkout.createTokenizeIntent()."
+            )
+        }
+    }
 }

@@ -56,6 +56,7 @@ import ru.yoomoney.sdk.kassa.payments.model.AuthType
 import ru.yoomoney.sdk.kassa.payments.model.AuthTypeState
 import ru.yoomoney.sdk.kassa.payments.model.CardBrand
 import ru.yoomoney.sdk.kassa.payments.model.CardInfo
+import ru.yoomoney.sdk.kassa.payments.model.ConfirmationType
 import ru.yoomoney.sdk.kassa.payments.model.Error
 import ru.yoomoney.sdk.kassa.payments.model.ErrorCode
 import ru.yoomoney.sdk.kassa.payments.model.Fee
@@ -65,7 +66,7 @@ import ru.yoomoney.sdk.kassa.payments.model.NewCard
 import ru.yoomoney.sdk.kassa.payments.model.PaymentMethodBankCard
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
 import ru.yoomoney.sdk.kassa.payments.model.Result
-import ru.yoomoney.sdk.kassa.payments.model.SbolSmsInvoicing
+import ru.yoomoney.sdk.kassa.payments.model.SberBank
 import ru.yoomoney.sdk.kassa.payments.model.Status
 import ru.yoomoney.sdk.kassa.payments.model.Wallet
 import java.math.BigDecimal
@@ -225,7 +226,7 @@ class JsonDeserializationTest {
             {
               "payment_method_type": "sberbank",
               "confirmation_types": [
-                "redirect", "external"
+                "redirect", "external", "mobile_application"
               ],
               "charge": {
                 "value": "2.00",
@@ -247,29 +248,34 @@ class JsonDeserializationTest {
 
         val newCard = NewCard(
             0,
-            Amount(BigDecimal("2.00"), RUB), null, true
+            Amount(BigDecimal("2.00"), RUB), null, true,
+            confirmationTypes = listOf(ConfirmationType.REDIRECT)
         )
         val wallet = Wallet(
             1,
             Amount(BigDecimal("3.00"), RUB),
             null, "123456789",
-            Amount(BigDecimal("5.00"), RUB), true
+            Amount(BigDecimal("5.00"), RUB), true,
+            confirmationTypes = listOf(ConfirmationType.REDIRECT)
         )
         val abstractWallet = AbstractWallet(
             2,
-            Amount(BigDecimal("4.00"), RUB), null, true
+            Amount(BigDecimal("4.00"), RUB), null, true,
+            confirmationTypes = listOf(ConfirmationType.REDIRECT)
         )
         val bankCard = LinkedCard(
             3, Amount(BigDecimal("5.00"), RUB), null,
-            "123456789", CardBrand.MASTER_CARD, "518901******0446", "My card", true, true
+            "123456789", CardBrand.MASTER_CARD, "518901******0446", "My card", true, true,
+            confirmationTypes = listOf(ConfirmationType.REDIRECT)
         )
-        val sberbank = SbolSmsInvoicing(
+        val sberbank = SberBank(
             4,
-            Amount(BigDecimal("2.00"), RUB), null, false
+            Amount(BigDecimal("2.00"), RUB), null, false,
+            listOf(ConfirmationType.REDIRECT, ConfirmationType.EXTERNAL, ConfirmationType.MOBILE_APPLICATION)
         )
         val googlePay = GooglePay(
             5,
-            Amount(BigDecimal("5.00"), RUB), null, false
+            Amount(BigDecimal("5.00"), RUB), null, false, emptyList()
         )
 
         val paymentOptions: Result<List<PaymentOption>> = Result.Success(listOf(newCard, wallet, abstractWallet, bankCard, sberbank, googlePay))

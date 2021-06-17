@@ -22,11 +22,12 @@
 package ru.yoomoney.sdk.kassa.payments.userAuth
 
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
-import ru.yoomoney.sdk.kassa.payments.tmx.TmxSessionIdStorage
+import ru.yoomoney.sdk.kassa.payments.metrics.MoneyAuthLoginSchemeAuthSdk
 import ru.yoomoney.sdk.kassa.payments.model.AuthorizedUser
 import ru.yoomoney.sdk.kassa.payments.payment.CurrentUserRepository
 import ru.yoomoney.sdk.kassa.payments.payment.GetLoadedPaymentOptionListRepository
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.PaymentOptionsListUseCase
+import ru.yoomoney.sdk.kassa.payments.tmx.TmxSessionIdStorage
 import ru.yoomoney.sdk.march.Logic
 import ru.yoomoney.sdk.march.Out
 import ru.yoomoney.sdk.march.input
@@ -34,11 +35,11 @@ import ru.yoomoney.sdk.march.input
 internal class MoneyAuthBusinessLogic(
     private val showState: suspend (MoneyAuth.State) -> MoneyAuth.Action,
     private val source: suspend () -> MoneyAuth.Action,
-    private val authCenterClientId: String,
     private val tmxSessionIdStorage: TmxSessionIdStorage,
     private val currentUserRepository: CurrentUserRepository,
     private val userAuthInfoRepository: UserAuthInfoRepository,
     private val paymentOptionsListUseCase: PaymentOptionsListUseCase,
+    private val getTransferDataUseCase: GetTransferDataUseCase,
     private val paymentParameters: PaymentParameters,
     private val loadedPaymentOptionListRepository: GetLoadedPaymentOptionListRepository
 ) : Logic<MoneyAuth.State, MoneyAuth.Action> {
@@ -49,7 +50,7 @@ internal class MoneyAuthBusinessLogic(
     ): Out<MoneyAuth.State, MoneyAuth.Action> {
         return when(state) {
             is MoneyAuth.State.Authorize -> when(action) {
-                MoneyAuth.Action.RequireAuth -> Out(state) {
+                is MoneyAuth.Action.RequireAuth -> Out(state) {
                     input { showState(this.state) }
                 }
                 is MoneyAuth.Action.Authorized -> {
@@ -71,11 +72,16 @@ internal class MoneyAuthBusinessLogic(
                     MoneyAuth.State.WaitingForAuthStarted) {
                     input { showState(this.state) }
                 }
+                is MoneyAuth.Action.GetTransferData -> Out(state) {
+                    input {
+                        getTransferDataUseCase.getTransferAuxToken(action.cryptogram)
+                    }
+                }
                 else -> Out.skip(state, source)
             }
             MoneyAuth.State.CompleteAuth -> when (action) {
-                MoneyAuth.Action.RequireAuth -> Out(
-                    MoneyAuth.State.Authorize(authCenterClientId)) {
+                is MoneyAuth.Action.RequireAuth -> Out(
+                    MoneyAuth.State.Authorize(getAuthStrategy(action.isYooMoneyCouldBeOpened))) {
                     input { showState(this.state) }
                 }
                 else -> Out.skip(state, source)
@@ -84,8 +90,8 @@ internal class MoneyAuthBusinessLogic(
                 input { showState(this.state) }
             }
             MoneyAuth.State.WaitingForAuthStarted -> when (action) {
-                MoneyAuth.Action.RequireAuth -> Out(
-                    MoneyAuth.State.Authorize(authCenterClientId)) {
+                is MoneyAuth.Action.RequireAuth -> Out(
+                    MoneyAuth.State.Authorize(getAuthStrategy(action.isYooMoneyCouldBeOpened))) {
                     input { showState(this.state) }
                 }
                 else -> Out.skip(state, source)
@@ -102,5 +108,13 @@ internal class MoneyAuthBusinessLogic(
         loadedPaymentOptionListRepository.isActual = false
         paymentOptionsListUseCase.loadPaymentOptions(paymentParameters.amount)
         return MoneyAuth.Action.AuthSuccessful
+    }
+
+    private fun getAuthStrategy(isYooMoneyCouldBeOpened: Boolean): MoneyAuth.AuthorizeStrategy {
+        return if (isYooMoneyCouldBeOpened) {
+            MoneyAuth.AuthorizeStrategy.App2App
+        } else {
+            MoneyAuth.AuthorizeStrategy.InApp
+        }
     }
 }

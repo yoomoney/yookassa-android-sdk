@@ -21,7 +21,6 @@
 
 package ru.yoomoney.sdk.kassa.payments.contract
 
-import ru.yoomoney.sdk.kassa.payments.extensions.toTokenizeScheme
 import ru.yoomoney.sdk.kassa.payments.metrics.AuthTokenType
 import ru.yoomoney.sdk.kassa.payments.metrics.AuthType
 import ru.yoomoney.sdk.kassa.payments.metrics.ErrorScreenReporter
@@ -32,13 +31,16 @@ import ru.yoomoney.sdk.kassa.payments.model.PaymentIdCscConfirmation
 import ru.yoomoney.sdk.kassa.payments.payment.tokenize.TokenOutputModel
 import ru.yoomoney.sdk.march.Logic
 import ru.yoomoney.sdk.march.Out
+import ru.yoomoney.sdk.kassa.payments.metrics.TokenizeScheme
+import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
 
 internal class ContractAnalytics(
     private val reporter: Reporter,
     private val errorScreenReporter: ErrorScreenReporter,
     private val businessLogic: Logic<Contract.State, Contract.Action>,
     private val getUserAuthType: () -> AuthType,
-    private val getUserAuthTokenType: () -> AuthTokenType
+    private val getUserAuthTokenType: () -> AuthTokenType,
+    private val getTokenizeScheme: (PaymentOption) -> TokenizeScheme
 ) : Logic<Contract.State, Contract.Action> {
 
     override fun invoke(state: Contract.State, action: Contract.Action): Out<Contract.State, Contract.Action> {
@@ -48,7 +50,7 @@ internal class ContractAnalytics(
                 if (action.content is TokenOutputModel) {
                     listOf(
                         "actionTokenize" to listOf(
-                            action.content.option.toTokenizeScheme(),
+                            getTokenizeScheme(action.content.option),
                             getUserAuthType(),
                             getUserAuthTokenType()
                         )
@@ -61,7 +63,7 @@ internal class ContractAnalytics(
                 listOf(
                     "screenPaymentContract" to listOf(
                         getUserAuthType(),
-                        action.outputModel.paymentOption.toTokenizeScheme()
+                        getTokenizeScheme(action.outputModel.paymentOption)
                     ),
                     when (action.outputModel.paymentOption) {
                         is NewCard -> "screenBankCardForm" to listOf(getUserAuthType())

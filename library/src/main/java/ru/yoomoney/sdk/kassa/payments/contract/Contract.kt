@@ -22,6 +22,7 @@
 package ru.yoomoney.sdk.kassa.payments.contract
 
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.Amount
+import ru.yoomoney.sdk.kassa.payments.model.Confirmation
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOptionInfo
 import ru.yoomoney.sdk.kassa.payments.payment.selectOption.SelectedPaymentOptionOutputModel
@@ -43,7 +44,7 @@ internal object Contract {
             val savePaymentMethod: Boolean,
             val showAllowWalletLinking: Boolean,
             val allowWalletLinking: Boolean,
-            val showPhoneInput: Boolean
+            val confirmation: Confirmation
         ) : State()
 
         data class GooglePay(

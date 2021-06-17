@@ -37,11 +37,13 @@ import ru.yoomoney.sdk.kassa.payments.model.ExternalConfirmation
 import ru.yoomoney.sdk.kassa.payments.model.GooglePayInfo
 import ru.yoomoney.sdk.kassa.payments.model.LinkedCard
 import ru.yoomoney.sdk.kassa.payments.model.LinkedCardInfo
+import ru.yoomoney.sdk.kassa.payments.model.MobileApplication
 import ru.yoomoney.sdk.kassa.payments.model.NewCardInfo
 import ru.yoomoney.sdk.kassa.payments.model.NoConfirmation
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOptionInfo
 import ru.yoomoney.sdk.kassa.payments.model.RedirectConfirmation
+import ru.yoomoney.sdk.kassa.payments.model.SberPay
 import ru.yoomoney.sdk.kassa.payments.model.SbolSmsInvoicingInfo
 import ru.yoomoney.sdk.kassa.payments.model.Wallet
 import ru.yoomoney.sdk.kassa.payments.model.WalletInfo
@@ -73,10 +75,13 @@ internal fun PaymentOptionInfo.toJsonObject(paymentOption: PaymentOption): JSONO
     is SbolSmsInvoicingInfo -> JSONObject()
         .put("type", "sberbank")
         .put("phone", phone.filter(Char::isDigit))
+    is SberPay -> JSONObject()
+        .put("type", "sberbank")
     is GooglePayInfo -> JSONObject()
         .put("type", "google_pay")
         .put("payment_method_token", paymentMethodToken)
         .put("google_transaction_id", googleTransactionId)
+    SberPay -> JSONObject()
 }
 
 internal fun AuthType.toJsonString() = when (this) {
@@ -96,4 +101,8 @@ internal fun Confirmation.toJsonObject(): JSONObject? = when (this) {
     is RedirectConfirmation -> JSONObject()
         .put("type", "redirect")
         .put("return_url", returnUrl)
+    is MobileApplication -> JSONObject()
+        .put("type", "mobile_application")
+        .put("return_url", returnUrl)
+        .put("app_os_type", "android")
 }

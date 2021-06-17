@@ -44,6 +44,7 @@ import ru.yoomoney.sdk.kassa.payments.model.AbstractWallet
 import ru.yoomoney.sdk.kassa.payments.model.AuthorizedUser
 import ru.yoomoney.sdk.kassa.payments.model.CardBrand
 import ru.yoomoney.sdk.kassa.payments.model.CardInfo
+import ru.yoomoney.sdk.kassa.payments.model.ConfirmationType
 import ru.yoomoney.sdk.kassa.payments.model.Fee
 import ru.yoomoney.sdk.kassa.payments.model.GooglePay
 import ru.yoomoney.sdk.kassa.payments.model.LinkedCard
@@ -52,7 +53,7 @@ import ru.yoomoney.sdk.kassa.payments.model.PaymentIdCscConfirmation
 import ru.yoomoney.sdk.kassa.payments.model.PaymentMethodBankCard
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
 import ru.yoomoney.sdk.kassa.payments.model.Result
-import ru.yoomoney.sdk.kassa.payments.model.SbolSmsInvoicing
+import ru.yoomoney.sdk.kassa.payments.model.SberBank
 import ru.yoomoney.sdk.kassa.payments.model.Wallet
 import ru.yoomoney.sdk.kassa.payments.model.YooMoney
 import ru.yoomoney.sdk.kassa.payments.payment.CurrentUserRepository
@@ -76,12 +77,13 @@ internal class PaymentOptionsListUseCaseTest {
     )
     private val testPaymentMethodId = "test id"
     private val availableOptions = mutableListOf(
-        NewCard(0, testCharge, testFee, true),
+        NewCard(0, testCharge, testFee, true, confirmationTypes = listOf(ConfirmationType.REDIRECT)),
         Wallet(
             1, testCharge, testFee, "123456787654321",
-            Amount(BigDecimal.TEN, RUB), true
+            Amount(BigDecimal.TEN, RUB), true,
+            confirmationTypes = listOf(ConfirmationType.REDIRECT)
         ),
-        AbstractWallet(2, testCharge, testFee, false),
+        AbstractWallet(2, testCharge, testFee, false, confirmationTypes = listOf(ConfirmationType.REDIRECT)),
         LinkedCard(
             3,
             testCharge,
@@ -91,7 +93,8 @@ internal class PaymentOptionsListUseCaseTest {
             "123456787654321",
             null,
             false,
-            true
+            true,
+            confirmationTypes = listOf(ConfirmationType.REDIRECT)
         ),
         LinkedCard(
             4,
@@ -102,10 +105,12 @@ internal class PaymentOptionsListUseCaseTest {
             "123456787654321",
             "test name",
             false,
-            true
+            true,
+            confirmationTypes = listOf(ConfirmationType.REDIRECT)
         ),
-        SbolSmsInvoicing(5, testCharge, testFee, false),
-        GooglePay(6, testCharge, testFee, false)
+        SberBank(5, testCharge, testFee, false,
+            confirmationTypes = listOf(ConfirmationType.REDIRECT, ConfirmationType.EXTERNAL, ConfirmationType.MOBILE_APPLICATION)),
+        GooglePay(6, testCharge, testFee, false, emptyList())
     )
     private val bankCardInfo: PaymentMethodBankCard =
         PaymentMethodBankCard(
@@ -179,7 +184,8 @@ internal class PaymentOptionsListUseCaseTest {
                 last = "7890",
                 expiryYear = "20",
                 expiryMonth = "10",
-                savePaymentMethodAllowed = true
+                savePaymentMethodAllowed = true,
+                confirmationTypes = listOf(ConfirmationType.REDIRECT)
             )
         )
 
@@ -291,13 +297,13 @@ internal class PaymentOptionsListUseCaseTest {
         val options = (action.content as PaymentOptionListSuccessOutputModel).options
 
         // assert
-        assertThat(options, contains(instanceOf(SbolSmsInvoicing::class.java)))
+        assertThat(options, contains(instanceOf(SberBank::class.java)))
 
         inOrder(paymentOptionListRepository, currentUserRepository, saveLoadedPaymentOptionsListRepository).apply {
             verify(currentUserRepository).currentUser
             verify(paymentOptionListRepository).getPaymentOptions(testInputModel, testUser)
             verify(saveLoadedPaymentOptionsListRepository)
-                .saveLoadedPaymentOptionsList(availableOptions.filter { it is SbolSmsInvoicing })
+                .saveLoadedPaymentOptionsList(availableOptions.filter { it is SberBank })
             verifyNoMoreInteractions()
         }
     }
@@ -389,7 +395,7 @@ internal class PaymentOptionsListUseCaseTest {
                 instanceOf(AbstractWallet::class.java),
                 instanceOf(LinkedCard::class.java),
                 instanceOf(LinkedCard::class.java),
-                instanceOf(SbolSmsInvoicing::class.java),
+                instanceOf(SberBank::class.java),
                 instanceOf(GooglePay::class.java)
             )
         )

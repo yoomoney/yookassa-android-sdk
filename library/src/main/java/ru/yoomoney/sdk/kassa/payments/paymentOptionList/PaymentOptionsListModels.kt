@@ -26,7 +26,7 @@ import ru.yoomoney.sdk.kassa.payments.model.GooglePay
 import ru.yoomoney.sdk.kassa.payments.model.NewCard
 import ru.yoomoney.sdk.kassa.payments.model.PaymentIdCscConfirmation
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
-import ru.yoomoney.sdk.kassa.payments.model.SbolSmsInvoicing
+import ru.yoomoney.sdk.kassa.payments.model.SberBank
 import ru.yoomoney.sdk.kassa.payments.model.YooMoney
 
 
@@ -43,7 +43,7 @@ internal data class PaymentOptionListNoWalletOutputModel(
 private fun PaymentOption.toAllowed() = when (this) {
     is NewCard -> PaymentMethodType.BANK_CARD
     is YooMoney -> PaymentMethodType.YOO_MONEY
-    is SbolSmsInvoicing -> PaymentMethodType.SBERBANK
+    is SberBank -> PaymentMethodType.SBERBANK
     is GooglePay -> PaymentMethodType.GOOGLE_PAY
     is PaymentIdCscConfirmation -> PaymentMethodType.BANK_CARD
 }

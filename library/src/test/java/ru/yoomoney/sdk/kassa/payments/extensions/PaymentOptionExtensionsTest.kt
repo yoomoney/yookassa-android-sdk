@@ -22,8 +22,10 @@
 package ru.yoomoney.sdk.kassa.payments.extensions
 
 import android.graphics.drawable.InsetDrawable
+import android.content.Context
 import android.text.SpannableStringBuilder
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.test.core.app.ApplicationProvider
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.contains
 import org.hamcrest.Matchers.equalTo
@@ -34,7 +36,6 @@ import org.junit.Test
 import org.junit.rules.Timeout
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 import ru.yoomoney.sdk.kassa.payments.R
 import ru.yoomoney.sdk.kassa.payments.createAbstractWalletPaymentOption
 import ru.yoomoney.sdk.kassa.payments.createGooglePayPaymentOptionWithFee
@@ -50,7 +51,6 @@ import ru.yoomoney.sdk.kassa.payments.metrics.TokenizeSchemeSbolSms
 import ru.yoomoney.sdk.kassa.payments.metrics.TokenizeSchemeWallet
 import ru.yoomoney.sdk.kassa.payments.model.ExternalConfirmation
 import ru.yoomoney.sdk.kassa.payments.model.LinkedCard
-import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
 import ru.yoomoney.sdk.kassa.payments.model.RedirectConfirmation
 import ru.yoomoney.sdk.kassa.payments.model.Wallet
 import java.util.concurrent.TimeUnit
@@ -61,7 +61,7 @@ class PaymentOptionExtensionsTest {
     @[Rule JvmField]
     val x = Timeout(1, TimeUnit.MINUTES)
 
-    private val context = RuntimeEnvironment.application
+    private val context = ApplicationProvider.getApplicationContext<Context>()
 
     @Test
     fun `get icon for Wallet`() {
@@ -317,7 +317,7 @@ class PaymentOptionExtensionsTest {
             createWalletPaymentOption(1),
             createLinkedCardPaymentOption(2),
             createNewCardPaymentOption(3),
-            createSbolSmsInvoicingPaymentOption(4),
+            createSbolSmsInvoicingPaymentOption(4, false),
             createGooglePayPaymentOptionWithFee(5)
         )
         val expectedTokenizeSchemes = arrayOf(
@@ -330,7 +330,7 @@ class PaymentOptionExtensionsTest {
         )
 
         // invoke
-        val actualTokenizeSchemes = paymentOptions.map(PaymentOption::toTokenizeScheme)
+        val actualTokenizeSchemes = paymentOptions.map { it.toTokenizeScheme(context) }
 
         // assert
         assertThat(actualTokenizeSchemes, contains(*expectedTokenizeSchemes))
@@ -345,7 +345,7 @@ class PaymentOptionExtensionsTest {
             createWalletPaymentOption(1),
             createLinkedCardPaymentOption(2),
             createNewCardPaymentOption(3),
-            createSbolSmsInvoicingPaymentOption(4),
+            createSbolSmsInvoicingPaymentOption(4, false),
             createGooglePayPaymentOptionWithFee(5)
         )
         val expectedConfirmations = arrayOf(
@@ -358,7 +358,7 @@ class PaymentOptionExtensionsTest {
         )
 
         // invoke
-        val actualConfirmations = paymentOptions.map { it.getConfirmation(redirectUrl) }
+        val actualConfirmations = paymentOptions.map { it.getConfirmation(context, redirectUrl, "exampleApp") }
 
         // assert
         assertThat(actualConfirmations, contains(*expectedConfirmations))

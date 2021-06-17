@@ -1,4 +1,3 @@
-
 /*
  * The MIT License (MIT)
  * Copyright © 2021 NBCO YooMoney LLC
@@ -23,28 +22,36 @@
 package ru.yoomoney.sdk.kassa.payments.userAuth
 
 import ru.yoomoney.sdk.auth.account.model.UserAccount
+import ru.yoomoney.sdk.kassa.payments.metrics.MoneyAuthLoginScheme
 
 internal object MoneyAuth {
 
     sealed class State {
-        object WaitingForAuthStarted: State()
-        data class Authorize(val authCenterClientId: String): State()
-
-        object CancelAuth: State()
+        object WaitingForAuthStarted : State()
+        data class Authorize(val authorizeStrategy: AuthorizeStrategy) : State()
+        object CancelAuth : State()
         object CompleteAuth : State()
     }
 
     sealed class Action {
-        object RequireAuth : Action()
+        data class RequireAuth(val isYooMoneyCouldBeOpened: Boolean) : Action()
+
+        data class GetTransferData(val cryptogram: String) : Action()
 
         data class Authorized(
             val token: String?,
             val userAccount: UserAccount?,
-            val tmxSessionId: String?
+            val tmxSessionId: String?,
+            val typeAuth: MoneyAuthLoginScheme
         ) : Action()
 
-        object AuthSuccessful: Action()
-
+        object AuthSuccessful : Action()
         object AuthCancelled : Action()
+        object AuthFailed : Action()
+    }
+
+    sealed class AuthorizeStrategy {
+        object InApp : AuthorizeStrategy()
+        object App2App : AuthorizeStrategy()
     }
 }

@@ -38,27 +38,44 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import ru.yoomoney.sdk.kassa.payments.Checkout;
+import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentMethodType;
 
 public final class SuccessTokenizeActivity extends AppCompatActivity {
 
     public static final String TOKEN_EXTRA = "paymentToken";
-    public static final String TYPE_EXTRA = "type";
+    public static final String PAYMENT_TYPE_EXTRA = "payment_type";
     public static final int REQUEST_CODE_3DS = 34;
+    public static final int REQUEST_CODE_APP_2_APP = 36;
+
+    @NonNull
+    private PaymentMethodType paymentMethodType = PaymentMethodType.BANK_CARD;
 
     @NonNull
     private String url3ds = "";
 
     @NonNull
-    public static Intent createIntent(@NonNull Context context, @NonNull String paymentToken, @NonNull String type) {
+    private String urlApp2App = "";
+
+    @NonNull
+    public static Intent createIntent(
+            @NonNull Context context,
+            @NonNull String paymentToken,
+            @NonNull String paymentType
+    ) {
         return new Intent(context, SuccessTokenizeActivity.class)
                 .putExtra(SuccessTokenizeActivity.TOKEN_EXTRA, paymentToken)
-                .putExtra(SuccessTokenizeActivity.TYPE_EXTRA, type);
+                .putExtra(SuccessTokenizeActivity.PAYMENT_TYPE_EXTRA, paymentType);
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_success_tokenize);
+
+        final Intent intent = getIntent();
+        final String token = intent.getStringExtra(TOKEN_EXTRA);
+        final String paymentType = intent.getStringExtra(PAYMENT_TYPE_EXTRA);
+        paymentMethodType = PaymentMethodType.valueOf(paymentType);
 
         findViewById(R.id.close).setOnClickListener(v -> finish());
         findViewById(R.id.showDocumentation).setOnClickListener(v -> openLink(R.string.checkout_documentation_link));
@@ -84,12 +101,30 @@ public final class SuccessTokenizeActivity extends AppCompatActivity {
             });
         }
 
+        int showApp2AppContainer = shouldShowApp2AppContainer();
+        findViewById(R.id.containerApp2App).setVisibility(showApp2AppContainer);
+        if (show3dsContainer == View.VISIBLE) {
+            findViewById(R.id.confirmApp2App).setOnClickListener(v -> openApp2AppConfirmation());
+            ((EditText) findViewById(R.id.urlApp2App)).addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    urlApp2App = s.toString();
+                }
+            });
+        }
+
+
         findViewById(R.id.showToken).setOnClickListener(v -> {
-            final Intent intent = getIntent();
-            final String token = intent.getStringExtra(TOKEN_EXTRA);
-            final String type = intent.getStringExtra(TYPE_EXTRA);
             new AlertDialog.Builder(this, R.style.ym_DialogStyle)
-                    .setMessage("Token: " + token + "\nType: " + type)
+                    .setMessage("Token: " + token + "\nPayment type: " + paymentType)
                     .setPositiveButton(R.string.token_copy, (dialog, which) -> {
                         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                         if (clipboard != null) {
@@ -109,18 +144,29 @@ public final class SuccessTokenizeActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CODE_3DS) {
             switch (resultCode) {
                 case RESULT_OK:
-                    show3dsAlertDialog(getString(R.string.success_3ds));
+                    showConfirmationAlertDialog(getString(R.string.success_3ds));
                     break;
                 case RESULT_CANCELED:
-                    show3dsAlertDialog(getString(R.string.cancel_3ds));
+                    showConfirmationAlertDialog(getString(R.string.cancel_3ds));
                     break;
                 case Checkout.RESULT_ERROR:
                     String error =
-                        getString(R.string.error_code_3ds) + String.valueOf(data.getIntExtra(Checkout.EXTRA_ERROR_CODE, -1)) + "\n" +
-                        getString(R.string.error_description_3ds) + data.getStringExtra(Checkout.EXTRA_ERROR_DESCRIPTION) + "\n" +
-                        getString(R.string.error_failing_url_3ds) + data.getStringExtra(Checkout.EXTRA_ERROR_FAILING_URL);
-                    show3dsAlertDialog(error);
+                            getString(R.string.error_code_3ds) +
+                                    String.valueOf(data.getIntExtra(Checkout.EXTRA_ERROR_CODE, -1)) + "\n" +
+                                    getString(R.string.error_description_3ds) +
+                                    data.getStringExtra(Checkout.EXTRA_ERROR_DESCRIPTION) + "\n" +
+                                    getString(R.string.error_failing_url_3ds) +
+                                    data.getStringExtra(Checkout.EXTRA_ERROR_FAILING_URL);
+                    showConfirmationAlertDialog(error);
                     break;
+            }
+        } else if (requestCode == REQUEST_CODE_APP_2_APP) {
+            switch (resultCode) {
+                case RESULT_OK:
+                    showConfirmationAlertDialog(getString(R.string.success_app2app));
+                    break;
+                case RESULT_CANCELED:
+                    showConfirmationAlertDialog(getString(R.string.cancel_app2app));
             }
         }
     }
@@ -129,7 +175,7 @@ public final class SuccessTokenizeActivity extends AppCompatActivity {
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(linkResId))));
     }
 
-    private void show3dsAlertDialog(@NonNull String message) {
+    private void showConfirmationAlertDialog(@NonNull String message) {
         new AlertDialog.Builder(this, R.style.ym_DialogStyle)
                 .setMessage(message)
                 .setPositiveButton(R.string.token_cancel, (dialog, which) -> { })
@@ -138,14 +184,29 @@ public final class SuccessTokenizeActivity extends AppCompatActivity {
 
     private void open3dsConfirmation() {
         if (URLUtil.isHttpsUrl(url3ds) || URLUtil.isAssetUrl(url3ds)) {
-            Intent intent = Checkout.create3dsIntent(this, url3ds);
+            Intent intent = Checkout.createConfirmationIntent(this, url3ds, paymentMethodType);
             startActivityForResult(intent, REQUEST_CODE_3DS);
         } else {
             Toast.makeText(this, getString(R.string.error_wrong_url), Toast.LENGTH_SHORT).show();
         }
     }
 
+    private void openApp2AppConfirmation() {
+        startActivityForResult(
+                Checkout.createConfirmationIntent( this, urlApp2App, PaymentMethodType.SBERBANK),
+                REQUEST_CODE_APP_2_APP
+        );
+    }
+
     private int shouldShow3dsContainer() {
         return BuildConfig.DEBUG ? View.VISIBLE : View.GONE;
+    }
+
+    private int shouldShowApp2AppContainer() {
+        return BuildConfig.DEBUG &&
+                getIntent().getStringExtra(PAYMENT_TYPE_EXTRA).equals(PaymentMethodType.SBERBANK.name())
+                ? View.VISIBLE
+                : View.GONE;
+
     }
 }

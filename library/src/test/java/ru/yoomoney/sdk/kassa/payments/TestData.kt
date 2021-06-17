@@ -27,15 +27,9 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import com.nhaarman.mockitokotlin2.mock
 import org.hamcrest.BaseMatcher
-import org.hamcrest.CoreMatchers
 import org.hamcrest.Description
 import org.hamcrest.Matcher
-import org.junit.Assert
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.Parameterized
 import org.mockito.Mockito.`when`
 import org.mockito.stubbing.OngoingStubbing
 import ru.yoomoney.sdk.kassa.payments.extensions.RUB
@@ -46,9 +40,10 @@ import ru.yoomoney.sdk.kassa.payments.model.GooglePay
 import ru.yoomoney.sdk.kassa.payments.model.LinkedCard
 import ru.yoomoney.sdk.kassa.payments.model.NewCard
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
-import ru.yoomoney.sdk.kassa.payments.model.SbolSmsInvoicing
 import ru.yoomoney.sdk.kassa.payments.model.Wallet
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.Amount
+import ru.yoomoney.sdk.kassa.payments.model.ConfirmationType
+import ru.yoomoney.sdk.kassa.payments.model.SberBank
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.SavePaymentMethod
 import ru.yoomoney.sdk.kassa.payments.contract.Contract
@@ -60,7 +55,6 @@ import ru.yoomoney.sdk.kassa.payments.payment.tokenize.TokenizeInputModel
 import ru.yoomoney.sdk.march.generateBusinessLogicTests
 import java.math.BigDecimal
 import java.util.Arrays
-import java.util.Currency
 
 fun <T> on(arg: T): OngoingStubbing<T> = `when`(arg)
 
@@ -72,7 +66,8 @@ internal fun createNewCardPaymentOption(id: Int): PaymentOption =
             Amount(BigDecimal.ONE, RUB),
             Amount(BigDecimal("0.5"), RUB)
         ),
-        savePaymentMethodAllowed = true
+        savePaymentMethodAllowed = true,
+        confirmationTypes = listOf(ConfirmationType.EXTERNAL)
     )
 
 internal fun createWalletPaymentOption(id: Int): PaymentOption =
@@ -85,7 +80,8 @@ internal fun createWalletPaymentOption(id: Int): PaymentOption =
         ),
         walletId = "12345654321",
         balance = Amount(BigDecimal.TEN, RUB),
-        savePaymentMethodAllowed = true
+        savePaymentMethodAllowed = true,
+        confirmationTypes = listOf(ConfirmationType.REDIRECT)
     )
 
 internal fun createAbstractWalletPaymentOption(id: Int): PaymentOption =
@@ -96,18 +92,24 @@ internal fun createAbstractWalletPaymentOption(id: Int): PaymentOption =
             Amount(BigDecimal.ONE, RUB),
             Amount(BigDecimal("0.5"), RUB)
         ),
-        savePaymentMethodAllowed = true
+        savePaymentMethodAllowed = true,
+        confirmationTypes = listOf(ConfirmationType.REDIRECT)
     )
 
-internal fun createSbolSmsInvoicingPaymentOption(id: Int): PaymentOption =
-    SbolSmsInvoicing(
+internal fun createSbolSmsInvoicingPaymentOption(id: Int, isSberPayAllowed: Boolean): PaymentOption =
+    SberBank(
         id = id,
         charge = Amount(BigDecimal.TEN, RUB),
         fee = Fee(
             Amount(BigDecimal.ONE, RUB),
             Amount(BigDecimal("0.5"), RUB)
         ),
-        savePaymentMethodAllowed = false
+        savePaymentMethodAllowed = false,
+        confirmationTypes = if (isSberPayAllowed){
+            listOf(ConfirmationType.EXTERNAL, ConfirmationType.REDIRECT, ConfirmationType.MOBILE_APPLICATION)
+        } else {
+            listOf(ConfirmationType.EXTERNAL, ConfirmationType.REDIRECT)
+        }
     )
 
 internal fun createLinkedCardPaymentOption(id: Int): PaymentOption =
@@ -121,7 +123,8 @@ internal fun createLinkedCardPaymentOption(id: Int): PaymentOption =
         cardId = "12345654321",
         brand = CardBrand.MASTER_CARD,
         pan = "1234567887654321",
-        savePaymentMethodAllowed = true
+        savePaymentMethodAllowed = true,
+        confirmationTypes = listOf(ConfirmationType.REDIRECT)
     )
 
 internal fun createGooglePayPaymentOptionWithFee(id: Int): PaymentOption =
@@ -132,7 +135,8 @@ internal fun createGooglePayPaymentOptionWithFee(id: Int): PaymentOption =
             Amount(BigDecimal.ONE, RUB),
             Amount(BigDecimal("0.5"), RUB)
         ),
-        savePaymentMethodAllowed = false
+        savePaymentMethodAllowed = false,
+        confirmationTypes = emptyList()
     )
 
 internal fun equalToDrawable(drawable: Drawable?): Matcher<Drawable?> = object : BaseMatcher<Drawable?>() {

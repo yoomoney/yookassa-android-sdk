@@ -41,6 +41,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import ru.yoo.sdk.kassa.payments.example.BuildConfig;
 import ru.yoo.sdk.kassa.payments.example.R;
 import ru.yoomoney.sdk.kassa.payments.Checkout;
+import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentMethodType;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -165,7 +166,7 @@ public final class SettingsActivity extends AppCompatActivity implements View.On
                     v -> {
                         try {
                             startActivityForResult(
-                                    Checkout.create3dsIntent(this, THREE_D_S_URL),
+                                    Checkout.createConfirmationIntent(this, THREE_D_S_URL, PaymentMethodType.BANK_CARD),
                                     START_CONFIRMATION_REQUEST_CODE);
                         } catch (IllegalStateException e) {
                             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();

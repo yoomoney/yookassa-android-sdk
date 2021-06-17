@@ -32,6 +32,7 @@ import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.SavePaymentMethod
 import ru.yoomoney.sdk.kassa.payments.tmx.TmxSessionIdStorage
 import ru.yoomoney.sdk.kassa.payments.extensions.RUB
+import ru.yoomoney.sdk.kassa.payments.metrics.MoneyAuthLoginSchemeAuthSdk
 import ru.yoomoney.sdk.kassa.payments.userAuth.MoneyAuth
 import ru.yoomoney.sdk.kassa.payments.userAuth.MoneyAuthBusinessLogic
 import ru.yoomoney.sdk.march.generateBusinessLogicTests
@@ -47,18 +48,21 @@ internal class MoneyAuthBusinessLogicTest(
     companion object {
         @[Parameterized.Parameters(name = "{0}") JvmStatic]
         fun data(): Collection<Array<out Any>> {
+            val auxToken = "auxToken"
+            val cryptogram = "cryptogram"
+
             val waitingForAuthStartedState = MoneyAuth.State.WaitingForAuthStarted
-            val authorizeState = MoneyAuth.State.Authorize("any")
+            val authorizeState = MoneyAuth.State.Authorize(MoneyAuth.AuthorizeStrategy.InApp)
             val completeState = MoneyAuth.State.CompleteAuth
             val cancelAuth = MoneyAuth.State.CancelAuth
 
 
-            val requireAuthAction = MoneyAuth.Action.RequireAuth
+            val requireAuthAction = MoneyAuth.Action.RequireAuth(false)
             val authorizedAction = MoneyAuth.Action.Authorized(
-                "any", null, "any"
+                "any", null, "any", MoneyAuthLoginSchemeAuthSdk()
             )
-
             val authCancelledAction = MoneyAuth.Action.AuthCancelled
+            val getTransferData = MoneyAuth.Action.GetTransferData(cryptogram)
 
             return generateBusinessLogicTests<MoneyAuth.State, MoneyAuth.Action>(
                 generateState = {
@@ -75,6 +79,7 @@ internal class MoneyAuthBusinessLogicTest(
                         MoneyAuth.Action.RequireAuth::class -> requireAuthAction
                         MoneyAuth.Action.Authorized::class -> authorizedAction
                         MoneyAuth.Action.AuthCancelled::class -> authCancelledAction
+                        MoneyAuth.Action.GetTransferData::class -> getTransferData
                         else -> it.objectInstance ?: error(it)
                     }
                 },
@@ -85,6 +90,7 @@ internal class MoneyAuthBusinessLogicTest(
                         authorizeState to authCancelledAction -> waitingForAuthStartedState
                         completeState to requireAuthAction -> authorizeState
                         waitingForAuthStartedState to requireAuthAction -> authorizeState
+
                         else -> {
                             if (state == cancelAuth) {
                                 waitingForAuthStartedState
@@ -99,9 +105,14 @@ internal class MoneyAuthBusinessLogicTest(
     }
 
     private val logic = MoneyAuthBusinessLogic(
-        mock(), mock(), "any",
-        TmxSessionIdStorage(), mock(), mock(), mock(),
-        PaymentParameters(
+        showState = mock(),
+        source = mock(),
+        tmxSessionIdStorage = TmxSessionIdStorage(),
+        currentUserRepository = mock(),
+        userAuthInfoRepository = mock(),
+        paymentOptionsListUseCase = mock(),
+        getTransferDataUseCase = mock(),
+        paymentParameters = PaymentParameters(
             amount = Amount(BigDecimal.TEN, RUB),
             title = "shopTitle",
             subtitle = "shopSubtitle",
@@ -110,7 +121,7 @@ internal class MoneyAuthBusinessLogicTest(
             savePaymentMethod = SavePaymentMethod.ON,
             authCenterClientId = "authCenterClientId"
         ),
-        mock()
+        loadedPaymentOptionListRepository = mock()
     )
 
     @Test

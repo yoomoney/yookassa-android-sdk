@@ -28,13 +28,14 @@ import ru.yoomoney.sdk.kassa.payments.contract.Contract.Effect
 import ru.yoomoney.sdk.kassa.payments.contract.Contract.State
 import ru.yoomoney.sdk.kassa.payments.logout.LogoutUseCase
 import ru.yoomoney.sdk.kassa.payments.model.GooglePay
+import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOptionInfo
-import ru.yoomoney.sdk.kassa.payments.model.SbolSmsInvoicing
 import ru.yoomoney.sdk.kassa.payments.payment.tokenize.TokenizeInputModel
 import ru.yoomoney.sdk.march.Logic
 import ru.yoomoney.sdk.march.Out
 import ru.yoomoney.sdk.march.input
 import ru.yoomoney.sdk.march.output
+import ru.yoomoney.sdk.kassa.payments.model.Confirmation
 import java.math.BigDecimal
 
 internal class ContractBusinessLogic(
@@ -44,7 +45,8 @@ internal class ContractBusinessLogic(
     private val paymentParameters: PaymentParameters,
     private val selectPaymentOptionUseCase: SelectPaymentOptionUseCase,
     private val tokenizeUseCase: TokenizeUseCase,
-    private val logoutUseCase: LogoutUseCase
+    private val logoutUseCase: LogoutUseCase,
+    private val getConfirmation: (PaymentOption) -> Confirmation
 ) : Logic<State, Action> {
 
     override fun invoke(state: State, action: Action): Out<State, Action> = when (state) {
@@ -183,7 +185,7 @@ internal class ContractBusinessLogic(
             },
             showAllowWalletLinking = outputModel.walletLinkingPossible,
             allowWalletLinking = true,
-            showPhoneInput = outputModel.paymentOption is SbolSmsInvoicing
+            confirmation = getConfirmation(outputModel.paymentOption)
         )
         return when (outputModel.paymentOption) {
             is GooglePay -> {
@@ -209,6 +211,7 @@ private fun State.Content.getTokenizeInputModel(paymentOptionInfo: PaymentOption
     return TokenizeInputModel(
         paymentOptionId =  paymentOption.id,
         savePaymentMethod = savePaymentMethod,
+        confirmation = confirmation,
         paymentOptionInfo = paymentOptionInfo,
         allowWalletLinking = allowWalletLinking
     )

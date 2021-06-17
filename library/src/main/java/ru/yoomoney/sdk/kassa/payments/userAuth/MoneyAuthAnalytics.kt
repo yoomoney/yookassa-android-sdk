@@ -21,8 +21,11 @@
 
 package ru.yoomoney.sdk.kassa.payments.userAuth
 
-import ru.yoomoney.sdk.kassa.payments.metrics.AuthYooMoneyLoginStatusCanceled
-import ru.yoomoney.sdk.kassa.payments.metrics.AuthYooMoneyLoginStatusSuccess
+import ru.yoomoney.sdk.kassa.payments.metrics.ActionMoneyAuthLoginCanceled
+import ru.yoomoney.sdk.kassa.payments.metrics.ActionMoneyAuthLoginFail
+import ru.yoomoney.sdk.kassa.payments.metrics.ActionMoneyAuthLoginSuccess
+import ru.yoomoney.sdk.kassa.payments.metrics.MoneyAuthLoginSchemeAuthSdk
+import ru.yoomoney.sdk.kassa.payments.metrics.MoneyAuthLoginSchemeYooMoney
 import ru.yoomoney.sdk.kassa.payments.metrics.Reporter
 import ru.yoomoney.sdk.march.Logic
 import ru.yoomoney.sdk.march.Out
@@ -32,19 +35,20 @@ internal class MoneyAuthAnalytics(
     private val businessLogic: Logic<MoneyAuth.State, MoneyAuth.Action>
 ) : Logic<MoneyAuth.State, MoneyAuth.Action> {
 
-    private val name = "actionLoginAuthorization"
+    private val name = "actionMoneyAuthLogin"
 
     override fun invoke(
         state: MoneyAuth.State,
         action: MoneyAuth.Action
     ): Out<MoneyAuth.State, MoneyAuth.Action> {
         val arg = when (action) {
-            is MoneyAuth.Action.Authorized -> AuthYooMoneyLoginStatusSuccess()
-            MoneyAuth.Action.AuthCancelled -> AuthYooMoneyLoginStatusCanceled()
+            is MoneyAuth.Action.Authorized -> listOf(ActionMoneyAuthLoginSuccess(), action.typeAuth)
+            is MoneyAuth.Action.AuthCancelled -> listOf(ActionMoneyAuthLoginCanceled(), MoneyAuthLoginSchemeAuthSdk())
+            is MoneyAuth.Action.AuthFailed -> listOf(ActionMoneyAuthLoginFail(), MoneyAuthLoginSchemeYooMoney())
             else -> null
         }
 
-        arg?.let { reporter.report(name, listOf(arg)) }
+        arg?.let { reporter.report(name, arg) }
 
         return businessLogic(state, action)
     }

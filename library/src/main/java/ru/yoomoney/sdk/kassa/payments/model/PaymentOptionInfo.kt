@@ -51,6 +51,8 @@ internal data class LinkedCardInfo(val csc: String) : PaymentOptionInfo() {
 
 internal data class SbolSmsInvoicingInfo(val phone: String) : PaymentOptionInfo()
 
+internal object SberPay: PaymentOptionInfo()
+
 internal data class GooglePayInfo(
     val paymentMethodToken: String,
     val googleTransactionId: String

@@ -50,12 +50,15 @@
     <string name="pay_with_token">Провести оплату по токену</string>
     <string name="button_close">Закрыть</string>
     <string name="tokenization_canceled">Токенизация отменена</string>
+    <string name="success_app2app">App2App пройден</string>
+    <string name="cancel_app2app">App2App отменен</string>
     <string name="success_3ds">3ds пройден</string>
     <string name="cancel_3ds">3ds отменен</string>
     <string name="error_code_3ds">Код ошибки: </string>
     <string name="error_description_3ds">Описание ошибки: </string>
     <string name="error_failing_url_3ds">Ошибочная ссылка: </string>
     <string name="hint_3ds_input">Введите 3ds ссылку</string>
+    <string name="hint_app2app_input">Введите App2App ссылку</string>
     <string name="confirm_3ds">Подтвердить</string>
     <string name="error_wrong_url">Некорректный url</string>
     <string name="color_scheme_title">Цвет темы</string>

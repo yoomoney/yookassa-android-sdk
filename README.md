@@ -20,7 +20,7 @@
 
 #  Документация
 
-Android Checkout mobile SDK - версия 5.1.4 ([changelog](https://github.com/yoomoney/yookassa-android-sdk/blob/master/CHANGELOG.md))
+Android Checkout mobile SDK - версия 6.0.1 ([changelog](https://github.com/yoomoney/yookassa-android-sdk/blob/master/CHANGELOG.md))
 
 * [Changelog](#changelog)
 * [Migration guide](#migration-guide)
@@ -79,7 +79,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'ru.yoomoney.sdk.kassa.payments:yookassa-android-sdk:5.1.4'
+    implementation 'ru.yoomoney.sdk.kassa.payments:yookassa-android-sdk:6.0.1'
 }
 ```
 
@@ -105,6 +105,24 @@ dependencies {
 }
 ```
 
+## Настройка схемы приложениия
+Для работы sdk нужно настроить схему вашего приложения для обработки deeplink. Это необходимо сделать для оплаты через sberpay.
+Нужно добавить в ваш файл build.gradle в блок android.defaultConfig строку `resValue "string", "ym_app_scheme", "your_unique_app_shceme"`
+```
+android {
+    defaultConfig {
+        resValue "string", "ym_app_scheme", "your_unique_app_shceme"
+    }
+}
+```
+Или добавить в ваш strings.xml строку вида:
+```
+<resources>
+    <string name="ym_app_scheme" translatable="false">your_unique_app_shceme</string>
+</resources>
+```
+Где your_unique_app_shceme - это уникальное название вашего приложения, если вы уже обрабатывете deeplink в своём приложении, то можно использовать готовую схему вашего приложения.
+Если ранее в проекте вы не обрабатывали deeplink, можно придумать уникальную схему для вашего приложения, состоящую из латинских букв.
 
 ## Настройка приложения при продаже цифровых товаров
 Если в вашем приложении продаются цифровые товары, нужно отключить Google Pay из списка платежных опций.
@@ -148,8 +166,8 @@ dependencies {
 * paymentMethodTypes (Set of PaymentMethodType) - ограничения способов оплаты. Если оставить поле пустым или передать в него null,
 библиотека будет использовать все доступные способы оплаты;
 * gatewayId (String) - gatewayId для магазина;
-* customReturnUrl (String) - url страницы (поддерживается только https), на которую надо вернуться после прохождения 3ds. Должен использоваться только при при использовании своего Activity для 3ds url. При использовании Checkout.create3dsIntent() не задавайте этот параметр;
-* userPhoneNumber (String) - номер телефона пользователя. Используется для автозаполнения поля при оплате через Сбербанк Онлайн. Поддерживаемый формат данных: "+7XXXXXXXXXX".
+* customReturnUrl (String) - url страницы (поддерживается только https), на которую надо вернуться после прохождения 3ds. Должен использоваться только при при использовании своего Activity для 3ds url. При использовании Checkout.createConfirmationIntent() или Checkout.create3dsIntent() не задавайте этот параметр;
+* userPhoneNumber (String) - номер телефона пользователя. Используется для автозаполнения поля при оплате через SberPay. Поддерживаемый формат данных: "+7XXXXXXXXXX".
 * googlePayParameters (GooglePayParameters) - настройки для оплаты через Google Pay.
 
 Поля класса `Amount`:
@@ -164,7 +182,7 @@ dependencies {
 Значения `PaymentMethodType`:
 * YOO_MONEY - оплата произведена с кошелька ЮMoney;
 * BANK_CARD - оплата произведена с банковской карты;
-* SBERBANK - оплата произведена через Сбербанк (SMS invoicing или Сбербанк онлайн);
+* SBERBANK - оплата произведена через Сбербанк (SMS invoicing или SberPay);
 * GOOGLE_PAY - оплата произведена через Google Pay.
 
 Поля класса `GooglePayParameters`:
@@ -270,7 +288,7 @@ class MyActivity extends AppCompatActivity {
 Значения `PaymentMethodType`:
 * YOO_MONEY - оплата произведена с кошелька ЮMoney;
 * BANK_CARD - оплата произведена с банковской карты;
-* SBERBANK - оплата произведена через Сбербанк (SMS invoicing или Сбербанк онлайн);
+* SBERBANK - оплата произведена через Сбербанк (SMS invoicing или SberPay);
 * GOOGLE_PAY - оплата произведена через Google Pay.
 
 ```java
@@ -375,9 +393,10 @@ class MyActivity extends AppCompatActivity {
 Для упрощения интеграции платежей по банковским картам в SDK есть Activity для обработки 3DS.
 Не указывайте PaymentParameters.customReturnUrl при вызове Checkout.createTokenizeIntent(), если используете это Activity.
 
-Входные параметры для `Checkout.create3dsIntent()`:
+Входные параметры для `Checkout.createConfirmationIntent()`:
 * context (Context) - контекст для создания `Intent`;
 * url (String) - URL для перехода на 3DS.
+* paymentMethodType (PaymentMethodType) - выбранный тип платежного метода.
 * colorScheme (ColorScheme) - цветовая схема.
 
 Результат работы 3ds можно получить в `onActivityResult()`
@@ -392,9 +411,10 @@ class MyActivity extends AppCompatActivity {
 class MyActivity extends AppCompatActivity {
 
     void timeToStart3DS() {
-        Intent intent = Checkout.create3dsIntent(
+        Intent intent = Checkout.createConfirmationIntent(
                 this,
-                "https://3dsurl.com/"
+                "https://3dsurl.com/",
+                PaymentMethodType.BANK_CARD
         );
         startActivityForResult(intent, 1);
     }

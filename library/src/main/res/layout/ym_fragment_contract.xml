@@ -147,6 +147,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
+                <include
+                    android:id="@+id/sberPayView"
+                    android:visibility="gone"
+                    layout="@layout/ym_sber_pay_info"
+                    android:layout_marginStart="@dimen/ym_space_m"
+                    android:layout_marginEnd="@dimen/ym_space_m"
+                    android:layout_marginTop="@dimen/ym_space_2xl"
+                    android:layout_marginBottom="@dimen/ym_space_2xl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
                 <ru.yoomoney.sdk.kassa.payments.ui.view.BankCardView
                     android:id="@+id/bankCardView"
                     android:visibility="gone"

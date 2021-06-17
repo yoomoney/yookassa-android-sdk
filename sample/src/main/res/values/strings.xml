@@ -50,12 +50,15 @@
     <string name="pay_with_token">Pay with this token</string>
     <string name="button_close">Close</string>
     <string name="tokenization_canceled">Tokenization canceled</string>
+    <string name="success_app2app">App2App was completed</string>
+    <string name="cancel_app2app">App2App was canceled</string>
     <string name="success_3ds">3ds was completed</string>
     <string name="cancel_3ds">3ds was canceled</string>
     <string name="error_code_3ds">Error code: </string>
     <string name="error_description_3ds">Error description: </string>
     <string name="error_failing_url_3ds">Error url: </string>
     <string name="hint_3ds_input">Input 3ds url</string>
+    <string name="hint_app2app_input">Input App2App url</string>
     <string name="confirm_3ds">Confirm</string>
     <string name="error_wrong_url">Wrong url</string>
     <string name="color_scheme_title">Color scheme</string>

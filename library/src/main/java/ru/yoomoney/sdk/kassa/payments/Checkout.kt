@@ -40,6 +40,8 @@ import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.SavedBankCardPaymentParameters
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.TestParameters
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.UiParameters
+import ru.yoomoney.sdk.kassa.payments.ui.ConfirmationActivity
+import ru.yoomoney.sdk.kassa.payments.ui.EXTRA_CONFIRMATION_URL
 import ru.yoomoney.sdk.kassa.payments.ui.color.ColorScheme
 import ru.yoomoney.sdk.kassa.payments.ui.view.EXTRA_CARD_NUMBER
 import ru.yoomoney.sdk.kassa.payments.ui.view.EXTRA_EXPIRY_MONTH
@@ -108,7 +110,16 @@ object Checkout {
      * @param context [Context] to create [Intent].
      * @param url Url to open 3DS, should be valid https url.
      * @return [Intent] to start 3DS [Activity].
+     *
+     * @deprecated use [createConfirmationIntent] instead.
      */
+    @Deprecated(
+        message = "Use method createConfirmationIntent() instead",
+        replaceWith = ReplaceWith(
+            expression = "Checkout.createConfirmationIntent(context=context, confirmationUrl=url, paymentMethodType=)",
+            imports = ["ru.yoomoney.sdk.kassa.payments.Checkout"]
+        )
+    )
     @[JvmStatic JvmOverloads Keep]
     fun create3dsIntent(
         context: Context,
@@ -171,5 +182,42 @@ object Checkout {
             .putExtra(EXTRA_CSC_PARAMETERS, savedBankCardPaymentParameters)
             .putExtra(EXTRA_TEST_PARAMETERS, testParameters)
             .putExtra(EXTRA_CREATED_WITH_CHECKOUT_METHOD, true)
+    }
+
+    /**
+     * Create [Intent] to start payment process via app confirmation
+     *
+     * This intent should be used in startActivityForResult() to start payment process via app confirmation
+     *
+     * When payment is finished, result will return in onActivityResult().
+     * ResultCode can be Activity.RESULT_OK in case if payment in successfully done
+     * or Activity.RESULT_CANCELED if user cancel the payment.
+     *
+     * @param context application context.
+     * @param confirmationUrl an url you retrieved from API to start payment process
+     * @param colorScheme color of the scheme selected in the settings
+     * @param paymentMethodType selected type of payment
+     */
+    @[JvmStatic JvmOverloads Keep]
+    fun createConfirmationIntent(
+        context: Context,
+        confirmationUrl: String,
+        paymentMethodType: PaymentMethodType,
+        colorScheme: ColorScheme = ColorScheme.getDefaultScheme()
+    ): Intent = when(paymentMethodType) {
+        PaymentMethodType.SBERBANK -> {
+            Intent(context, ConfirmationActivity::class.java)
+                .putExtra(EXTRA_CONFIRMATION_URL, confirmationUrl)
+                .putExtra(EXTRA_PAYMENT_METHOD_TYPE, paymentMethodType)
+        }
+        else -> {
+            checkUrl(confirmationUrl)
+            InMemoryColorSchemeRepository.colorScheme = colorScheme
+            WebViewActivity.create(
+                context = context,
+                url = confirmationUrl,
+                logParam = "screen3ds"
+            )
+        }
     }
 }

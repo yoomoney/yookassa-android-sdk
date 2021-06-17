@@ -25,3 +25,4 @@ internal sealed class Confirmation
 internal object NoConfirmation : Confirmation()
 internal object ExternalConfirmation : Confirmation()
 internal data class RedirectConfirmation(val returnUrl: String) : Confirmation()
+internal data class MobileApplication(val returnUrl: String) : Confirmation()

@@ -41,6 +41,7 @@ import ru.yoomoney.sdk.kassa.payments.payment.selectOption.SelectedPaymentOption
 import ru.yoomoney.sdk.kassa.payments.payment.tokenize.TokenOutputModel
 import ru.yoomoney.sdk.kassa.payments.payment.tokenize.TokenizeInputModel
 import ru.yoomoney.sdk.march.generateBusinessLogicTests
+import ru.yoomoney.sdk.kassa.payments.model.ExternalConfirmation
 import java.math.BigDecimal
 import java.util.Currency
 
@@ -67,7 +68,7 @@ internal class ContractBusinessLogicTest(
             val paymentOptionId = 11
             val errorState = Error(Throwable("Error state"))
             val loadingState = Loading
-            val paymentOption = NewCard(paymentOptionId, Amount(BigDecimal.TEN, Currency.getInstance("RUB")),null, false)
+            val paymentOption = NewCard(paymentOptionId, Amount(BigDecimal.TEN, Currency.getInstance("RUB")),null, false, emptyList())
             val contentState = Content(
                 shopTitle = "shopTitle",
                 shopSubtitle = "shopSubtitle",
@@ -75,7 +76,7 @@ internal class ContractBusinessLogicTest(
                 savePaymentMethod = false,
                 showAllowWalletLinking = true,
                 allowWalletLinking = true,
-                showPhoneInput = false
+                confirmation = ExternalConfirmation
             )
 
             val loadContractSuccessAction = Action.LoadContractSuccess(
@@ -103,7 +104,8 @@ internal class ContractBusinessLogicTest(
             val tokenizeInputModel = TokenizeInputModel(
                 paymentOptionId = paymentOptionId,
                 savePaymentMethod = false,
-                paymentOptionInfo = paymentOptionInfo
+                paymentOptionInfo = paymentOptionInfo,
+                confirmation = ExternalConfirmation
             )
 
             val tokenizeAction = Action.Tokenize(paymentOptionInfo)
@@ -173,7 +175,7 @@ internal class ContractBusinessLogicTest(
         }
     }
 
-    private val logic = ContractBusinessLogic(mock(), mock(), mock(), paymentParameters, mock(), mock(), mock())
+    private val logic = ContractBusinessLogic(mock(), mock(), mock(), paymentParameters, mock(), mock(), mock(), { ExternalConfirmation })
 
     @Test
     fun test() {

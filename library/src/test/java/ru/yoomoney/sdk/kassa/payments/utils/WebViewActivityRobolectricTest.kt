@@ -27,6 +27,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.Amount
 import ru.yoomoney.sdk.kassa.payments.Checkout
+import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentMethodType
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.SavePaymentMethod
 import ru.yoomoney.sdk.kassa.payments.extensions.RUB
@@ -53,7 +54,11 @@ class WebViewActivityRobolectricTest {
         val url = "http://wrong.scheme.url/"
 
         // invoke
-        Checkout.create3dsIntent(RuntimeEnvironment.application, url)
+        Checkout.createConfirmationIntent(
+            context = RuntimeEnvironment.application,
+            confirmationUrl = url,
+            paymentMethodType = PaymentMethodType.BANK_CARD
+        )
 
         // assert that exception thrown
     }

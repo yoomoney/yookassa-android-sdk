@@ -21,9 +21,40 @@
 
 package ru.yoomoney.sdk.kassa.payments.utils
 
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import ru.yoomoney.sdk.kassa.payments.impl.SBERBANK_ONLINE_PACKAGE
+
 // Do not forget to change redirect link in test.html at /assets
 internal const val DEFAULT_REDIRECT_URL = "checkoutsdk://success"
+internal const val INVOICING_AUTHORITY = "invoicing"
+internal const val SBERPAY_PATH = "sberpay"
 
 internal fun checkUrl(url: String) {
     require(WebViewActivity.checkUrl(url)) { "Url $url is not allowed. It should be a valid https url." }
+}
+
+internal fun Context.canResolveIntent(intent: Intent): Boolean {
+    return packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY).isNotEmpty()
+}
+
+internal fun createSberbankIntent(context: Context?, confirmationUrl: String): Intent {
+    return Intent(Intent.ACTION_VIEW, Uri.parse(confirmationUrl)).apply {
+        context?.packageManager?.queryIntentActivities(this, 0)
+            ?.firstOrNull { it.activityInfo.applicationInfo.packageName.contains(SBERBANK_ONLINE_PACKAGE) }
+            ?.run { component = ComponentName(activityInfo.packageName, activityInfo.name) }
+    }
+}
+
+internal fun isSberBankAppInstalled(context: Context): Boolean {
+    return try {
+        val packageManager = context.packageManager
+        packageManager.getPackageInfo(SBERBANK_ONLINE_PACKAGE, 0)
+        true
+    } catch (e: PackageManager.NameNotFoundException) {
+        false
+    }
 }

@@ -63,6 +63,15 @@ android {
 
     flavorDimensions "payment_type"
     productFlavors {
+        withAppScheme {
+            dimension "appscheme"
+            resValue "string", "ym_app_scheme", "exampleapp"
+        }
+        noAppScheme {
+            dimension "appscheme"
+
+            resValue "string", "ym_app_scheme", ""
+        }
         withYooMoney {
             dimension "payment_type"
         }
@@ -78,10 +87,6 @@ android {
     }
 }
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     implementation "androidx.appcompat:appcompat:$appcompat"
     implementation "com.google.android.material:material:$material"
@@ -89,9 +94,8 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$constraintlayout"
     implementation 'com.facebook.device.yearclass:yearclass:2.1.0'
     implementation project(':library')
-
     implementation(fileTree(dir: "libs", include: ["profiling-tool.aar"]))
-
+    implementation("ru.yoomoney.sdk.auth:auth:$yoo_sdk_auth_version")
     implementation 'io.card:android-sdk:5.5.1'
 
     testImplementation "junit:junit:$junit"

@@ -21,28 +21,34 @@
 
 package ru.yoomoney.sdk.kassa.payments.model
 
+import android.content.Context
+import ru.yoomoney.sdk.kassa.payments.R
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.Amount
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentMethodType
+import ru.yoomoney.sdk.kassa.payments.utils.isSberBankAppInstalled
 
 internal sealed class PaymentOption {
     abstract val id: Int
     abstract val charge: Amount
     abstract val fee: Fee?
     abstract val savePaymentMethodAllowed: Boolean
+    abstract val confirmationTypes: List<ConfirmationType>
 }
 
 internal data class GooglePay(
     override val id: Int,
     override val charge: Amount,
     override val fee: Fee?,
-    override val savePaymentMethodAllowed: Boolean
+    override val savePaymentMethodAllowed: Boolean,
+    override val confirmationTypes: List<ConfirmationType>
 ) : PaymentOption()
 
 internal data class NewCard(
     override val id: Int,
     override val charge: Amount,
     override val fee: Fee?,
-    override val savePaymentMethodAllowed: Boolean
+    override val savePaymentMethodAllowed: Boolean,
+    override val confirmationTypes: List<ConfirmationType>
 ) : PaymentOption()
 
 internal sealed class YooMoney : PaymentOption()
@@ -53,14 +59,16 @@ internal data class Wallet(
     override val fee: Fee?,
     val walletId: String,
     val balance: Amount,
-    override val savePaymentMethodAllowed: Boolean
+    override val savePaymentMethodAllowed: Boolean,
+    override val confirmationTypes: List<ConfirmationType>
 ) : YooMoney()
 
 internal data class AbstractWallet(
     override val id: Int,
     override val charge: Amount,
     override val fee: Fee?,
-    override val savePaymentMethodAllowed: Boolean
+    override val savePaymentMethodAllowed: Boolean,
+    override val confirmationTypes: List<ConfirmationType>
 ) : YooMoney()
 
 internal data class LinkedCard(
@@ -72,15 +80,23 @@ internal data class LinkedCard(
     val pan: String,
     val name: String? = null,
     val isLinkedToWallet: Boolean = false,
-    override val savePaymentMethodAllowed: Boolean
+    override val savePaymentMethodAllowed: Boolean,
+    override val confirmationTypes: List<ConfirmationType>
 ) : YooMoney()
 
-internal data class SbolSmsInvoicing(
+internal data class SberBank(
     override val id: Int,
     override val charge: Amount,
     override val fee: Fee?,
-    override val savePaymentMethodAllowed: Boolean
-) : PaymentOption()
+    override val savePaymentMethodAllowed: Boolean,
+    override val confirmationTypes: List<ConfirmationType>
+) : PaymentOption() {
+    val isSberPayAllowed: Boolean = confirmationTypes.contains(ConfirmationType.MOBILE_APPLICATION)
+
+    fun canPayWithSberPay(context: Context): Boolean {
+        return isSberPayAllowed && isSberBankAppInstalled(context) && context.resources.getString(R.string.ym_app_scheme).isNotEmpty()
+    }
+}
 
 internal data class PaymentIdCscConfirmation(
     override val id: Int,
@@ -91,13 +107,14 @@ internal data class PaymentIdCscConfirmation(
     val last: String,
     val expiryYear: String,
     val expiryMonth: String,
-    override val savePaymentMethodAllowed: Boolean
+    override val savePaymentMethodAllowed: Boolean,
+    override val confirmationTypes: List<ConfirmationType>
 ) : PaymentOption()
 
 internal fun PaymentOption.toType() = when (this) {
     is NewCard -> PaymentMethodType.BANK_CARD
     is YooMoney -> PaymentMethodType.YOO_MONEY
-    is SbolSmsInvoicing -> PaymentMethodType.SBERBANK
+    is SberBank -> PaymentMethodType.SBERBANK
     is GooglePay -> PaymentMethodType.GOOGLE_PAY
     is PaymentIdCscConfirmation -> PaymentMethodType.BANK_CARD
 }

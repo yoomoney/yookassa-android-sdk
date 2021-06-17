@@ -33,3 +33,11 @@ internal inline fun <R> JSONArray.mapIndexed(transform: (Int, JSONObject) -> R):
     }
     return result
 }
+
+internal inline fun <R> JSONArray.mapStrings(transform: (Int, String) -> R): List<R> {
+    val result = ArrayList<R>(length())
+    for (i in 0 until length()) {
+        result.add(transform(i, getString(i)))
+    }
+    return result
+}

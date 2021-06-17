@@ -59,6 +59,7 @@ import kotlinx.android.synthetic.main.ym_fragment_contract.rootContainer
 import kotlinx.android.synthetic.main.ym_fragment_contract.savePaymentMethodMessageSubTitle
 import kotlinx.android.synthetic.main.ym_fragment_contract.savePaymentMethodMessageTitle
 import kotlinx.android.synthetic.main.ym_fragment_contract.savePaymentMethodSelection
+import kotlinx.android.synthetic.main.ym_fragment_contract.sberPayView
 import kotlinx.android.synthetic.main.ym_fragment_contract.subtitle
 import kotlinx.android.synthetic.main.ym_fragment_contract.sum
 import kotlinx.android.synthetic.main.ym_fragment_contract.switches
@@ -116,9 +117,7 @@ import ru.yoomoney.sdk.kassa.payments.model.Wallet
 import ru.yoomoney.sdk.kassa.payments.payment.googlePay.GooglePayRepository
 import ru.yoomoney.sdk.kassa.payments.payment.GetLoadedPaymentOptionListRepository
 import ru.yoomoney.sdk.kassa.payments.payment.tokenize.TokenOutputModel
-import ru.yoomoney.sdk.kassa.payments.payment.tokenize.TokenizeErrorOutputModel
 import ru.yoomoney.sdk.kassa.payments.payment.tokenize.TokenizePaymentAuthRequiredOutputModel
-import ru.yoomoney.sdk.kassa.payments.payment.tokenize.TokenizePaymentOptionInfoRequired
 import ru.yoomoney.sdk.kassa.payments.errorFormatter.ErrorFormatter
 import ru.yoomoney.sdk.kassa.payments.metrics.Reporter
 import ru.yoomoney.sdk.kassa.payments.metrics.bankCard.BankCardAnalyticsLogger
@@ -139,6 +138,9 @@ import ru.yoomoney.sdk.kassa.payments.utils.show
 import ru.yoomoney.sdk.kassa.payments.utils.viewModel
 import ru.yoomoney.sdk.march.RuntimeViewModel
 import ru.yoomoney.sdk.march.observe
+import ru.yoomoney.sdk.kassa.payments.model.MobileApplication
+import ru.yoomoney.sdk.kassa.payments.model.SberBank
+import ru.yoomoney.sdk.kassa.payments.model.SberPay
 import java.math.BigDecimal
 import javax.inject.Inject
 
@@ -370,49 +372,32 @@ internal class ContractFragment : Fragment(R.layout.ym_fragment_contract) {
                 is Wallet -> setUpAuthorizedWallet(content, this)
                 is GooglePay -> setUpGooglePlay(content.paymentOption.id)
                 is NewCard -> setUpBankCardView(content.paymentOption.id, savePaymentMethod)
-                is LinkedCard -> setUpLinkedBankCardView(content, pan.replace("*", "•"), savePaymentMethod)
-                is PaymentIdCscConfirmation -> setUpLinkedBankCardView(
-                    content,
-                    ("$first••••••$last"),
-                    savePaymentMethod
-                )
+                is LinkedCard -> setUpLinkedBankCardView(content, pan.replace("*", "•"))
+                is PaymentIdCscConfirmation -> setUpLinkedBankCardView(content, ("$first••••••$last"))
                 is AbstractWallet -> {
                     setUpAbstractWallet()
                     return
                 }
+                is SberBank -> setUpSberbankView(content, this)
             }
-        }
 
-        licenseAgreement.apply {
-            text = getLicenseAgreementText()
-            movementMethod = LinkMovementMethod.getInstance()
-        }
 
-        switches.visible = content.showAllowWalletLinking
-                || content.showPhoneInput
-                || savePaymentMethod != SavePaymentMethod.OFF
+            licenseAgreement.apply {
+                text = getLicenseAgreementText()
+                movementMethod = LinkMovementMethod.getInstance()
+            }
+
+            switches.visible = content.showAllowWalletLinking
+                    || content.confirmation !is MobileApplication
+                    || (savePaymentMethod != SavePaymentMethod.OFF && content.paymentOption !is SberBank)
+        }
     }
 
     private fun setUpPaymentAuth(
         content: State.Content,
         savePaymentMethod: SavePaymentMethod
     ) {
-        if (content.showPhoneInput) {
-            nextButton.isEnabled = phoneInput.text?.isPhoneNumber ?: false
-            switches.showChild(additionalInfoInputViewContainer)
-            additionalInfoInputViewContainer.showChild(phoneInput)
-
-
-            nextButton.setOnClickListener { _ ->
-                view?.hideSoftKeyboard()
-                val text = phoneInput.text
-                if (text != null && text.isPhoneNumber) {
-                    viewModel.handleAction(Action.Tokenize(SbolSmsInvoicingInfo(text.toString())))
-                } else {
-                    phoneInput.error = " "
-                }
-            }
-        } else {
+        if (content.paymentOption !is SberBank) {
             nextButton.isEnabled = isNextButtonEnabled(content.paymentOption)
             switches.showChild(switchesContainer)
 
@@ -504,8 +489,6 @@ internal class ContractFragment : Fragment(R.layout.ym_fragment_contract) {
                     is TokenizePaymentAuthRequiredOutputModel -> router.navigateTo(
                         Screen.PaymentAuth(model.charge, allowWalletLinking.isChecked)
                     )
-                    is TokenizePaymentOptionInfoRequired -> TODO()
-                    is TokenizeErrorOutputModel -> TODO()
                 }
             }
             is Effect.PaymentAuthRequired -> router.navigateTo(
@@ -596,8 +579,7 @@ internal class ContractFragment : Fragment(R.layout.ym_fragment_contract) {
 
     private fun setUpLinkedBankCardView(
         content: State.Content,
-        cardNumber: String,
-        savePaymentMethod: SavePaymentMethod
+        cardNumber: String
     ) {
         allowWalletLinking.isChecked = content.allowWalletLinking
 
@@ -614,6 +596,31 @@ internal class ContractFragment : Fragment(R.layout.ym_fragment_contract) {
             }
 
             setOnBankCardNotReadyListener { nextButton.isEnabled = false }
+        }
+    }
+
+    private fun setUpSberbankView(content: State.Content, sber: SberBank) {
+        if (content.confirmation is MobileApplication) {
+            sberPayView.show()
+            nextButton.isEnabled = true
+            nextButton.setOnClickListener {
+                viewModel.handleAction(Action.Tokenize(SberPay))
+            }
+        } else  {
+            nextButton.isEnabled = phoneInput.text?.isPhoneNumber ?: false
+            switches.showChild(additionalInfoInputViewContainer)
+            additionalInfoInputViewContainer.showChild(phoneInput)
+
+
+            nextButton.setOnClickListener { _ ->
+                view?.hideSoftKeyboard()
+                val text = phoneInput.text
+                if (text != null && text.isPhoneNumber) {
+                    viewModel.handleAction(Action.Tokenize(SbolSmsInvoicingInfo(text.toString())))
+                } else {
+                    phoneInput.error = " "
+                }
+            }
         }
     }
 

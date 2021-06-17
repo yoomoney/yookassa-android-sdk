@@ -93,6 +93,31 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/containerApp2App"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/ym_space_m">
+
+        <EditText
+            android:id="@+id/urlApp2App"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/hint_app2app_input"
+            android:inputType="text" />
+
+        <Button
+            style="@style/ButtonYellow.Small"
+            android:id="@+id/confirmApp2App"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/ym_space_2xs"
+            android:text="@string/confirm_3ds" />
+
+    </LinearLayout>
+
     <Button
         style="@style/FlatButton.Small"
         android:id="@+id/showDocumentation"

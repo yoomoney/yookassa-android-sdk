@@ -60,6 +60,10 @@ internal class TokenizeSchemeSbolSms : TokenizeScheme() {
     override val value = "sms-sbol"
 }
 
+internal class TokenizeSchemeSberPay : TokenizeScheme() {
+    override val value = "sber-pay"
+}
+
 internal class TokenizeSchemeGooglePay : TokenizeScheme() {
     override val value = "google-pay"
 }
@@ -96,24 +100,32 @@ internal class AuthTokenTypeMultiple : AuthTokenType() {
     override val value = "multiple"
 }
 
-internal sealed class AuthYooMoneyLoginStatus : Param() {
-    final override val name = "authLoginStatus"
+internal sealed class MoneyAuthLoginStatus : Param() {
+    final override val name = "moneyAuthLoginStatus"
 }
 
-internal class AuthYooMoneyLoginStatusSuccess : AuthYooMoneyLoginStatus() {
+internal class ActionMoneyAuthLoginSuccess : MoneyAuthLoginStatus() {
     override val value = "Success"
 }
 
-internal class AuthYooMoneyLoginStatusFail : AuthYooMoneyLoginStatus() {
+internal class ActionMoneyAuthLoginFail : MoneyAuthLoginStatus() {
     override val value = "Fail"
 }
 
-internal class AuthYooMoneyLoginStatusCanceled : AuthYooMoneyLoginStatus() {
+internal class ActionMoneyAuthLoginCanceled : MoneyAuthLoginStatus() {
     override val value = "Canceled"
 }
 
-internal class AuthYooMoneyLoginStatusWithoutWallet : AuthYooMoneyLoginStatus() {
-    override val value = "WithoutWallet"
+internal sealed class MoneyAuthLoginScheme : Param() {
+    final override val name = "moneyAuthLoginScheme"
+}
+
+internal class MoneyAuthLoginSchemeYooMoney : MoneyAuthLoginScheme() {
+    override val value = "yoomoneyApp"
+}
+
+internal class MoneyAuthLoginSchemeAuthSdk : MoneyAuthLoginScheme() {
+    override val value = "moneyAuthSdk"
 }
 
 internal sealed class AuthPaymentStatus : Param() {
@@ -126,4 +138,12 @@ internal class AuthPaymentStatusSuccess : AuthPaymentStatus() {
 
 internal class AuthPaymentStatusFail : AuthPaymentStatus() {
     override val value = "Fail"
+}
+
+internal sealed class SberPayConfirmationStatus : Param() {
+    final override val name = "sberPayConfirmationStatus"
+}
+
+internal class SberPayConfirmationStatusSuccess : SberPayConfirmationStatus() {
+    override val value = "Success"
 }

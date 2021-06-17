@@ -28,7 +28,7 @@ import ru.yoomoney.sdk.kassa.payments.extensions.isTablet
 
 object UserAgent {
     fun getUserAgent(context: Context): String {
-        val version = BuildConfig.VERSION_NAME + if (BuildConfig.DEBUG) "-debug" else ""
+        val version = BuildConfig.VERSION_NAME
         val osVersion =  Build.VERSION.RELEASE
         return "YooKassa.SDK.Client.Android/$version Android/$osVersion ${getDeviceType(
             context.isTablet

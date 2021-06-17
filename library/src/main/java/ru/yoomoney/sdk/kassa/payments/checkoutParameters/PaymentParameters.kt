@@ -40,9 +40,9 @@ import ru.yoomoney.sdk.kassa.payments.utils.getAllPaymentMethods
  * payment methods are allowed. See [PaymentMethodType].
  * @param gatewayId (optional) your gateway id from YooMoney.
  * @param customReturnUrl (optional) redirect url for custom 3ds. This parameter should be used only if you want to use
- * your own 3ds activity. If you are using [Checkout.create3dsIntent], do not set this parameter.
+ * your own 3ds activity. If you are using [Checkout.createConfirmationIntent] or [Checkout.create3dsIntent], do not set this parameter.
  * @param userPhoneNumber (optional) phone number of the user. It will be inserted into the form
- * that is used by "Sberbank online" payment method. Format for this number is "+7XXXXXXXXXX".
+ * that is used by "SberPay" payment method. Format for this number is "+7XXXXXXXXXX".
  * @param googlePayParameters (optional) settings for Google Pay (see [GooglePayParameters]).
  * * @param authCenterClientId (optional) client id for ru.yoomoney.sdk.auth:auth sdk.
  */

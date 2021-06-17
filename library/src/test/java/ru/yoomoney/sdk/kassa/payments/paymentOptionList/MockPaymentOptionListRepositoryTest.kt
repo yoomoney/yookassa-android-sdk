@@ -34,7 +34,7 @@ import ru.yoomoney.sdk.kassa.payments.model.GooglePay
 import ru.yoomoney.sdk.kassa.payments.model.LinkedCard
 import ru.yoomoney.sdk.kassa.payments.model.NewCard
 import ru.yoomoney.sdk.kassa.payments.model.Result
-import ru.yoomoney.sdk.kassa.payments.model.SbolSmsInvoicing
+import ru.yoomoney.sdk.kassa.payments.model.SberBank
 import ru.yoomoney.sdk.kassa.payments.model.Wallet
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.MockPaymentOptionListRepository
 import java.math.BigDecimal
@@ -60,7 +60,7 @@ class MockPaymentOptionListRepositoryTest {
             options,
             contains(
                 instanceOf(Wallet::class.java),
-                instanceOf(SbolSmsInvoicing::class.java),
+                instanceOf(SberBank::class.java),
                 instanceOf(GooglePay::class.java),
                 instanceOf(NewCard::class.java)
             )
@@ -89,7 +89,7 @@ class MockPaymentOptionListRepositoryTest {
                 instanceOf(LinkedCard::class.java),
                 instanceOf(LinkedCard::class.java),
                 instanceOf(LinkedCard::class.java),
-                instanceOf(SbolSmsInvoicing::class.java),
+                instanceOf(SberBank::class.java),
                 instanceOf(GooglePay::class.java),
                 instanceOf(NewCard::class.java)
             )
@@ -114,7 +114,7 @@ class MockPaymentOptionListRepositoryTest {
             options,
             contains(
                 instanceOf(AbstractWallet::class.java),
-                instanceOf(SbolSmsInvoicing::class.java),
+                instanceOf(SberBank::class.java),
                 instanceOf(GooglePay::class.java),
                 instanceOf(NewCard::class.java)
             )

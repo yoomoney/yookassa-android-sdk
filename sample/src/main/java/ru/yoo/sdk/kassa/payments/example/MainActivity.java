@@ -63,7 +63,7 @@ import ru.yoo.sdk.kassa.payments.example.utils.AmountFormatter;
 /**
  * All calls to MSDK library are handled through the Checkout class.
  *
- * @see Checkout
+ * @see ru.yoomoney.sdk.kassa.payments.Checkout
  */
 public final class MainActivity extends AppCompatActivity {
 
@@ -96,7 +96,10 @@ public final class MainActivity extends AppCompatActivity {
                     // successful tokenization
                     final TokenizationResult result = Checkout.createTokenizationResult(data);
                     startActivity(SuccessTokenizeActivity.createIntent(
-                            this, result.getPaymentToken(), result.getPaymentMethodType().name()));
+                            this,
+                            result.getPaymentToken(),
+                            result.getPaymentMethodType().name()
+                    ));
                     break;
                 case RESULT_CANCELED:
                     // user canceled tokenization

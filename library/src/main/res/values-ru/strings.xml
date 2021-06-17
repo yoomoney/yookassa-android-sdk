@@ -43,7 +43,7 @@
     <string name="ym_wrong_passcode_error">Неправильный пароль</string>
     <string name="ym_server_error">Похоже, это техническая ошибка</string>
     <string name="ym_unknown_error">Похоже, это техническая ошибка</string>
-    <string name="ym_sberbank">Сбербанк Онлайн</string>
+    <string name="ym_sberbank">SberPay</string>
     <string name="ym_payment_option_google_pay">Google Pay</string>
     <string name="ym_license_agreement_part_1">Нажимая кнопку, вы принимаете</string>
     <string name="ym_license_agreement_part_2">условия сервиса</string>
@@ -90,7 +90,8 @@
     <string name='ym_linked_card'>Привязанная карта</string>
     <string name='ym_saved_card'>Сохраненная карта</string>
     <string name='ym_google_pay_description'>Дальше откроем приложение Google Pay — подтвердите оплату</string>
+    <string name='ym_sber_pay_description'>Дальше откроем приложение Сбербанк Онлайн — подтвердите оплату</string>
     <string name='ym_sber_phone_input_info'>Для смс от Сбербанка с кодом для оплаты</string>
-    <string name='ym_label_phone_in_sbol'>Номер в Сбербанк Онлайн</string>
+    <string name='ym_label_phone_in_sbol'>Номер в SberPay</string>
     <string name='ym_save_payment_method_title'>Привяжем карту</string>
 </resources>

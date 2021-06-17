@@ -29,16 +29,18 @@ import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentMethodType.YOO_M
 import ru.yoomoney.sdk.kassa.payments.extensions.getCardBrand
 import ru.yoomoney.sdk.kassa.payments.extensions.getFee
 import ru.yoomoney.sdk.kassa.payments.extensions.getPaymentMethodType
+import ru.yoomoney.sdk.kassa.payments.extensions.mapStrings
 import ru.yoomoney.sdk.kassa.payments.extensions.toAmount
 import ru.yoomoney.sdk.kassa.payments.payment.InstrumentType.LINKED_BANK_CARD
 import ru.yoomoney.sdk.kassa.payments.payment.InstrumentType.UNKNOWN
 import ru.yoomoney.sdk.kassa.payments.payment.InstrumentType.WALLET
 import ru.yoomoney.sdk.kassa.payments.model.AbstractWallet
+import ru.yoomoney.sdk.kassa.payments.model.ConfirmationType
 import ru.yoomoney.sdk.kassa.payments.model.GooglePay
 import ru.yoomoney.sdk.kassa.payments.model.LinkedCard
 import ru.yoomoney.sdk.kassa.payments.model.NewCard
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
-import ru.yoomoney.sdk.kassa.payments.model.SbolSmsInvoicing
+import ru.yoomoney.sdk.kassa.payments.model.SberBank
 import ru.yoomoney.sdk.kassa.payments.model.Wallet
 
 internal fun paymentOptionFactory(
@@ -52,6 +54,9 @@ internal fun paymentOptionFactory(
         "allowed" -> true
         else -> false
     }
+    val confirmationTypes = jsonObject.optJSONArray("confirmation_types")?.mapStrings { _, s ->
+        ConfirmationType.values().firstOrNull { it.value == s } ?: ConfirmationType.UNKNOWN
+    } ?: emptyList()
 
     return paymentMethodType?.let {
         when (paymentMethodType) {
@@ -59,19 +64,22 @@ internal fun paymentOptionFactory(
                 id,
                 charge,
                 jsonObject.getFee(),
-                savePaymentMethodAllowed
+                savePaymentMethodAllowed,
+                confirmationTypes
             )
-            SBERBANK -> SbolSmsInvoicing(
+            SBERBANK -> SberBank(
                 id,
                 charge,
                 jsonObject.getFee(),
-                savePaymentMethodAllowed
+                savePaymentMethodAllowed,
+                confirmationTypes
             )
             GOOGLE_PAY -> GooglePay(
                 id,
                 charge,
                 jsonObject.getFee(),
-                savePaymentMethodAllowed
+                savePaymentMethodAllowed,
+                confirmationTypes
             )
             YOO_MONEY -> when (InstrumentType.parse(
                 jsonObject.optString("instrument_type")
@@ -82,7 +90,8 @@ internal fun paymentOptionFactory(
                     fee = jsonObject.getFee(),
                     walletId = jsonObject.optString("id"),
                     balance = jsonObject.optJSONObject("balance").toAmount(),
-                    savePaymentMethodAllowed = savePaymentMethodAllowed
+                    savePaymentMethodAllowed = savePaymentMethodAllowed,
+                    confirmationTypes = confirmationTypes
                 )
                 LINKED_BANK_CARD -> LinkedCard(
                     id = id,
@@ -93,13 +102,15 @@ internal fun paymentOptionFactory(
                     pan = jsonObject.getString("card_mask"),
                     brand = jsonObject.getCardBrand(),
                     savePaymentMethodAllowed = savePaymentMethodAllowed,
-                    isLinkedToWallet = true
+                    isLinkedToWallet = true,
+                    confirmationTypes = confirmationTypes
                 )
                 UNKNOWN -> AbstractWallet(
                     id,
                     charge,
                     null,
-                    savePaymentMethodAllowed
+                    savePaymentMethodAllowed,
+                    confirmationTypes = confirmationTypes
                 )
             }
         }

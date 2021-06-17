@@ -26,13 +26,14 @@ import ru.yoomoney.sdk.kassa.payments.model.AbstractWallet
 import ru.yoomoney.sdk.kassa.payments.model.AnonymousUser
 import ru.yoomoney.sdk.kassa.payments.model.AuthorizedUser
 import ru.yoomoney.sdk.kassa.payments.model.CardBrand
+import ru.yoomoney.sdk.kassa.payments.model.ConfirmationType
 import ru.yoomoney.sdk.kassa.payments.model.CurrentUser
 import ru.yoomoney.sdk.kassa.payments.model.Fee
 import ru.yoomoney.sdk.kassa.payments.model.GooglePay
 import ru.yoomoney.sdk.kassa.payments.model.LinkedCard
 import ru.yoomoney.sdk.kassa.payments.model.NewCard
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
-import ru.yoomoney.sdk.kassa.payments.model.SbolSmsInvoicing
+import ru.yoomoney.sdk.kassa.payments.model.SberBank
 import ru.yoomoney.sdk.kassa.payments.model.Wallet
 import ru.yoomoney.sdk.kassa.payments.payment.loadOptionList.PaymentOptionListRepository
 import java.lang.Thread.sleep
@@ -76,13 +77,14 @@ internal class MockPaymentOptionListRepository(
                     BigDecimal.TEN,
                     amount.currency
                 ),
-                savePaymentMethodAllowed = true
+                savePaymentMethodAllowed = true,
+                confirmationTypes = listOf(ConfirmationType.REDIRECT)
             )
         )
         addAll(generateLinkedCards(id, amount, fee).take(linkedCardsCount))
-        add(SbolSmsInvoicing(id.next(), amount, fee, false))
-        add(GooglePay(id.next(), amount, fee, false))
-        add(NewCard(id.next(), amount, fee, true))
+        add(SberBank(id.next(), amount, fee, false, listOf(ConfirmationType.REDIRECT, ConfirmationType.EXTERNAL)))
+        add(GooglePay(id.next(), amount, fee, false, emptyList()))
+        add(NewCard(id.next(), amount, fee, true, listOf(ConfirmationType.REDIRECT)))
     }.toList())
 
     private fun createAnonymousList(
@@ -94,18 +96,22 @@ internal class MockPaymentOptionListRepository(
             id = id.next(),
             charge = Amount(amount.value, amount.currency),
             fee = fee,
-            savePaymentMethodAllowed = true
+            savePaymentMethodAllowed = true,
+            confirmationTypes = listOf(ConfirmationType.REDIRECT)
         ),
-        SbolSmsInvoicing(
+        SberBank(
             id.next(),
-            Amount(amount.value, amount.currency), fee, false
+            Amount(amount.value, amount.currency), fee,
+            savePaymentMethodAllowed = false,
+            confirmationTypes = listOf(ConfirmationType.REDIRECT, ConfirmationType.EXTERNAL)
         ),
-        GooglePay(id.next(), amount, fee, false),
+        GooglePay(id.next(), amount, fee, false, emptyList()),
         NewCard(
             id.next(),
             Amount(amount.value, amount.currency),
             fee,
-            true
+            true,
+            listOf(ConfirmationType.REDIRECT)
         )
     ))
 
@@ -123,7 +129,8 @@ internal class MockPaymentOptionListRepository(
             brand = randomCardBrand(),
             pan = cardId.replaceRange(4, 12, "*".repeat(8)),
             name = "testCardName".takeIf { random.nextInt(10) < 5 },
-            savePaymentMethodAllowed = true
+            savePaymentMethodAllowed = true,
+            confirmationTypes = listOf(ConfirmationType.REDIRECT)
         )
     }
 

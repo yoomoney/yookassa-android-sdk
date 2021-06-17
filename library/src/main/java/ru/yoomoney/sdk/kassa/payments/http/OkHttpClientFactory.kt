@@ -49,7 +49,7 @@ internal fun OkHttpClient.Builder.applyLogging(
     context: Context,
     showLogs: Boolean
 ) = if (context.isBuildDebug() && showLogs) {
-    addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.HEADERS))
+    addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
 } else {
     addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.NONE))
 }
