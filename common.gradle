@@ -20,27 +20,9 @@
  */
 
 apply from: rootProject.file("sensitive.gradle")
+apply from: rootProject.file("version.gradle")
 
 ext {
-    versionMajor = 6
-    versionMinor = 0
-    versionPatch = 1
-
-    versionAlpha = null
-
-    versionCode = [versionMajor, versionMinor, versionPatch, versionAlpha ?: 0].inject { result, i -> result * 100 + i }
-    versionName = "$versionMajor.$versionMinor.$versionPatch" + ( versionAlpha ? "-alpha-$versionAlpha" : "" )
-
-    versionEnding = {
-        currentBranchName = System.getenv('BUILD_BRANCH') ?: ''
-
-        if (currentBranchName != 'master') {
-            return '-SNAPSHOT'
-        } else {
-            return ''
-        }
-    }
-
     generateFileName = { project, variant ->
         def fileNameParts = [
                 "msdk",
@@ -59,5 +41,20 @@ ext {
 
     getBuildNumber = {
         System.getenv('BUILD_NUMBER') ?: '0'
+    }
+
+    optionalProperty = { name ->
+        if (!project.hasProperty(name)) {
+            return null
+        } else {
+            def value = project.getProperty(name)
+            return (value?.isEmpty() != false) ? null : "\"$value\""
+        }
+    }
+
+    applyFromFileIfExists = { file ->
+        if (project.file(file).exists()) {
+            apply from: file
+        }
     }
 }

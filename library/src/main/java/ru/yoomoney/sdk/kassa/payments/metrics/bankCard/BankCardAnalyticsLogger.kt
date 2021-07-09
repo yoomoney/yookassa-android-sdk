@@ -21,6 +21,6 @@
 
 package ru.yoomoney.sdk.kassa.payments.metrics.bankCard
 
-interface BankCardAnalyticsLogger {
+internal interface BankCardAnalyticsLogger {
     fun onNewEvent(event: BankCardEvent)
 }

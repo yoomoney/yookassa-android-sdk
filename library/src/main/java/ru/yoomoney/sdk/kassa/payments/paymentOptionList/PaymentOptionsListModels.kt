@@ -29,7 +29,6 @@ import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
 import ru.yoomoney.sdk.kassa.payments.model.SberBank
 import ru.yoomoney.sdk.kassa.payments.model.YooMoney
 
-
 internal sealed class PaymentOptionListOutputModel(open val options: List<PaymentOption>)
 
 internal data class PaymentOptionListSuccessOutputModel(

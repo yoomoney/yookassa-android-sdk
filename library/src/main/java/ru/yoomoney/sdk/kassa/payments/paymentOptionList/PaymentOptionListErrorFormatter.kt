@@ -26,7 +26,7 @@ import ru.yoomoney.sdk.kassa.payments.R
 import ru.yoomoney.sdk.kassa.payments.payment.loadOptionList.PaymentOptionListIsEmptyException
 import ru.yoomoney.sdk.kassa.payments.errorFormatter.ErrorFormatter
 
-class PaymentOptionListErrorFormatter(
+internal class PaymentOptionListErrorFormatter(
     private val context: Context,
     private val paymentErrorFormatter: ErrorFormatter
 ) : ErrorFormatter {

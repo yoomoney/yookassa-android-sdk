@@ -25,6 +25,7 @@ import org.json.JSONObject
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.Amount
 import ru.yoomoney.sdk.kassa.payments.extensions.toCheckoutTokenIssueInitResponse
 import ru.yoomoney.sdk.kassa.payments.extensions.toJsonObject
+import ru.yoomoney.sdk.kassa.payments.http.HostProvider
 import ru.yoomoney.sdk.kassa.payments.model.Result
 
 private const val CHECKOUT_TOKEN_ISSUE_INIT_PATH = "/checkout/token-issue-init"
@@ -42,8 +43,9 @@ internal class CheckoutTokenIssueInitRequest(
     private val multipleUsage: Boolean,
     private val tmxSessionId: String,
     userAuthToken: String,
-    shopToken: String
-) : CheckoutRequest<Result<CheckoutTokenIssueInitResponse>>(userAuthToken, shopToken) {
+    shopToken: String,
+    hostProvider: HostProvider
+) : CheckoutRequest<Result<CheckoutTokenIssueInitResponse>>(userAuthToken, shopToken, hostProvider) {
 
     override fun getUrl(): String = host + CHECKOUT_TOKEN_ISSUE_INIT_PATH
 

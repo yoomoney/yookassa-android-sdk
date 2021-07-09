@@ -28,6 +28,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.yandex.metrica.YandexMetrica
 import ru.yoomoney.sdk.kassa.payments.BuildConfig
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentMethodType
+import ru.yoomoney.sdk.kassa.payments.checkoutParameters.TestParameters
 import ru.yoomoney.sdk.kassa.payments.logging.ReporterLogger
 import ru.yoomoney.sdk.kassa.payments.metrics.Reporter
 import ru.yoomoney.sdk.kassa.payments.metrics.SberPayConfirmationStatusSuccess
@@ -35,6 +36,7 @@ import ru.yoomoney.sdk.kassa.payments.metrics.YandexMetricaReporter
 import ru.yoomoney.sdk.kassa.payments.utils.INVOICING_AUTHORITY
 import ru.yoomoney.sdk.kassa.payments.utils.SBERPAY_PATH
 import ru.yoomoney.sdk.kassa.payments.utils.createSberbankIntent
+import ru.yoomoney.sdk.kassa.payments.utils.getSberbankPackage
 
 internal const val EXTRA_PAYMENT_METHOD_TYPE = "ru.yoomoney.sdk.kassa.payments.extra.PAYMENT_METHOD_TYPE"
 internal const val EXTRA_CONFIRMATION_URL = "ru.yoomoney.sdk.kassa.payments.extra.EXTRA_SBER_CONFIRMATION_URL"
@@ -61,7 +63,11 @@ internal class ConfirmationActivity : AppCompatActivity() {
         val confirmationUrl = intent.getStringExtra(EXTRA_CONFIRMATION_URL)
         if (confirmationUrl != null) {
             super.onCreate(savedInstanceState)
-            startConfirmationProcess(confirmationUrl, intent.getSerializableExtra(EXTRA_PAYMENT_METHOD_TYPE) as PaymentMethodType)
+            startConfirmationProcess(
+                confirmationUrl,
+                intent.getSerializableExtra(EXTRA_PAYMENT_METHOD_TYPE) as PaymentMethodType,
+                intent.getParcelableExtra(EXTRA_TEST_PARAMETERS) as TestParameters
+            )
             return
         } else {
             handleIntent(intent)
@@ -80,9 +86,9 @@ internal class ConfirmationActivity : AppCompatActivity() {
         }
     }
 
-    private fun startConfirmationProcess(confirmationUrl: String, paymentMethodType: PaymentMethodType) {
+    private fun startConfirmationProcess(confirmationUrl: String, paymentMethodType: PaymentMethodType, testParameters: TestParameters) {
         when (paymentMethodType) {
-            PaymentMethodType.SBERBANK -> startActivity(createSberbankIntent(this, confirmationUrl))
+            PaymentMethodType.SBERBANK -> startActivity(createSberbankIntent(this, confirmationUrl, getSberbankPackage(testParameters.hostParameters.isDevHost)))
             else -> {
                 setResult(Activity.RESULT_CANCELED)
                 finish()

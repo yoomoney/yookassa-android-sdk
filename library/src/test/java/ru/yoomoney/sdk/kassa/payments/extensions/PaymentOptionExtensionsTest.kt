@@ -53,6 +53,7 @@ import ru.yoomoney.sdk.kassa.payments.model.ExternalConfirmation
 import ru.yoomoney.sdk.kassa.payments.model.LinkedCard
 import ru.yoomoney.sdk.kassa.payments.model.RedirectConfirmation
 import ru.yoomoney.sdk.kassa.payments.model.Wallet
+import ru.yoomoney.sdk.kassa.payments.utils.getSberbankPackage
 import java.util.concurrent.TimeUnit
 
 @RunWith(RobolectricTestRunner::class)
@@ -330,7 +331,7 @@ class PaymentOptionExtensionsTest {
         )
 
         // invoke
-        val actualTokenizeSchemes = paymentOptions.map { it.toTokenizeScheme(context) }
+        val actualTokenizeSchemes = paymentOptions.map { it.toTokenizeScheme(context, getSberbankPackage(false)) }
 
         // assert
         assertThat(actualTokenizeSchemes, contains(*expectedTokenizeSchemes))
@@ -358,7 +359,7 @@ class PaymentOptionExtensionsTest {
         )
 
         // invoke
-        val actualConfirmations = paymentOptions.map { it.getConfirmation(context, redirectUrl, "exampleApp") }
+        val actualConfirmations = paymentOptions.map { it.getConfirmation(context, redirectUrl, "exampleApp", getSberbankPackage(false)) }
 
         // assert
         assertThat(actualConfirmations, contains(*expectedConfirmations))

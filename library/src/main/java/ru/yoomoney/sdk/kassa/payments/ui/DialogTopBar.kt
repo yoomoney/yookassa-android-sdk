@@ -33,8 +33,7 @@ import ru.yoomoney.sdk.gui.utils.extensions.tint
 import ru.yoomoney.sdk.kassa.payments.R
 import ru.yoomoney.sdk.kassa.payments.ui.color.InMemoryColorSchemeRepository
 
-
-class DialogTopBar
+internal class DialogTopBar
 @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

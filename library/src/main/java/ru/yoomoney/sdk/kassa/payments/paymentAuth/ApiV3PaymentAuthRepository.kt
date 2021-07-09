@@ -29,6 +29,7 @@ import ru.yoomoney.sdk.kassa.payments.tmx.ProfilingTool
 import ru.yoomoney.sdk.kassa.payments.tmx.TmxSessionIdStorage
 import ru.yoomoney.sdk.kassa.payments.secure.TokensStorage
 import ru.yoomoney.sdk.kassa.payments.extensions.execute
+import ru.yoomoney.sdk.kassa.payments.http.HostProvider
 import ru.yoomoney.sdk.kassa.payments.methods.paymentAuth.CheckoutAuthCheckRequest
 import ru.yoomoney.sdk.kassa.payments.methods.paymentAuth.CheckoutAuthContextGetRequest
 import ru.yoomoney.sdk.kassa.payments.methods.paymentAuth.CheckoutAuthSessionGenerateRequest
@@ -45,6 +46,7 @@ import java.lang.IllegalStateException
 import java.util.concurrent.Semaphore
 
 internal class ApiV3PaymentAuthRepository(
+    private val hostProvider: HostProvider,
     private val httpClient: Lazy<CheckoutOkHttpClient>,
     private val tokensStorage: TokensStorage,
     private val shopToken: String,
@@ -97,14 +99,15 @@ internal class ApiV3PaymentAuthRepository(
             shopToken = shopToken,
             answer = passphrase,
             authType = currentAuthType,
-            authContextId = currentAuthContextId
+            authContextId = currentAuthContextId,
+            hostProvider = hostProvider
         )
 
         return httpClient.value.execute(request)
     }
 
     private fun tokenIssueExecute(currentProcessId: String, userAuthToken: String): Result<String> {
-        val request = CheckoutTokenIssueExecuteRequest(currentProcessId, userAuthToken, shopToken)
+        val request = CheckoutTokenIssueExecuteRequest(currentProcessId, userAuthToken, shopToken, hostProvider)
         return httpClient.value.execute(request)
     }
 
@@ -176,13 +179,14 @@ internal class ApiV3PaymentAuthRepository(
             multipleUsage = multipleUsage,
             tmxSessionId = checkNotNull(tmxSessionId),
             shopToken = shopToken,
-            userAuthToken = userAuthToken
+            userAuthToken = userAuthToken,
+            hostProvider = hostProvider
         )
         return httpClient.value.execute(request)
     }
 
     private fun authContextGet(localAuthContextId: String, userAuthToken: String): Result<AuthTypeState> {
-        val request = CheckoutAuthContextGetRequest(localAuthContextId, userAuthToken, shopToken)
+        val request = CheckoutAuthContextGetRequest(localAuthContextId, userAuthToken, shopToken, hostProvider)
         return httpClient.value.execute(request).map {
             selectAppropriateAuthType(it.defaultAuthType, it.authTypeStates)
         }
@@ -195,7 +199,8 @@ internal class ApiV3PaymentAuthRepository(
             authType = currentAuthType,
             authContextId = currentAuthContextId,
             shopToken = shopToken,
-            userAuthToken = userAuthToken
+            userAuthToken = userAuthToken,
+            hostProvider = hostProvider
         )
         return httpClient.value.execute(request)
     }

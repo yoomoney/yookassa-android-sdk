@@ -21,36 +21,36 @@
 
 package ru.yoomoney.sdk.kassa.payments.metrics.bankCard
 
-sealed class BankCardEvent
+internal sealed class BankCardEvent
 
-object CardNumberInputSuccess: BankCardEvent() {
+internal object CardNumberInputSuccess: BankCardEvent() {
     override fun toString() = "cardNumberInputSuccess"
 }
 
-object CardCvcInputError: BankCardEvent() {
+internal object CardCvcInputError: BankCardEvent() {
     override fun toString() = "cardCvcInputError"
 }
 
-object CardNumberContinueAction: BankCardEvent() {
+internal object CardNumberContinueAction: BankCardEvent() {
     override fun toString() = "cardNumberContinueAction"
 }
 
-object CardNumberReturnToEdit: BankCardEvent() {
+internal object CardNumberReturnToEdit: BankCardEvent() {
     override fun toString() = "cardNumberReturnToEdit"
 }
 
-object CardNumberClearAction: BankCardEvent() {
+internal object CardNumberClearAction: BankCardEvent() {
     override fun toString() = "cardNumberClearAction"
 }
 
-object ScanBankCardAction: BankCardEvent() {
+internal object ScanBankCardAction: BankCardEvent() {
     override fun toString() = "scanBankCardAction"
 }
 
-object CardNumberInputError: BankCardEvent() {
+internal object CardNumberInputError: BankCardEvent() {
     override fun toString() = "cardNumberInputError"
 }
 
-object CardExpiryInputError: BankCardEvent() {
+internal object CardExpiryInputError: BankCardEvent() {
     override fun toString() = "cardExpiryInputError"
 }

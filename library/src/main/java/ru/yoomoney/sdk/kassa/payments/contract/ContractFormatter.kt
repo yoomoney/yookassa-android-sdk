@@ -26,6 +26,7 @@ import android.content.Intent
 import androidx.core.content.ContextCompat
 import ru.yoomoney.sdk.kassa.payments.R
 import ru.yoomoney.sdk.kassa.payments.model.AbstractWallet
+import ru.yoomoney.sdk.kassa.payments.model.GooglePay
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
 import ru.yoomoney.sdk.kassa.payments.model.Wallet
 import ru.yoomoney.sdk.kassa.payments.utils.getMessageWithLink
@@ -45,6 +46,8 @@ internal class ContractFormatter {
         internal fun getUserSelectsSavePaymentMethodTitle(context: Context, paymentOption: PaymentOption): CharSequence {
             return if (paymentOption is Wallet || paymentOption is AbstractWallet) {
                 context.getString(R.string.ym_contract_save_payment_method_wallet_switch_title)
+            } else if (paymentOption is GooglePay) {
+                context.getString(R.string.ym_contract_save_payment_method_gpay_switch_title)
             } else {
                 context.getString(R.string.ym_contract_link_card_title)
             }
@@ -75,7 +78,10 @@ internal class ContractFormatter {
             if (paymentOption is Wallet || paymentOption is AbstractWallet) {
                 linkTextFirstPart = R.string.ym_save_payment_method_wallet_switch_text_part_1
                 linkTextSecondPart = R.string.ym_save_payment_method_wallet_switch_text_part_2
-            } else {
+            } else if(paymentOption is GooglePay) {
+                linkTextFirstPart = R.string.ym_save_payment_method_gpay_switch_text_part_1
+                linkTextSecondPart = R.string.ym_save_payment_method_gpay_switch_text_part_2
+            }else {
                 linkTextFirstPart = R.string.ym_save_payment_method_bank_card_switch_text_part_1
                 linkTextSecondPart = R.string.ym_save_payment_method_bank_card_switch_text_part_2
             }

@@ -26,7 +26,7 @@ import android.view.View.MeasureSpec.EXACTLY
 import android.view.View.MeasureSpec.UNSPECIFIED
 import android.view.View.MeasureSpec.makeMeasureSpec
 
-fun View.getViewHeight(): Int {
+internal fun View.getViewHeight(): Int {
     measure(
         makeMeasureSpec(context.getScreenWidth(), EXACTLY),
         makeMeasureSpec(0, UNSPECIFIED)

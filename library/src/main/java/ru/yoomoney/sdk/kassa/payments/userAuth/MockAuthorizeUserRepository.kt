@@ -24,7 +24,6 @@ package ru.yoomoney.sdk.kassa.payments.userAuth
 import android.os.SystemClock
 import ru.yoomoney.sdk.kassa.payments.model.Result
 
-
 internal object MockAuthorizeUserRepository : AuthorizeUserRepository {
 
     override fun authorizeUser(): Result<User> {

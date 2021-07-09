@@ -20,26 +20,8 @@
  */
 
 ext {
-
-    merchantToken = "YOUR_CLIENT_APPLICATION_KEY"
-
-    shopId = "YOUR_SHOP_ID"
-
-    cliendId = "YOUR_CLIENT_ID"
-
-    gatewayId = "YOUR_GATEWAY_ID"
-
-    metricaKey = "YOUR_METRICA_KEY"
-
-    threatMetrixOrigId = 'fsymclue'
-    threatMetrixFPServer = 's4.partner.yoomoney.ru'
-
-    optionalProperty = { name ->
-        if (!project.hasProperty(name)) {
-            return null
-        } else {
-            def value = project.getProperty(name)
-            return (value?.isEmpty() != false) ? null : "\"$value\""
-        }
-    }
+    merchantToken = "live_MTkzODU2VY5GiyQq2GMPsCQ0PW7f_RSLtJYOT-mp_CA"
+    shopId = "193856"
+    cliendId = "hitm6hg51j1d3g1u3ln040bajiol903b"
+    metricaKey = '07742363-987c-4a90-8182-35fd3e042080'
 }

@@ -93,8 +93,8 @@ internal data class SberBank(
 ) : PaymentOption() {
     val isSberPayAllowed: Boolean = confirmationTypes.contains(ConfirmationType.MOBILE_APPLICATION)
 
-    fun canPayWithSberPay(context: Context): Boolean {
-        return isSberPayAllowed && isSberBankAppInstalled(context) && context.resources.getString(R.string.ym_app_scheme).isNotEmpty()
+    fun canPayWithSberPay(context: Context, sberbankPackage: String): Boolean {
+        return isSberPayAllowed && isSberBankAppInstalled(context, sberbankPackage) && context.resources.getString(R.string.ym_app_scheme).isNotEmpty()
     }
 }
 

@@ -23,15 +23,17 @@ package ru.yoomoney.sdk.kassa.payments.methods.paymentAuth
 
 import okhttp3.Credentials
 import ru.yoomoney.sdk.kassa.payments.BuildConfig
+import ru.yoomoney.sdk.kassa.payments.http.HostProvider
 import ru.yoomoney.sdk.kassa.payments.methods.base.MimeType
 import ru.yoomoney.sdk.kassa.payments.methods.base.PostRequest
 
 internal abstract class CheckoutRequest<out T>(
         private val userAuthToken: String,
-        private val shopToken: String
+        private val shopToken: String,
+        hostProvider: HostProvider
 ) : PostRequest<T> {
 
-    protected val host = BuildConfig.PAYMENT_AUTHORIZATION_HOST
+    protected val host = hostProvider.paymentAuthorizationHost()
 
     override fun getHeaders(): List<Pair<String, String>> {
         return listOf(

@@ -32,7 +32,7 @@ import ru.yoomoney.sdk.kassa.payments.extensions.highlight
 
 typealias UiLIbItemSwitchView = ru.yoomoney.sdk.gui.widgetV2.list.ItemSwitchView
 
-open class ItemSwitchView
+internal open class ItemSwitchView
 @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,

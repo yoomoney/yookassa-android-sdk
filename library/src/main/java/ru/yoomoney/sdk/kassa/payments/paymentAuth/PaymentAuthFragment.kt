@@ -59,7 +59,6 @@ import ru.yoomoney.sdk.march.RuntimeViewModel
 import ru.yoomoney.sdk.march.observe
 import javax.inject.Inject
 
-
 internal typealias PaymentAuthViewModel = RuntimeViewModel<State, Action, Effect>
 
 internal class PaymentAuthFragment : Fragment(R.layout.ym_fragment_payment_auth) {

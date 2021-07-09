@@ -35,7 +35,6 @@ import ru.yoomoney.sdk.kassa.payments.methods.base.MimeType
 import ru.yoomoney.sdk.kassa.payments.methods.base.PostRequest
 import ru.yoomoney.sdk.kassa.payments.metrics.ErrorLoggerReporter
 import ru.yoomoney.sdk.kassa.payments.model.Result
-import ru.yoomoney.sdk.kassa.payments.model.SdkException
 import java.io.IOException
 
 internal class CheckoutOkHttpClient(
@@ -67,7 +66,7 @@ internal fun <T: Any> CheckoutOkHttpClient.execute(apiRequest: ApiRequest<Result
         okHttpClient.newCall(request).execute()
     } catch (e: IOException) {
         val exception = RequestExecutionException(request, e)
-        errorReporter.report(SdkException(exception))
+        errorReporter.report(exception)
         return Result.Fail(exception)
     }
 
@@ -75,7 +74,7 @@ internal fun <T: Any> CheckoutOkHttpClient.execute(apiRequest: ApiRequest<Result
         response.body!!.string()
     } catch (e: IOException) {
         val exception = ResponseReadingException(response, e)
-        errorReporter.report(SdkException(exception))
+        errorReporter.report(exception)
         return Result.Fail(exception)
     }
 
@@ -83,7 +82,7 @@ internal fun <T: Any> CheckoutOkHttpClient.execute(apiRequest: ApiRequest<Result
         JSONObject(stringBody)
     } catch (e: JSONException) {
         val exception = ResponseParsingException(stringBody, e)
-        errorReporter.report(SdkException(exception))
+        errorReporter.report(exception)
         return Result.Fail(exception)
     }
 
@@ -95,7 +94,7 @@ internal fun <T: Any> CheckoutOkHttpClient.execute(apiRequest: ApiRequest<Result
                 4
             ), e
         )
-        errorReporter.report(SdkException(exception))
+        errorReporter.report(exception)
         Result.Fail(exception)
     }
 }

@@ -203,12 +203,14 @@ object Checkout {
         context: Context,
         confirmationUrl: String,
         paymentMethodType: PaymentMethodType,
-        colorScheme: ColorScheme = ColorScheme.getDefaultScheme()
+        colorScheme: ColorScheme = ColorScheme.getDefaultScheme(),
+        testParameters: TestParameters = TestParameters()
     ): Intent = when(paymentMethodType) {
         PaymentMethodType.SBERBANK -> {
             Intent(context, ConfirmationActivity::class.java)
                 .putExtra(EXTRA_CONFIRMATION_URL, confirmationUrl)
                 .putExtra(EXTRA_PAYMENT_METHOD_TYPE, paymentMethodType)
+                .putExtra(EXTRA_TEST_PARAMETERS, testParameters)
         }
         else -> {
             checkUrl(confirmationUrl)

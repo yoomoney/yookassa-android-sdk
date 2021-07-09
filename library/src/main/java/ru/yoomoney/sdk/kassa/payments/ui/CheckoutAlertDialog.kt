@@ -32,7 +32,6 @@ import ru.yoomoney.sdk.gui.widget.button.PrimaryButtonView
 import ru.yoomoney.sdk.kassa.payments.R
 import ru.yoomoney.sdk.kassa.payments.ui.color.InMemoryColorSchemeRepository
 
-
 internal class CheckoutAlertDialog: YmAlertDialog() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {

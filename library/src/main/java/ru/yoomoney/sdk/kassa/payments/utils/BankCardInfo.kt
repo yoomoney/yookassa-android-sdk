@@ -24,16 +24,16 @@ package ru.yoomoney.sdk.kassa.payments.utils
 import androidx.annotation.DrawableRes
 import ru.yoomoney.sdk.kassa.payments.R
 
-data class Bank(
+internal data class Bank(
     val id: String,
     val name: BankName,
     val bins: List<String>,
     @DrawableRes val icon: Int
 )
 
-data class BankName(val ruName: String, val enName: String)
+internal data class BankName(val ruName: String, val enName: String)
 
-fun initBanks(): List<Bank> {
+internal fun initBanks(): List<Bank> {
     return listOf(
         Bank(
             "sberbank",

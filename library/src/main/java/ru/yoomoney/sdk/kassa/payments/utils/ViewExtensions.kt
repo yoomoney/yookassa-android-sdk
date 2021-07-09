@@ -26,22 +26,22 @@ import android.view.View.INVISIBLE
 
 // MARK: ui-lib extensions
 
-fun View.setVisible(visible: Boolean) {
+internal fun View.setVisible(visible: Boolean) {
     visibility = if (visible) View.VISIBLE else View.GONE
 }
 
-fun View.show() {
+internal fun View.show() {
     setVisible(true)
 }
 
-fun View.hide() {
+internal fun View.hide() {
     setVisible(false)
 }
 
-fun View.makeInvisible() {
+internal fun View.makeInvisible() {
     visibility = INVISIBLE
 }
 
-val View.isVisible: Boolean get() = visibility == View.VISIBLE
+internal val View.isVisible: Boolean get() = visibility == View.VISIBLE
 
-val View.isGone: Boolean get() = visibility == View.GONE
+internal val View.isGone: Boolean get() = visibility == View.GONE

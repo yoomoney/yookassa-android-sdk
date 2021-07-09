@@ -25,7 +25,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-inline fun <reified T : ViewModel> Fragment.viewModel(
+internal inline fun <reified T : ViewModel> Fragment.viewModel(
     key: String,
     noinline viewModelFactory: () -> ViewModelProvider.Factory
 ): Lazy<T> {

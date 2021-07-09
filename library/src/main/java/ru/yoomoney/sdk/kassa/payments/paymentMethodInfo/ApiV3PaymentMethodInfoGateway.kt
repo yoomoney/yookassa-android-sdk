@@ -24,19 +24,21 @@ package ru.yoomoney.sdk.kassa.payments.paymentMethodInfo
 import ru.yoomoney.sdk.kassa.payments.extensions.CheckoutOkHttpClient
 import ru.yoomoney.sdk.kassa.payments.secure.TokensStorage
 import ru.yoomoney.sdk.kassa.payments.extensions.execute
+import ru.yoomoney.sdk.kassa.payments.http.HostProvider
 import ru.yoomoney.sdk.kassa.payments.methods.PaymentMethodRequest
 import ru.yoomoney.sdk.kassa.payments.model.PaymentMethodBankCard
 import ru.yoomoney.sdk.kassa.payments.model.Result
 import ru.yoomoney.sdk.kassa.payments.payment.loadPaymentInfo.PaymentMethodInfoGateway
 
 internal class ApiV3PaymentMethodInfoGateway(
+    private val hostProvider: HostProvider,
     private val httpClient: Lazy<CheckoutOkHttpClient>,
     private val tokensStorage: TokensStorage,
     private val shopToken: String
 ) : PaymentMethodInfoGateway {
 
     override fun getPaymentMethodInfo(paymentMethodId: String): Result<PaymentMethodBankCard> {
-        val paymentRequest = PaymentMethodRequest(paymentMethodId, shopToken, tokensStorage.userAuthToken)
+        val paymentRequest = PaymentMethodRequest(hostProvider, paymentMethodId, shopToken, tokensStorage.userAuthToken)
         return httpClient.value.execute(paymentRequest)
     }
 }

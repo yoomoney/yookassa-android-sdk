@@ -21,7 +21,6 @@
 
 package ru.yoomoney.sdk.kassa.payments.logout
 
-
 internal interface LogoutUseCase {
     suspend fun logout()
 }

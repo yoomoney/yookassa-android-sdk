@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ The MIT License (MIT)
-  ~ Copyright © 2020 NBCO YooMoney LLC
+  ~ Copyright © 2021 NBCO YooMoney LLC
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
   ~ associated documentation files (the “Software”), to deal in the Software without restriction, including
@@ -21,10 +20,6 @@
   -->
 
 <resources>
-    <dimen name="product_image_size">199dp</dimen>
-    <dimen name="product_image_top_margin">@dimen/ym_space_2xl</dimen>
-    <dimen name="product_title_top_margin">@dimen/ym_space_3xl</dimen>
-    <dimen name="ym_iconPlusText_iconMargin_3xl">@dimen/ym_space_3xl</dimen>
-    <dimen name="ym_decor_marginTop_2xl">@dimen/ym_space_2xl</dimen>
-
+    <dimen name="button_height">@dimen/ym_space_3xl</dimen>
+    <dimen name="button_margin">@dimen/ym_space_2xl</dimen>
 </resources>

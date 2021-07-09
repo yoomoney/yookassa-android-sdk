@@ -30,8 +30,7 @@ import ru.yoomoney.sdk.kassa.payments.R
 import ru.yoomoney.sdk.kassa.payments.ui.color.InMemoryColorSchemeRepository
 import ru.yoomoney.sdk.kassa.payments.utils.setUpCursorColor
 
-
-class CheckoutTextInputView @JvmOverloads constructor(
+internal class CheckoutTextInputView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

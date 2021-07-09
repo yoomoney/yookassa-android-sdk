@@ -1,80 +1,10 @@
-<?xml version='1.0' encoding='utf-8'?><!--
-  ~ The MIT License (MIT)
-  ~ Copyright © 2018 NBCO YooMoney LLC
-  ~
-  ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
-  ~ associated documentation files (the “Software”), to deal in the Software without restriction, including
-  ~ without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-  ~ of the Software, and to permit persons to whom the Software is furnished to do so, subject to the
-  ~ following conditions:
-  ~
-  ~ The above copyright notice and this permission notice shall be included in all copies or substantial
-  ~ portions of the Software.
-  ~
-  ~ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
-  ~ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
-  ~ PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-  ~ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
-  ~ OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-  ~ OTHER DEALINGS IN THE SOFTWARE.
-  -->
-
 <resources>
-    <string name="app_name">Demo mSDK</string>
-    <string name="start_payment">Start the payment process</string>
-    <string name="settings">Settings</string>
-    <string name="checkout_logo">YooMoney logo</string>
-    <string name="test_mode">Test mode</string>
-    <string name="payment_authorized">You\'ve signed into the Wallet</string>
-    <string name="linked_cards">Linked cards</string>
-    <string name="complete_payment_with_error">Complete the payment with an error</string>
-    <string name="payment_type">Payment methods</string>
-    <string name="main_buy">Buy</string>
-    <string name="main_toolbar_title">Placing an order</string>
-    <string name="main_product_name">Comet</string>
-    <string name="main_product_description">Very bright, with an orbital period of 112 years.</string>
-    <string name="main_price">Price</string>
-    <string name="save">Save</string>
-    <string name="binded_cards_max_cards">Maximum 5 linked cards</string>
-    <string name="success_screen_token_is_ready">Token is ready</string>
-    <string name="success_screen_token_instructions">Create payment with YooMoney API, pass this token to the payment_token parameter</string>
-    <string name="success_screen_open_documentation">Open documentation</string>
-    <string name="success_screen_open_github">README and source code on Github</string>
-    <string name="success_screen_show_token">Show token</string>
-    <string name="token_copy">Copy</string>
-    <string name="token_cancel">Cancel</string>
-    <string name="checkout_documentation_link">https://yookassa.ru/en/developers/payment-forms/android-sdk</string>
-    <string name="checkout_github_link" translatable="false">https://github.com/yoomoney/yookassa-android-sdk</string>
-    <string name="version_template">Version %1$s of mobile SDK\nfrom %2$tD, build %3$d</string>
-    <string name="google_pay">Google Pay</string>
-    <string name="pay_with_token">Pay with this token</string>
-    <string name="button_close">Close</string>
-    <string name="tokenization_canceled">Tokenization canceled</string>
-    <string name="success_app2app">App2App was completed</string>
-    <string name="cancel_app2app">App2App was canceled</string>
-    <string name="success_3ds">3ds was completed</string>
-    <string name="cancel_3ds">3ds was canceled</string>
-    <string name="error_code_3ds">Error code: </string>
-    <string name="error_description_3ds">Error description: </string>
-    <string name="error_failing_url_3ds">Error url: </string>
-    <string name="hint_3ds_input">Input 3ds url</string>
-    <string name="hint_app2app_input">Input App2App url</string>
-    <string name="confirm_3ds">Confirm</string>
-    <string name="error_wrong_url">Wrong url</string>
-    <string name="color_scheme_title">Color scheme</string>
-    <string name="color_scheme_hint">0–255</string>
-    <string name="color_scheme_red_value_title">Red:</string>
-    <string name="color_scheme_green_value_title">Green:</string>
-    <string name="color_scheme_blue_value_title">Blue:</string>
-    <string name="test_phone_number" translatable="false">+79991234567</string>
-    <string name="test_redirect_url" translatable="false">https://custom.redirect.url/</string>
-    <string name="autofill_user_phone_number">Phone number autofill</string>
-    <string name="show_fee">Add fee to the test payment</string>
-    <string name="test_fee">Fee</string>
-    <string name="test_fee_hint">Fee to display on the contract screen</string>
-    <string name="save_payment_method_selector_user_decide">User can save payment method</string>
-    <string name="save_payment_method_selector_save">Save payment method</string>
-    <string name="save_payment_method_selector_dont_save">Do not save payment method</string>
-    <string name="allow_camera_permission_in_settings">Grant permission to use the camera in the settings</string>
-    <string name="allow_logging">Logging requests</string>
+  <string name='app_name'>Demo mSDK</string>
+  <string name='start_payment'>Start the payment process</string>
+  <string name='tokenization_canceled'>Tokenization canceled</string>
+  <string name='tokenization_success'>Token: %1$s</string>
+  <string name='test_phone_number'>+79991234567</string>
+  <string name='test_redirect_url'>https://custom.redirect.url/</string>
+  <string name='main_product_name'>Comet</string>
+  <string name='main_product_description'>Very bright, with an orbital period of 112 years.</string>
 </resources>

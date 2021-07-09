@@ -30,4 +30,4 @@ import dagger.MapKey
 )
 @Retention(AnnotationRetention.RUNTIME)
 @MapKey
-annotation class ViewModelKey(val key: String)
+internal annotation class ViewModelKey(val key: String)

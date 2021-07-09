@@ -24,8 +24,15 @@ package ru.yoomoney.sdk.kassa.payments.metrics
 import android.util.Log
 import com.yandex.metrica.IReporter
 import ru.yoomoney.sdk.kassa.payments.BuildConfig
-import ru.yoomoney.sdk.kassa.payments.checkoutParameters.TestParameters
+import ru.yoomoney.sdk.kassa.payments.model.ApiMethodException
+import ru.yoomoney.sdk.kassa.payments.model.AuthCheckApiMethodException
+import ru.yoomoney.sdk.kassa.payments.model.NoInternetException
+import ru.yoomoney.sdk.kassa.payments.model.PassphraseCheckFailedException
+import ru.yoomoney.sdk.kassa.payments.model.RequestExecutionException
+import ru.yoomoney.sdk.kassa.payments.model.ResponseParsingException
+import ru.yoomoney.sdk.kassa.payments.model.ResponseReadingException
 import ru.yoomoney.sdk.kassa.payments.model.SdkException
+import ru.yoomoney.sdk.kassa.payments.model.SelectedOptionNotFoundException
 import ru.yoomoney.sdk.kassa.payments.model.UnhandledException
 
 internal class YandexMetricaReporter(
@@ -46,7 +53,21 @@ internal class YandexMetricaErrorReporter(
     private val metrica: IReporter
 ) : ErrorReporter {
 
-    override fun report(e: SdkException) = metrica.reportError("Sdk error", e)
+    override fun report(e: SdkException) {
+        when(e) {
+            is SelectedOptionNotFoundException -> metrica.reportError("Selected option not found error", e)
+            is RequestExecutionException -> {
+                metrica.reportError("Request execution error", e.e)
+            }
+            is NoInternetException ->  metrica.reportError("No internet error", e)
+            is ResponseReadingException -> metrica.reportError("Response reading error", e.e)
+            is ResponseParsingException -> metrica.reportError("No internet error", e.e)
+            is ApiMethodException -> metrica.reportError("Api method error", e)
+            is AuthCheckApiMethodException -> metrica.reportError("Auth check api method error", e)
+            is PassphraseCheckFailedException -> metrica.reportError("Passphrase check failed error", e)
+            else ->  metrica.reportError("Unknown sdk error", e)
+        }
+    }
 }
 
 internal class YandexMetricaExceptionReporter(
@@ -67,7 +88,7 @@ internal class YandexMetricaSessionReporter(
 
 internal class YandexMetricaLoggerReporter(
     private val showLogs: Boolean,
-    private val errorReporter: Reporter
+    private val errorReporter: ErrorReporter
 ) : ErrorLoggerReporter {
 
     companion object {
@@ -75,10 +96,7 @@ internal class YandexMetricaLoggerReporter(
     }
 
     override fun report(e: SdkException) {
-        val message = e.localizedMessage
-        if (!message.isNullOrBlank()) {
-            errorReporter.report(message)
-        }
+        errorReporter.report(e)
         if (showLogs) {
             Log.d(ERROR_TAG, e.toString())
         }

@@ -20,7 +20,7 @@
 
 #  Документация
 
-Android Checkout mobile SDK - версия 6.0.2 ([changelog](https://github.com/yoomoney/yookassa-android-sdk/blob/master/CHANGELOG.md))
+Android Checkout mobile SDK - версия $versionName ([changelog](https://github.com/yoomoney/yookassa-android-sdk/blob/master/CHANGELOG.md))
 
 * [Changelog](#changelog)
 * [Migration guide](#migration-guide)
@@ -50,7 +50,7 @@ Android Checkout mobile SDK - версия 6.0.2 ([changelog](https://github.com
 [Ссылка на Migration guide](https://github.com/yoomoney/yookassa-android-sdk/blob/master/MIGRATION.md)
 
 # Регистрация приложения для платежей из кошелька
-> Если среди платёжных методов есть кошелёк ЮMoney, необходимо зарегистрировать приложение и получить `clientId`.
+> Если среди платёжных методов есть кошелёк ЮMoney, необходимо зарегистрировать приложение и получить `authCenterClientId`.
 В остальных случаях этот шаг можно пропустить.
 
 Если вы ранее уже регистрировали приложение для **oAuth-авторизации**, то список ваших приложений можно найти на странице https://yookassa.ru/oauth/v2/client
@@ -66,7 +66,7 @@ Android Checkout mobile SDK - версия 6.0.2 ([changelog](https://github.com
         * В разделе `Кошелёк ЮMoney` выдайте разрешение на чтение баланса кошелька пользователя. Для этого в разделе **БАЛАНС КОШЕЛЬКА** поставьте галку на против поля **Просмотр**;
         * Откройте раздел `Профиль ЮMoney` и выдайте разрешение на чтение телефона, почты, имени и аватара пользователя. Для этого в разделе **ТЕЛЕФОН, ПОЧТА, ИМЯ И АВАТАР ПОЛЬЗОВАТЕЛЯ** поставьте галку на против поля **Просмотр**;
 3. Нажмите на кнопку "Зарегистрировать" и завершите регистрацию;
-4. В открывшемся окне появится информация о зарегистрированном приложении. Вам понадобится `Client ID` для запуска токенизации см. [(Запуск токенизации)](#запуск-токенизации);
+4. В открывшемся окне появится информация о зарегистрированном приложении. Вам понадобится `authCenterClientId` для запуска токенизации см. [(Запуск токенизации)](#запуск-токенизации);
 
 # Подключение зависимостей
 
@@ -79,7 +79,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'ru.yoomoney.sdk.kassa.payments:yookassa-android-sdk:6.0.2'
+    implementation 'ru.yoomoney.sdk.kassa.payments:yookassa-android-sdk:$versionName'
 }
 ```
 
@@ -88,20 +88,6 @@ dependencies {
 ```groovy
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.aar"])
-}
-```
-
-## Подключение sdk авторизации для платежей из кошелька
-> Если среди платёжных методов есть кошелёк ЮMoney, необходимо подключить sdk авторизации `ru.yoomoney.sdk.auth`.
-В остальных случаях этот шаг можно пропустить.
-
-Добавьте необходимые зависимости в gradle файлы:
-```groovy
-repositories {
-    mavenCentral()
-}
-dependencies {
-    implementation "ru.yoomoney.sdk.auth:auth:1.2.8"
 }
 ```
 
@@ -160,7 +146,7 @@ android {
 * clientApplicationKey (String) - ключ для клиентских приложений из личного кабинета ЮKassa ([раздел Настройки — Ключи API](https://yookassa.ru/my/api-keys-settings)).;
 * shopId (String) - идентификатор магазина в ЮKassa.
 * savePaymentMethod (SavePaymentMethod) - настройка сохранения платёжного метода. Сохранённые платёжные методы можно использовать для проведения рекуррентных платежей.
-* clientId (String) - идентификатор приложения для sdk авторизации `ru.yoomoney.sdk.auth`, см. [Регистрация приложения для платежей из кошелька](#регистрация-приложения-для-платежей-из-кошелька).
+* authCenterClientId (String) - идентификатор приложения для sdk авторизации `ru.yoomoney.sdk.auth`, см. [Регистрация приложения для платежей из кошелька](#регистрация-приложения-для-платежей-из-кошелька).
 
 Необязательные:
 * paymentMethodTypes (Set of PaymentMethodType) - ограничения способов оплаты. Если оставить поле пустым или передать в него null,
@@ -402,7 +388,7 @@ class MyActivity extends AppCompatActivity {
 Результат работы 3ds можно получить в `onActivityResult()`
 
 Возможные типы результата:
-* Activity.RESULT_OK - 3ds прошёл успешно;
+* Activity.RESULT_OK - сообщает о том что процесс 3ds завершён, но не гарантирует что успешно. После получения результата рекомендуется запросить статус платежа;
 * Activity.RESULT_CANCELED - прохождение 3ds было отменено (например, пользователь нажал на кнопку "назад" во время процесса);
 * Checkout.RESULT_ERROR - не удалось пройти 3ds.
 
@@ -425,7 +411,7 @@ class MyActivity extends AppCompatActivity {
         if (requestCode == 1) {
             switch (resultCode) {
                 case RESULT_OK:
-                    // 3ds прошел
+                    // Процесс 3ds завершён
                     break;
                 case RESULT_CANCELED:
                     // экран 3ds был закрыт

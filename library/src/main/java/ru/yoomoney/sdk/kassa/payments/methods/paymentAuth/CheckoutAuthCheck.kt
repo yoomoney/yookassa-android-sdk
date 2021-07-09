@@ -24,6 +24,7 @@ package ru.yoomoney.sdk.kassa.payments.methods.paymentAuth
 import org.json.JSONObject
 import ru.yoomoney.sdk.kassa.payments.extensions.toAuthCheckResponse
 import ru.yoomoney.sdk.kassa.payments.extensions.toJsonString
+import ru.yoomoney.sdk.kassa.payments.http.HostProvider
 import ru.yoomoney.sdk.kassa.payments.model.AuthType
 import ru.yoomoney.sdk.kassa.payments.model.Result
 
@@ -38,8 +39,9 @@ internal class CheckoutAuthCheckRequest(
     private val authType: AuthType,
     private val answer: String,
     userAuthToken: String,
-    shopToken: String
-) : CheckoutRequest<Result<Unit>>(userAuthToken, shopToken) {
+    shopToken: String,
+    hostProvider: HostProvider
+) : CheckoutRequest<Result<Unit>>(userAuthToken, shopToken, hostProvider) {
 
     override fun getUrl(): String = host + AUTH_CHECK_PATH
 

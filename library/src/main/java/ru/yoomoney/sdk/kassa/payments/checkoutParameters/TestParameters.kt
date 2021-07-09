@@ -26,6 +26,7 @@ import android.os.Parcelable
 import androidx.annotation.Keep
 import com.google.android.gms.wallet.WalletConstants
 import kotlinx.android.parcel.Parcelize
+import ru.yoomoney.sdk.kassa.payments.BuildConfig
 
 /**
  * Wrapper for test parameters. This class is used in [Checkout.createTokenizeIntent].
@@ -42,5 +43,19 @@ data class TestParameters
 @[JvmOverloads Keep] constructor(
     @Keep val showLogs: Boolean = false,
     @Keep val googlePayTestEnvironment: Boolean = false,
-    @Keep val mockConfiguration: MockConfiguration? = null
+    @Keep val mockConfiguration: MockConfiguration? = null,
+    @Keep val hostParameters: HostParameters = HostParameters(),
+    @Keep val yandexClientId: String = "80642c11721c49d69d9936de0c265886"
 ) : Parcelable
+
+private const val HOST = "https://sdk.yookassa.ru/api/frontend/v3"
+
+@[Parcelize Keep SuppressLint("ParcelCreator")]
+data class HostParameters
+@[JvmOverloads Keep] constructor(
+    @Keep val host: String = HOST,
+    @Keep val paymentAuthorizationHost: String = "https://yoomoney.ru/api/wallet-auth/v1",
+    @Keep val authHost: String? = null
+) : Parcelable {
+    val isDevHost: Boolean = host != HOST
+}

@@ -25,6 +25,7 @@ import ru.yoomoney.sdk.kassa.payments.extensions.CheckoutOkHttpClient
 import ru.yoomoney.sdk.kassa.payments.tmx.ProfilingTool
 import ru.yoomoney.sdk.kassa.payments.tmx.TmxSessionIdStorage
 import ru.yoomoney.sdk.kassa.payments.extensions.execute
+import ru.yoomoney.sdk.kassa.payments.http.HostProvider
 import ru.yoomoney.sdk.kassa.payments.methods.TokenRequest
 import ru.yoomoney.sdk.kassa.payments.model.Confirmation
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
@@ -34,6 +35,7 @@ import ru.yoomoney.sdk.kassa.payments.paymentAuth.PaymentAuthTokenRepository
 import java.util.concurrent.Semaphore
 
 internal class ApiV3TokenizeRepository(
+    private val hostProvider: HostProvider,
     private val httpClient: Lazy<CheckoutOkHttpClient>,
     private val shopToken: String,
     private val paymentAuthTokenRepository: PaymentAuthTokenRepository,
@@ -68,6 +70,7 @@ internal class ApiV3TokenizeRepository(
         val currentTmxSessionId = tmxSessionId ?: return Result.Fail(TmxProfilingFailedException())
         val paymentAuthToken = paymentAuthTokenRepository.paymentAuthToken
         val tokenRequest = TokenRequest(
+            hostProvider,
             paymentOptionInfo,
             paymentOption,
             currentTmxSessionId,

@@ -28,6 +28,7 @@ import dagger.Provides
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.TestParameters
 import ru.yoomoney.sdk.kassa.payments.extensions.CheckoutOkHttpClient
+import ru.yoomoney.sdk.kassa.payments.http.HostProvider
 import ru.yoomoney.sdk.kassa.payments.metrics.ErrorReporter
 import ru.yoomoney.sdk.kassa.payments.secure.TokensStorage
 import ru.yoomoney.sdk.kassa.payments.payment.SharedPreferencesCurrentUserRepository
@@ -47,27 +48,8 @@ import javax.inject.Singleton
 internal class PaymentModule {
 
     @Provides
-    @Singleton
-    fun currentUserGateway(
-        tokensStorage: TokensStorage,
-        sharedPreferences: SharedPreferences,
-        testParameters: TestParameters
-    ): CurrentUserRepository {
-        return if (testParameters.mockConfiguration?.paymentAuthPassed == true) {
-            object : CurrentUserRepository {
-                override var currentUser: CurrentUser =
-                    AuthorizedUser()
-            }
-        } else {
-            SharedPreferencesCurrentUserRepository(
-                tokensStorage = tokensStorage,
-                sharedPreferences = sharedPreferences
-            )
-        }
-    }
-
-    @Provides
     fun paymentMethodInfoGateway(
+        hostProvider: HostProvider,
         okHttpClient: CheckoutOkHttpClient,
         tokensStorage: TokensStorage,
         paymentParameters: PaymentParameters,
@@ -77,6 +59,7 @@ internal class PaymentModule {
             MockPaymentInfoGateway()
         } else {
             ApiV3PaymentMethodInfoGateway(
+                hostProvider = hostProvider,
                 httpClient = lazy { okHttpClient },
                 tokensStorage = tokensStorage,
                 shopToken = paymentParameters.clientApplicationKey

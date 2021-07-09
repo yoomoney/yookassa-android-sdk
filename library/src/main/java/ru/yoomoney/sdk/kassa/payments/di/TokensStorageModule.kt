@@ -29,17 +29,24 @@ import ru.yoomoney.sdk.kassa.payments.secure.Encrypter
 import ru.yoomoney.sdk.kassa.payments.secure.TokensStorage
 import javax.inject.Singleton
 
-
 @Module
-internal open class TokensStorageModule {
+internal open class TokensStorageModule(private val resetTokensStorage: Boolean = false) {
 
     @Provides
     @Singleton
-    open fun tokensStorage(sharedPreferences: SharedPreferences, encrypter: Encrypter, decrypter: Decrypter): TokensStorage {
+    open fun tokensStorage(
+        sharedPreferences: SharedPreferences,
+        encrypter: Encrypter,
+        decrypter: Decrypter
+    ): TokensStorage {
         return TokensStorage(
             preferences = sharedPreferences,
             encrypt = encrypter,
             decrypt = decrypter
-        )
+        ).apply {
+            if (resetTokensStorage) {
+                reset()
+            }
+        }
     }
 }

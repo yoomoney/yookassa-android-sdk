@@ -26,12 +26,12 @@ import ru.yoomoney.sdk.kassa.payments.R
 
 private const val VISA = "4"
 private const val MASTERCARD = "5"
-var UNKNOWN_CARD_ICON = R.drawable.ym_ic_unknown_list
+internal var UNKNOWN_CARD_ICON = R.drawable.ym_ic_unknown_list
 
 private val banks by lazy { initBanks() }
 
 @DrawableRes
-fun getBankLogo(pan: String): Int {
+internal fun getBankLogo(pan: String): Int {
     return getIconByPan(pan)
 }
 

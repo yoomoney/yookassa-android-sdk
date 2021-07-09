@@ -36,8 +36,6 @@ import ru.yoomoney.sdk.auth.YooMoneyAuth.REQUEST_MONEY_AUTHORIZATION
 import ru.yoomoney.sdk.auth.analytics.AnalyticsEvent
 import ru.yoomoney.sdk.auth.analytics.AnalyticsLogger
 import ru.yoomoney.sdk.auth.auxAuthorization.model.AuxTokenScope
-import ru.yoomoney.sdk.kassa.payments.BuildConfig.AUTH_HOST
-import ru.yoomoney.sdk.kassa.payments.BuildConfig.YANDEX_CLIENT_ID
 import ru.yoomoney.sdk.kassa.payments.R
 import ru.yoomoney.sdk.kassa.payments.di.CheckoutInjector
 import ru.yoomoney.sdk.kassa.payments.http.UserAgent
@@ -51,6 +49,8 @@ import ru.yoomoney.sdk.kassa.payments.utils.viewModel
 import ru.yoomoney.sdk.march.RuntimeViewModel
 import ru.yoomoney.sdk.march.observe
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
+import ru.yoomoney.sdk.kassa.payments.checkoutParameters.TestParameters
+import ru.yoomoney.sdk.kassa.payments.http.HostProvider
 import ru.yoomoney.sdk.kassa.payments.metrics.MoneyAuthLoginSchemeAuthSdk
 import ru.yoomoney.sdk.kassa.payments.utils.canResolveIntent
 import javax.inject.Inject
@@ -72,6 +72,12 @@ internal class MoneyAuthFragment : Fragment() {
 
     @Inject
     lateinit var paymentParameters: PaymentParameters
+
+    @Inject
+    lateinit var testParameters: TestParameters
+
+    @Inject
+    lateinit var hostProvider: HostProvider
 
     private val yooMoneyIntent by lazy {
         createYooMoneyAuxDeepLink(
@@ -177,9 +183,9 @@ internal class MoneyAuthFragment : Fragment() {
             origin = Config.Origin.WALLET,
             processType = Config.ProcessType.LOGIN,
             authCenterClientId = requireNotNull(paymentParameters.authCenterClientId),
-            yandexClientId = YANDEX_CLIENT_ID,
-            apiHost = if (AUTH_HOST.isNotEmpty()) AUTH_HOST else null,
-            isDebugMode = AUTH_HOST.isNotEmpty(),
+            yandexClientId = testParameters.yandexClientId,
+            apiHost = if (!hostProvider.authHost().isNullOrEmpty()) hostProvider.authHost() else null,
+            isDebugMode = !hostProvider.authHost().isNullOrEmpty(),
             supportEmail = getString(R.string.ym_support_email),
             supportHelpUrl = getString(R.string.ym_support_help_url),
             supportPhone = getString(R.string.ym_support_phone),

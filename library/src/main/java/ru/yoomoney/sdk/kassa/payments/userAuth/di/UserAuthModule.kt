@@ -33,6 +33,7 @@ import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentMethodType
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.TestParameters
 import ru.yoomoney.sdk.kassa.payments.di.ViewModelKey
+import ru.yoomoney.sdk.kassa.payments.http.HostProvider
 import ru.yoomoney.sdk.kassa.payments.metrics.Reporter
 import ru.yoomoney.sdk.kassa.payments.metrics.TokenizeSchemeParamProvider
 import ru.yoomoney.sdk.kassa.payments.metrics.UserAuthTokenTypeParamProvider
@@ -55,7 +56,6 @@ import ru.yoomoney.sdk.kassa.payments.userAuth.MoneyAuthBusinessLogic
 import ru.yoomoney.sdk.kassa.payments.userAuth.User
 import ru.yoomoney.sdk.march.Out
 import ru.yoomoney.sdk.march.RuntimeViewModel
-import ru.yoomoney.sdk.kassa.payments.BuildConfig.AUTH_HOST
 import ru.yoomoney.sdk.kassa.payments.userAuth.MoneyAuth
 import ru.yoomoney.sdk.kassa.payments.userAuth.YooMoneyAuthorizeUserRepository
 import javax.inject.Singleton
@@ -133,13 +133,14 @@ internal class UserAuthModule {
     @Singleton
     fun transferDataRepository(
         context: Context,
-        paymentParameters: PaymentParameters
+        paymentParameters: PaymentParameters,
+        hostProvider: HostProvider
     ): TransferDataRepository {
         return YooMoneyAuth.provideTransferDataRepository(
             context = context,
             authCenterClientId = requireNotNull(paymentParameters.authCenterClientId),
-            apiHost = if (AUTH_HOST.isNotEmpty()) AUTH_HOST else null,
-            isDebugMode = AUTH_HOST.isNotEmpty()
+            apiHost = if (!hostProvider.authHost().isNullOrEmpty()) hostProvider.authHost() else null,
+            isDebugMode = !hostProvider.authHost().isNullOrEmpty()
         )
     }
 
@@ -151,11 +152,11 @@ internal class UserAuthModule {
 
     @Provides
     @Singleton
-    fun accountRepository(context: Context): AccountRepository {
+    fun accountRepository(context: Context, hostProvider: HostProvider): AccountRepository {
         return YooMoneyAuth.provideAccountRepository(
             context = context,
-            apiHost = if (AUTH_HOST.isNotEmpty()) AUTH_HOST else null,
-            isDebugMode = AUTH_HOST.isNotEmpty()
+            apiHost = if (!hostProvider.authHost().isNullOrEmpty()) hostProvider.authHost() else null,
+            isDebugMode = !hostProvider.authHost().isNullOrEmpty()
         )
     }
 

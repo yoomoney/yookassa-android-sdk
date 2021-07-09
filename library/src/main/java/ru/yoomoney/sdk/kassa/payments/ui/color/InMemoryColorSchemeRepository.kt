@@ -26,7 +26,7 @@ import android.content.res.ColorStateList
 import androidx.core.content.ContextCompat
 import ru.yoomoney.sdk.kassa.payments.R
 
-object InMemoryColorSchemeRepository {
+internal object InMemoryColorSchemeRepository {
     var colorScheme: ColorScheme = ColorScheme.getDefaultScheme()
 
     fun backgroundStateList(context: Context): ColorStateList {

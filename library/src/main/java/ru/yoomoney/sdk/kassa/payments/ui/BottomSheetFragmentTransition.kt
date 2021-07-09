@@ -35,7 +35,7 @@ import androidx.core.animation.doOnEnd
 import androidx.core.view.updateLayoutParams
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 
-class BottomSheetFragmentTransition : Transition() {
+internal class BottomSheetFragmentTransition : Transition() {
 
     override fun getTransitionProperties(): Array<String> = arrayOf(HEIGHT, STATE)
 

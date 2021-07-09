@@ -23,9 +23,9 @@ package ru.yoomoney.sdk.kassa.payments.methods
 
 import okhttp3.Credentials
 import org.json.JSONObject
-import ru.yoomoney.sdk.kassa.payments.BuildConfig
 import ru.yoomoney.sdk.kassa.payments.extensions.toJsonObject
 import ru.yoomoney.sdk.kassa.payments.extensions.toTokenResponse
+import ru.yoomoney.sdk.kassa.payments.http.HostProvider
 import ru.yoomoney.sdk.kassa.payments.methods.base.MimeType
 import ru.yoomoney.sdk.kassa.payments.methods.base.PostRequest
 import ru.yoomoney.sdk.kassa.payments.model.Confirmation
@@ -45,6 +45,7 @@ private const val SAVE_PAYMENT_METHOD = "save_payment_method"
 private const val CSC = "csc"
 
 internal data class TokenRequest(
+    private val hostProvider: HostProvider,
     private val paymentOptionInfo: PaymentOptionInfo,
     private val paymentOption: PaymentOption,
     private val tmxSessionId: String,
@@ -76,7 +77,7 @@ internal data class TokenRequest(
 
     override fun getMimeType() = MimeType.JSON
 
-    override fun getUrl(): String = BuildConfig.HOST + TOKEN_METHOD_PATH
+    override fun getUrl(): String = hostProvider.host() + TOKEN_METHOD_PATH
 
     override fun convertJsonToResponse(jsonObject: JSONObject) = jsonObject.toTokenResponse()
 

@@ -21,26 +21,32 @@
 
 package ru.yoomoney.sdk.kassa.payments.http
 
+import android.annotation.SuppressLint
 import android.content.Context
 import okhttp3.ConnectionPool
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import ru.yoomoney.sdk.kassa.payments.impl.applySsl
 import ru.yoomoney.sdk.kassa.payments.utils.isBuildDebug
+import java.security.SecureRandom
 import java.util.concurrent.TimeUnit
+import javax.net.ssl.HostnameVerifier
+import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
 
 private const val DEFAULT_TIMEOUT: Long = 30
 
 internal fun newHttpClient(
+    context: Context,
     showLogs: Boolean,
-    context: Context
+    isDevHost: Boolean
 ): OkHttpClient = OkHttpClient.Builder()
     .readTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
     .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
     .connectionPool(ConnectionPool(4, 10L, TimeUnit.MINUTES))
     .followSslRedirects(false)
     .followRedirects(false)
-    .applySsl(context)
+    .applySsl(isDevHost)
     .addUserAgent(context)
     .applyLogging(context, showLogs)
     .build()
@@ -53,3 +59,33 @@ internal fun OkHttpClient.Builder.applyLogging(
 } else {
     addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.NONE))
 }
+
+internal fun OkHttpClient.Builder.applySsl(isDevHost: Boolean) = if (isDevHost) {
+    apply {
+        sslSocketFactory(sslSocketFactory(), debugTrustManager[0] as X509TrustManager)
+        hostnameVerifier(HostnameVerifier { _, _ -> true })
+    }
+} else {
+    this
+}
+
+private fun sslSocketFactory() =
+    SSLContext.getInstance("SSL").apply { init(null, debugTrustManager, SecureRandom()) }.socketFactory
+
+private val debugTrustManager = arrayOf<TrustManager>(object : X509TrustManager {
+
+    @SuppressLint("TrustAllX509TrustManager")
+    override fun checkClientTrusted(chain: Array<java.security.cert.X509Certificate>, authType: String) {
+        // does nothing
+    }
+
+    @SuppressLint("TrustAllX509TrustManager")
+    override fun checkServerTrusted(chain: Array<java.security.cert.X509Certificate>, authType: String) {
+        // does nothing
+    }
+
+    override fun getAcceptedIssuers(): Array<java.security.cert.X509Certificate> {
+
+        return arrayOf()
+    }
+})

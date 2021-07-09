@@ -26,6 +26,7 @@ import ru.yoomoney.sdk.kassa.payments.checkoutParameters.SavePaymentMethod
 import ru.yoomoney.sdk.kassa.payments.extensions.CheckoutOkHttpClient
 import ru.yoomoney.sdk.kassa.payments.secure.TokensStorage
 import ru.yoomoney.sdk.kassa.payments.extensions.execute
+import ru.yoomoney.sdk.kassa.payments.http.HostProvider
 import ru.yoomoney.sdk.kassa.payments.methods.PaymentOptionsRequest
 import ru.yoomoney.sdk.kassa.payments.model.CurrentUser
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
@@ -33,6 +34,7 @@ import ru.yoomoney.sdk.kassa.payments.payment.loadOptionList.PaymentOptionListRe
 import ru.yoomoney.sdk.kassa.payments.model.Result
 
 internal class ApiV3PaymentOptionListRepository(
+    private val hostProvider: HostProvider,
     private val httpClient: Lazy<CheckoutOkHttpClient>,
     private val gatewayId: String?,
     private val tokensStorage: TokensStorage,
@@ -47,6 +49,7 @@ internal class ApiV3PaymentOptionListRepository(
             tokensStorage.userAuthToken
         }
         val paymentRequest = PaymentOptionsRequest(
+            hostProvider,
             amount = amount,
             currentUser = currentUser,
             gatewayId = gatewayId,

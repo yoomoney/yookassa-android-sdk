@@ -78,16 +78,13 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-
 private const val MIN_LENGTH_CSC = 3
 private const val MIN_LENGTH_EXPIRY = 5
 private const val MIN_LENGTH_CARD_NUMBER = 19
 
-
 internal const val EXTRA_CARD_NUMBER = "cardNumber"
 internal const val EXTRA_EXPIRY_MONTH = "expiryMonth"
 internal const val EXTRA_EXPIRY_YEAR = "expiryYear"
-
 
 internal class BankCardView
 @JvmOverloads constructor(
@@ -219,6 +216,12 @@ internal class BankCardView
 
         listOf(cardNumberEditText, cardNumberEditDone, expiryEditText, cvcEditText).forEach {
             it.setUpCursorColor(primaryColor)
+        }
+
+        cardNumberEditText.hint = if (isScanBankCardAvailable) {
+            resources.getString(R.string.ym_card_number_hint)
+        } else {
+            resources.getString(R.string.ym_card_number_only_enter_hint)
         }
 
         setUpCardNumber()

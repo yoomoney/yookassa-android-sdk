@@ -29,9 +29,9 @@ import ru.yoomoney.sdk.kassa.payments.checkoutParameters.TestParameters
 import ru.yoomoney.sdk.kassa.payments.http.newHttpClient
 
 @Module
-open class OkHttpModule {
+internal open class OkHttpModule {
     @Provides
-    open fun okHttpClient(testParameters: TestParameters, context: Context): OkHttpClient {
-        return newHttpClient(testParameters.showLogs, context)
+    open fun okHttpClient(context: Context, testParameters: TestParameters): OkHttpClient {
+        return newHttpClient(context, testParameters.showLogs, testParameters.hostParameters.isDevHost)
     }
 }

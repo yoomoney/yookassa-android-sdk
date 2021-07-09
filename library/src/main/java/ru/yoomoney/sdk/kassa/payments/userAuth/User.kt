@@ -21,7 +21,7 @@
 
 package ru.yoomoney.sdk.kassa.payments.userAuth
 
-sealed class User {
+internal sealed class User {
     data class Authorized(val token: String): User()
     object Empty: User()
 }

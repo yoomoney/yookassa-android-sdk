@@ -98,11 +98,11 @@ internal fun PaymentOption.getAdditionalInfo(): CharSequence? {
     }
 }
 
-internal fun PaymentOption.toTokenizeScheme(context: Context) = when (this) {
+internal fun PaymentOption.toTokenizeScheme(context: Context, sberbankPackage: String) = when (this) {
     is Wallet, is AbstractWallet -> TokenizeSchemeWallet()
     is LinkedCard -> TokenizeSchemeLinkedCard()
     is NewCard -> TokenizeSchemeBankCard()
-    is SberBank -> if (canPayWithSberPay(context)) {
+    is SberBank -> if (canPayWithSberPay(context, sberbankPackage)) {
         TokenizeSchemeSberPay()
     } else {
         TokenizeSchemeSbolSms()
@@ -111,12 +111,12 @@ internal fun PaymentOption.toTokenizeScheme(context: Context) = when (this) {
     is PaymentIdCscConfirmation -> TokenizeSchemeRecurring()
 }
 
-internal fun PaymentOption.getConfirmation(context: Context, returnUrl: String, appScheme: String): Confirmation {
+internal fun PaymentOption.getConfirmation(context: Context, returnUrl: String, appScheme: String, sberbankPackage: String): Confirmation {
     return when (this) {
         is YooMoney, is NewCard, is GooglePay, is PaymentIdCscConfirmation -> RedirectConfirmation(
             returnUrl
         )
-        is SberBank -> if (canPayWithSberPay(context)) {
+        is SberBank -> if (canPayWithSberPay(context, sberbankPackage)) {
             MobileApplication("$appScheme://$INVOICING_AUTHORITY/$SBERPAY_PATH")
         } else {
             ExternalConfirmation

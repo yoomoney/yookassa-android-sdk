@@ -24,6 +24,7 @@ package ru.yoomoney.sdk.kassa.payments.methods.paymentAuth
 import org.json.JSONObject
 import ru.yoomoney.sdk.kassa.payments.extensions.toAuthSessionGenerateResponse
 import ru.yoomoney.sdk.kassa.payments.extensions.toJsonString
+import ru.yoomoney.sdk.kassa.payments.http.HostProvider
 import ru.yoomoney.sdk.kassa.payments.model.AuthType
 import ru.yoomoney.sdk.kassa.payments.model.AuthTypeState
 import ru.yoomoney.sdk.kassa.payments.model.Result
@@ -37,8 +38,9 @@ internal class CheckoutAuthSessionGenerateRequest(
     private val authContextId: String,
     private val authType: AuthType,
     userAuthToken: String,
-    shopToken: String
-) : CheckoutRequest<Result<AuthTypeState>>(userAuthToken, shopToken) {
+    shopToken: String,
+    hostProvider: HostProvider
+) : CheckoutRequest<Result<AuthTypeState>>(userAuthToken, shopToken, hostProvider) {
 
     override fun getUrl(): String = host + AUTH_SESSION_GENERATE
 

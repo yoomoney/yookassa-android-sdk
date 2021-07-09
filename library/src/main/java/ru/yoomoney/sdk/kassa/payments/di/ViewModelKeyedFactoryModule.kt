@@ -29,7 +29,7 @@ import dagger.Provides
 import javax.inject.Provider
 
 @Module
-class ViewModelKeyedFactoryModule {
+internal class ViewModelKeyedFactoryModule {
 
     @Provides
     fun viewModelKeyedFactory(creators: Map<String, @JvmSuppressWildcards Provider<ViewModel>>): ViewModelProvider.Factory {

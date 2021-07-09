@@ -24,11 +24,7 @@ package ru.yoomoney.sdk.kassa.payments.contract
 import ru.yoomoney.sdk.auth.Result
 import ru.yoomoney.sdk.auth.account.AccountRepository
 import ru.yoomoney.sdk.auth.account.model.UserAccount
-import ru.yoomoney.sdk.kassa.payments.checkoutParameters.Amount
-import ru.yoomoney.sdk.kassa.payments.model.ConfirmationType
-import ru.yoomoney.sdk.kassa.payments.model.Fee
 import ru.yoomoney.sdk.kassa.payments.model.LinkedCard
-import ru.yoomoney.sdk.kassa.payments.model.SberBank
 import ru.yoomoney.sdk.kassa.payments.payment.PaymentOptionRepository
 import ru.yoomoney.sdk.kassa.payments.model.SelectedOptionNotFoundException
 import ru.yoomoney.sdk.kassa.payments.model.Wallet

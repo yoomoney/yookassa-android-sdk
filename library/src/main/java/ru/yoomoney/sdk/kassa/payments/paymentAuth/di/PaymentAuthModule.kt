@@ -29,6 +29,7 @@ import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.TestParameters
 import ru.yoomoney.sdk.kassa.payments.di.ViewModelKey
 import ru.yoomoney.sdk.kassa.payments.extensions.CheckoutOkHttpClient
+import ru.yoomoney.sdk.kassa.payments.http.HostProvider
 import ru.yoomoney.sdk.kassa.payments.metrics.ErrorReporter
 import ru.yoomoney.sdk.kassa.payments.tmx.ProfilingTool
 import ru.yoomoney.sdk.kassa.payments.tmx.TmxSessionIdStorage
@@ -63,6 +64,7 @@ internal class PaymentAuthModule {
     @Singleton
     fun apiV3PaymentAuthRepository(
         httpClient: CheckoutOkHttpClient,
+        hostProvider: HostProvider,
         tokensStorage: TokensStorage,
         paymentParameters: PaymentParameters,
         profilingTool: ProfilingTool,
@@ -74,7 +76,8 @@ internal class PaymentAuthModule {
             shopToken = paymentParameters.clientApplicationKey,
             tmxSessionIdStorage = tmxSessionIdStorage,
             profilingTool = profilingTool,
-            selectAppropriateAuthType = SelectAppropriateAuthType()
+            selectAppropriateAuthType = SelectAppropriateAuthType(),
+            hostProvider = hostProvider
         )
     }
 

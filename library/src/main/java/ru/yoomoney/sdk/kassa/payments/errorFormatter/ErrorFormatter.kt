@@ -21,6 +21,6 @@
 
 package ru.yoomoney.sdk.kassa.payments.errorFormatter
 
-interface ErrorFormatter {
+internal interface ErrorFormatter {
     fun format(e: Throwable): CharSequence
 }

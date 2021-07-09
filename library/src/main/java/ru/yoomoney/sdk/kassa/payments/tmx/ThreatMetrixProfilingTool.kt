@@ -22,9 +22,9 @@
 package ru.yoomoney.sdk.kassa.payments.tmx
 
 import android.content.Context
-//import com.threatmetrix.TrustDefender.Config
-//import com.threatmetrix.TrustDefender.THMStatusCode
-//import com.threatmetrix.TrustDefender.TrustDefender
+import com.threatmetrix.TrustDefender.Config
+import com.threatmetrix.TrustDefender.THMStatusCode
+import com.threatmetrix.TrustDefender.TrustDefender
 import ru.yoomoney.sdk.kassa.payments.BuildConfig
 import java.util.concurrent.TimeUnit
 
@@ -34,26 +34,25 @@ import java.util.concurrent.TimeUnit
 internal class ThreatMetrixProfilingTool : ProfilingTool {
 
     override fun init(context: Context) {
-//        TrustDefender.getInstance().init(
-//            Config()
-//                .setContext(context.applicationContext)
-//                .setOrgId(BuildConfig.THREAT_METRIX_ORIG_ID)
-//                .setTimeout(10, TimeUnit.SECONDS)
-//                .setRegisterForLocationServices(false)
-//                .setFPServer(BuildConfig.THREAT_METRIX_FP_SERVER)
-//        )
+        TrustDefender.getInstance().init(
+            Config()
+                .setContext(context.applicationContext)
+                .setOrgId(BuildConfig.THREAT_METRIX_ORIG_ID)
+                .setTimeout(10, TimeUnit.SECONDS)
+                .setRegisterForLocationServices(false)
+                .setFPServer(BuildConfig.THREAT_METRIX_FP_SERVER)
+        )
     }
 
     override fun requestSessionId(listener: ProfilingTool.SessionIdListener) {
-        listener.onProfilingSessionId("stub")
-//        TrustDefender.getInstance().doProfileRequest { result ->
-//            val status = result.status
-//            if (status == THMStatusCode.THM_OK) {
-//                val sessionId = result.sessionID
-//                listener.onProfilingSessionId(sessionId)
-//            } else {
-//                listener.onProfilingError(status.name)
-//            }
-//        }
+        TrustDefender.getInstance().doProfileRequest { result ->
+            val status = result.status
+            if (status == THMStatusCode.THM_OK) {
+                val sessionId = result.sessionID
+                listener.onProfilingSessionId(sessionId)
+            } else {
+                listener.onProfilingError(status.name)
+            }
+        }
     }
 }

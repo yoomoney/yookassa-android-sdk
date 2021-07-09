@@ -27,7 +27,7 @@ import androidx.core.view.doOnNextLayout
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 
-fun Fragment.resumePostponedTransition(view: ViewGroup) {
+internal fun Fragment.resumePostponedTransition(view: ViewGroup) {
     view.doOnNextLayout {
         it.postDelayed({
             startPostponedEnterTransition()
@@ -37,7 +37,7 @@ fun Fragment.resumePostponedTransition(view: ViewGroup) {
     }
 }
 
-fun Fragment.changeViewWithAnimation(view: ViewGroup, changeView: () -> Unit) {
+internal fun Fragment.changeViewWithAnimation(view: ViewGroup, changeView: () -> Unit) {
     if (!isResumed) {
         changeView()
         return

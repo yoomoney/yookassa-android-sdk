@@ -25,6 +25,6 @@ interface PaymentOptionRepository {
     var paymentOptionId: Int?
 }
 
-data class PaymentOptionRepositoryImpl(
+internal data class PaymentOptionRepositoryImpl(
     override var paymentOptionId: Int?
 ) : PaymentOptionRepository

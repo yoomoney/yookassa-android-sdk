@@ -26,7 +26,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import ru.yoomoney.sdk.kassa.payments.impl.SBERBANK_ONLINE_PACKAGE
 
 // Do not forget to change redirect link in test.html at /assets
 internal const val DEFAULT_REDIRECT_URL = "checkoutsdk://success"
@@ -41,20 +40,28 @@ internal fun Context.canResolveIntent(intent: Intent): Boolean {
     return packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY).isNotEmpty()
 }
 
-internal fun createSberbankIntent(context: Context?, confirmationUrl: String): Intent {
+internal fun createSberbankIntent(context: Context?, confirmationUrl: String, sberbankPackage: String): Intent {
     return Intent(Intent.ACTION_VIEW, Uri.parse(confirmationUrl)).apply {
         context?.packageManager?.queryIntentActivities(this, 0)
-            ?.firstOrNull { it.activityInfo.applicationInfo.packageName.contains(SBERBANK_ONLINE_PACKAGE) }
+            ?.firstOrNull { it.activityInfo.applicationInfo.packageName.contains(sberbankPackage) }
             ?.run { component = ComponentName(activityInfo.packageName, activityInfo.name) }
     }
 }
 
-internal fun isSberBankAppInstalled(context: Context): Boolean {
+internal fun isSberBankAppInstalled(context: Context, sberbankPackage: String): Boolean {
     return try {
         val packageManager = context.packageManager
-        packageManager.getPackageInfo(SBERBANK_ONLINE_PACKAGE, 0)
+        packageManager.getPackageInfo(sberbankPackage, 0)
         true
     } catch (e: PackageManager.NameNotFoundException) {
         false
+    }
+}
+
+internal fun getSberbankPackage(isDevHost: Boolean): String {
+    return if(isDevHost) {
+        "ru.sberbankmobile_alpha"
+    } else {
+        "ru.sberbankmobile"
     }
 }

@@ -48,6 +48,7 @@ import ru.yoomoney.sdk.kassa.payments.payment.loadOptionList.PaymentOptionListRe
 import ru.yoomoney.sdk.kassa.payments.payment.loadPaymentInfo.PaymentMethodInfoGateway
 import ru.yoomoney.sdk.kassa.payments.errorFormatter.ErrorFormatter
 import ru.yoomoney.sdk.kassa.payments.extensions.CheckoutOkHttpClient
+import ru.yoomoney.sdk.kassa.payments.http.HostProvider
 import ru.yoomoney.sdk.kassa.payments.metrics.ErrorReporter
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.PaymentOptionList
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.PaymentOptionListAnalytics
@@ -75,6 +76,7 @@ internal class PaymentOptionsModule {
     @Singleton
     fun paymentOptionListRepository(
         context: Context,
+        hostProvider: HostProvider,
         httpClient: CheckoutOkHttpClient,
         paymentParameters: PaymentParameters,
         testParameters: TestParameters,
@@ -90,6 +92,7 @@ internal class PaymentOptionsModule {
             InternetDependentRepository(
                 context,
                 ApiV3PaymentOptionListRepository(
+                    hostProvider = hostProvider,
                     httpClient = lazy { httpClient },
                     gatewayId = paymentParameters.gatewayId,
                     tokensStorage = tokensStorage,

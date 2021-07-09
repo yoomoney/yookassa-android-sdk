@@ -36,7 +36,7 @@ internal class LoadingView : LinearLayout {
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
         View.inflate(context, R.layout.ym_view_loading, this)
-        orientation = LinearLayout.VERTICAL
+        orientation = VERTICAL
         setAttributes(context, attrs, defStyleAttr)
     }
 

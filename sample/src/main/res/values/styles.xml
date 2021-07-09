@@ -19,7 +19,7 @@
   ~ OTHER DEALINGS IN THE SOFTWARE.
   -->
 
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
@@ -32,186 +32,13 @@
         <item name="android:alertDialogTheme">@style/ym_DialogStyle</item>
     </style>
 
-    <style name="Theme.Transparent" parent="Theme.AppCompat">
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowIsFloating">true</item>
-        <item name="android:backgroundDimEnabled">false</item>
-        <item name="android:windowAnimationStyle">@null</item>
-    </style>
-
-    <style name="AppTheme.Settings" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimaryInverse</item>
-        <item name="android:colorBackground">@color/ym_background</item>
-        <item name="homeAsUpIndicator">@drawable/ic_back</item>
-        <item name="switchStyle">@style/Ym_Switch</item>
-        <item name="borderlessButtonStyle">@style/Ym_FlatButton</item>
-        <item name="buttonStyle">@style/Ym_Button</item>
-        <item name="coordinatorLayoutStyle">@style/Widget.AppCompat.ActionBar</item>
-        <item name="android:windowBackground">@color/ym_background</item>
-    </style>
-
-    <style name="ym_ButtonStyleBlue" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
-        <item name="android:textColor">@color/colorAccent</item>
-    </style>
-
     <style name="ym_DialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="buttonBarPositiveButtonStyle">@style/ym_ButtonStyleBlue</item>
         <item name="buttonBarNegativeButtonStyle">@style/ym_ButtonStyleBlue</item>
     </style>
 
-    <style name="Ym_Switch" parent="Widget.AppCompat.CompoundButton.Switch">
-        <item name="android:minHeight">?attr/listPreferredItemHeight</item>
-        <item name="android:paddingLeft">16dp</item>
-        <item name="android:paddingRight">16dp</item>
-        <item name="android:paddingEnd" tools:targetApi="jelly_bean_mr1">16dp</item>
-        <item name="android:paddingStart" tools:targetApi="jelly_bean_mr1">16dp</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif</item>
-    </style>
-
-    <style name="Ym_Button" parent="Base.Widget.AppCompat.Button">
-        <item name="android:background">@drawable/btn_primary_rounded</item>
-        <item name="android:textColor">@color/ym_btn_primary</item>
-    </style>
-
-    <style name="Ym_FlatButton" parent="Base.Widget.AppCompat.Button.Borderless">
-        <item name="android:minHeight">?attr/listPreferredItemHeight</item>
-        <item name="android:paddingLeft">16dp</item>
-        <item name="android:paddingRight">16dp</item>
-        <item name="android:paddingEnd" tools:targetApi="jelly_bean_mr1">16dp</item>
-        <item name="android:paddingStart" tools:targetApi="jelly_bean_mr1">16dp</item>
-        <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif</item>
-        <item name="android:gravity">start|center_vertical</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:textAllCaps">false</item>
-    </style>
-
-    <style name="Ym_ListHeader">
-        <item name="android:paddingStart" tools:targetApi="jelly_bean_mr1">16dp</item>
-        <item name="android:paddingEnd" tools:targetApi="jelly_bean_mr1">16dp</item>
-        <item name="android:paddingLeft">16dp</item>
-        <item name="android:paddingRight">16dp</item>
-        <item name="android:paddingTop">8dp</item>
-        <item name="android:paddingBottom">8dp</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:textSize">12sp</item>
-        <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif</item>
-        <item name="android:letterSpacing" tools:targetApi="lollipop">0.03</item>
-    </style>
-
-    <style name="Divider">
-        <item name="android:layout_height">1dp</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:background">@color/ym_divider</item>
-        <item name="android:layout_marginLeft">20dp</item>
-        <item name="android:layout_marginStart" tools:targetApi="jelly_bean_mr1">20dp</item>
-    </style>
-
-    <style name="ButtonYellow">
-        <item name="android:background">@drawable/btn_primary_rounded</item>
-        <item name="android:fontFamily" tools:ignore="NewApi">sans-serif</item>
-        <item name="android:gravity">center</item>
-        <item name="android:lineSpacingExtra">5sp</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:textColor">@color/ym_button_primary_color</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="ButtonYellow.Small">
-        <item name="android:textSize">11sp</item>
-    </style>
-
-    <style name="MainPriceValue">
-        <item name="android:lineSpacingExtra">3sp</item>
-        <item name="android:textSize">25sp</item>
-    </style>
-
-    <style name="MainPriceTitle">
-        <item name="android:lineSpacingExtra">5sp</item>
-        <item name="android:textColor">@color/textColorGray</item>
-        <item name="android:textSize">16sp</item>
-    </style>
-
-    <style name="MainProductName">
-        <item name="android:fontFamily" tools:targetApi="16">sans-serif</item>
-        <item name="android:textColor">@color/ym_text_primary</item>
-        <item name="android:textSize">24sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="CardNumberValue">
-        <item name="android:textSize">25sp</item>
-        <item name="android:gravity">center_horizontal</item>
-        <item name="android:fontFamily" tools:targetApi="16">sans-serif</item>
-        <item name="android:inputType">number</item>
-        <item name="android:maxLength">1</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:lineSpacingExtra">3sp</item>
-    </style>
-
-    <style name="SuccessScreenTitle">
-        <item name="android:textSize">25sp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif</item>
-    </style>
-
-    <style name="SuccessScreenInfo">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/textColorGray</item>
-        <item name="android:lineSpacingExtra">8sp</item>
-        <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif</item>
-    </style>
-
-    <style name="ym_Button">
-        <item name="android:gravity">center</item>
-        <item name="android:lines">1</item>
-        <item name="android:textColor">@color/ym_text_primary</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:minHeight">@dimen/ym_button_minHeight</item>
-    </style>
-
-    <style name="FlatButton" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
-        <item name="android:textSize">13sp</item>
-        <item name="android:textColor">@color/palette_accent</item>
-    </style>
-
-    <style name="FlatButton.Big">
-        <item name="android:fontFamily" tools:targetApi="16">sans-serif-medium</item>
-        <item name="android:textColor">@color/palette_accent</item>
-        <item name="android:lineSpacingExtra">5sp</item>
-        <item name="android:textAllCaps">true</item>
-    </style>
-
-    <style name="FlatButton.Small">
-        <item name="android:letterSpacing" tools:targetApi="lollipop">-0.01</item>
-        <item name="android:textColor">@color/palette_accent</item>
-        <item name="android:lineSpacingExtra">5sp</item>
-        <item name="android:textAllCaps">false</item>
-    </style>
-
-    <style name="Text" >
-        <item name="android:textColor">@color/colorPrimary</item>
-    </style>
-
-    <style name="Text.Big">
-        <item name="android:textSize">22sp</item>
-        <item name="android:letterSpacing" tools:ignore="NewApi">0.02</item>
-    </style>
-
-    <style name="Text.Common">
-        <item name="android:textSize">16sp</item>
-        <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif</item>
-        <item name="android:ellipsize">end</item>
-    </style>
-
-    <style name="Text.Common.Label">
-        <item name="android:gravity">center_vertical</item>
+    <style name="ym_ButtonStyleBlue" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/colorAccent</item>
     </style>
 
 </resources>

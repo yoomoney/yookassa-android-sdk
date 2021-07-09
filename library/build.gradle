@@ -23,8 +23,12 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply from: 'jacoco.gradle'
+applyFromFileIfExists('buildInternal.gradle')
 
-apply from: rootProject.file('common.gradle')
+ext {
+    coverageSourceDirs = 'src/test/java'
+}
 
 android {
     compileSdkVersion target_sdk_version
@@ -45,14 +49,10 @@ android {
         buildConfigField "String", "THREAT_METRIX_ORIG_ID", "${optionalProperty('threatMetrixOrigId')}"
         buildConfigField "String", "THREAT_METRIX_FP_SERVER", "${optionalProperty('threatMetrixFPServer')}"
         buildConfigField "String", "THREAT_METRIX_CERTIFICATE_HASHES", "${optionalProperty('threatMetrixCertificateHashes')}"
-
-        buildConfigField "String", "HOST", "\"https://sdk.yookassa.ru/api/frontend/v3\""
-        buildConfigField "String", "PAYMENT_AUTHORIZATION_HOST", "\"https://yoomoney.ru/api/wallet-auth/v1\""
-        buildConfigField "String", "API_V1_HOST", "\"https://yoomoney.ru/api\""
-        buildConfigField "String", "AUTH_HOST", "\"\""
-        buildConfigField "String", "YANDEX_CLIENT_ID", "\"80642c11721c49d69d9936de0c265886\""
-
         buildConfigField "String", "APP_METRICA_KEY", "${optionalProperty('metricaKey')}"
+
+        buildConfigField "Integer", "VERSION_CODE", "${project.ext.versionCode}"
+        buildConfigField "String", "VERSION_NAME", "\"${project.ext.versionName}\""
 
         vectorDrawables.useSupportLibrary = true
 
@@ -107,12 +107,9 @@ dependencies {
     implementation "ru.yoomoney.sdk:march:$march_lib_version"
     implementation "ru.yoomoney.sdk.gui:ui-lib:$ui_lib_version"
     compileOnly fileTree(dir: "libs", include: ["profiling-tool.aar"])
-    compileOnly ("ru.yoomoney.sdk.auth:auth:$yoo_sdk_auth_version") {
-        changing = true
-        exclude module: 'profiling-tool'
-    }
+    implementation ("ru.yoomoney.sdk.auth:auth:$yoo_sdk_auth_version")
 
-    def daggerVersion = "2.28.3"
+    def daggerVersion = "2.35.1"
     implementation "com.google.dagger:dagger:$daggerVersion"
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"
 
@@ -121,33 +118,7 @@ dependencies {
     testImplementation "org.mockito:mockito-core:$mockito_version"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0"
     testImplementation 'org.robolectric:robolectric:4.0.1'
-    testCompileOnly ("ru.yoomoney.sdk.auth:auth:$yoo_sdk_auth_version"){changing=true}
-    androidTestImplementation "org.mockito:mockito-core:$mockito_version"
-    androidTestImplementation 'org.mockito:mockito-android:2.7.22'
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core"
-    androidTestImplementation "androidx.test.espresso:espresso-intents:$espresso_intents"
-    androidTestImplementation "androidx.test.espresso:espresso-web:$espresso_web"
-    androidTestImplementation "androidx.test.ext:junit:$androidx_junit"
-
-    androidTestImplementation ("ru.yoomoney.sdk.auth:auth:$yoo_sdk_auth_version"){changing=true}
-    androidTestImplementation fileTree(dir: "libs", include: ["profiling-tool.aar"])
-
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.1.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-accessibility:3.1.0'
-    androidTestImplementation 'androidx.test.espresso.idling:idling-concurrent:3.1.0'
-
-    androidTestImplementation 'androidx.test:rules:1.2.0'
-    androidTestImplementation "androidx.test.uiautomator:uiautomator:2.2.0"
-
-    androidTestImplementation 'androidx.test:runner:1.1.0'
-    androidTestUtil 'androidx.test:orchestrator:1.1.0'
-
-    androidTestImplementation "org.mockito:mockito-android:2.25.0"
-    androidTestImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
-    androidTestImplementation "com.github.gmazzo:okhttp-mock:1.4.0"
-
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.7"
 }
 
 task copyTestClasses(type: Copy) {
@@ -155,4 +126,3 @@ task copyTestClasses(type: Copy) {
     into "build/intermediates/classes/devDebug"
     exclude '*/META-INF/library_devDebug.kotlin_module'
 }
-

@@ -23,12 +23,14 @@ package ru.yoomoney.sdk.kassa.payments.utils
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
+import android.net.http.SslError
 import android.os.Build
 import android.os.Bundle
 import androidx.annotation.Keep
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.webkit.SslErrorHandler
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -162,6 +164,14 @@ internal class WebViewFragment : Fragment() {
                 view?.loadUrl(url)
             }
             return true
+        }
+
+        override fun onReceivedSslError(view: WebView?, handler: SslErrorHandler?, error: SslError?) {
+            if (BuildConfig.DEBUG && requireContext().isBuildDebug()) {
+                handler?.proceed()
+            } else {
+                super.onReceivedSslError(view, handler, error)
+            }
         }
 
         @Suppress("OverridingDeprecatedMember")

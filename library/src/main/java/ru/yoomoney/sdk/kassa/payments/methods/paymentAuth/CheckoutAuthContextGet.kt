@@ -23,6 +23,7 @@ package ru.yoomoney.sdk.kassa.payments.methods.paymentAuth
 
 import org.json.JSONObject
 import ru.yoomoney.sdk.kassa.payments.extensions.toAuthContextGetResponse
+import ru.yoomoney.sdk.kassa.payments.http.HostProvider
 import ru.yoomoney.sdk.kassa.payments.model.AuthType
 import ru.yoomoney.sdk.kassa.payments.model.AuthTypeState
 import ru.yoomoney.sdk.kassa.payments.model.Result
@@ -34,8 +35,9 @@ private const val AUTH_CONTEXT_ID = "authContextId"
 internal class CheckoutAuthContextGetRequest(
         private val authContextId: String,
         userAuthToken: String,
-        shopToken: String
-) : CheckoutRequest<Result<CheckoutAuthContextGetResponse>>(userAuthToken, shopToken) {
+        shopToken: String,
+        hostProvider: HostProvider
+) : CheckoutRequest<Result<CheckoutAuthContextGetResponse>>(userAuthToken, shopToken, hostProvider) {
 
     override fun getUrl(): String = host + AUTH_CONTEXT_GET_PATH
 

@@ -26,7 +26,7 @@ import android.os.Build
 import ru.yoomoney.sdk.kassa.payments.BuildConfig
 import ru.yoomoney.sdk.kassa.payments.extensions.isTablet
 
-object UserAgent {
+internal object UserAgent {
     fun getUserAgent(context: Context): String {
         val version = BuildConfig.VERSION_NAME
         val osVersion =  Build.VERSION.RELEASE

@@ -28,4 +28,8 @@ workspace.xml
 *.iml
 build/
 
+*.gpg
+
 android-signing/
+
+.DS_Store

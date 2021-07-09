@@ -24,4 +24,4 @@ package ru.yoomoney.sdk.kassa.payments.utils
 import android.content.Context
 import android.content.pm.ApplicationInfo
 
-fun Context.isBuildDebug() = applicationInfo.flags != 0 && ApplicationInfo.FLAG_DEBUGGABLE != 0
+internal fun Context.isBuildDebug() = applicationInfo.flags != 0 && ApplicationInfo.FLAG_DEBUGGABLE != 0

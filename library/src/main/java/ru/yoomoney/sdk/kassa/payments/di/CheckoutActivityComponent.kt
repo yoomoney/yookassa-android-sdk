@@ -47,6 +47,7 @@ import javax.inject.Singleton
         SharedPreferencesModule::class,
         TokenStorageModule::class,
         TokensStorageModule::class,
+        CurrentUserModule::class,
         YandexMetricaReporterModule::class,
         ReporterModule::class,
         OkHttpModule::class,
@@ -97,6 +98,8 @@ internal interface CheckoutActivityComponent {
         fun mainReporterModule(yandexMetricaReporterModule: YandexMetricaReporterModule): Builder
 
         fun tokensStorageModule(tokensStorageModule: TokensStorageModule): Builder
+
+        fun currentUserModule(currentUserModule: CurrentUserModule): Builder
 
         fun build(): CheckoutActivityComponent
     }

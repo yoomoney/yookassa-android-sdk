@@ -34,7 +34,8 @@
         android:layout_height="@dimen/ym_minHeight_m"
         android:theme="@style/ym_Theme.Toolbar.Transparent"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:navigationIcon="@drawable/ym_ic_close" />
+        app:navigationIcon="@drawable/ym_ic_close"
+        app:navigationContentDescription="@string/ym_navigation_item_back"/>
 
     <fragment
         android:id="@+id/web_view"

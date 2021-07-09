@@ -28,7 +28,7 @@ import androidx.core.animation.doOnCancel
 import androidx.core.animation.doOnEnd
 import androidx.core.view.updateLayoutParams
 
-fun ViewGroup.animateHeightChange(changeView: () -> Unit): ValueAnimator {
+internal fun ViewGroup.animateHeightChange(changeView: () -> Unit): ValueAnimator {
     val heightBefore = getViewHeight()
     changeView()
     val heightAfter = getViewHeight()

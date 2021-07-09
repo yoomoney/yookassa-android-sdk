@@ -27,7 +27,7 @@ import android.widget.ImageButton
 import androidx.appcompat.widget.Toolbar
 import ru.yoomoney.sdk.kassa.payments.ui.color.InMemoryColorSchemeRepository
 
-fun Toolbar.changeToolbarButtonColor() {
+internal fun Toolbar.changeToolbarButtonColor() {
     for (i in 0 until childCount) {
         val child = getChildAt(i)
         if (child is ImageButton) {

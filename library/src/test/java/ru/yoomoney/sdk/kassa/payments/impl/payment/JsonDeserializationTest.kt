@@ -47,8 +47,6 @@ import ru.yoomoney.sdk.kassa.payments.extensions.toError
 import ru.yoomoney.sdk.kassa.payments.extensions.toPaymentMethodResponse
 import ru.yoomoney.sdk.kassa.payments.extensions.toPaymentOptionResponse
 import ru.yoomoney.sdk.kassa.payments.extensions.toTokenResponse
-import ru.yoomoney.sdk.kassa.payments.extensions.toWalletCheckResponse
-import ru.yoomoney.sdk.kassa.payments.methods.WalletCheckResponse
 import ru.yoomoney.sdk.kassa.payments.methods.paymentAuth.CheckoutAuthContextGetResponse
 import ru.yoomoney.sdk.kassa.payments.methods.paymentAuth.CheckoutTokenIssueInitResponse
 import ru.yoomoney.sdk.kassa.payments.model.AbstractWallet
@@ -741,43 +739,5 @@ class JsonDeserializationTest {
             )
         )
         assertThat(jsonObject.toAuthSessionGenerateResponse(), equalTo(authSessionGenerateResponse))
-    }
-
-    @Test
-    fun deserializeWalletCheckWithError() {
-        val jsonObject = JSONObject(
-            """{
-              "error": {
-                "type": "InvalidLogin"
-              }
-            }"""
-        )
-        val walletCheckResponse = WalletCheckResponse(Status.REFUSED, null)
-        assertThat(jsonObject.toWalletCheckResponse(), equalTo(walletCheckResponse))
-    }
-
-    @Test
-    fun deserializeWalletCheckWithWallet() {
-        val jsonObject = JSONObject(
-            """{
-              "account_number":"410012312594138",
-              "terms_and_conditions_apply_required":false,
-              "status":"success"
-            }""".trimMargin()
-        )
-        val walletCheckResponse = WalletCheckResponse(Status.SUCCESS, true)
-        assertThat(jsonObject.toWalletCheckResponse(), equalTo(walletCheckResponse))
-    }
-
-    @Test
-    fun deserializeWalletCheckWithoutWallet() {
-        val jsonObject = JSONObject(
-            """{
-              "terms_and_conditions_apply_required":true,
-              "status":"success"
-            }"""
-        )
-        val walletCheckResponse = WalletCheckResponse(Status.SUCCESS, false)
-        assertThat(jsonObject.toWalletCheckResponse(), equalTo(walletCheckResponse))
     }
 }

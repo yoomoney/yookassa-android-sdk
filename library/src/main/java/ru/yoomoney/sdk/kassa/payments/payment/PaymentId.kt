@@ -21,4 +21,4 @@
 
 package ru.yoomoney.sdk.kassa.payments.payment
 
-typealias PaymentMethodId = String
+internal typealias PaymentMethodId = String

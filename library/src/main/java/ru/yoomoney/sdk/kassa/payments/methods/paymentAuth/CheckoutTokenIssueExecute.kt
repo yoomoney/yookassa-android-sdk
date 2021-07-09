@@ -23,6 +23,7 @@ package ru.yoomoney.sdk.kassa.payments.methods.paymentAuth
 
 import org.json.JSONObject
 import ru.yoomoney.sdk.kassa.payments.extensions.toCheckoutTokenIssueExecuteResponse
+import ru.yoomoney.sdk.kassa.payments.http.HostProvider
 import ru.yoomoney.sdk.kassa.payments.model.Result
 
 private const val CHECKOUT_TOKEN_ISSUE_EXECUTE_PATH = "/checkout/token-issue-execute"
@@ -32,8 +33,9 @@ private const val PROCESS_ID = "processId"
 internal class CheckoutTokenIssueExecuteRequest(
         private val processId: String,
         userAuthToken: String,
-        shopToken: String
-) : CheckoutRequest<Result<String>>(userAuthToken, shopToken) {
+        shopToken: String,
+        hostProvider: HostProvider
+) : CheckoutRequest<Result<String>>(userAuthToken, shopToken, hostProvider) {
 
     override fun getUrl(): String = host + CHECKOUT_TOKEN_ISSUE_EXECUTE_PATH
 

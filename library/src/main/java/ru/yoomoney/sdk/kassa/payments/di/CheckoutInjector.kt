@@ -22,9 +22,7 @@
 package ru.yoomoney.sdk.kassa.payments.di
 
 import android.content.Context
-import android.util.Log
 import com.yandex.metrica.YandexMetrica
-import ru.yoomoney.sdk.auth.YooMoneyAuth
 import ru.yoomoney.sdk.kassa.payments.BuildConfig
 import ru.yoomoney.sdk.kassa.payments.payment.PaymentMethodId
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentMethodType
@@ -36,7 +34,6 @@ import ru.yoomoney.sdk.kassa.payments.ui.color.InMemoryColorSchemeRepository
 import ru.yoomoney.sdk.kassa.payments.ui.MainDialogFragment
 import ru.yoomoney.sdk.kassa.payments.utils.checkUrl
 import ru.yoomoney.sdk.kassa.payments.extensions.initAppendableExtensions
-import ru.yoomoney.sdk.kassa.payments.logging.MsdkLogger
 import ru.yoomoney.sdk.kassa.payments.paymentAuth.PaymentAuthFragment
 import ru.yoomoney.sdk.kassa.payments.contract.ContractFragment
 import ru.yoomoney.sdk.kassa.payments.metrics.ExceptionReporter
@@ -57,12 +54,18 @@ internal fun setComponent(
     paymentMethodId: PaymentMethodId?,
     okHttpModule: OkHttpModule,
     tokensStorageModule: TokensStorageModule,
+    currentUserModule: CurrentUserModule,
     yandexMetricaReporterModule: YandexMetricaReporterModule
 ) {
     CheckoutInjector.setupComponent(
-        context, paymentParameters, testParameters, uiParameters, paymentMethodId,
-        YandexMetricaExceptionReporter(YandexMetrica.getReporter(context, BuildConfig.APP_METRICA_KEY)),
+        context = context,
+        paymentParameters = paymentParameters,
+        testParameters = testParameters,
+        uiParameters = uiParameters,
+        paymentMethodId = paymentMethodId,
+        exceptionReporter = YandexMetricaExceptionReporter(YandexMetrica.getReporter(context, BuildConfig.APP_METRICA_KEY)),
         okHttpModule = okHttpModule,
+        currentUserModule = currentUserModule,
         tokensStorageModule = tokensStorageModule,
         yandexMetricaReporterModule = yandexMetricaReporterModule
     )
@@ -81,6 +84,7 @@ internal object CheckoutInjector {
         exceptionReporter: ExceptionReporter,
         okHttpModule: OkHttpModule = OkHttpModule(),
         yandexMetricaReporterModule: YandexMetricaReporterModule = YandexMetricaReporterModule(),
+        currentUserModule: CurrentUserModule = CurrentUserModule(),
         tokensStorageModule: TokensStorageModule = TokensStorageModule()
     ) {
 
@@ -93,33 +97,16 @@ internal object CheckoutInjector {
 
         shopParameters.customReturnUrl?.let { checkUrl(it) }
         Defaults.isLoggingEnable = testParameters.showLogs && context.isBuildDebug()
-        if (shopParameters.paymentMethodTypes.let { PaymentMethodType.YOO_MONEY in it }) {
-            try {
-                val moneyAuth = YooMoneyAuth::class.java
-                if (testParameters.showLogs) {
-                    Log.d(MsdkLogger.TAG, "YooMoney auth found: ${moneyAuth.canonicalName}")
-                }
-                if (shopParameters.authCenterClientId.isNullOrEmpty()) {
-                    val exception = IllegalStateException(
-                        "You should pass authCenterClientId to PaymentParameters if you want to allow PaymentMethodType.YOO_MONEY. " +
-                                "If you don't want to use PaymentMethodType.YOO_MONEY, specify your payment methods " +
-                                "explicitly in PaymentParameters.paymentMethodTypes \n" +
-                                "Visit https://github.com/yoomoney/yookassa-android-sdk for more information."
-                    )
-                    exceptionReporter.report(UnhandledException(exception))
-                    throw exception
-                }
-            } catch (e: NoClassDefFoundError) {
-                val exception = IllegalStateException(
-                    "You should add ru.yoomoney.sdk.auth:auth if you want to allow PaymentMethodType.YOO_MONEY. " +
-                            "Check if you have ru.money.auth:auth in your dependencies and you pass authCenterClientId to PaymentParameters.\n" +
-                            "If you don't want to use PaymentMethodType.YOO_MONEY, specify your payment methods " +
-                            "explicitly in PaymentParameters.paymentMethodTypes \n" +
-                            "Visit https://github.com/yoomoney/yookassa-android-sdk for more information."
-                )
-                exceptionReporter.report(UnhandledException(exception))
-                throw exception
-            }
+        if (shopParameters.paymentMethodTypes.let { PaymentMethodType.YOO_MONEY in it }
+            && shopParameters.authCenterClientId.isNullOrEmpty()) {
+            val exception = IllegalStateException(
+                "You should pass authCenterClientId to PaymentParameters if you want to allow PaymentMethodType.YOO_MONEY. " +
+                        "If you don't want to use PaymentMethodType.YOO_MONEY, specify your payment methods " +
+                        "explicitly in PaymentParameters.paymentMethodTypes \n" +
+                        "Visit https://github.com/yoomoney/yookassa-android-sdk for more information."
+            )
+            exceptionReporter.report(UnhandledException(exception))
+            throw exception
         }
 
         InMemoryColorSchemeRepository.colorScheme = uiParameters.colorScheme
@@ -135,6 +122,7 @@ internal object CheckoutInjector {
             .okHttpModule(okHttpModule)
             .mainReporterModule(yandexMetricaReporterModule)
             .tokensStorageModule(tokensStorageModule)
+            .currentUserModule(currentUserModule)
             .build()
     }
 

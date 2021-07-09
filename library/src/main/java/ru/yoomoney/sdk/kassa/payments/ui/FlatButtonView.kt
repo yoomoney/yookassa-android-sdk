@@ -6,7 +6,7 @@ import ru.yoomoney.sdk.gui.widget.button.PrimaryButtonView
 import ru.yoomoney.sdk.kassa.payments.R
 import ru.yoomoney.sdk.kassa.payments.ui.color.InMemoryColorSchemeRepository
 
-class FlatButtonView
+internal class FlatButtonView
 @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

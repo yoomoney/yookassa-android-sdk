@@ -71,12 +71,15 @@ import ru.yoomoney.sdk.march.RuntimeViewModel
 import ru.yoomoney.sdk.march.input
 import ru.yoomoney.sdk.kassa.payments.R
 import ru.yoomoney.sdk.kassa.payments.extensions.toTokenizeScheme
+import ru.yoomoney.sdk.kassa.payments.http.HostProvider
+import ru.yoomoney.sdk.kassa.payments.utils.getSberbankPackage
 
 @Module
 internal class ContractModule {
 
     @Provides
     fun provideTokenizeRepository(
+        hostProvider: HostProvider,
         testParameters: TestParameters,
         httpClient: CheckoutOkHttpClient,
         tokensStorage: TokensStorage,
@@ -89,6 +92,7 @@ internal class ContractModule {
             MockTokenizeRepository(mockConfiguration.completeWithError)
         } else {
             ApiV3TokenizeRepository(
+                hostProvider = hostProvider,
                 httpClient = lazy { httpClient },
                 shopToken = paymentParameters.clientApplicationKey,
                 paymentAuthTokenRepository = tokensStorage,
@@ -177,12 +181,14 @@ internal class ContractModule {
         selectPaymentOptionUseCase: SelectPaymentOptionUseCase,
         tokenizeUseCase: TokenizeUseCase,
         paymentParameters: PaymentParameters,
+        testParameters: TestParameters,
         logoutUseCase: LogoutUseCase,
         reporter: Reporter,
         errorScreenReporter: ErrorScreenReporter,
         userAuthTypeParamProvider: UserAuthTypeParamProvider,
         userAuthTokenTypeParamProvider: UserAuthTokenTypeParamProvider
     ): ViewModel {
+        val sberbankPackage = getSberbankPackage(testParameters.hostParameters.isDevHost)
         return RuntimeViewModel<Contract.State, Contract.Action, Contract.Effect>(
             featureName = "Contract",
             initial = {
@@ -206,13 +212,14 @@ internal class ContractModule {
                         getConfirmation = {
                             it.getConfirmation(context,
                                 paymentParameters.customReturnUrl ?: DEFAULT_REDIRECT_URL,
-                                context.resources.getString(R.string.ym_app_scheme)
+                                context.resources.getString(R.string.ym_app_scheme),
+                                sberbankPackage
                             )
                         }
                     ),
                     getUserAuthType = userAuthTypeParamProvider,
                     getUserAuthTokenType = userAuthTokenTypeParamProvider,
-                    getTokenizeScheme = { it.toTokenizeScheme(context) }
+                    getTokenizeScheme = { it.toTokenizeScheme(context, sberbankPackage) }
                 )
             }
         )

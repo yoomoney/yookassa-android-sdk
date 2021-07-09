@@ -105,5 +105,7 @@ internal class TokensStorage(
 
     fun reset() {
         _paymentAuthToken = null
+        preferences[KEY_PAYMENT_AUTH_TOKEN] = null
+        preferences[KEY_YOO_USER_IS_REMEMBER] = null
     }
 }

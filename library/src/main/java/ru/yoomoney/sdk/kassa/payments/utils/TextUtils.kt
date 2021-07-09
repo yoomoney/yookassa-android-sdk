@@ -29,7 +29,7 @@ import android.text.style.ClickableSpan
 import android.view.View
 import ru.yoomoney.sdk.kassa.payments.ui.color.InMemoryColorSchemeRepository
 
-fun getMessageWithLink(
+internal fun getMessageWithLink(
     context: Context,
     firstMessagePartRes: Int,
     secondMessagePartRes: Int,

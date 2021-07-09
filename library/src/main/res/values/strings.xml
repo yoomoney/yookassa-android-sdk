@@ -1,97 +1,101 @@
-<?xml version='1.0' encoding='utf-8'?>
-<!--
-  ~ The MIT License (MIT)
-  ~ Copyright © 2020 NBCO YooMoney LLC
-  ~
-  ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
-  ~ associated documentation files (the “Software”), to deal in the Software without restriction, including
-  ~ without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-  ~ of the Software, and to permit persons to whom the Software is furnished to do so, subject to the
-  ~ following conditions:
-  ~
-  ~ The above copyright notice and this permission notice shall be included in all copies or substantial
-  ~ portions of the Software.
-  ~
-  ~ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
-  ~ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
-  ~ PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-  ~ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
-  ~ OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-  ~ OTHER DEALINGS IN THE SOFTWARE.
-  -->
-
 <resources>
-    <string name="ym_payment_option_new_card">Bank card</string>
-    <string name="ym_payment_option_yoomoney">YooMoney</string>
-    <string name="ym_payment_options_title">Payment method</string>
-    <string name="ym_contract_fee">Including commission</string>
-    <string name="ym_contract_continue">Next</string>
-    <string name="ym_allow_wallet_linking">Next time, you won\'t have to sign in to your YooMoney account, which will make payments faster</string>
-    <string name="ym_auth_hint_sms">Enter text message code</string>
-    <string name="ym_auth_hint_totp">Enter a one-time password</string>
-    <string name="ym_auth_hint_password">Enter the password</string>
-    <string name="ym_auth_hint_emergency">Enter the emergency code</string>
-    <string name="ym_logout_dialog_button_positive">Logout</string>
-    <string name="ym_logout_dialog_button_negative">Cancel</string>
-    <string name="ym_logout_dialog_message">Are you sure you want to log out of account %1$s?</string>
-    <string name="ym_retry">Try again</string>
-    <string name="ym_no_wallet_dialog_message">You do not have a YooMoney Wallet</string>
-    <string name="ym_no_wallet_dialog_shoose_payment_option">Select payment method</string>
-    <string name="ym_error_something_went_wrong">Seems we\'ve had a technical error</string>
-    <string name="ym_error_no_internet">Connection error. Try again once you\'re online.</string>
-    <string name="ym_no_payment_options_error">No available payment methods</string>
-    <string name="ym_wrong_passcode_error">Incorrect password</string>
-    <string name="ym_server_error">Seems we\'ve had a technical error</string>
-    <string name="ym_unknown_error">Seems we\'ve had a technical error</string>
-    <string name="ym_sberbank">SberPay</string>
-    <string name="ym_payment_option_google_pay">Google Pay</string>
-    <string name="ym_license_agreement_part_1">By clicking this button, accept</string>
-    <string name="ym_license_agreement_part_2">the terms and conditions of the service</string>
-    <string name="ym_license_agreement_url">https://yoomoney.ru/page?id=526623</string>
-    <string name="ym_contract_save_payment_method_wallet_title">Allow to write off money</string>
-    <string name="ym_save_payment_method_wallet_info_title">Permission to debit money without your participation</string>
-    <string name="ym_save_payment_method_wallet_info_text">It means that you\'re allowing YooMoney to debit money from the wallet upon store\'s request without an additional confirmation from you. You can cancel these autopayments at any moment in the wallet settings (on the YooMoney website).</string>
-    <string name="ym_contract_save_payment_method_wallet_switch_title">Allow to write off money</string>
-    <string name="ym_save_payment_method_wallet_switch_text_part_1">Allow the store</string>
-    <string name="ym_save_payment_method_wallet_switch_text_part_2">to debit money without my participation</string>
-    <string name="ym_save_payment_method_wallet_message_text_part_1">After the payment, the wallet will be linked: the store will be able</string>
-    <string name="ym_save_payment_method_wallet_message_text_part_2">to debit money without your participation</string>
-    <string name="ym_save_payment_method_bank_card_info_title">Permission to debit money upon store\'s request</string>
-    <string name="ym_save_payment_method_bank_card_info_text">It means that you\'re allowing YooMoney to debit money upon store\'s request without an additional confirmation from you, from this card or a new one in case it\'s reissued (if your bank can update the details automatically).</string>
-    <string name="ym_save_payment_method_bank_card_additional_info">You can cancel linking at any moment via store\'s support service.</string>
-    <string name="ym_save_payment_method_bank_card_switch_text_part_1">Link the card and</string>
-    <string name="ym_save_payment_method_bank_card_switch_text_part_2">debit money upon store\'s request</string>
-    <string name="ym_save_payment_method_bank_card_message_text_part_1">After the payment, the card will be linked, so that</string>
-    <string name="ym_save_payment_method_bank_card_message_text_part_2">money could be debited upon store\'s request</string>
-    <string name="ym_support_email">support@yoomoney.ru</string>
-    <string name="ym_support_help_url">https://yoomoney.ru/page?id=536720</string>
-    <string name="ym_support_phone">+78002506699</string>
-    <string name="ym_migration_banner_text">If you signed up before October 21, you need to switch to YooMoney</string>
-    <string name="ym_migration_banner_button_text">Learn more</string>
-    <string name='ym_yoo_money_logout'>Sign out</string>
-    <string name="ym_contract_link_card_title">Link a card</string>
-    <string name="ym_contract_link_wallet_title">Remember me</string>
-    <string name='ym_card_number_title'>Card number</string>
-    <string name='ym_card_number_hint'>Enter or scan</string>
-    <string name='ym_expiry_mm_yy_hint'>MM/YY</string>
-    <string name='ym_expiry_title'>Expiration date</string>
-    <string name='ym_cvc_title'>Code</string>
-    <string name='ym_cvc_hint'>CVC</string>
-    <string name='ym_check_card_number_error'>Check the card number</string>
-    <string name='ym_check_expiry_error'>Check the month and date</string>
-    <string name='ym_yoo_login_to_pay'>Sign in to your wallet to pay via YooMoney</string>
-    <string name="ym_confirm_retry_timer_text">Get a new code in %s</string>
-    <string name="ym_payment_auth_wrong_code_try_again">Invalid code. Double-check and try again</string>
-    <string name="ym_payment_auth_wrong_code_with_attempts">Invalid again. Attempts left: %d</string>
-    <string name="ym_payment_auth_no_attempts">No attempts left</string>
-    <string name="ym_payment_auth_wrong_code">Invalid code</string>
-    <string name="ym_payment_auth_retry_text">Try again</string>
-    <string name='ym_check_cvc'>Check the CVC</string>
-    <string name='ym_linked_card'>Linked card</string>
-    <string name='ym_saved_card'>Saved card</string>
-    <string name='ym_google_pay_description'>You\'ll be redirected into the Google Pay app: confirm the payment</string>
-    <string name='ym_sber_pay_description'>Next, open the Sberbank Online application - confirm the payment</string>
-    <string name='ym_sber_phone_input_info'>For the text message from Sberbank with the payment code</string>
-    <string name='ym_label_phone_in_sbol'>Phone number in Sberbank Online</string>
-    <string name='ym_save_payment_method_title'>Let\'s link the card</string>
+  <!--TranslatorComment:
+TranslatorComment:Translation source key: https://tanker.yandex-team.ru/?project=music&keyset=donate&key=%D0%91%D0%B0%D0%BD%D0%BA%D0%BE%D0%B2%D1%81%D0%BA%D0%B0%D1%8F+%D0%BA%D0%B0%D1%80%D1%82%D0%B0&branch=master-->
+  <string name='ym_payment_option_new_card'>Bank card</string>
+  <string name='ym_payment_option_yoomoney'>YooMoney</string>
+  <string name='ym_payment_options_title'>Payment method</string>
+  <string name='ym_contract_fee'>Including commission</string>
+  <string name='ym_contract_continue'>Next</string>
+  <string name='ym_allow_wallet_linking'>Next time, you won\'t have to sign in to your YooMoney account, which will make payments faster</string>
+  <!--TranslatorComment:
+TranslatorComment:Translation source key: https://tanker.yandex-team.ru/?project=yamoney-lk&keyset=blocks%2Fcommon.blocks%3Asecure-auth&key=secure-auth-empty-sms&branch=master-->
+  <string name='ym_auth_hint_sms'>Enter text message code</string>
+  <!--TranslatorComment:
+TranslatorComment:Translation source key: https://tanker.yandex-team.ru/?project=passport&keyset=Frontend&key=profile.access.2fa-disable.otp&branch=master-->
+  <string name='ym_auth_hint_totp'>Enter a one-time password</string>
+  <string name='ym_auth_hint_password'>Enter the password</string>
+  <!--TranslatorComment:
+TranslatorComment:Translation source key: https://tanker.yandex-team.ru/?project=yamoney-lk&keyset=blocks%2Fcommon.blocks%3Asecure-auth&key=secure-auth-empty-emergency&branch=master-->
+  <string name='ym_auth_hint_emergency'>Enter the emergency code</string>
+  <!--TranslatorComment:
+TranslatorComment:Translation source key: https://tanker.yandex-team.ru/?project=direct2&keyset=b-online-set-phrases-prices&key=ok&branch=iget2-test-->
+  <string name='ym_logout_dialog_button_positive'>Logout</string>
+  <!--TranslatorComment:
+TranslatorComment:Translation source key: https://tanker.yandex-team.ru/?project=abro&keyset=yandex_browser_strings&key=bro_firstscreen_welcome_cancel&branch=master-->
+  <string name='ym_logout_dialog_button_negative'>Cancel</string>
+  <string name='ym_logout_dialog_message'>Are you sure you want to log out of account %1$s?</string>
+  <!--TranslatorComment:
+TranslatorComment:Translation source key: https://tanker.yandex-team.ru/?project=suburbantrains&keyset=iOS_v3&key=retryKey&branch=iOS_3.20.0_dev36-->
+  <string name='ym_retry'>Try again</string>
+  <string name='ym_no_wallet_dialog_message'>You do not have a YooMoney Wallet</string>
+  <string name='ym_no_wallet_dialog_shoose_payment_option'>Select payment method</string>
+  <!-- errors -->
+  <string name='ym_error_something_went_wrong'>Seems we\'ve had a technical error</string>
+  <!--TranslatorComment:
+TranslatorComment:Translation source key: https://tanker.yandex-team.ru/?project=ym_ios_msdk&keyset=General&key=Common.PlaceholderView.title&branch=master-->
+  <string name='ym_error_no_internet'>Connection error. Try again once you\'re online.</string>
+  <!--TranslatorComment:
+TranslatorComment:Translation source key: https://tanker.yandex-team.ru/?project=direct-app-android&keyset=Glossary&key=payment_fragment_no_way&branch=master-->
+  <string name='ym_no_payment_options_error'>No available payment methods</string>
+  <!--TranslatorComment:
+TranslatorComment:Translation source key: https://tanker.yandex-team.ru/?project=home&keyset=auth&key=password-invalid&branch=feedback-->
+  <string name='ym_wrong_passcode_error'>Incorrect password</string>
+  <string name='ym_server_error'>Seems we\'ve had a technical error</string>
+  <string name='ym_unknown_error'>Seems we\'ve had a technical error</string>
+  <string name='ym_sberbank'>SberPay</string>
+  <string name='ym_payment_option_google_pay'>Google Pay</string>
+  <string name='ym_license_agreement_part_1'>By clicking this button, accept</string>
+  <string name='ym_license_agreement_part_2'>the terms and conditions of the service</string>
+  <string name='ym_license_agreement_url'>https://yoomoney.ru/page?id=526623</string>
+  <string name='ym_contract_save_payment_method_wallet_title'>Allow to write off money</string>
+  <string name='ym_save_payment_method_wallet_info_title'>Permission to debit money without your participation</string>
+  <string name='ym_save_payment_method_wallet_info_text'>It means that you\'re allowing YooMoney to debit money from the wallet upon store\'s request without an additional confirmation from you. You can cancel these autopayments at any moment in the wallet settings (on the YooMoney website).</string>
+  <string name='ym_contract_save_payment_method_wallet_switch_title'>Allow to write off money</string>
+  <string name='ym_contract_save_payment_method_gpay_switch_title'>Разрешить списывать деньги</string>
+  <string name='ym_save_payment_method_wallet_switch_text_part_1'>Allow the store</string>
+  <string name='ym_save_payment_method_wallet_switch_text_part_2'>to debit money without my participation</string>
+  <string name='ym_save_payment_method_wallet_message_text_part_1'>After the payment, the wallet will be linked: the store will be able</string>
+  <string name='ym_save_payment_method_wallet_message_text_part_2'>to debit money without your participation</string>
+  <string name='ym_save_payment_method_gpay_switch_text_part_1'>Allow the store</string>
+  <string name='ym_save_payment_method_gpay_switch_text_part_2'>to debit money without my participation</string>
+  <string name='ym_save_payment_method_bank_card_info_title'>Permission to debit money upon store\'s request</string>
+  <string name='ym_save_payment_method_bank_card_info_text'>It means that you\'re allowing YooMoney to debit money upon store\'s request without an additional confirmation from you, from this card or a new one in case it\'s reissued (if your bank can update the details automatically).</string>
+  <string name='ym_save_payment_method_bank_card_additional_info'>You can cancel linking at any moment via store\'s support service.</string>
+  <string name='ym_save_payment_method_bank_card_switch_text_part_1'>Link the card and</string>
+  <string name='ym_save_payment_method_bank_card_switch_text_part_2'>debit money upon store\'s request</string>
+  <string name='ym_save_payment_method_bank_card_message_text_part_1'>After the payment, the card will be linked, so that</string>
+  <string name='ym_save_payment_method_bank_card_message_text_part_2'>money could be debited upon store\'s request</string>
+  <string name='ym_support_email'>support@yoomoney.ru</string>
+  <string name='ym_support_help_url'>https://yoomoney.ru/page?id=536720</string>
+  <string name='ym_support_phone'>+78002506699</string>
+  <string name='ym_migration_banner_text'>If you signed up before October 21, you need to switch to YooMoney</string>
+  <string name='ym_migration_banner_button_text'>Learn more</string>
+  <string name='ym_yoo_money_logout'>Sign out</string>
+  <string name='ym_contract_link_card_title'>Link a card</string>
+  <string name='ym_contract_link_wallet_title'>Remember me</string>
+  <string name='ym_card_number_title'>Card number</string>
+  <string name='ym_card_number_hint'>Enter or scan</string>
+  <string name='ym_card_number_only_enter_hint'>Enter</string>
+  <string name='ym_expiry_mm_yy_hint'>MM/YY</string>
+  <string name='ym_expiry_title'>Expiration date</string>
+  <string name='ym_cvc_title'>Code</string>
+  <string name='ym_cvc_hint'>CVC</string>
+  <string name='ym_check_card_number_error'>Check the card number</string>
+  <string name='ym_check_expiry_error'>Check the month and date</string>
+  <string name='ym_yoo_login_to_pay'>Sign in to your wallet to pay via YooMoney</string>
+  <string name='ym_confirm_retry_timer_text'>Get a new code in %s</string>
+  <string name='ym_payment_auth_wrong_code_try_again'>Invalid code. Double-check and try again</string>
+  <string name='ym_payment_auth_wrong_code_with_attempts'>Invalid again. Attempts left: %d</string>
+  <string name='ym_payment_auth_no_attempts'>No attempts left</string>
+  <string name='ym_payment_auth_wrong_code'>Invalid code</string>
+  <string name='ym_payment_auth_retry_text'>Try again</string>
+  <string name='ym_check_cvc'>Check the CVC</string>
+  <string name='ym_linked_card'>Linked card</string>
+  <string name='ym_saved_card'>Saved card</string>
+  <string name='ym_google_pay_description'>You\'ll be redirected into the Google Pay app: confirm the payment</string>
+  <string name='ym_sber_pay_description'>Next, open the Sberbank Online application - confirm the payment</string>
+  <string name='ym_sber_phone_input_info'>For the text message from Sberbank with the payment code</string>
+  <string name='ym_label_phone_in_sbol'>Phone number in Sberbank Online</string>
+  <string name='ym_save_payment_method_title'>Let\'s link the card</string>
+  <string name='ym_navigation_item_back'>Назад</string>
 </resources>

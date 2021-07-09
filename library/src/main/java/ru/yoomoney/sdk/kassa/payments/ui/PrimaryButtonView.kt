@@ -28,7 +28,7 @@ import ru.yoomoney.sdk.kassa.payments.ui.color.InMemoryColorSchemeRepository
 
 typealias UiLIbPrimaryButtonView = ru.yoomoney.sdk.gui.widget.button.PrimaryButtonView
 
-class PrimaryButtonView
+internal class PrimaryButtonView
 @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null

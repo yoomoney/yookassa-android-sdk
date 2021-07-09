@@ -46,7 +46,6 @@
         app:layout_constraintTop_toTopOf="@+id/yooImage"
         tools:text="matveyeurovi4"/>
 
-
     <TextView
         android:id="@+id/yooSubtitle"
         style="@style/Text.Body"

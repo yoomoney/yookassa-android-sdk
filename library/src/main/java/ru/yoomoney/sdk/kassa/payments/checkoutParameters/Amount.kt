@@ -36,3 +36,7 @@ import java.util.Currency
 @[Parcelize Keep SuppressLint("ParcelCreator")]
 data class Amount
 @Keep constructor(@get:Keep val value: BigDecimal, @get:Keep val currency: Currency) : Parcelable
+
+fun Amount?.isNullOrZero(): Boolean {
+    return this == null || this.value == BigDecimal.ZERO
+}

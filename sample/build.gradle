@@ -21,14 +21,17 @@
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply from: rootProject.file('common.gradle')
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion target_sdk_version
     buildToolsVersion '28.0.3'
     defaultConfig {
-        applicationId "ru.yoo.sdk.kassa.payments.example"
+        applicationId "ru.yoo.sdk.kassa.payments.sample"
         minSdkVersion 21
+        targetSdkVersion rootProject.ext.target_sdk_version
+        versionCode project.ext.versionCode
+        versionName project.ext.versionName
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         testInstrumentationRunnerArguments clearPackageData: 'true'
 
@@ -42,6 +45,10 @@ android {
         buildConfigField "String", "SHOP_ID", "${optionalProperty('shopId')}"
         buildConfigField "String", "CLIENT_ID", "${optionalProperty('cliendId')}"
 
+        missingDimensionStrategy 'metrica', 'metricaTest'
+
+        resValue "string", "ym_app_scheme", "exampleapp"
+
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -51,32 +58,11 @@ android {
         animationsDisabled = true
     }
     buildTypes {
-        debug {
-        }
         release {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro', '../library/proguard-rules.pro'
             applicationIdSuffix '.release'
-        }
-    }
-
-    flavorDimensions "payment_type"
-    productFlavors {
-        withAppScheme {
-            dimension "appscheme"
-            resValue "string", "ym_app_scheme", "exampleapp"
-        }
-        noAppScheme {
-            dimension "appscheme"
-
-            resValue "string", "ym_app_scheme", ""
-        }
-        withYooMoney {
-            dimension "payment_type"
-        }
-        withoutYooMoney {
-            dimension "payment_type"
         }
     }
 
@@ -88,33 +74,13 @@ android {
 }
 
 dependencies {
+    implementation project(':library')
+    implementation(fileTree(dir: "libs", include: ["profiling-tool.aar"]))
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "androidx.appcompat:appcompat:$appcompat"
     implementation "com.google.android.material:material:$material"
     implementation "androidx.recyclerview:recyclerview:$recyclerview"
     implementation "androidx.constraintlayout:constraintlayout:$constraintlayout"
     implementation 'com.facebook.device.yearclass:yearclass:2.1.0'
-    implementation project(':library')
-    implementation(fileTree(dir: "libs", include: ["profiling-tool.aar"]))
-    implementation("ru.yoomoney.sdk.auth:auth:$yoo_sdk_auth_version")
     implementation 'io.card:android-sdk:5.5.1'
-
-    testImplementation "junit:junit:$junit"
-    testImplementation "org.mockito:mockito-core:$mockito_version"
-    testImplementation "org.robolectric:robolectric:3.8"
-
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-web:3.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.1.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-accessibility:3.1.0'
-    androidTestImplementation 'androidx.test.espresso.idling:idling-concurrent:3.1.0'
-
-    androidTestImplementation 'androidx.test:rules:1.2.0'
-    androidTestImplementation "androidx.test.uiautomator:uiautomator:2.2.0"
-
-    androidTestImplementation 'androidx.test:runner:1.1.0'
-    androidTestUtil 'androidx.test:orchestrator:1.1.0'
-
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

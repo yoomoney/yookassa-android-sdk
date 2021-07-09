@@ -27,7 +27,6 @@ import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentMethodType
 import ru.yoomoney.sdk.kassa.payments.model.ApiMethodException
 import ru.yoomoney.sdk.kassa.payments.model.AuthCheckApiMethodException
 import ru.yoomoney.sdk.kassa.payments.payment.paymentOptionFactory
-import ru.yoomoney.sdk.kassa.payments.methods.WalletCheckResponse
 import ru.yoomoney.sdk.kassa.payments.methods.paymentAuth.CheckoutAuthContextGetResponse
 import ru.yoomoney.sdk.kassa.payments.methods.paymentAuth.CheckoutTokenIssueInitResponse
 import ru.yoomoney.sdk.kassa.payments.model.AuthType
@@ -270,12 +269,4 @@ internal fun JSONObject.getExtendedStatus() = when (optString("status")) {
     "Refused" -> ExtendedStatus.REFUSED
     "AuthRequired" -> ExtendedStatus.AUTH_REQUIRED
     else -> ExtendedStatus.UNKNOWN
-}
-
-internal fun JSONObject.getDisplayName(): String = getString("display_name")
-
-internal fun JSONObject.toWalletCheckResponse() = when {
-    has("account_number") -> WalletCheckResponse(Status.SUCCESS, true)
-    has("terms_and_conditions_apply_required") -> WalletCheckResponse(Status.SUCCESS, false)
-    else -> WalletCheckResponse(Status.REFUSED, null)
 }

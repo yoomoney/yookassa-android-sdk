@@ -23,8 +23,8 @@ package ru.yoomoney.sdk.kassa.payments.methods
 
 import okhttp3.Credentials
 import org.json.JSONObject
-import ru.yoomoney.sdk.kassa.payments.BuildConfig
 import ru.yoomoney.sdk.kassa.payments.extensions.toPaymentMethodResponse
+import ru.yoomoney.sdk.kassa.payments.http.HostProvider
 import ru.yoomoney.sdk.kassa.payments.methods.base.GetRequest
 import ru.yoomoney.sdk.kassa.payments.model.PaymentMethodBankCard
 import ru.yoomoney.sdk.kassa.payments.model.Result
@@ -33,13 +33,14 @@ private const val PAYMENT_METHOD_PATH = "/payment_method"
 private const val PAYMENT_METHOD_PARAM_NAME = "payment_method_id"
 
 internal class PaymentMethodRequest(
+    private val hostProvider: HostProvider,
     private val paymentMethodId: String,
     private val shopToken: String,
     private val userAuthToken: String?
 ) : GetRequest<Result<PaymentMethodBankCard>> {
 
     override fun getUrl(): String {
-        return BuildConfig.HOST + PAYMENT_METHOD_PATH + "?$PAYMENT_METHOD_PARAM_NAME=" + paymentMethodId
+        return hostProvider.host() + PAYMENT_METHOD_PATH + "?$PAYMENT_METHOD_PARAM_NAME=" + paymentMethodId
     }
 
     override fun getHeaders(): List<Pair<String, String>> {

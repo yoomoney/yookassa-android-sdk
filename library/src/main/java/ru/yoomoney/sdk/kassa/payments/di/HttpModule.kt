@@ -26,7 +26,9 @@ import com.google.android.gms.security.ProviderInstaller
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
+import ru.yoomoney.sdk.kassa.payments.checkoutParameters.TestParameters
 import ru.yoomoney.sdk.kassa.payments.extensions.CheckoutOkHttpClient
+import ru.yoomoney.sdk.kassa.payments.http.HostProvider
 import ru.yoomoney.sdk.kassa.payments.metrics.ErrorLoggerReporter
 import ru.yoomoney.sdk.kassa.payments.model.SdkException
 
@@ -45,5 +47,14 @@ internal class HttpModule {
             errorReporter.report(SdkException(e))
         }
         return CheckoutOkHttpClient(okHttpClient, errorReporter)
+    }
+
+    @Provides
+    fun hostProvider(testParameters: TestParameters): HostProvider {
+        return object : HostProvider {
+            override fun host(): String = testParameters.hostParameters.host
+            override fun paymentAuthorizationHost(): String = testParameters.hostParameters.paymentAuthorizationHost
+            override fun authHost(): String? = testParameters.hostParameters.authHost
+        }
     }
 }

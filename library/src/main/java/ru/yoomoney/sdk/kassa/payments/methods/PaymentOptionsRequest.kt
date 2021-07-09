@@ -24,9 +24,9 @@ package ru.yoomoney.sdk.kassa.payments.methods
 import okhttp3.Credentials
 import org.json.JSONObject
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.Amount
-import ru.yoomoney.sdk.kassa.payments.BuildConfig
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.SavePaymentMethod
 import ru.yoomoney.sdk.kassa.payments.extensions.toPaymentOptionResponse
+import ru.yoomoney.sdk.kassa.payments.http.HostProvider
 import ru.yoomoney.sdk.kassa.payments.methods.base.GetRequest
 import ru.yoomoney.sdk.kassa.payments.model.CurrentUser
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
@@ -39,6 +39,7 @@ private const val GATEWAY_ID = "gateway_id"
 private const val SAVE_PAYMENT_METHOD = "save_payment_method"
 
 internal data class PaymentOptionsRequest(
+    private val hostProvider: HostProvider,
     private val amount: Amount,
     private val currentUser: CurrentUser,
     private val gatewayId: String?,
@@ -71,10 +72,8 @@ internal data class PaymentOptionsRequest(
             }
         }.toString()
 
-        return getHost() + createFullPath(PAYMENT_OPTIONS_METHOD_PATH, params)
+        return hostProvider.host() + createFullPath(PAYMENT_OPTIONS_METHOD_PATH, params)
     }
-
-    private fun getHost() = BuildConfig.HOST
 
     private fun createFullPath(path: String, params: Map<String, String>) =
         path.takeIf { params.isNotEmpty() }

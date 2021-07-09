@@ -24,7 +24,7 @@ package ru.yoomoney.sdk.kassa.payments.extensions
 import com.google.android.gms.wallet.WalletConstants
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.GooglePayCardNetwork
 
-fun GooglePayCardNetwork.toWalletConstant(): Int {
+internal fun GooglePayCardNetwork.toWalletConstant(): Int {
     return when (this) {
         GooglePayCardNetwork.AMEX -> WalletConstants.CARD_NETWORK_AMEX
         GooglePayCardNetwork.DISCOVER -> WalletConstants.CARD_NETWORK_DISCOVER

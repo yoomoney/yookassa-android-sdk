@@ -23,6 +23,7 @@ package ru.yoomoney.sdk.kassa.payments.contract
 
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.SavePaymentMethod
+import ru.yoomoney.sdk.kassa.payments.checkoutParameters.isNullOrZero
 import ru.yoomoney.sdk.kassa.payments.contract.Contract.Action
 import ru.yoomoney.sdk.kassa.payments.contract.Contract.Effect
 import ru.yoomoney.sdk.kassa.payments.contract.Contract.State
@@ -36,7 +37,6 @@ import ru.yoomoney.sdk.march.Out
 import ru.yoomoney.sdk.march.input
 import ru.yoomoney.sdk.march.output
 import ru.yoomoney.sdk.kassa.payments.model.Confirmation
-import java.math.BigDecimal
 
 internal class ContractBusinessLogic(
     val showState: suspend (State) -> Action,
@@ -189,14 +189,15 @@ internal class ContractBusinessLogic(
         )
         return when (outputModel.paymentOption) {
             is GooglePay -> {
-                val fee = outputModel.paymentOption.fee?.service?.value
-                if (fee == null || fee == BigDecimal.ZERO) {
-                    Out(State.GooglePay(content, outputModel.paymentOption.id)) {
-                        input{ showState(this.state)}
-                    }
-                } else {
+                val fee = outputModel.paymentOption.fee?.service
+                val savePaymentMethodAllowed = outputModel.paymentOption.savePaymentMethodAllowed
+                if((savePaymentMethodAllowed && paymentParameters.savePaymentMethod != SavePaymentMethod.OFF) || !fee.isNullOrZero()) {
                     Out(content) {
                         input { showState(this.state) }
+                    }
+                } else {
+                    Out(State.GooglePay(content, outputModel.paymentOption.id)) {
+                        input{ showState(this.state)}
                     }
                 }
             }

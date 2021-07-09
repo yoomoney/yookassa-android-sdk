@@ -30,7 +30,7 @@ import kotlinx.android.synthetic.main.ym_switch_with_description_view.view.descr
 import kotlinx.android.synthetic.main.ym_switch_with_description_view.view.switchView
 import ru.yoomoney.sdk.kassa.payments.R
 
-open class SwitchWithDescriptionView
+internal open class SwitchWithDescriptionView
 @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -86,7 +86,7 @@ open class SwitchWithDescriptionView
     }
 }
 
-fun SwitchWithDescriptionView.onCheckedChangedListener(listener: ((Boolean) -> Unit)?) {
+internal fun SwitchWithDescriptionView.onCheckedChangedListener(listener: ((Boolean) -> Unit)?) {
     listener?.let {
         switchView.setOnCheckedChangeListener { _, isChecked ->
             listener(isChecked)

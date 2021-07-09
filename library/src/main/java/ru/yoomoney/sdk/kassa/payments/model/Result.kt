@@ -21,20 +21,19 @@
 
 package ru.yoomoney.sdk.kassa.payments.model
 
-
-sealed class Result<out T : Any> {
+internal sealed class Result<out T : Any> {
     data class Success<out T : Any>(val value: T) : Result<T>()
     data class Fail(val value: Throwable) : Result<Nothing>()
 }
 
-inline fun <R: Any, T: Any> Result<T>.map(transform: (value: T) -> R): Result<R> {
+internal inline fun <R: Any, T: Any> Result<T>.map(transform: (value: T) -> R): Result<R> {
     return when(this) {
         is Result.Success -> Result.Success(transform(value))
         is Result.Fail -> Result.Fail(value)
     }
 }
 
-inline fun <T, R: Any> T.runCatching(block: T.() -> R): Result<R> {
+internal inline fun <T, R: Any> T.runCatching(block: T.() -> R): Result<R> {
     return try {
         Result.Success(block())
     } catch (e: Throwable) {
@@ -42,14 +41,14 @@ inline fun <T, R: Any> T.runCatching(block: T.() -> R): Result<R> {
     }
 }
 
-inline fun <R: Any, T: Any> Result<T>.mapCatching(transform: (value: T) -> R): Result<R> {
+internal inline fun <R: Any, T: Any> Result<T>.mapCatching(transform: (value: T) -> R): Result<R> {
     return when(this) {
         is Result.Success -> runCatching { transform(value) }
         is Result.Fail -> Result.Fail(value)
     }
 }
 
-fun <T: Any> Result<T>.getOrThrow(): T {
+internal fun <T: Any> Result<T>.getOrThrow(): T {
     return when (this) {
         is Result.Success -> value
         is Result.Fail -> throw value

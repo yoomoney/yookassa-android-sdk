@@ -63,7 +63,7 @@ internal class ReporterModule {
         testParameters: TestParameters,
         metrica: IReporter
     ): ErrorLoggerReporter {
-        return YandexMetricaLoggerReporter(testParameters.showLogs, YandexMetricaReporter(metrica))
+        return YandexMetricaLoggerReporter(testParameters.showLogs, YandexMetricaErrorReporter(metrica))
     }
 
     @Provides

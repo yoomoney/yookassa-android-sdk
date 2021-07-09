@@ -28,7 +28,7 @@ import ru.yoomoney.sdk.kassa.payments.model.NoInternetException
 import ru.yoomoney.sdk.kassa.payments.model.PassphraseCheckFailedException
 import ru.yoomoney.sdk.kassa.payments.model.ErrorCode
 
-open class DefaultErrorFormatter(private val context: Context): ErrorFormatter {
+internal open class DefaultErrorFormatter(private val context: Context): ErrorFormatter {
     override fun format(e: Throwable): CharSequence {
         return when (e) {
             is NoInternetException -> context.getText(R.string.ym_error_no_internet)

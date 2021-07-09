@@ -27,12 +27,12 @@ import ru.yoomoney.sdk.gui.utils.extensions.getDisplayMetrics
 import ru.yoomoney.sdk.gui.utils.extensions.getStatusBarHeight
 import ru.yoomoney.sdk.kassa.payments.R
 
-fun Context.getScreenHeight() = getDisplayMetrics().heightPixels - getStatusBarHeight()
+internal fun Context.getScreenHeight() = getDisplayMetrics().heightPixels - getStatusBarHeight()
 
-fun Context.getScreenWidth() = getDisplayMetrics().widthPixels
+internal fun Context.getScreenWidth() = getDisplayMetrics().widthPixels
 
-val Context.isTablet: Boolean
+internal val Context.isTablet: Boolean
     get() = resources.getBoolean(R.bool.ym_isTablet)
 
-val Fragment.isTablet: Boolean
+internal val Fragment.isTablet: Boolean
     get() = requireActivity().isTablet

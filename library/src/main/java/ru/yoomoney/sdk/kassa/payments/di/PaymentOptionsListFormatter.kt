@@ -32,4 +32,4 @@ import javax.inject.Qualifier
     AnnotationTarget.PROPERTY_GETTER,
     AnnotationTarget.PROPERTY_SETTER
 )
-annotation class PaymentOptionsListFormatter
+internal annotation class PaymentOptionsListFormatter
