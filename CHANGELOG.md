@@ -5,6 +5,10 @@
 ### NEXT_VERSION_DESCRIPTION_BEGIN
 ### NEXT_VERSION_DESCRIPTION_END
 
+## [6.1.3] (12-07-2021)
+
+- Updated Google Pay icon
+
 ## [6.1.2] (09-07-2021)
 
 - Added support of recurrent payments for gpay;
