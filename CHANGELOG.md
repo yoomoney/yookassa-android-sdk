@@ -5,6 +5,10 @@
 ### NEXT_VERSION_DESCRIPTION_BEGIN
 ### NEXT_VERSION_DESCRIPTION_END
 
+## [6.1.4] (03-08-2021)
+
+- Updated auth-sdk version and fixed crash with authentication in YooMoney
+
 ## [6.1.3] (12-07-2021)
 
 - Updated Google Pay icon
