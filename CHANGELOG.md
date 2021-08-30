@@ -5,6 +5,10 @@
 ### NEXT_VERSION_DESCRIPTION_BEGIN
 ### NEXT_VERSION_DESCRIPTION_END
 
+## [6.1.5] (30-08-2021)
+
+- Added english version of readme
+
 ## [6.1.4] (03-08-2021)
 
 - Updated auth-sdk version and fixed crash with authentication in YooMoney
