@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ The MIT License (MIT)
   ~ Copyright © 2021 NBCO YooMoney LLC
   ~
@@ -33,12 +32,12 @@
         android:layout_height="83dp"
         android:background="@color/ym_bank_card_color"
         app:cardBackgroundColor="@color/ym_bank_card_color"
-        app:strokeWidth="1dp"
+        app:cardCornerRadius="@dimen/ym_radius_m"
+        app:cardElevation="3dp"
+        app:cardMaxElevation="1dp"
         app:cardUseCompatPadding="true"
         app:strokeColor="@color/ym_bank_card_stroke_color"
-        app:cardCornerRadius="@dimen/ym_radius_m"
-        app:cardMaxElevation="1dp"
-        app:cardElevation="3dp">
+        app:strokeWidth="1dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/bankCardConstraint"
@@ -61,10 +60,10 @@
             <TextView
                 android:id="@+id/cardNumberTitle"
                 style="@style/Text.Caption1"
-                android:textColor="@color/color_type_secondary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/ym_card_number_title"
+                android:textColor="@color/color_type_secondary"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
@@ -75,11 +74,23 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:background="@null"
-                android:imeOptions="actionDone"
                 android:hint="@string/ym_card_number_hint"
+                android:imeOptions="actionDone"
                 android:inputType="text|number"
                 android:maxLength="23"
                 android:nextFocusForward="@+id/expiryEditText"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardNumberTitle"/>
+
+            <TextView
+                android:id="@+id/cardNumberFull"
+                style="@style/ym_CardInfoEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/ym_spaceXS"
+                android:layout_marginTop="6dp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cardNumberTitle"/>
@@ -89,11 +100,11 @@
                 style="@style/ym_BankCardEditText"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/ym_spaceXL"
                 android:layout_marginTop="6dp"
                 android:background="@null"
                 android:maxLength="23"
                 android:visibility="gone"
-                android:layout_marginStart="@dimen/ym_spaceXL"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cardNumberTitle"/>
 
@@ -102,11 +113,11 @@
                 style="@style/Text.Caption1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/ym_expiry_title"
                 android:layout_marginStart="@dimen/ym_space_xl"
+                android:text="@string/ym_expiry_title"
                 android:textColor="@color/color_ghost"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
             <EditText
@@ -152,30 +163,30 @@
 
             <ImageView
                 android:id="@+id/cardScan"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:src="@drawable/ym_ic_scanner_m"
                 android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
             <ImageView
                 android:id="@+id/continueWithCard"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:src="@drawable/ym_ic_forward_m"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/cardNumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                app:layout_constraintEnd_toEndOf="parent"/>
 
             <ImageView
                 android:id="@+id/clear"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:visibility="gone"
-                android:src="@drawable/ym_ic_close"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:src="@drawable/ym_ic_close"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/detailsGroup"
@@ -190,10 +201,10 @@
     <TextView
         android:id="@+id/error"
         style="@style/Text.Caption1"
-        android:paddingStart="@dimen/ym_space_2xs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/ym_space_xs"
+        android:paddingStart="@dimen/ym_space_2xs"
         android:textColor="@color/color_type_alert"
         android:visibility="invisible"/>
 

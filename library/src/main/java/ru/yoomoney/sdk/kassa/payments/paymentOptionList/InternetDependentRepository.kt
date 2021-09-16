@@ -27,6 +27,7 @@ import ru.yoomoney.sdk.kassa.payments.extensions.checkConnection
 import ru.yoomoney.sdk.kassa.payments.metrics.ErrorReporter
 import ru.yoomoney.sdk.kassa.payments.model.CurrentUser
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
+import ru.yoomoney.sdk.kassa.payments.model.PaymentOptionsResponse
 import ru.yoomoney.sdk.kassa.payments.payment.loadOptionList.PaymentOptionListRepository
 import ru.yoomoney.sdk.kassa.payments.model.Result
 import ru.yoomoney.sdk.kassa.payments.model.SdkException
@@ -37,7 +38,7 @@ internal class InternetDependentRepository(
         private val errorReporter: ErrorReporter
 ) : PaymentOptionListRepository {
 
-    override fun getPaymentOptions(amount: Amount, currentUser: CurrentUser): Result<List<PaymentOption>> {
+    override fun getPaymentOptions(amount: Amount, currentUser: CurrentUser): Result<PaymentOptionsResponse> {
         return try {
             context.checkConnection()
             paymentOptionListRepository.getPaymentOptions(amount, currentUser)

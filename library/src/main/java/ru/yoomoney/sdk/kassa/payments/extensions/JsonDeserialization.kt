@@ -24,11 +24,10 @@ package ru.yoomoney.sdk.kassa.payments.extensions
 import org.json.JSONObject
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.Amount
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentMethodType
-import ru.yoomoney.sdk.kassa.payments.model.ApiMethodException
-import ru.yoomoney.sdk.kassa.payments.model.AuthCheckApiMethodException
-import ru.yoomoney.sdk.kassa.payments.payment.paymentOptionFactory
 import ru.yoomoney.sdk.kassa.payments.methods.paymentAuth.CheckoutAuthContextGetResponse
 import ru.yoomoney.sdk.kassa.payments.methods.paymentAuth.CheckoutTokenIssueInitResponse
+import ru.yoomoney.sdk.kassa.payments.model.ApiMethodException
+import ru.yoomoney.sdk.kassa.payments.model.AuthCheckApiMethodException
 import ru.yoomoney.sdk.kassa.payments.model.AuthType
 import ru.yoomoney.sdk.kassa.payments.model.AuthTypeState
 import ru.yoomoney.sdk.kassa.payments.model.CardBrand
@@ -36,10 +35,14 @@ import ru.yoomoney.sdk.kassa.payments.model.CardInfo
 import ru.yoomoney.sdk.kassa.payments.model.Error
 import ru.yoomoney.sdk.kassa.payments.model.ExtendedStatus
 import ru.yoomoney.sdk.kassa.payments.model.Fee
+import ru.yoomoney.sdk.kassa.payments.model.PaymentInstrumentBankCard
 import ru.yoomoney.sdk.kassa.payments.model.PaymentMethodBankCard
-import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
+import ru.yoomoney.sdk.kassa.payments.model.PaymentOptionsResponse
 import ru.yoomoney.sdk.kassa.payments.model.Result
+import ru.yoomoney.sdk.kassa.payments.model.ShopProperties
 import ru.yoomoney.sdk.kassa.payments.model.Status
+import ru.yoomoney.sdk.kassa.payments.payment.paymentOptionFactory
+import ru.yoomoney.sdk.kassa.payments.model.SuccessUnbinding
 import java.math.BigDecimal
 import java.util.Currency
 
@@ -65,18 +68,34 @@ internal fun JSONObject.toError() = Error(
     retryAfter = optString("retry_after").toIntOrNull() ?: 0
 )
 
-internal fun JSONObject.toPaymentOptionResponse(): Result<List<PaymentOption>> =
+internal fun JSONObject.toPaymentInstrumentBankCard() = PaymentInstrumentBankCard(
+    paymentInstrumentId = getString("payment_instrument_id"),
+    last4 = getString("last4"),
+    first6 = getString("first6"),
+    cscRequired = getBoolean("csc_required"),
+    cardType = getCardBrand()
+)
+
+internal fun JSONObject.toPaymentOptionResponse(): Result<PaymentOptionsResponse> =
     if (optString("type") == "error") {
         Result.Fail(ApiMethodException(toError()))
     } else {
         Result.Success(
-            getJSONArray("items")
-                .mapIndexed { id, jsonObject ->
-                    paymentOptionFactory(id, jsonObject)
-                }
-                .filterNotNull()
+            PaymentOptionsResponse(
+                paymentOptions = getJSONArray("items")
+                    .mapIndexed { id, jsonObject ->
+                        paymentOptionFactory(id, jsonObject)
+                    }
+                    .filterNotNull(),
+                shopProperties = getJSONObject("shop_properties").toShopProperties()
+            )
         )
     }
+
+private fun JSONObject.toShopProperties() = ShopProperties(
+    isSafeDeal = getBoolean("is_safe_deal"),
+    isMarketplace = getBoolean("is_marketplace")
+)
 
 internal fun JSONObject.toPaymentMethodResponse(): Result<PaymentMethodBankCard> =
     if (optString("type") == "error") {
@@ -100,6 +119,13 @@ internal fun JSONObject.toPaymentMethodResponse(): Result<PaymentMethodBankCard>
                 )
             )
         )
+    }
+
+internal fun JSONObject.toUnbindingResponse(): Result<SuccessUnbinding> =
+    if (optString("type") == "error") {
+        Result.Fail(ApiMethodException(toError()))
+    } else {
+        Result.Success(SuccessUnbinding)
     }
 
 internal fun JSONObject.toTokenResponse(): Result<String> =
@@ -138,9 +164,11 @@ internal fun JSONObject.toAuthContextGetResponse(): Result<CheckoutAuthContextGe
 
 internal fun JSONObject.toCheckoutTokenIssueInitResponse(): Result<CheckoutTokenIssueInitResponse> {
     return when (getExtendedStatus()) {
-        ExtendedStatus.SUCCESS -> Result.Success(CheckoutTokenIssueInitResponse.Success(
-            getJSONObject("result").getString("processId")
-        ))
+        ExtendedStatus.SUCCESS -> Result.Success(
+            CheckoutTokenIssueInitResponse.Success(
+                getJSONObject("result").getString("processId")
+            )
+        )
         ExtendedStatus.REFUSED -> Result.Fail(
             ApiMethodException(
                 optString("error").toErrorCode()
@@ -148,10 +176,12 @@ internal fun JSONObject.toCheckoutTokenIssueInitResponse(): Result<CheckoutToken
         )
         ExtendedStatus.AUTH_REQUIRED -> {
             val result = getJSONObject("result")
-            Result.Success(CheckoutTokenIssueInitResponse.AuthRequired(
-                authContextId = result.optString("authContextId"),
-                processId = result.optString("processId")
-            ))
+            Result.Success(
+                CheckoutTokenIssueInitResponse.AuthRequired(
+                    authContextId = result.optString("authContextId"),
+                    processId = result.optString("processId")
+                )
+            )
         }
         ExtendedStatus.UNKNOWN -> Result.Fail(
             ApiMethodException(
@@ -191,7 +221,7 @@ internal fun JSONObject.toAuthSessionGenerateResponse(): Result<AuthTypeState> {
 }
 
 internal fun JSONObject.toCheckoutTokenIssueExecuteResponse(): Result<String> {
-    return when(getStatus()) {
+    return when (getStatus()) {
         Status.SUCCESS -> Result.Success(getJSONObject("result").getString("accessToken"))
         Status.REFUSED -> Result.Fail(ApiMethodException(optString("error").toErrorCode()))
         Status.UNKNOWN -> Result.Fail(

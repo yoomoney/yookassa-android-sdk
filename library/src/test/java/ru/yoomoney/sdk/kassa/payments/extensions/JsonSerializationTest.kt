@@ -19,7 +19,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package ru.yoomoney.sdk.kassa.payments.impl.extensions
+package ru.yoomoney.sdk.kassa.payments.extensions
 
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.contains
@@ -27,7 +27,6 @@ import org.json.JSONObject
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import ru.yoomoney.sdk.kassa.payments.extensions.toJsonObject
 import ru.yoomoney.sdk.kassa.payments.model.Confirmation
 import ru.yoomoney.sdk.kassa.payments.model.ExternalConfirmation
 import ru.yoomoney.sdk.kassa.payments.model.MobileApplication

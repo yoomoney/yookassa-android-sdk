@@ -21,11 +21,17 @@
 
 package ru.yoomoney.sdk.kassa.payments.paymentOptionList
 
+import ru.yoomoney.sdk.kassa.payments.metrics.ActionUnbindCardStatusFail
+import ru.yoomoney.sdk.kassa.payments.metrics.ActionUnbindCardStatusSuccess
 import ru.yoomoney.sdk.kassa.payments.metrics.AuthType
 import ru.yoomoney.sdk.kassa.payments.metrics.Reporter
 import ru.yoomoney.sdk.kassa.payments.metrics.TokenizeScheme
 import ru.yoomoney.sdk.march.Logic
 import ru.yoomoney.sdk.march.Out
+
+private const val ACTION_UNBIND_CARD = "actionUnbindBankCard"
+private const val ACTION_SCREEN_ERROR = "screenError"
+private const val ACTION_SCREEN_PAYMENT_OPTIONS = "screenPaymentOptions"
 
 internal class PaymentOptionListAnalytics(
     private val reporter: Reporter,
@@ -34,14 +40,23 @@ internal class PaymentOptionListAnalytics(
     private val getTokenizeScheme: () -> TokenizeScheme?
 ):  Logic<PaymentOptionList.State, PaymentOptionList.Action> {
 
-    override fun invoke(state: PaymentOptionList.State, action: PaymentOptionList.Action): Out<PaymentOptionList.State, PaymentOptionList.Action> {
+    override fun invoke(
+        state: PaymentOptionList.State,
+        action: PaymentOptionList.Action)
+    : Out<PaymentOptionList.State, PaymentOptionList.Action> {
         when(action) {
             is PaymentOptionList.Action.LoadPaymentOptionListFailed -> {
                 val params = getTokenizeScheme()?.let { listOf(getUserAuthType(), it) } ?: listOf(getUserAuthType())
-                reporter.report("screenError", params)
+                reporter.report(ACTION_SCREEN_ERROR, params)
             }
             is PaymentOptionList.Action.LoadPaymentOptionListSuccess -> {
-                reporter.report("screenPaymentOptions", listOf(getUserAuthType()))
+                reporter.report(ACTION_SCREEN_PAYMENT_OPTIONS, listOf(getUserAuthType()))
+            }
+            is PaymentOptionList.Action.UnbindFailed -> {
+                reporter.report(ACTION_UNBIND_CARD, listOf(ActionUnbindCardStatusFail()))
+            }
+            is PaymentOptionList.Action.UnbindSuccess -> {
+                reporter.report(ACTION_UNBIND_CARD, listOf(ActionUnbindCardStatusSuccess()))
             }
             else -> Unit
         }

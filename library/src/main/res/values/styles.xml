@@ -26,6 +26,7 @@
         <item name="android:windowLightStatusBar" tools:ignore="NewApi">true</item>
         <item name="colorAccent">@color/ym_palette_accent</item>
         <item name="colorControlNormal">#1e000000</item>
+        <item name="android:alertDialogTheme">@style/ym_DialogStyleColored</item>
     </style>
 
     <style name="ym_Theme.Toolbar" parent="Theme.Yoo" />
@@ -72,5 +73,23 @@
         <item name="android:maxLines">1</item>
         <item name="android:lineSpacingMultiplier">1.15</item>
         <item name="android:letterSpacing" tools:ignore="NewApi">0.01</item>
+    </style>
+    
+    <style name="ym_CardInfoEditText" parent="Text.Body.Light.Secondary">
+        <item name="android:letterSpacing" tools:ignore="NewApi">0.02</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="ym_ButtonStyleRed" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/color_alert</item>
+    </style>
+
+    <style name="ym_ButtonStyleBlue" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/ym_color_cursor</item>
+    </style>
+
+    <style name="ym_DialogStyleColored" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="buttonBarPositiveButtonStyle">@style/ym_ButtonStyleBlue</item>
+        <item name="buttonBarNegativeButtonStyle">@style/ym_ButtonStyleRed</item>
     </style>
 </resources>

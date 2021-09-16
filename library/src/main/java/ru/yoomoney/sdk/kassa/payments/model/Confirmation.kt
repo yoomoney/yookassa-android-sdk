@@ -21,8 +21,22 @@
 
 package ru.yoomoney.sdk.kassa.payments.model
 
-internal sealed class Confirmation
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+
+internal sealed class Confirmation: Parcelable
+
+@Parcelize
 internal object NoConfirmation : Confirmation()
+
+@Parcelize
 internal object ExternalConfirmation : Confirmation()
+
+@Parcelize
 internal data class RedirectConfirmation(val returnUrl: String) : Confirmation()
+
+@Parcelize
 internal data class MobileApplication(val returnUrl: String) : Confirmation()
+
+internal interface GetConfirmation: (PaymentOption) -> Confirmation

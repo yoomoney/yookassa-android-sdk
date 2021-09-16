@@ -24,7 +24,10 @@ package ru.yoomoney.sdk.kassa.payments.paymentAuth
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
+import androidx.activity.addCallback
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.ym_fragment_payment_auth.codeConfirmError
 import kotlinx.android.synthetic.main.ym_fragment_payment_auth.confirmCode
@@ -92,6 +95,9 @@ internal class PaymentAuthFragment : Fragment(R.layout.ym_fragment_payment_auth)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupViews()
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            finishWithResult(Screen.PaymentAuth.PaymentAuthResult.CANCEL)
+        }
         viewModel.observe(
             lifecycleOwner = viewLifecycleOwner,
             onState = ::showState,
@@ -214,7 +220,9 @@ internal class PaymentAuthFragment : Fragment(R.layout.ym_fragment_payment_auth)
     }
 
     private fun finishWithResult(paymentAuthResult: Screen.PaymentAuth.PaymentAuthResult) {
-        router.navigateTo(Screen.Contract(paymentAuthResult))
+        setFragmentResult(PAYMENT_AUTH_RESULT_KEY, bundleOf(PAYMENT_AUTH_RESULT_EXTRA to paymentAuthResult))
+        parentFragmentManager.popBackStack()
+        rootContainer.hideSoftKeyboard()
     }
 
     private fun startTimer(duration: Duration) {
@@ -238,6 +246,9 @@ internal class PaymentAuthFragment : Fragment(R.layout.ym_fragment_payment_auth)
     }
 
     companion object {
+
+        const val PAYMENT_AUTH_RESULT_KEY = "ru.yoomoney.sdk.kassa.payments.impl.paymentAuth.PAYMENT_AUTH_RESULT_KEY"
+        const val PAYMENT_AUTH_RESULT_EXTRA = "ru.yoomoney.sdk.kassa.payments.impl.paymentAuth.PAYMENT_AUTH_RESULT_EXTRA"
 
         private const val AMOUNT_KEY = "ru.yoomoney.sdk.kassa.payments.impl.paymentAuth.AMOUNT_KEY"
         private const val LINK_WALLET_KEY = "ru.yoomoney.sdk.kassa.payments.impl.paymentAuth.LINK_WALLET_KEY"

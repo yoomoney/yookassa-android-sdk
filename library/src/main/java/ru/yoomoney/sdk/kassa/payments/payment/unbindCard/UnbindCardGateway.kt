@@ -19,12 +19,11 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package ru.yoomoney.sdk.kassa.payments.payment
+package ru.yoomoney.sdk.kassa.payments.payment.unbindCard
 
-interface PaymentOptionRepository {
-    var paymentOptionId: Int?
+import ru.yoomoney.sdk.kassa.payments.model.Result
+import ru.yoomoney.sdk.kassa.payments.model.SuccessUnbinding
+
+internal interface UnbindCardGateway {
+    fun unbindCard(bindingId: String): Result<SuccessUnbinding>
 }
-
-internal data class PaymentOptionRepositoryImpl(
-    override var paymentOptionId: Int?
-) : PaymentOptionRepository

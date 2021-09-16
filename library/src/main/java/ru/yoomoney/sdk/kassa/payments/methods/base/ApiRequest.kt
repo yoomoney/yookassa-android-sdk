@@ -36,6 +36,11 @@ internal interface PostRequest<out T> : ApiRequest<T> {
     fun getMimeType(): MimeType
 }
 
+internal interface DeleteRequest<out T> : ApiRequest<T> {
+    fun getPayload(): List<Pair<String, Any>>
+    fun getMimeType(): MimeType
+}
+
 internal enum class MimeType(val type: String) {
     JSON("application/json"),
     X_WWW_FORM_URLENCODED("application/x-www-form-urlencoded")

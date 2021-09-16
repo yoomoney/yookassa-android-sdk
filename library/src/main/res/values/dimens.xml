@@ -75,4 +75,6 @@
     <dimen name="ym_item_min_height_normal">56dp</dimen>
     <dimen name="ym_payment_auth_height">356dp</dimen>
     <dimen name="ym_dialog_top_bar_logo_height">20dp</dimen>
+
+    <dimen name="ym_swipe_menu_button_width">59dp</dimen>
 </resources>

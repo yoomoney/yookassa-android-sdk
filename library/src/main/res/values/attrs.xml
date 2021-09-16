@@ -37,4 +37,9 @@
         <attr name="ym_description" format="string"/>
         <attr name="ym_isChecked" format="boolean"/>
     </declare-styleable>
+
+    <declare-styleable name="ym_InformerView">
+        <attr name="ym_message_text" format="reference|string"/>
+        <attr name="ym_action_text" format="reference|string"/>
+    </declare-styleable>
 </resources>

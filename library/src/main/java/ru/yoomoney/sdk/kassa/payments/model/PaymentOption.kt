@@ -21,38 +21,49 @@
 
 package ru.yoomoney.sdk.kassa.payments.model
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Parcelable
+import androidx.annotation.Keep
+import kotlinx.android.parcel.Parcelize
 import ru.yoomoney.sdk.kassa.payments.R
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.Amount
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentMethodType
 import ru.yoomoney.sdk.kassa.payments.utils.isSberBankAppInstalled
 
-internal sealed class PaymentOption {
+internal sealed class PaymentOption : Parcelable {
     abstract val id: Int
     abstract val charge: Amount
     abstract val fee: Fee?
     abstract val savePaymentMethodAllowed: Boolean
     abstract val confirmationTypes: List<ConfirmationType>
+    abstract val savePaymentInstrument: Boolean
 }
 
+@[Parcelize Keep SuppressLint("ParcelCreator")]
 internal data class GooglePay(
     override val id: Int,
     override val charge: Amount,
     override val fee: Fee?,
     override val savePaymentMethodAllowed: Boolean,
-    override val confirmationTypes: List<ConfirmationType>
+    override val confirmationTypes: List<ConfirmationType>,
+    override val savePaymentInstrument: Boolean
 ) : PaymentOption()
 
-internal data class NewCard(
+@[Parcelize Keep SuppressLint("ParcelCreator")]
+internal data class BankCardPaymentOption(
     override val id: Int,
     override val charge: Amount,
     override val fee: Fee?,
     override val savePaymentMethodAllowed: Boolean,
-    override val confirmationTypes: List<ConfirmationType>
+    override val confirmationTypes: List<ConfirmationType>,
+    val paymentInstruments: List<PaymentInstrumentBankCard>,
+    override val savePaymentInstrument: Boolean
 ) : PaymentOption()
 
 internal sealed class YooMoney : PaymentOption()
 
+@[Parcelize Keep SuppressLint("ParcelCreator")]
 internal data class Wallet(
     override val id: Int,
     override val charge: Amount,
@@ -60,17 +71,21 @@ internal data class Wallet(
     val walletId: String,
     val balance: Amount,
     override val savePaymentMethodAllowed: Boolean,
-    override val confirmationTypes: List<ConfirmationType>
+    override val confirmationTypes: List<ConfirmationType>,
+    override val savePaymentInstrument: Boolean
 ) : YooMoney()
 
+@[Parcelize Keep SuppressLint("ParcelCreator")]
 internal data class AbstractWallet(
     override val id: Int,
     override val charge: Amount,
     override val fee: Fee?,
     override val savePaymentMethodAllowed: Boolean,
-    override val confirmationTypes: List<ConfirmationType>
+    override val confirmationTypes: List<ConfirmationType>,
+    override val savePaymentInstrument: Boolean
 ) : YooMoney()
 
+@[Parcelize Keep SuppressLint("ParcelCreator")]
 internal data class LinkedCard(
     override val id: Int,
     override val charge: Amount,
@@ -81,15 +96,18 @@ internal data class LinkedCard(
     val name: String? = null,
     val isLinkedToWallet: Boolean = false,
     override val savePaymentMethodAllowed: Boolean,
-    override val confirmationTypes: List<ConfirmationType>
+    override val confirmationTypes: List<ConfirmationType>,
+    override val savePaymentInstrument: Boolean
 ) : YooMoney()
 
+@[Parcelize Keep SuppressLint("ParcelCreator")]
 internal data class SberBank(
     override val id: Int,
     override val charge: Amount,
     override val fee: Fee?,
     override val savePaymentMethodAllowed: Boolean,
-    override val confirmationTypes: List<ConfirmationType>
+    override val confirmationTypes: List<ConfirmationType>,
+    override val savePaymentInstrument: Boolean
 ) : PaymentOption() {
     val isSberPayAllowed: Boolean = confirmationTypes.contains(ConfirmationType.MOBILE_APPLICATION)
 
@@ -98,6 +116,7 @@ internal data class SberBank(
     }
 }
 
+@[Parcelize Keep SuppressLint("ParcelCreator")]
 internal data class PaymentIdCscConfirmation(
     override val id: Int,
     override val charge: Amount,
@@ -107,12 +126,14 @@ internal data class PaymentIdCscConfirmation(
     val last: String,
     val expiryYear: String,
     val expiryMonth: String,
+    val brand: CardBrand,
     override val savePaymentMethodAllowed: Boolean,
-    override val confirmationTypes: List<ConfirmationType>
+    override val confirmationTypes: List<ConfirmationType>,
+    override val savePaymentInstrument: Boolean
 ) : PaymentOption()
 
 internal fun PaymentOption.toType() = when (this) {
-    is NewCard -> PaymentMethodType.BANK_CARD
+    is BankCardPaymentOption -> PaymentMethodType.BANK_CARD
     is YooMoney -> PaymentMethodType.YOO_MONEY
     is SberBank -> PaymentMethodType.SBERBANK
     is GooglePay -> PaymentMethodType.GOOGLE_PAY

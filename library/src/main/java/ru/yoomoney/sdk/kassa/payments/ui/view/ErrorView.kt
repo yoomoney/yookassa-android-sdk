@@ -64,6 +64,10 @@ internal class ErrorView : LinearLayoutCompat {
         button.setOnClickListener(listener)
     }
 
+    fun setErrorButtonListener(action: () -> Unit) {
+        button.setOnClickListener { action() }
+    }
+
     private fun setAttributes(context: Context, attrs: AttributeSet?, defStyleAttr: Int) {
         val attributes = context.theme.obtainStyledAttributes(attrs, R.styleable.ym_ErrorView, defStyleAttr, 0)
 

@@ -22,6 +22,10 @@
 package ru.yoomoney.sdk.kassa.payments.paymentOptionList
 
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.Amount
+import ru.yoomoney.sdk.kassa.payments.model.PaymentInstrumentBankCard
+import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
+import ru.yoomoney.sdk.kassa.payments.unbind.UnbindCard
+import ru.yoomoney.sdk.kassa.payments.payment.tokenize.TokenizeInputModel
 
 internal object PaymentOptionList {
     sealed class State {
@@ -30,26 +34,49 @@ internal object PaymentOptionList {
         }
 
         data class Error(val error: Throwable) : State()
-
         data class Content(val content: PaymentOptionListOutputModel) : State()
-
-        data class WaitingForAuthState(val content: Content): State()
+        data class WaitingForAuthState(val content: Content) : State()
+        data class ContentWithUnbindingAlert(
+            val instrumentBankCard: PaymentInstrumentBankCard,
+            val content: PaymentOptionListOutputModel,
+            val optionId: Int,
+            val amount: Amount,
+            val instrumentId: String
+        ) : State()
     }
 
     sealed class Action {
-        data class Load(val amount: Amount, val paymentMethodId: String?): Action()
-        object Logout: Action()
-        data class ProceedWithPaymentMethod(val optionId: Int): Action()
-        data class LoadPaymentOptionListFailed(val error: Throwable): Action()
-        data class LoadPaymentOptionListSuccess(val content: PaymentOptionListOutputModel): Action()
-        object PaymentAuthSuccess: Action()
-        object PaymentAuthCancel: Action()
-        object LogoutSuccessful: Action()
+        data class Load(val amount: Amount, val paymentMethodId: String?) : Action()
+        object Logout : Action()
+
+        data class ProceedWithPaymentMethod(val optionId: Int, val instrumentId: String?) : Action()
+        data class LoadPaymentOptionListFailed(val error: Throwable) : Action()
+        data class LoadPaymentOptionListSuccess(val content: PaymentOptionListOutputModel) : Action()
+
+        object PaymentAuthSuccess : Action()
+        object PaymentAuthCancel : Action()
+        object LogoutSuccessful : Action()
+
+        data class OpenUnbindScreen(val optionId: Int, val instrumentId: String?) : Action()
+        data class OpenUnbindingAlert(
+            val optionId: Int,
+            val instrumentId: String?
+        ) : Action()
+
+        data class ClickOnUnbind(val optionId: Int, val instrumentId: String?) : Action()
+        object ClickOnCancel : Action()
+        object UnbindSuccess : Action()
+        object UnbindFailed : Action()
     }
 
     sealed class Effect {
-        object ProceedWithPaymentMethod: Effect()
-        object RequireAuth: Effect()
-        object Cancel: Effect()
+        data class UnbindLinkedCard(val paymentOption: PaymentOption) : Effect()
+        data class UnbindInstrument(val instrumentBankCard: PaymentInstrumentBankCard) : Effect()
+        object ShowContract : Effect()
+        data class StartTokenization(val tokenizeInputModel: TokenizeInputModel) : Effect()
+        object RequireAuth : Effect()
+        object Cancel : Effect()
+        data class UnbindSuccess(val instrumentBankCard: PaymentInstrumentBankCard) : Effect()
+        data class UnbindFailed(val instrumentBankCard: PaymentInstrumentBankCard) : Effect()
     }
 }

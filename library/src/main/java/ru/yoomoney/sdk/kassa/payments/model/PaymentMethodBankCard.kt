@@ -40,3 +40,5 @@ internal data class CardInfo(
     val cardType: CardBrand,
     val source: PaymentMethodType
 )
+
+internal object SuccessUnbinding

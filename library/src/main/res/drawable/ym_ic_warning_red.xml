@@ -1,0 +1,31 @@
+<!--
+  ~ The MIT License (MIT)
+  ~ Copyright © 2021 NBCO YooMoney LLC
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+  ~ associated documentation files (the “Software”), to deal in the Software without restriction, including
+  ~ without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+  ~ of the Software, and to permit persons to whom the Software is furnished to do so, subject to the
+  ~ following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all copies or substantial
+  ~ portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+  ~ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+  ~ PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+  ~ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+  ~ OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+  ~ OTHER DEALINGS IN THE SOFTWARE.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+  <path
+      android:pathData="M22,12C22,14.7543 21.0219,17.1095 19.0657,19.0657C17.1095,21.0219 14.7543,22 12,22C9.2457,22 6.8905,21.0219 4.9343,19.0657C2.9781,17.1095 2,14.7543 2,12C2,9.2457 2.9781,6.8905 4.9343,4.9343C6.8905,2.9781 9.2457,2 12,2C14.7543,2 17.1095,2.9781 19.0657,4.9343C21.0219,6.8905 22,9.2457 22,12ZM12,3.9C9.749,3.9 7.8792,4.6765 6.2778,6.2778C4.6765,7.8792 3.9,9.749 3.9,12C3.9,14.251 4.6765,16.1208 6.2778,17.7222C7.8792,19.3235 9.749,20.1 12,20.1C14.251,20.1 16.1208,19.3235 17.7222,17.7222C19.3235,16.1208 20.1,14.251 20.1,12C20.1,9.749 19.3235,7.8792 17.7222,6.2778C16.1208,4.6765 14.251,3.9 12,3.9ZM11,17.0188V15H12.9718V17.0188H11ZM11,13.0469V7.0376H12.9718V13.0469H11Z"
+      android:fillColor="#FF3333"
+      android:fillType="evenOdd"/>
+</vector>

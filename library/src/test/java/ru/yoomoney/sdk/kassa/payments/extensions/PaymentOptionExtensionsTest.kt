@@ -26,6 +26,7 @@ import android.content.Context
 import android.text.SpannableStringBuilder
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.test.core.app.ApplicationProvider
+import junit.framework.Assert.assertEquals
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.contains
 import org.hamcrest.Matchers.equalTo
@@ -256,7 +257,7 @@ class PaymentOptionExtensionsTest {
         val paymentOption = createWalletPaymentOption(1) as Wallet
 
         // invoke
-        val additionalInfo = paymentOption.getAdditionalInfo() as SpannableStringBuilder
+        val additionalInfo = paymentOption.getAdditionalInfo(context) as SpannableStringBuilder
 
         // assert
         assertThat(additionalInfo.toString(), equalTo(paymentOption.balance.format().toString()))
@@ -268,7 +269,7 @@ class PaymentOptionExtensionsTest {
         val paymentOption = createAbstractWalletPaymentOption(1)
 
         // invoke
-        val additionalInfo = paymentOption.getAdditionalInfo()
+        val additionalInfo = paymentOption.getAdditionalInfo(context)
 
         // assert
         assertThat(additionalInfo, nullValue())
@@ -280,10 +281,10 @@ class PaymentOptionExtensionsTest {
         val paymentOption = createLinkedCardPaymentOption(1)
 
         // invoke
-        val additionalInfo = paymentOption.getAdditionalInfo()
+        val additionalInfo = paymentOption.getAdditionalInfo(context)
 
         // assert
-        assertThat(additionalInfo, nullValue())
+        assertEquals(additionalInfo, "YooMoney card")
     }
 
     @Test
@@ -292,7 +293,7 @@ class PaymentOptionExtensionsTest {
         val paymentOption = createNewCardPaymentOption(1)
 
         // invoke
-        val additionalInfo = paymentOption.getAdditionalInfo()
+        val additionalInfo = paymentOption.getAdditionalInfo(context)
 
         // assert
         assertThat(additionalInfo, nullValue())
@@ -304,7 +305,7 @@ class PaymentOptionExtensionsTest {
         val paymentOption = createGooglePayPaymentOptionWithFee(1)
 
         // invoke
-        val additionalInfo = paymentOption.getAdditionalInfo()
+        val additionalInfo = paymentOption.getAdditionalInfo(context)
 
         // assert
         assertThat(additionalInfo, nullValue())
@@ -331,7 +332,7 @@ class PaymentOptionExtensionsTest {
         )
 
         // invoke
-        val actualTokenizeSchemes = paymentOptions.map { it.toTokenizeScheme(context, getSberbankPackage(false)) }
+        val actualTokenizeSchemes = paymentOptions.map { it.toTokenizeScheme(context, getSberbankPackage(false), null) }
 
         // assert
         assertThat(actualTokenizeSchemes, contains(*expectedTokenizeSchemes))

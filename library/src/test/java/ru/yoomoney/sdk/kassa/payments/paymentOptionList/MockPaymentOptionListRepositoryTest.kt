@@ -32,11 +32,10 @@ import ru.yoomoney.sdk.kassa.payments.model.AnonymousUser
 import ru.yoomoney.sdk.kassa.payments.model.AuthorizedUser
 import ru.yoomoney.sdk.kassa.payments.model.GooglePay
 import ru.yoomoney.sdk.kassa.payments.model.LinkedCard
-import ru.yoomoney.sdk.kassa.payments.model.NewCard
+import ru.yoomoney.sdk.kassa.payments.model.BankCardPaymentOption
 import ru.yoomoney.sdk.kassa.payments.model.Result
 import ru.yoomoney.sdk.kassa.payments.model.SberBank
 import ru.yoomoney.sdk.kassa.payments.model.Wallet
-import ru.yoomoney.sdk.kassa.payments.paymentOptionList.MockPaymentOptionListRepository
 import java.math.BigDecimal
 
 class MockPaymentOptionListRepositoryTest {
@@ -53,7 +52,7 @@ class MockPaymentOptionListRepositoryTest {
         )
 
         assertThat(optionsResult, instanceOf(Result.Success::class.java))
-        val options = (optionsResult as Result.Success).value
+        val options = (optionsResult as Result.Success).value.paymentOptions
 
         // assert
         assertThat(
@@ -62,7 +61,7 @@ class MockPaymentOptionListRepositoryTest {
                 instanceOf(Wallet::class.java),
                 instanceOf(SberBank::class.java),
                 instanceOf(GooglePay::class.java),
-                instanceOf(NewCard::class.java)
+                instanceOf(BankCardPaymentOption::class.java)
             )
         )
     }
@@ -79,7 +78,7 @@ class MockPaymentOptionListRepositoryTest {
         )
 
         assertThat(optionsResult, instanceOf(Result.Success::class.java))
-        val options = (optionsResult as Result.Success).value
+        val options = (optionsResult as Result.Success).value.paymentOptions
 
         // assert
         assertThat(
@@ -91,7 +90,7 @@ class MockPaymentOptionListRepositoryTest {
                 instanceOf(LinkedCard::class.java),
                 instanceOf(SberBank::class.java),
                 instanceOf(GooglePay::class.java),
-                instanceOf(NewCard::class.java)
+                instanceOf(BankCardPaymentOption::class.java)
             )
         )
     }
@@ -107,7 +106,7 @@ class MockPaymentOptionListRepositoryTest {
         )
 
         assertThat(optionsResult, instanceOf(Result.Success::class.java))
-        val options = (optionsResult as Result.Success).value
+        val options = (optionsResult as Result.Success).value.paymentOptions
 
         // assert
         assertThat(
@@ -116,7 +115,7 @@ class MockPaymentOptionListRepositoryTest {
                 instanceOf(AbstractWallet::class.java),
                 instanceOf(SberBank::class.java),
                 instanceOf(GooglePay::class.java),
-                instanceOf(NewCard::class.java)
+                instanceOf(BankCardPaymentOption::class.java)
             )
         )
     }

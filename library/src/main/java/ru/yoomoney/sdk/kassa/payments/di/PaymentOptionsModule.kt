@@ -26,19 +26,13 @@ import androidx.lifecycle.ViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoMap
-import ru.yoomoney.sdk.kassa.payments.payment.PaymentOptionRepository
+import ru.yoomoney.sdk.kassa.payments.payment.PaymentMethodRepository
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
-import ru.yoomoney.sdk.kassa.payments.checkoutParameters.TestParameters
-import ru.yoomoney.sdk.kassa.payments.secure.TokensStorage
 import ru.yoomoney.sdk.kassa.payments.metrics.Reporter
 import ru.yoomoney.sdk.kassa.payments.metrics.TokenizeSchemeParamProvider
 import ru.yoomoney.sdk.kassa.payments.metrics.UserAuthTypeParamProvider
-import ru.yoomoney.sdk.kassa.payments.paymentOptionList.ApiV3PaymentOptionListRepository
-import ru.yoomoney.sdk.kassa.payments.paymentOptionList.InternetDependentRepository
-import ru.yoomoney.sdk.kassa.payments.paymentOptionList.MockPaymentOptionListRepository
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.PaymentOptionListErrorFormatter
 import ru.yoomoney.sdk.kassa.payments.logout.LogoutUseCase
-import ru.yoomoney.sdk.kassa.payments.model.Fee
 import ru.yoomoney.sdk.kassa.payments.payment.CurrentUserRepository
 import ru.yoomoney.sdk.kassa.payments.payment.GetLoadedPaymentOptionListRepository
 import ru.yoomoney.sdk.kassa.payments.payment.InMemoryPaymentOptionListRepository
@@ -47,14 +41,17 @@ import ru.yoomoney.sdk.kassa.payments.payment.googlePay.GooglePayRepository
 import ru.yoomoney.sdk.kassa.payments.payment.loadOptionList.PaymentOptionListRepository
 import ru.yoomoney.sdk.kassa.payments.payment.loadPaymentInfo.PaymentMethodInfoGateway
 import ru.yoomoney.sdk.kassa.payments.errorFormatter.ErrorFormatter
-import ru.yoomoney.sdk.kassa.payments.extensions.CheckoutOkHttpClient
-import ru.yoomoney.sdk.kassa.payments.http.HostProvider
-import ru.yoomoney.sdk.kassa.payments.metrics.ErrorReporter
+import ru.yoomoney.sdk.kassa.payments.model.GetConfirmation
+import ru.yoomoney.sdk.kassa.payments.payment.unbindCard.UnbindCardGateway
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.PaymentOptionList
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.PaymentOptionListAnalytics
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.PaymentOptionsListBusinessLogic
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.PaymentOptionsListUseCase
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.PaymentOptionsListUseCaseImpl
+import ru.yoomoney.sdk.kassa.payments.paymentOptionList.unbind.UnbindCardUseCase
+import ru.yoomoney.sdk.kassa.payments.paymentOptionList.unbind.UnbindCardUseCaseImpl
+import ru.yoomoney.sdk.kassa.payments.paymentOptionList.ShopPropertiesRepository
+import ru.yoomoney.sdk.kassa.payments.paymentOptionList.ShopPropertiesRepositoryImpl
 import ru.yoomoney.sdk.march.Out
 import ru.yoomoney.sdk.march.RuntimeViewModel
 import ru.yoomoney.sdk.march.input
@@ -74,34 +71,8 @@ internal class PaymentOptionsModule {
 
     @Provides
     @Singleton
-    fun paymentOptionListRepository(
-        context: Context,
-        hostProvider: HostProvider,
-        httpClient: CheckoutOkHttpClient,
-        paymentParameters: PaymentParameters,
-        testParameters: TestParameters,
-        tokensStorage: TokensStorage,
-        errorReporter: ErrorReporter
-    ): PaymentOptionListRepository {
-        return if (testParameters.mockConfiguration != null) {
-            MockPaymentOptionListRepository(
-                testParameters.mockConfiguration.linkedCardsCount,
-                Fee(service = testParameters.mockConfiguration.serviceFee)
-            )
-        } else {
-            InternetDependentRepository(
-                context,
-                ApiV3PaymentOptionListRepository(
-                    hostProvider = hostProvider,
-                    httpClient = lazy { httpClient },
-                    gatewayId = paymentParameters.gatewayId,
-                    tokensStorage = tokensStorage,
-                    shopToken = paymentParameters.clientApplicationKey,
-                    savePaymentMethod = paymentParameters.savePaymentMethod
-                ),
-                errorReporter
-            )
-        }
+    fun shopPropertiesRepository(): ShopPropertiesRepository {
+        return ShopPropertiesRepositoryImpl()
     }
 
     @Provides
@@ -131,8 +102,9 @@ internal class PaymentOptionsModule {
         paymentMethodInfoGateway: PaymentMethodInfoGateway,
         currentUserRepository: CurrentUserRepository,
         googlePayRepository: GooglePayRepository,
-        paymentOptionRepository: PaymentOptionRepository,
-        loadedPaymentOptionListRepository: GetLoadedPaymentOptionListRepository
+        paymentMethodRepository: PaymentMethodRepository,
+        loadedPaymentOptionListRepository: GetLoadedPaymentOptionListRepository,
+        shopPropertiesRepository: ShopPropertiesRepository
     ): PaymentOptionsListUseCase {
         return PaymentOptionsListUseCaseImpl(
             paymentOptionListRestrictions = paymentParameters.paymentMethodTypes,
@@ -141,9 +113,19 @@ internal class PaymentOptionsModule {
             paymentMethodInfoGateway = paymentMethodInfoGateway,
             currentUserRepository = currentUserRepository,
             googlePayRepository = googlePayRepository,
-            paymentOptionRepository = paymentOptionRepository,
-            loadedPaymentOptionListRepository = loadedPaymentOptionListRepository
+            paymentMethodRepository = paymentMethodRepository,
+            loadedPaymentOptionListRepository = loadedPaymentOptionListRepository,
+            shopPropertiesRepository = shopPropertiesRepository
         )
+    }
+
+    @Provides
+    @Singleton
+    fun unbindCardUseCaseProvider(
+        unbindCardInfoGateway: UnbindCardGateway,
+        getLoadedPaymentOptionListRepository: GetLoadedPaymentOptionListRepository
+    ): UnbindCardUseCase {
+        return UnbindCardUseCaseImpl(unbindCardInfoGateway, getLoadedPaymentOptionListRepository)
     }
 
     @[Provides IntoMap ViewModelKey(PAYMENT_OPTIONS)]
@@ -154,7 +136,10 @@ internal class PaymentOptionsModule {
         reporter: Reporter,
         userAuthTypeParamProvider: UserAuthTypeParamProvider,
         tokenizeSchemeParamProvider: TokenizeSchemeParamProvider,
-        logoutUseCase: LogoutUseCase
+        logoutUseCase: LogoutUseCase,
+        getConfirmation: GetConfirmation,
+        unbindCardUseCase: UnbindCardUseCase,
+        shopPropertiesRepository: ShopPropertiesRepository
     ): ViewModel {
         return RuntimeViewModel<PaymentOptionList.State, PaymentOptionList.Action, PaymentOptionList.Effect>(
             featureName = "PaymentOptionList",
@@ -173,7 +158,10 @@ internal class PaymentOptionsModule {
                         source = source,
                         useCase = paymentOptionsListUseCase,
                         logoutUseCase = logoutUseCase,
-                        paymentParameters = paymentParameters
+                        paymentParameters = paymentParameters,
+                        getConfirmation = getConfirmation,
+                        unbindCardUseCase = unbindCardUseCase,
+                        shopPropertiesRepository = shopPropertiesRepository
                     ),
                     getUserAuthType = userAuthTypeParamProvider,
                     getTokenizeScheme = tokenizeSchemeParamProvider

@@ -72,6 +72,14 @@ internal class TokenizeSchemeRecurring : TokenizeScheme() {
     override val value = "recurring-card"
 }
 
+internal class TokenizeSchemeLinkedToShopCard : TokenizeScheme() {
+    override val value = "customer-id-linked-card"
+}
+
+internal class TokenizeSchemeLinkedToShopCardWithCvc : TokenizeScheme() {
+    override val value = "customer-id-linked-card-cvc"
+}
+
 internal sealed class AuthType : Param() {
     final override val name = "authType"
 }
@@ -116,6 +124,18 @@ internal class ActionMoneyAuthLoginCanceled : MoneyAuthLoginStatus() {
     override val value = "Canceled"
 }
 
+internal sealed class ActionUnbindCardStatus: Param() {
+    final override val value = "actionUnbindCardStatus"
+}
+
+internal class ActionUnbindCardStatusSuccess : ActionUnbindCardStatus() {
+    override val name = "Success"
+}
+
+internal class ActionUnbindCardStatusFail : ActionUnbindCardStatus() {
+    override val name = "Fail"
+}
+
 internal sealed class MoneyAuthLoginScheme : Param() {
     final override val name = "moneyAuthLoginScheme"
 }
@@ -138,6 +158,18 @@ internal class AuthPaymentStatusSuccess : AuthPaymentStatus() {
 
 internal class AuthPaymentStatusFail : AuthPaymentStatus() {
     override val value = "Fail"
+}
+
+internal sealed class LinkedCardType : Param() {
+    final override val name = "linkedCardType"
+}
+
+internal class LinkedCardTypeWallet : LinkedCardType() {
+    override val value = "Wallet"
+}
+
+internal class LinkedCardTypeBankCard : LinkedCardType() {
+    override val value = "BankCard"
 }
 
 internal sealed class SberPayConfirmationStatus : Param() {

@@ -29,28 +29,21 @@ import dagger.multibindings.IntoMap
 import ru.yoomoney.sdk.auth.YooMoneyAuth
 import ru.yoomoney.sdk.auth.account.AccountRepository
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentMethodType
-import ru.yoomoney.sdk.kassa.payments.payment.PaymentOptionRepository
+import ru.yoomoney.sdk.kassa.payments.payment.PaymentMethodRepository
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.TestParameters
 import ru.yoomoney.sdk.kassa.payments.di.TokenStorageModule
 import ru.yoomoney.sdk.kassa.payments.di.ViewModelKey
-import ru.yoomoney.sdk.kassa.payments.utils.DEFAULT_REDIRECT_URL
 import ru.yoomoney.sdk.kassa.payments.tmx.ProfilingTool
 import ru.yoomoney.sdk.kassa.payments.tmx.TmxSessionIdStorage
 import ru.yoomoney.sdk.kassa.payments.secure.TokensStorage
 import ru.yoomoney.sdk.kassa.payments.contract.Contract
-import ru.yoomoney.sdk.kassa.payments.contract.ContractAnalytics
-import ru.yoomoney.sdk.kassa.payments.contract.ContractBusinessLogic
-import ru.yoomoney.sdk.kassa.payments.contract.SelectPaymentOptionUseCase
-import ru.yoomoney.sdk.kassa.payments.contract.SelectPaymentOptionUseCaseImpl
-import ru.yoomoney.sdk.kassa.payments.contract.TokenizeUseCase
-import ru.yoomoney.sdk.kassa.payments.contract.TokenizeUseCaseImpl
+import ru.yoomoney.sdk.kassa.payments.contract.SelectPaymentMethodUseCase
+import ru.yoomoney.sdk.kassa.payments.contract.SelectPaymentMethodUseCaseImpl
 import ru.yoomoney.sdk.kassa.payments.extensions.CheckoutOkHttpClient
-import ru.yoomoney.sdk.kassa.payments.extensions.getConfirmation
 import ru.yoomoney.sdk.kassa.payments.logout.LogoutRepositoryImpl
 import ru.yoomoney.sdk.kassa.payments.metrics.ErrorScreenReporter
 import ru.yoomoney.sdk.kassa.payments.metrics.Reporter
-import ru.yoomoney.sdk.kassa.payments.metrics.UserAuthTokenTypeParamProvider
 import ru.yoomoney.sdk.kassa.payments.metrics.UserAuthTypeParamProvider
 import ru.yoomoney.sdk.kassa.payments.payment.tokenize.ApiV3TokenizeRepository
 import ru.yoomoney.sdk.kassa.payments.payment.tokenize.MockTokenizeRepository
@@ -69,9 +62,13 @@ import ru.yoomoney.sdk.kassa.payments.paymentAuth.PaymentAuthTokenRepository
 import ru.yoomoney.sdk.march.Out
 import ru.yoomoney.sdk.march.RuntimeViewModel
 import ru.yoomoney.sdk.march.input
-import ru.yoomoney.sdk.kassa.payments.R
+import ru.yoomoney.sdk.kassa.payments.contract.ContractAnalytics
+import ru.yoomoney.sdk.kassa.payments.contract.ContractBusinessLogic
 import ru.yoomoney.sdk.kassa.payments.extensions.toTokenizeScheme
 import ru.yoomoney.sdk.kassa.payments.http.HostProvider
+import ru.yoomoney.sdk.kassa.payments.metrics.UserAuthTokenTypeParamProvider
+import ru.yoomoney.sdk.kassa.payments.model.GetConfirmation
+import ru.yoomoney.sdk.kassa.payments.paymentOptionList.ShopPropertiesRepository
 import ru.yoomoney.sdk.kassa.payments.utils.getSberbankPackage
 
 @Module
@@ -97,7 +94,8 @@ internal class ContractModule {
                 shopToken = paymentParameters.clientApplicationKey,
                 paymentAuthTokenRepository = tokensStorage,
                 profilingTool = profilingTool,
-                tmxSessionIdStorage = tmxSessionIdStorage
+                tmxSessionIdStorage = tmxSessionIdStorage,
+                merchantCustomerId = paymentParameters.customerId
             )
         }
     }
@@ -108,29 +106,14 @@ internal class ContractModule {
         checkPaymentAuthRequiredGateway: CheckPaymentAuthRequiredGateway,
         accountRepository: AccountRepository,
         userAuthInfoRepository: TokensStorage,
-        paymentOptionRepository: PaymentOptionRepository
-    ): SelectPaymentOptionUseCase {
-        return SelectPaymentOptionUseCaseImpl(
+        paymentMethodRepository: PaymentMethodRepository
+    ): SelectPaymentMethodUseCase {
+        return SelectPaymentMethodUseCaseImpl(
             getLoadedPaymentOptionListRepository,
             checkPaymentAuthRequiredGateway,
             accountRepository,
             userAuthInfoRepository,
-            paymentOptionRepository = paymentOptionRepository
-        )
-    }
-
-    @Provides
-    fun tokenizeUseCase(
-        getLoadedPaymentOptionListRepository: GetLoadedPaymentOptionListRepository,
-        tokenizeRepository: TokenizeRepository,
-        checkPaymentAuthRequiredGateway: CheckPaymentAuthRequiredGateway,
-        paymenPaymentAuthTokenRepository: PaymentAuthTokenRepository
-    ): TokenizeUseCase {
-        return TokenizeUseCaseImpl(
-            getLoadedPaymentOptionListRepository,
-            tokenizeRepository,
-            checkPaymentAuthRequiredGateway,
-            paymenPaymentAuthTokenRepository = paymenPaymentAuthTokenRepository
+            paymentMethodRepository = paymentMethodRepository
         )
     }
 
@@ -178,15 +161,18 @@ internal class ContractModule {
     @[Provides IntoMap ViewModelKey(CONTRACT)]
     fun viewModel(
         context: Context,
-        selectPaymentOptionUseCase: SelectPaymentOptionUseCase,
-        tokenizeUseCase: TokenizeUseCase,
+        selectPaymentMethodUseCase: SelectPaymentMethodUseCase,
         paymentParameters: PaymentParameters,
         testParameters: TestParameters,
         logoutUseCase: LogoutUseCase,
         reporter: Reporter,
         errorScreenReporter: ErrorScreenReporter,
         userAuthTypeParamProvider: UserAuthTypeParamProvider,
-        userAuthTokenTypeParamProvider: UserAuthTokenTypeParamProvider
+        getConfirmation: GetConfirmation,
+        loadedPaymentOptionListRepository: GetLoadedPaymentOptionListRepository,
+        userAuthInfoRepository: TokensStorage,
+        paymentAuthTokenRepository: PaymentAuthTokenRepository,
+        shopPropertiesRepository: ShopPropertiesRepository
     ): ViewModel {
         val sberbankPackage = getSberbankPackage(testParameters.hostParameters.isDevHost)
         return RuntimeViewModel<Contract.State, Contract.Action, Contract.Effect>(
@@ -194,7 +180,7 @@ internal class ContractModule {
             initial = {
                 Out(Contract.State.Loading) {
                     input { showState(state) }
-                    input { selectPaymentOptionUseCase.select() }
+                    input { selectPaymentMethodUseCase.select() }
                 }
             },
             logic = {
@@ -206,20 +192,17 @@ internal class ContractModule {
                         showState = showState,
                         showEffect = showEffect,
                         source = source,
-                        selectPaymentOptionUseCase = selectPaymentOptionUseCase,
-                        tokenizeUseCase = tokenizeUseCase,
+                        selectPaymentMethodUseCase = selectPaymentMethodUseCase,
                         logoutUseCase = logoutUseCase,
-                        getConfirmation = {
-                            it.getConfirmation(context,
-                                paymentParameters.customReturnUrl ?: DEFAULT_REDIRECT_URL,
-                                context.resources.getString(R.string.ym_app_scheme),
-                                sberbankPackage
-                            )
-                        }
+                        getConfirmation = getConfirmation,
+                        loadedPaymentOptionListRepository = loadedPaymentOptionListRepository,
+                        shopPropertiesRepository = shopPropertiesRepository,
+                        userAuthInfoRepository = userAuthInfoRepository
                     ),
                     getUserAuthType = userAuthTypeParamProvider,
-                    getUserAuthTokenType = userAuthTokenTypeParamProvider,
-                    getTokenizeScheme = { it.toTokenizeScheme(context, sberbankPackage) }
+                    getTokenizeScheme = { paymentOption, paymentInstrument ->
+                        paymentOption.toTokenizeScheme(context, sberbankPackage, paymentInstrument)
+                    }
                 )
             }
         )

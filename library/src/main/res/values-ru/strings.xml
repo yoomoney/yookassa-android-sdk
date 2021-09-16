@@ -11,9 +11,9 @@
   <string name='ym_auth_hint_emergency'>Введите аварийный код</string>
   <string name='ym_logout_dialog_button_positive'>Выйти</string>
   <string name='ym_logout_dialog_button_negative'>Отмена</string>
-  <string name='ym_logout_dialog_message'>Уверены, что хотите выйти из аккаунта %1$s?</string>
+  <string name='ym_logout_dialog_message'>Уверены, что хотите выйти из профиля %1$s\?</string>
   <string name='ym_retry'>Попробовать ещё раз</string>
-  <string name='ym_no_wallet_dialog_message'>У вас нет кошелька на ЮMoney</string>
+  <string name='ym_no_wallet_dialog_message'>У вас нет кошелька ЮMoney</string>
   <string name='ym_no_wallet_dialog_shoose_payment_option'>Выбрать способ оплаты</string>
   <!-- errors -->
   <string name='ym_error_something_went_wrong'>Похоже, это техническая ошибка</string>
@@ -27,24 +27,24 @@
   <string name='ym_license_agreement_part_1'>Нажимая кнопку, вы принимаете</string>
   <string name='ym_license_agreement_part_2'>условия сервиса</string>
   <string name='ym_license_agreement_url'>https://yoomoney.ru/page?id=526623</string>
-  <string name='ym_contract_save_payment_method_wallet_title'>Разрешим списывать деньги</string>
+  <string name='ym_contract_save_payment_method_wallet_title'>Разрешим автосписания</string>
   <string name='ym_save_payment_method_wallet_info_title'>Разрешение списывать деньги без вашего участия</string>
-  <string name='ym_save_payment_method_wallet_info_text'>Это значит, что вы разрешаете ЮMoney списывать деньги с кошелька по запросу магазина — без дополнительного подтверждения с вашей стороны. Отменить такие списания можно в любой момент — в настройках кошелька (на сайте ЮMoney).</string>
-  <string name='ym_contract_save_payment_method_wallet_switch_title'>Разрешить списывать деньги</string>
-  <string name='ym_contract_save_payment_method_gpay_switch_title'>Разрешить списывать деньги</string>
-  <string name='ym_save_payment_method_wallet_switch_text_part_1'>Разрешить магазину</string>
-  <string name='ym_save_payment_method_wallet_switch_text_part_2'>списывать деньги без моего участия</string>
-  <string name='ym_save_payment_method_wallet_message_text_part_1'>После оплаты привяжем кошелёк: магазин сможет</string>
+  <string name='ym_save_payment_method_wallet_info_text'>Это значит, что вы разрешаете ЮMoney списывать деньги с кошелька по запросу магазина, без дополнительного подтверждения с вашей стороны. Отключить такие списания можно в любой момент — в настройках кошелька (на сайте ЮMoney).</string>
+  <string name='ym_contract_save_payment_method_wallet_switch_title'>Разрешить автосписания</string>
+  <string name='ym_contract_save_payment_method_gpay_switch_title'>Разрешить автосписания</string>
+  <string name='ym_save_payment_method_wallet_switch_text_part_1'>Магазин сможет</string>
+  <string name='ym_save_payment_method_wallet_switch_text_part_2'>списывать деньги без вашего участия</string>
+  <string name='ym_save_payment_method_wallet_message_text_part_1'>Заплатив здесь, вы разрешаете запомнить этот кошелёк и</string>
   <string name='ym_save_payment_method_wallet_message_text_part_2'>списывать деньги без вашего участия</string>
-  <string name='ym_save_payment_method_gpay_switch_text_part_1'>Разрешить магазину</string>
-  <string name='ym_save_payment_method_gpay_switch_text_part_2'>списывать деньги без моего участия</string>
-  <string name='ym_save_payment_method_bank_card_info_title'>Разрешение списывать деньги по запросу магазина</string>
-  <string name='ym_save_payment_method_bank_card_info_text'>Это значит, что вы разрешаете ЮMoney списывать деньги по запросу магазина без отдельного подтверждения — с этой карты или с новой, при перевыпуске (если ваш банк умеет автоматически обновлять данные).</string>
-  <string name='ym_save_payment_method_bank_card_additional_info'>Отменить привязку можно в любой момент — через службу поддержки магазина.</string>
-  <string name='ym_save_payment_method_bank_card_switch_text_part_1'>Привязать карту и</string>
-  <string name='ym_save_payment_method_bank_card_switch_text_part_2'>списывать деньги по запросу магазина</string>
-  <string name='ym_save_payment_method_bank_card_message_text_part_1'>После оплаты привяжем карту, чтобы</string>
-  <string name='ym_save_payment_method_bank_card_message_text_part_2'>списывать деньги по запросу магазина</string>
+  <string name='ym_save_payment_method_gpay_switch_text_part_1'>"После оплаты запомним эту карту: магазин сможет "</string>
+  <string name='ym_save_payment_method_gpay_switch_text_part_2'>списывать деньги без вашего участия</string>
+  <string name='ym_save_payment_method_bank_card_info_title'>Как работают автоматические списания</string>
+  <string name='ym_save_payment_method_bank_card_info_text'>"Если вы согласитесь на автосписания,  мы привяжем банковскую карту (в том числе использованную через Google Pay)  к магазину. После этого магазин сможет присылать запросы на автоматические списания денег — тогда платёж выполняется без дополнительного подтверждения с вашей стороны. "</string>
+  <string name='ym_save_payment_method_bank_card_additional_info'>Автосписания продолжатся даже при перевыпуске карты, если ваш банк умеет автоматически обновлять данные. Отключить их и отвязать карту можно в любой момент — через службу поддержки магазина.</string>
+  <string name='ym_save_payment_method_bank_card_switch_text_part_1'>После оплаты запомним эту карту: магазин сможет</string>
+  <string name='ym_save_payment_method_bank_card_switch_text_part_2'>списывать деньги без вашего участия</string>
+  <string name='ym_save_payment_method_bank_card_message_text_part_1'>Заплатив здесь, вы разрешаете запомнить карту  и</string>
+  <string name='ym_save_payment_method_bank_card_message_text_part_2'>списывать деньги без вашего участия</string>
   <string name='ym_support_email'>support@yoomoney.ru</string>
   <string name='ym_support_help_url'>https://yoomoney.ru/page?id=536720</string>
   <string name='ym_support_phone'>+78002506699</string>
@@ -62,20 +62,104 @@
   <string name='ym_cvc_hint'>CVC</string>
   <string name='ym_check_card_number_error'>Проверьте номер карты</string>
   <string name='ym_check_expiry_error'>Проверьте месяц и год</string>
-  <string name='ym_yoo_login_to_pay'>Чтобы заплатить через ЮMoney, войдите в кошелёк</string>
+  <string name='ym_yoo_login_to_pay'>Чтобы заплатить через ЮMoney, войдите в профиль</string>
   <string name='ym_confirm_retry_timer_text'>Получить новый код через %s</string>
-  <string name='ym_payment_auth_wrong_code_try_again'>Это не тот код. Проверьте и введите ещё раз</string>
-  <string name='ym_payment_auth_wrong_code_with_attempts'>Снова не тот. Осталось попыток: %d</string>
-  <string name='ym_payment_auth_no_attempts'>Попытки закончились</string>
-  <string name='ym_payment_auth_wrong_code'>Не правильный код</string>
+  <string name='ym_payment_auth_wrong_code_try_again'>Это не тот код. Проверьте и попробуйте ещё раз</string>
+  <string name='ym_payment_auth_wrong_code_with_attempts'>Снова не тот код. Осталось попыток: %d</string>
+  <string name='ym_payment_auth_no_attempts'>Попытки закончились, нужно получить новый код</string>
+  <string name='ym_payment_auth_wrong_code'>Это не тот код. Проверьте и попробуйте ещё раз</string>
   <string name='ym_payment_auth_retry_text'>Повторить</string>
   <string name='ym_check_cvc'>Проверьте CVC код</string>
-  <string name='ym_linked_card'>Привязанная карта</string>
-  <string name='ym_saved_card'>Сохраненная карта</string>
+  <string name='ym_linked_card'>Банковская карта</string>
+  <string name='ym_saved_card'>Банковская карта</string>
   <string name='ym_google_pay_description'>Дальше откроем приложение Google Pay — подтвердите оплату</string>
-  <string name='ym_sber_pay_description'>Дальше откроем приложение Сбербанк Онлайн — подтвердите оплату</string>
-  <string name='ym_sber_phone_input_info'>Для смс от Сбербанка с кодом для оплаты</string>
-  <string name='ym_label_phone_in_sbol'>Номер в SberPay</string>
-  <string name='ym_save_payment_method_title'>Привяжем карту</string>
-  <string name='ym_navigation_item_back'>Back</string>
+  <string name='ym_sber_pay_description'>Дальше откроем приложение СберБанк Онлайн — подтвердите оплату</string>
+  <string name='ym_sber_phone_input_info'>Телефон для подтверждения оплаты в СберБанк Онлайн</string>
+  <string name='ym_label_phone_in_sbol'>Ваш телефон в СберБанк Онлайн</string>
+  <string name='ym_save_payment_method_title'>Запомним карту</string>
+  <string name='ym_navigation_item_back'>Назад</string>
+  <!--Название карты ЮMoney в списке способов оплаты https://jira.yamoney.ru/secure/attachment/599255/Screenshot%202021-07-05%20at%2011.50.03.png-->
+  <string name='ym_linked_wallet_card'>Карта ЮMoney</string>
+  <!--Название карты не ЮMoney в списке способов оплаты https://jira.yamoney.ru/secure/attachment/599255/Screenshot%202021-07-05%20at%2011.50.03.png-->
+  <string name='ym_linked_not_wallet_card'>Банковская карта</string>
+  <!--Сообщение об автосписаниях после отвязки карты https://jira.yamoney.ru/secure/attachment/598559/image-2021-07-01-16-51-31-120.png-->
+  <string name='ym_informer_unbind_text'>После удаления карты останутся автосписания. Отключить их можно через службу поддержки магазина</string>
+  <!--Кнопка для открытия информационной формы https://jira.yamoney.ru/secure/attachment/598563/Screenshot%202021-07-01%20at%2016.54.13.png-->
+  <string name='ym_informer_unbind_action'>Подробнее</string>
+  <!--Текст на кнопке для отмены отвязки карты https://jira.yamoney.ru/secure/attachment/598559/image-2021-07-01-16-51-31-120.png-->
+  <string name='ym_cancel_action'>Отменить</string>
+  <!--Текст на кнопке для возврата назад https://jira.yamoney.ru/secure/attachment/598563/Screenshot%202021-07-01%20at%2016.54.13.png-->
+  <string name='ym_back_action'>Назад</string>
+  <!--Текст на кнопке для отвязки карты https://jira.yamoney.ru/secure/attachment/598559/image-2021-07-01-16-51-31-120.png-->
+  <string name='ym_unbind_card_action'>Удалить карту</string>
+  <!--Сообщение о том, что отвзяать карту ЮMoney можно только в личном кабинете https://jira.yamoney.ru/secure/attachment/598563/Screenshot%202021-07-01%20at%2016.54.13.png-->
+  <string name='ym_informer_unbind_card_wallet'>Отвязать эту карту можно только в настройках кошелька</string>
+  <!--Сообщение об неуспешной отвязке карты https://jira.yamoney.ru/secure/attachment/598559/image-2021-07-01-16-51-31-120.png-->
+  <string name='ym_unbinding_card_failed'>Не получилось удалить карту ••••%s</string>
+  <!--Сообщение об успешной отвязке карты https://jira.yamoney.ru/secure/attachment/598560/image-2021-07-01-16-51-31-059.png-->
+  <string name='ym_unbinding_card_success'>Карта ••••%s удалена</string>
+  <!--Сообщение на попапе для отвязки карты https://jira.yamoney.ru/secure/attachment/601859/Screenshot%202021-07-14%20at%2011.51.25.png-->
+  <string name='ym_unbinding_alert_message'>После удаления карты останутся автосписания. Отключить их можно через службу поддержки магазина</string>
+  <!--Кнопка "Понятно" https://jira.yamoney.ru/secure/attachment/600596/Screenshot%202021-07-08%20at%2017.04.12.png-->
+  <string name='ym_understand_button'>Понятно</string>
+  <!--Переключатель для включения автосписаний https://jira.yamoney.ru/secure/attachment/600597/Screenshot%202021-07-08%20at%2017.04.18.png-->
+  <string name='ym_auto_write_off_approve_with_switch'>Разрешить автосписания</string>
+  <!--Краткое объяснение, что будет после включения автосписаний https://jira.yamoney.ru/secure/attachment/600597/Screenshot%202021-07-08%20at%2017.04.18.png-->
+  <string name='ym_save_payment_method_linked_card_message_text_with_switch_part_1'>После оплаты запомним эту карту: магазин сможет</string>
+  <!--Краткое объяснение, что будет после включения автосписаний https://jira.yamoney.ru/secure/attachment/600597/Screenshot%202021-07-08%20at%2017.04.18.png-->
+  <string name='ym_save_payment_method_linked_card_message_text_with_switch_part_2'> списывать деньги без вашего участия</string>
+  <!--Предупреждение об автосписаниях https://jira.yamoney.ru/secure/attachment/600596/Screenshot%202021-07-08%20at%2017.04.12.png-->
+  <string name='ym_auto_write_off_approve_without_switch'>Разрешим автосписания</string>
+  <!--Заголовок экрана с информацией об автосписаниях https://jira.yamoney.ru/secure/attachment/600596/Screenshot%202021-07-08%20at%2017.04.12.png-->
+  <string name='ym_how_works_auto_write_title'>Как работают автоматические списания</string>
+  <!--Текста экрана с информацией об автосписаниях https://jira.yamoney.ru/secure/attachment/600596/Screenshot%202021-07-08%20at%2017.04.12.png-->
+  <string name='ym_how_works_auto_write_body'>Если вы согласитесь на автосписания, мы привяжем банковскую карту (в том числе использованную через Google Pay) к магазину. После этого магазин сможет присылать запросы на автоматические списания денег — тогда платёж выполняется без дополнительного подтверждения с вашей стороны. \n \nАвтосписания продолжатся даже при перевыпуске карты, если ваш банк умеет автоматически обновлять данные. Отключить их и отвязать карту можно в любой момент — через службу поддержки магазина.</string>
+  <!--Краткое объяснение автосписаний https://jira.yamoney.ru/secure/attachment/600596/Screenshot%202021-07-08%20at%2017.04.12.png-->
+  <string name='ym_save_payment_method_linked_card_message_text_part_1'>Заплатив здесь, вы разрешаете запомнить эту карту и </string>
+  <!--Краткое объяснение автосписаний https://jira.yamoney.ru/secure/attachment/600596/Screenshot%202021-07-08%20at%2017.04.12.png-->
+  <string name='ym_save_payment_method_linked_card_message_text_part_2'>списывать деньги без вашего участия</string>
+  <!--Текст переключателя для сохранения платежных данных https://jira.yamoney.ru/secure/attachment/600598/Screenshot%202021-07-08%20at%2017.04.26.png-->
+  <string name='ym_save_payment_details_with_switch'>Сохранить платёжные данные</string>
+  <!--Первая часть текста-объяснения сохранения платежных данных https://jira.yamoney.ru/secure/attachment/600598/Screenshot%202021-07-08%20at%2017.04.26.png-->
+  <string name='ym_save_payment_method_linked_saved_card_message_text_part_1'>Магазин </string>
+  <!--Вторая часть текста-объяснения сохранения платежных данных https://jira.yamoney.ru/secure/attachment/600598/Screenshot%202021-07-08%20at%2017.04.26.png-->
+  <string name='ym_save_payment_method_linked_saved_card_message_text_part_2'>сохранит данные вашей карты </string>
+  <!--Третья часть текста-объяснения сохранения платежных данных https://jira.yamoney.ru/secure/attachment/600598/Screenshot%202021-07-08%20at%2017.04.26.png-->
+  <string name='ym_save_payment_method_linked_saved_card_message_text_part_3'> — в следующий раз можно будет их не вводить</string>
+  <string name='ym_save_payment_details_without_switch'>Сохраним платёжные данные</string>
+  <!--Оповещение пользователя об автосписаниях и сохраненных платежных данных https://jira.yamoney.ru/secure/attachment/600599/Screenshot%202021-07-08%20at%2017.04.37.png-->
+  <string name='ym_auto_write_off_save_payments_without_switch'>Разрешим автосписания и сохраним платёжные данные</string>
+  <!--Объяснение операции разрешения на автосписание и сохранение данных https://jira.yamoney.ru/secure/attachment/600599/Screenshot%202021-07-08%20at%2017.04.37.png-->
+  <string name='ym_save_payment_method_linked_card_auto_write_off_message_text_part_1'>Заплатив здесь, вы соглашаетесь </string>
+  <!--Объяснение операции разрешения на автосписание и сохранение данных https://jira.yamoney.ru/secure/attachment/600599/Screenshot%202021-07-08%20at%2017.04.37.png-->
+  <string name='ym_save_payment_method_linked_card_auto_write_off_message_text_part_2'>сохранить данные карты и списывать деньги без вашего участия</string>
+  <!--Текст у переключателя на разрешение автосписаний и сохранение платежных данных https://jira.yamoney.ru/secure/attachment/600600/Screenshot%202021-07-08%20at%2017.04.50.png-->
+  <string name='ym_auto_write_off_save_payments_with_switch'>Разрешить автосписания и сохранить платёжные данные</string>
+  <!--Начало описания операции переключателя https://jira.yamoney.ru/secure/attachment/600600/Screenshot%202021-07-08%20at%2017.04.50.png-->
+  <string name='ym_save_payment_method_linked_card_auto_write_off_message_text_with_switch_part_1'>После оплаты магазин </string>
+  <!--Конец описания операции переключателя https://jira.yamoney.ru/secure/attachment/600600/Screenshot%202021-07-08%20at%2017.04.50.png-->
+  <string name='ym_save_payment_method_linked_card_auto_write_off_message_text_with_switch_part_2'>сохранит данные карты и сможет списывать деньги без вашего участия</string>
+  <!--Заголовок экрана с информацией по автосписаниям и сохранению платежных данных https://jira.yamoney.ru/secure/attachment/600599/Screenshot%202021-07-08%20at%2017.04.37.png-->
+  <string name='ym_auto_write_off_and_save_card_title'>Автосписания \nи сохранение платёжных данных</string>
+  <!--Текст с информацией по автосписаниям и сохранению платежных данных https://jira.yamoney.ru/secure/attachment/600599/Screenshot%202021-07-08%20at%2017.04.37.png-->
+  <string name='ym_auto_write_off_and_save_card_body'>Если вы это разрешили, мы сохраним для этого магазина и его партнёров данные вашей банковской карты — номер, имя владельца, срок действия (всё, кроме кода CVC). В следующий раз не нужно будет их вводить, чтобы заплатить в этом магазине. \n \nКроме того, мы привяжем карту (в том числе использованную через Google Pay) к магазину. После этого магазин сможет присылать запросы на автоматические списания денег — тогда платёж выполняется без дополнительного подтверждения с вашей стороны. \n \nАвтосписания продолжатся даже при перевыпуске карты, если ваш банк умеет автоматически обновлять данные. Отключить их и отвязать карту можно в любой момент — через службу поддержки магазина.</string>
+  <!--Заголовок экрана с информацией по сохранению платежных данных https://jira.yamoney.ru/secure/attachment/600598/Screenshot%202021-07-08%20at%2017.04.26.png-->
+  <string name='ym_save_card_title'>Сохранение платёжных данных</string>
+  <!--Текст с информацией по сохранению платежных данных https://jira.yamoney.ru/secure/attachment/600598/Screenshot%202021-07-08%20at%2017.04.26.png-->
+  <string name='ym_save_card_body'>Если вы это разрешили, мы сохраним для этого магазина и его партнёров данные вашей банковской карты — номер, имя владельца и срок действия (всё, кроме кода CVC). В следующий раз не нужно будет вводить их, чтобы заплатить в этом магазине. \n \nУдалить данные карты можно в процессе оплаты (нажмите на три точки напротив карты и выберите «Удалить карту») или через службу поддержки.</string>
+  <!--Заголовок экрана с инстуркцией по отвязке карты https://jira.yamoney.ru/secure/attachment/600609/Screenshot%202021-07-08%20at%2017.18.18.png-->
+  <string name='ym_how_unbind_wallet_card_title'>Как отвязать карту от кошелька</string>
+  <!--Текст экрана с инстуркцией по отвязке карты https://jira.yamoney.ru/secure/attachment/600609/Screenshot%202021-07-08%20at%2017.18.18.png-->
+  <string name='ym_how_unbind_wallet_card_body'>Для этого зайдите в настройки кошелька на сайте или в приложении ЮMoney. \nВ приложении: нажмите на свою аватарку, выберите «Банковские карты», смахните нужную карту влево и нажмите «Удалить».\nНа сайте: перейдите в настройки кошелька, откройте вкладку «Привязанные карты», найдите нужную карту и нажмите «Отвязать». </string>
+  <string name='ym_save_payment_method_linked_saved_card_message_text_with_switch_part_1'>Заплатив здесь, вы разрешаете магазину </string>
+  <string name='ym_save_payment_method_linked_saved_card_message_text_with_switch_part_2'>сохранить данные вашей карты</string>
+  <string name='ym_save_payment_method_linked_saved_card_message_text_with_switch_part_3'> — в следующий раз можно их не вводить</string>
+  <!-- Сообщение о безопасной сделке https://jira.yamoney.ru/secure/attachment/602517/Screenshot%202021-07-16%20at%2010.37.34.png-->
+  <string name='ym_safe_payments_agreement_part_1'>У платежа может быть</string>
+  <!-- Сообщение о безопасной сделке https://jira.yamoney.ru/secure/attachment/602517/Screenshot%202021-07-16%20at%2010.37.34.png-->
+  <string name='ym_safe_payments_agreement_part_2'>несколько получателей</string>
+  <!-- Заголовок безопасной сделки https://jira.yamoney.ru/secure/attachment/602532/Screenshot%202021-07-16%20at%2011.19.52.png-->
+  <string name='ym_safe_payments_agreement_title'>Почему у платежа несколько получателей</string>
+  <!-- Текст безопасной сделки https://jira.yamoney.ru/secure/attachment/602532/Screenshot%202021-07-16%20at%2011.19.52.png-->
+  <string name='ym_safe_payments_agreement_message'>Такое может быть, если вы платите на интернет-площадке, которая позволяет покупать одновременно у нескольких продавцов (например, на маркетплейсе). \nУточнить список получателей платежа можно на площадке, на которой вы совершаете платёж. </string>
 </resources>

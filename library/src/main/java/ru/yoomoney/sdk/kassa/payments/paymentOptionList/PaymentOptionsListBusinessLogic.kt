@@ -22,37 +22,49 @@
 package ru.yoomoney.sdk.kassa.payments.paymentOptionList
 
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
+import ru.yoomoney.sdk.kassa.payments.checkoutParameters.SavePaymentMethod
+import ru.yoomoney.sdk.kassa.payments.contract.Contract
 import ru.yoomoney.sdk.kassa.payments.logout.LogoutUseCase
 import ru.yoomoney.sdk.kassa.payments.model.AbstractWallet
+import ru.yoomoney.sdk.kassa.payments.model.BankCardPaymentOption
+import ru.yoomoney.sdk.kassa.payments.model.GetConfirmation
 import ru.yoomoney.sdk.kassa.payments.model.LinkedCard
+import ru.yoomoney.sdk.kassa.payments.model.isSplitPayment
+import ru.yoomoney.sdk.kassa.payments.payment.tokenize.TokenizeInstrumentInputModel
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.PaymentOptionList.Action
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.PaymentOptionList.Effect
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.PaymentOptionList.State
+import ru.yoomoney.sdk.kassa.payments.paymentOptionList.unbind.UnbindCardUseCase
+import ru.yoomoney.sdk.kassa.payments.unbind.UnbindCard
 import ru.yoomoney.sdk.march.Logic
 import ru.yoomoney.sdk.march.Out
 import ru.yoomoney.sdk.march.input
 import ru.yoomoney.sdk.march.output
 
 internal class PaymentOptionsListBusinessLogic(
-    val showState: suspend (State) -> Action,
-    val showEffect: suspend (Effect) -> Unit,
-    val source: suspend () -> Action,
-    val useCase: PaymentOptionsListUseCase,
-    val paymentParameters: PaymentParameters,
-    val logoutUseCase: LogoutUseCase
+    private val showState: suspend (State) -> Action,
+    private val showEffect: suspend (Effect) -> Unit,
+    private val source: suspend () -> Action,
+    private val useCase: PaymentOptionsListUseCase,
+    private val paymentParameters: PaymentParameters,
+    private val logoutUseCase: LogoutUseCase,
+    private val unbindCardUseCase: UnbindCardUseCase,
+    private val getConfirmation: GetConfirmation,
+    private val shopPropertiesRepository: ShopPropertiesRepository
 ) : Logic<State, Action> {
 
     override fun invoke(state: State, action: Action): Out<State, Action> = when (state) {
         is State.Loading -> state.whenLoading(action)
         is State.Content -> state.whenContent(action)
         is State.WaitingForAuthState -> state.whenWaitingForAuthState(action)
+        is State.ContentWithUnbindingAlert -> state.whenShowUnbindingAlertState(action)
         is State.Error -> state.whenError(action)
     }
 
     private fun State.Loading.whenLoading(action: Action): Out<State, Action> {
         return when (action) {
             is Action.LoadPaymentOptionListSuccess -> Out(State.Content(action.content)) {
-                input { showState(this.state) }
+                handlePaymentOptionsListSuccess(action)
             }
             is Action.LoadPaymentOptionListFailed -> Out(State.Error(action.error)) {
                 input { showState(this.state) }
@@ -78,24 +90,60 @@ internal class PaymentOptionsListBusinessLogic(
                 }
             }
             is Action.ProceedWithPaymentMethod -> {
-                when (useCase.selectPaymentOption(action.optionId)) {
+                when (val option = useCase.selectPaymentOption(action.optionId, action.instrumentId)) {
                     is AbstractWallet -> {
                         Out(State.WaitingForAuthState(this)) {
                             output { showEffect(Effect.RequireAuth) }
                             input(source)
                         }
                     }
+                    is BankCardPaymentOption -> {
+                        val instrumentation =
+                            option.paymentInstruments.firstOrNull { it.paymentInstrumentId == action.instrumentId }
+                        if (instrumentation != null) {
+                            val savePaymentOption = option.savePaymentMethodAllowed && paymentParameters.savePaymentMethod != SavePaymentMethod.OFF
+                            val isSplitPayment = shopPropertiesRepository.shopProperties.isSplitPayment
+                            if (instrumentation.cscRequired || savePaymentOption || isSplitPayment || option.fee?.service != null) {
+                                Out(this) {
+                                    output { showEffect(Effect.ShowContract) }
+                                    input(source)
+                                }
+                            } else {
+                                Out(this) {
+                                    output {
+                                        showEffect(
+                                            Effect.StartTokenization(
+                                                TokenizeInstrumentInputModel(
+                                                    paymentOptionId = option.id,
+                                                    instrumentBankCard = instrumentation,
+                                                    savePaymentMethod = false,
+                                                    allowWalletLinking = false,
+                                                    confirmation = getConfirmation(option),
+                                                    csc = null
+                                                )
+                                            )
+                                        )
+                                    }
+                                    input(source)
+                                }
+                            }
+                        } else {
+                            Out(this) {
+                                output { showEffect(Effect.ShowContract) }
+                                input(source)
+                            }
+                        }
+                    }
                     else -> {
                         Out(this) {
-                            output { showEffect(Effect.ProceedWithPaymentMethod) }
+                            output { showEffect(Effect.ShowContract) }
                             input(source)
                         }
                     }
                 }
-
             }
             is Action.LoadPaymentOptionListSuccess -> Out(State.Content(action.content)) {
-                input { showState(this.state) }
+                handlePaymentOptionsListSuccess(action)
             }
             is Action.Logout -> Out(State.Loading) {
                 input {
@@ -108,6 +156,54 @@ internal class PaymentOptionsListBusinessLogic(
                     }
                 }
             }
+            is Action.OpenUnbindScreen -> {
+                when (val paymentOption = useCase.selectPaymentOption(action.optionId, action.instrumentId)) {
+                    is LinkedCard -> {
+                        Out(this) {
+                            output { showEffect(Effect.UnbindLinkedCard(paymentOption)) }
+                            input(source)
+                        }
+                    }
+                    is BankCardPaymentOption -> {
+                        Out(this) {
+                            output {
+                                showEffect(Effect.UnbindInstrument(
+                                    paymentOption.paymentInstruments.first { it.paymentInstrumentId == action.instrumentId }
+                                ))
+                            }
+                            input(source)
+                        }
+                    }
+                    else -> {
+                        Out(this) {
+                            input { showState(state) }
+                        }
+                    }
+                }
+            }
+            is Action.OpenUnbindingAlert ->
+                when (val paymentOption = useCase.selectPaymentOption(action.optionId, action.instrumentId)) {
+                    is BankCardPaymentOption -> {
+                        return if (action.instrumentId.isNullOrEmpty()) {
+                            Out(this) {
+                                input { showState(state) }
+                            }
+                        } else {
+                            Out(
+                                State.ContentWithUnbindingAlert(
+                                    paymentOption.paymentInstruments.first { it.paymentInstrumentId == action.instrumentId },
+                                    content,
+                                    paymentOption.id,
+                                    paymentParameters.amount,
+                                    action.instrumentId
+                                )
+                            ) {
+                                input { showState(this.state) }
+                            }
+                        }
+                    }
+                    else -> Out.skip(this, source)
+                }
             else -> Out.skip(this, source)
         }
     }
@@ -125,13 +221,13 @@ internal class PaymentOptionsListBusinessLogic(
                 }
             }
             is Action.LoadPaymentOptionListSuccess -> Out(State.Content(action.content)) {
-                when(action.content) {
+                when (action.content) {
                     is PaymentOptionListSuccessOutputModel -> {
                         if (action.content.options.find { it is LinkedCard } == null) {
-                            output { showEffect(Effect.ProceedWithPaymentMethod) }
+                            output { showEffect(Effect.ShowContract) }
                             input(source)
                         } else {
-                            input { showState(state) }
+                            handlePaymentOptionsListSuccess(action)
                         }
                     }
                     is PaymentOptionListNoWalletOutputModel -> input { showState(state) }
@@ -146,11 +242,60 @@ internal class PaymentOptionsListBusinessLogic(
         }
     }
 
+    private fun Out.Builder<State.Content, Action>.handlePaymentOptionsListSuccess(action: Action.LoadPaymentOptionListSuccess) {
+        if (action.content.options.size == 1) {
+            val option = action.content.options.first()
+            if (option is BankCardPaymentOption) {
+                if (option.paymentInstruments.isEmpty()) {
+                    input {
+                        Action.ProceedWithPaymentMethod(option.id, null)
+                    }
+                } else {
+                    input { showState(state) }
+                }
+            } else {
+                input {
+                    Action.ProceedWithPaymentMethod(option.id, null)
+                }
+            }
+        } else {
+            input { showState(state) }
+        }
+    }
+
+    private fun State.ContentWithUnbindingAlert.whenShowUnbindingAlertState(action: Action): Out<State, Action> {
+        return when (action) {
+            is Action.ClickOnCancel -> Out(State.Content(content)) {
+                input { showState(this.state) }
+            }
+            is Action.ClickOnUnbind -> Out(this) {
+                input { unbindCardUseCase.unbindCard(this.state.instrumentId) }
+            }
+            is Action.UnbindSuccess -> {
+                Out(this) {
+                    output { showEffect(Effect.UnbindSuccess(this.state.instrumentBankCard)) }
+                    input { useCase.loadPaymentOptions(paymentParameters.amount) }
+                }
+            }
+            is Action.UnbindFailed -> {
+                val instrumentBankCard = this.instrumentBankCard
+                Out(State.Content(content)) {
+                    output { showEffect(Effect.UnbindFailed(instrumentBankCard)) }
+                    input(source)
+                }
+            }
+            is Action.LoadPaymentOptionListSuccess -> Out(State.Content(action.content)) {
+                input { showState(this.state) }
+            }
+            else -> Out.skip(this, source)
+        }
+    }
+
     private fun State.Error.whenError(action: Action): Out<State, Action> {
         return when (action) {
             is Action.Load -> Out(State.Loading) {
                 input { showState(this.state) }
-                input { useCase.loadPaymentOptions(action.amount, action.paymentMethodId) }
+                input { useCase.loadPaymentOptions(paymentParameters.amount, action.paymentMethodId) }
             }
             else -> Out.skip(this, source)
         }

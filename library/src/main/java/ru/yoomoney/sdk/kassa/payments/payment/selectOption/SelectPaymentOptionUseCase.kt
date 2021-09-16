@@ -21,11 +21,11 @@
 
 package ru.yoomoney.sdk.kassa.payments.payment.selectOption
 
+import ru.yoomoney.sdk.kassa.payments.model.PaymentInstrumentBankCard
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
 
-internal sealed class SelectPaymentOptionOutputModel
-
-internal data class SelectedPaymentOptionOutputModel(
+internal data class SelectedPaymentMethodOutputModel(
     val paymentOption: PaymentOption,
+    val instrument: PaymentInstrumentBankCard?,
     val walletLinkingPossible: Boolean
-) : SelectPaymentOptionOutputModel()
+)

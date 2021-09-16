@@ -24,26 +24,28 @@ package ru.yoomoney.sdk.kassa.payments.contract
 import ru.yoomoney.sdk.auth.Result
 import ru.yoomoney.sdk.auth.account.AccountRepository
 import ru.yoomoney.sdk.auth.account.model.UserAccount
+import ru.yoomoney.sdk.kassa.payments.model.BankCardPaymentOption
 import ru.yoomoney.sdk.kassa.payments.model.LinkedCard
-import ru.yoomoney.sdk.kassa.payments.payment.PaymentOptionRepository
+import ru.yoomoney.sdk.kassa.payments.payment.PaymentMethodRepository
 import ru.yoomoney.sdk.kassa.payments.model.SelectedOptionNotFoundException
 import ru.yoomoney.sdk.kassa.payments.model.Wallet
 import ru.yoomoney.sdk.kassa.payments.model.YooMoney
 import ru.yoomoney.sdk.kassa.payments.payment.CheckPaymentAuthRequiredGateway
 import ru.yoomoney.sdk.kassa.payments.payment.GetLoadedPaymentOptionListRepository
-import ru.yoomoney.sdk.kassa.payments.payment.selectOption.SelectedPaymentOptionOutputModel
+import ru.yoomoney.sdk.kassa.payments.payment.selectOption.SelectedPaymentMethodOutputModel
 import ru.yoomoney.sdk.kassa.payments.userAuth.UserAuthInfoRepository
 
-internal class SelectPaymentOptionUseCaseImpl(
+internal class SelectPaymentMethodUseCaseImpl(
     private val getLoadedPaymentOptionListRepository: GetLoadedPaymentOptionListRepository,
     private val checkPaymentAuthRequiredGateway: CheckPaymentAuthRequiredGateway,
     private val accountRepository: AccountRepository,
     private val userAuthInfoRepository: UserAuthInfoRepository,
-    private val paymentOptionRepository: PaymentOptionRepository
-) : SelectPaymentOptionUseCase {
+    private val paymentMethodRepository: PaymentMethodRepository
+) : SelectPaymentMethodUseCase {
 
     override suspend fun select(): Contract.Action {
-        val paymentOptionId = paymentOptionRepository.paymentOptionId ?: return Contract.Action.RestartProcess
+        val paymentOptionId = paymentMethodRepository.paymentOptionId ?: return Contract.Action.RestartProcess
+        val instrumentId = paymentMethodRepository.instrumentId
 
         val paymentOptions = getLoadedPaymentOptionListRepository.getLoadedPaymentOptions()
         val option = paymentOptions.find { it.id == paymentOptionId } ?: return Contract.Action.LoadContractFailed(
@@ -62,9 +64,12 @@ internal class SelectPaymentOptionUseCaseImpl(
                 && checkPaymentAuthRequiredGateway.checkPaymentAuthRequired()
                 || option is LinkedCard
 
+        val instrument = (option as? BankCardPaymentOption)?.paymentInstruments?.firstOrNull { it.paymentInstrumentId == instrumentId }
+
         return Contract.Action.LoadContractSuccess(
-            SelectedPaymentOptionOutputModel(
+            SelectedPaymentMethodOutputModel(
                 paymentOption = option,
+                instrument = instrument,
                 walletLinkingPossible = walletLinkingPossible
             )
         )

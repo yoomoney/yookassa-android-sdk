@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ The MIT License (MIT)
+  ~ Copyright © 2021 NBCO YooMoney LLC
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+  ~ associated documentation files (the “Software”), to deal in the Software without restriction, including
+  ~ without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+  ~ of the Software, and to permit persons to whom the Software is furnished to do so, subject to the
+  ~ following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all copies or substantial
+  ~ portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+  ~ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+  ~ PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+  ~ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+  ~ OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+  ~ OTHER DEALINGS IN THE SOFTWARE.
+  -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootContainer"
+    android:layout_width="@dimen/ym_dialogWidth"
+    android:layout_height="3dp"
+    android:measureAllChildren="false"
+    android:orientation="vertical"
+    android:transitionName="@string/ym_transition_name"
+    tools:layout_width="match_parent">
+
+    <ru.yoomoney.sdk.kassa.payments.ui.DialogTopBar
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <ru.yoomoney.sdk.kassa.payments.ui.view.BankCardView
+        android:id="@+id/bankCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/ym_space_m"
+        android:layout_marginTop="@dimen/ym_spaceXL"
+        android:layout_marginEnd="@dimen/ym_space_m"
+        android:clickable="false"/>
+
+    <ru.yoomoney.sdk.kassa.payments.ui.view.InformerView
+        android:id="@+id/informerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/ym_space_m"
+        android:layout_marginEnd="@dimen/ym_space_m"
+        android:layout_marginBottom="@dimen/ym_spaceM"/>
+
+    <ru.yoomoney.sdk.gui.widget.button.PrimaryButtonView
+        android:id="@+id/unbindCardButton"
+        style="@style/YmButton.Flat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/ym_spaceM"
+        android:layout_marginRight="@dimen/ym_spaceM"
+        android:layout_marginBottom="@dimen/ym_spaceM"
+        android:background="@drawable/ym_btn_primary_red"
+        app:ym_text="@string/ym_unbind_card_action"
+        app:ym_text_color="@color/ym_button_text_alert"/>
+
+</LinearLayout>

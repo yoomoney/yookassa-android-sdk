@@ -21,26 +21,42 @@
 
 package ru.yoomoney.sdk.kassa.payments.payment.tokenize
 
-import ru.yoomoney.sdk.kassa.payments.checkoutParameters.Amount
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 import ru.yoomoney.sdk.kassa.payments.model.Confirmation
+import ru.yoomoney.sdk.kassa.payments.model.PaymentInstrumentBankCard
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOptionInfo
 
-internal data class TokenizeInputModel(
-    val paymentOptionId: Int,
+internal sealed class TokenizeInputModel: Parcelable {
+    abstract val paymentOptionId: Int
+    abstract val allowWalletLinking: Boolean
+    abstract val instrumentBankCard: PaymentInstrumentBankCard?
+}
+
+@Parcelize
+internal data class TokenizePaymentOptionInputModel(
+    override val paymentOptionId: Int,
     val savePaymentMethod: Boolean,
+    val savePaymentInstrument: Boolean,
     val confirmation: Confirmation,
     val paymentOptionInfo: PaymentOptionInfo? = null,
-    val allowWalletLinking: Boolean? = null
-)
+    override val allowWalletLinking: Boolean,
+    override val instrumentBankCard: PaymentInstrumentBankCard? = null
+): TokenizeInputModel(), Parcelable
 
-internal sealed class TokenizeOutputModel
+@Parcelize
+internal data class TokenizeInstrumentInputModel(
+    override val paymentOptionId: Int,
+    val savePaymentMethod: Boolean,
+    override val instrumentBankCard: PaymentInstrumentBankCard,
+    override val allowWalletLinking: Boolean = false,
+    val confirmation: Confirmation,
+    val csc: String? = null
+): TokenizeInputModel(), Parcelable
 
-internal data class TokenOutputModel(
+internal data class TokenizeOutputModel(
     val token: String,
-    val option: PaymentOption
-) : TokenizeOutputModel()
-
-internal data class TokenizePaymentAuthRequiredOutputModel(
-    val charge: Amount
-) : TokenizeOutputModel()
+    val option: PaymentOption,
+    val instrumentBankCard: PaymentInstrumentBankCard?
+)

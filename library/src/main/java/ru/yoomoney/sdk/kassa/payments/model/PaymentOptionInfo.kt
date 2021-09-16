@@ -21,8 +21,12 @@
 
 package ru.yoomoney.sdk.kassa.payments.model
 
-internal sealed class PaymentOptionInfo
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 
+internal sealed class PaymentOptionInfo: Parcelable
+
+@Parcelize
 internal data class NewCardInfo(
     val number: String,
     val expirationMonth: String,
@@ -33,6 +37,7 @@ internal data class NewCardInfo(
         "NewCardInfo(number='$number', expirationMonth='$expirationMonth', expirationYear='$expirationYear', csc='***')"
 }
 
+@Parcelize
 internal class WalletInfo : PaymentOptionInfo() {
     override fun equals(other: Any?) = when {
         this === other -> true
@@ -45,14 +50,18 @@ internal class WalletInfo : PaymentOptionInfo() {
     override fun toString() = "WalletInfo()"
 }
 
+@Parcelize
 internal data class LinkedCardInfo(val csc: String) : PaymentOptionInfo() {
     override fun toString() = "LinkedCardInfo(csc='***')"
 }
 
+@Parcelize
 internal data class SbolSmsInvoicingInfo(val phone: String) : PaymentOptionInfo()
 
+@Parcelize
 internal object SberPay: PaymentOptionInfo()
 
+@Parcelize
 internal data class GooglePayInfo(
     val paymentMethodToken: String,
     val googleTransactionId: String

@@ -23,10 +23,10 @@ package ru.yoomoney.sdk.kassa.payments.paymentOptionList
 
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.Amount
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentMethodType
-import ru.yoomoney.sdk.kassa.payments.payment.PaymentOptionRepository
+import ru.yoomoney.sdk.kassa.payments.payment.PaymentMethodRepository
 import ru.yoomoney.sdk.kassa.payments.model.AuthorizedUser
 import ru.yoomoney.sdk.kassa.payments.model.GooglePay
-import ru.yoomoney.sdk.kassa.payments.model.NewCard
+import ru.yoomoney.sdk.kassa.payments.model.BankCardPaymentOption
 import ru.yoomoney.sdk.kassa.payments.model.PaymentIdCscConfirmation
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
 import ru.yoomoney.sdk.kassa.payments.model.Result
@@ -45,7 +45,7 @@ import ru.yoomoney.sdk.kassa.payments.paymentOptionList.PaymentOptionList.Action
 internal interface PaymentOptionsListUseCase {
     val isPaymentOptionsActual: Boolean
     suspend fun loadPaymentOptions(amount: Amount, paymentMethodId: String? = null): Action
-    fun selectPaymentOption(paymentOptionId: Int): PaymentOption?
+    fun selectPaymentOption(paymentOptionId: Int, instrumentId: String?): PaymentOption?
 }
 
 internal class PaymentOptionsListUseCaseImpl(
@@ -55,8 +55,9 @@ internal class PaymentOptionsListUseCaseImpl(
     private val paymentMethodInfoGateway: PaymentMethodInfoGateway,
     private val currentUserRepository: CurrentUserRepository,
     private val googlePayRepository: GooglePayRepository,
-    private val paymentOptionRepository: PaymentOptionRepository,
-    private val loadedPaymentOptionListRepository: GetLoadedPaymentOptionListRepository
+    private val paymentMethodRepository: PaymentMethodRepository,
+    private val loadedPaymentOptionListRepository: GetLoadedPaymentOptionListRepository,
+    private val shopPropertiesRepository: ShopPropertiesRepository
 ) : PaymentOptionsListUseCase {
 
     override val isPaymentOptionsActual: Boolean
@@ -74,7 +75,10 @@ internal class PaymentOptionsListUseCaseImpl(
 
         var paymentOptions: List<PaymentOption>
         when (val paymentOptionsResponse = paymentOptionListRepository.getPaymentOptions(amount, currentUser)) {
-            is Result.Success -> paymentOptions = paymentOptionsResponse.value
+            is Result.Success -> {
+                shopPropertiesRepository.shopProperties = paymentOptionsResponse.value.shopProperties
+                paymentOptions = paymentOptionsResponse.value.paymentOptions
+            }
             is Result.Fail -> return Action.LoadPaymentOptionListFailed(paymentOptionsResponse.value)
         }
 
@@ -83,7 +87,7 @@ internal class PaymentOptionsListUseCaseImpl(
             when(val response = paymentMethodInfoGateway.getPaymentMethodInfo(paymentMethodId)) {
                 is Result.Success -> {
                     val paymentOption = when (response.value.type) {
-                        PaymentMethodType.BANK_CARD -> paymentOptions.find { it is NewCard }
+                        PaymentMethodType.BANK_CARD -> paymentOptions.find { it is BankCardPaymentOption }
                         else -> null
                     }
                     if (paymentOption != null && response.value.card != null) {
@@ -95,10 +99,12 @@ internal class PaymentOptionsListUseCaseImpl(
                                 paymentMethodId = paymentMethodId,
                                 first = response.value.card.first,
                                 last = response.value.card.last,
+                                brand = response.value.card.cardType,
                                 expiryMonth = response.value.card.expiryMonth,
                                 expiryYear = response.value.card.expiryYear,
                                 savePaymentMethodAllowed = paymentOption.savePaymentMethodAllowed,
-                                confirmationTypes = paymentOption.confirmationTypes
+                                confirmationTypes = paymentOption.confirmationTypes,
+                                savePaymentInstrument = paymentOption.savePaymentInstrument
                             )
                         )
                     } else {
@@ -126,8 +132,9 @@ internal class PaymentOptionsListUseCaseImpl(
         } ?: Action.LoadPaymentOptionListFailed(PaymentOptionListIsEmptyException())
     }
 
-    override fun selectPaymentOption(paymentOptionId: Int): PaymentOption? {
-        paymentOptionRepository.paymentOptionId = paymentOptionId
+    override fun selectPaymentOption(paymentOptionId: Int, instrumentId: String?): PaymentOption? {
+        paymentMethodRepository.paymentOptionId = paymentOptionId
+        paymentMethodRepository.instrumentId = instrumentId
         return loadedPaymentOptionListRepository
             .getLoadedPaymentOptions()
             .find { it.id == paymentOptionId }
@@ -135,7 +142,7 @@ internal class PaymentOptionsListUseCaseImpl(
 }
 
 private fun PaymentOption.toAllowed() = when (this) {
-    is NewCard -> PaymentMethodType.BANK_CARD
+    is BankCardPaymentOption -> PaymentMethodType.BANK_CARD
     is YooMoney -> PaymentMethodType.YOO_MONEY
     is SberBank -> PaymentMethodType.SBERBANK
     is GooglePay -> PaymentMethodType.GOOGLE_PAY

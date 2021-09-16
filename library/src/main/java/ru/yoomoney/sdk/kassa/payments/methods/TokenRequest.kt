@@ -28,6 +28,7 @@ import ru.yoomoney.sdk.kassa.payments.extensions.toTokenResponse
 import ru.yoomoney.sdk.kassa.payments.http.HostProvider
 import ru.yoomoney.sdk.kassa.payments.methods.base.MimeType
 import ru.yoomoney.sdk.kassa.payments.methods.base.PostRequest
+import ru.yoomoney.sdk.kassa.payments.model.BankCardPaymentOption
 import ru.yoomoney.sdk.kassa.payments.model.Confirmation
 import ru.yoomoney.sdk.kassa.payments.model.LinkedCardInfo
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
@@ -42,6 +43,8 @@ private const val AMOUNT = "amount"
 private const val CONFIRMATION = "confirmation"
 private const val PAYMENT_METHOD_ID = "payment_method_id"
 private const val SAVE_PAYMENT_METHOD = "save_payment_method"
+private const val SAVE_PAYMENT_INSTRUMENT = "save_payment_instrument"
+private const val MERCHANT_CUSTOMER_ID = "merchant_customer_id"
 private const val CSC = "csc"
 
 internal data class TokenRequest(
@@ -52,7 +55,9 @@ internal data class TokenRequest(
     private val shopToken: String,
     private val paymentAuthToken: String?,
     private val confirmation: Confirmation,
-    private val savePaymentMethod: Boolean
+    private val savePaymentMethod: Boolean,
+    private val savePaymentInstrument: Boolean,
+    private val merchantCustomerId: String?
 ) : PostRequest<Result<String>> {
 
     override fun getHeaders() = listOf("Authorization" to Credentials.basic(shopToken, "")).let { headers ->
@@ -66,10 +71,13 @@ internal data class TokenRequest(
             AMOUNT to paymentOption.charge.toJsonObject(),
             SAVE_PAYMENT_METHOD to savePaymentMethod
         ).let { payload ->
-            val params = if (paymentOption is PaymentIdCscConfirmation) {
+            var params = if (paymentOption is PaymentIdCscConfirmation) {
                 payload + (PAYMENT_METHOD_ID to paymentOption.paymentMethodId) + (CSC to (paymentOptionInfo as LinkedCardInfo).csc)
             } else {
                 payload + (PAYMENT_METHOD_DATA to paymentOptionInfo.toJsonObject(paymentOption))
+            }
+            if (!merchantCustomerId.isNullOrBlank() && paymentOption is BankCardPaymentOption) {
+                params = params + (MERCHANT_CUSTOMER_ID to merchantCustomerId) + (SAVE_PAYMENT_INSTRUMENT to savePaymentInstrument)
             }
             confirmation.toJsonObject()?.let { params + (CONFIRMATION to it) } ?: params
         }

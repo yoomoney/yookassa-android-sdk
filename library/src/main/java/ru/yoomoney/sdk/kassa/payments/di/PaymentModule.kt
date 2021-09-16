@@ -44,7 +44,7 @@ import ru.yoomoney.sdk.kassa.payments.payment.googlePay.GooglePayRepository
 import ru.yoomoney.sdk.kassa.payments.payment.loadPaymentInfo.PaymentMethodInfoGateway
 import javax.inject.Singleton
 
-@Module(includes = [PaymentOptionsModule::class])
+@Module(includes = [PaymentOptionsModule::class, PaymentOptionsListModule::class])
 internal class PaymentModule {
 
     @Provides

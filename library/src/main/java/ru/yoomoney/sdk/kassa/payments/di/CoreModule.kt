@@ -26,8 +26,11 @@ import android.os.Handler
 import android.os.Looper
 import dagger.Module
 import dagger.Provides
-import ru.yoomoney.sdk.kassa.payments.payment.PaymentOptionRepository
-import ru.yoomoney.sdk.kassa.payments.payment.PaymentOptionRepositoryImpl
+import ru.yoomoney.sdk.kassa.payments.R
+import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
+import ru.yoomoney.sdk.kassa.payments.checkoutParameters.TestParameters
+import ru.yoomoney.sdk.kassa.payments.payment.PaymentMethodRepository
+import ru.yoomoney.sdk.kassa.payments.payment.PaymentMethodRepositoryImpl
 import ru.yoomoney.sdk.kassa.payments.tmx.ProfilingTool
 import ru.yoomoney.sdk.kassa.payments.tmx.ThreatMetrixProfilingTool
 import ru.yoomoney.sdk.kassa.payments.tmx.TmxSessionIdStorage
@@ -36,6 +39,12 @@ import ru.yoomoney.sdk.kassa.payments.navigation.Router
 import ru.yoomoney.sdk.kassa.payments.model.Executor
 import ru.yoomoney.sdk.kassa.payments.errorFormatter.DefaultErrorFormatter
 import ru.yoomoney.sdk.kassa.payments.errorFormatter.ErrorFormatter
+import ru.yoomoney.sdk.kassa.payments.extensions.getConfirmation
+import ru.yoomoney.sdk.kassa.payments.model.Confirmation
+import ru.yoomoney.sdk.kassa.payments.model.GetConfirmation
+import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
+import ru.yoomoney.sdk.kassa.payments.utils.DEFAULT_REDIRECT_URL
+import ru.yoomoney.sdk.kassa.payments.utils.getSberbankPackage
 import javax.inject.Singleton
 
 @Module
@@ -48,6 +57,20 @@ internal class CoreModule {
         return object: Executor {
             override fun invoke(p1: () -> Unit) {
                 mainHandler.post(p1)
+            }
+        }
+    }
+
+    @Provides
+    fun getConfirmation(context: Context, paymentParameters: PaymentParameters, testParameters: TestParameters): GetConfirmation {
+        val sberbankPackage = getSberbankPackage(testParameters.hostParameters.isDevHost)
+        return object : GetConfirmation {
+            override fun invoke(p1: PaymentOption): Confirmation {
+                return p1.getConfirmation(context,
+                    paymentParameters.customReturnUrl ?: DEFAULT_REDIRECT_URL,
+                    context.resources.getString(R.string.ym_app_scheme),
+                    sberbankPackage
+                )
             }
         }
     }
@@ -80,7 +103,7 @@ internal class CoreModule {
 
     @Provides
     @Singleton
-    fun providePaymentOptionRepository(): PaymentOptionRepository {
-        return PaymentOptionRepositoryImpl(null)
+    fun providePaymentOptionRepository(): PaymentMethodRepository {
+        return PaymentMethodRepositoryImpl(null, null)
     }
 }

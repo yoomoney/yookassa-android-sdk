@@ -31,6 +31,7 @@ import ru.yoomoney.sdk.kassa.payments.model.RequestExecutionException
 import ru.yoomoney.sdk.kassa.payments.model.ResponseParsingException
 import ru.yoomoney.sdk.kassa.payments.model.ResponseReadingException
 import ru.yoomoney.sdk.kassa.payments.methods.base.ApiRequest
+import ru.yoomoney.sdk.kassa.payments.methods.base.DeleteRequest
 import ru.yoomoney.sdk.kassa.payments.methods.base.MimeType
 import ru.yoomoney.sdk.kassa.payments.methods.base.PostRequest
 import ru.yoomoney.sdk.kassa.payments.metrics.ErrorLoggerReporter
@@ -56,6 +57,9 @@ internal fun <T: Any> CheckoutOkHttpClient.execute(apiRequest: ApiRequest<Result
         requestBuilder.addHeader("Content-Type", apiRequest.getMimeType().type)
         val body = createRequestBody(apiRequest.getMimeType(), apiRequest.getPayload())
         requestBuilder.post(RequestBody.create(null, body))
+    } else if (apiRequest is DeleteRequest<Result<T>>) {
+        val body = createRequestBody(apiRequest.getMimeType(), apiRequest.getPayload())
+        requestBuilder.delete(RequestBody.create(null, body))
     } else {
         requestBuilder.get()
     }

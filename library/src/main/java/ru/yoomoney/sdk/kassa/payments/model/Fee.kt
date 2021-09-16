@@ -21,6 +21,20 @@
 
 package ru.yoomoney.sdk.kassa.payments.model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.Amount
+import ru.yoomoney.sdk.kassa.payments.extensions.format
+import java.math.BigDecimal
 
-internal data class Fee(val service: Amount? = null, val counterparty: Amount? = null)
+@[Parcelize]
+internal data class Fee(val service: Amount? = null, val counterparty: Amount? = null): Parcelable
+
+internal fun Fee?.formatService(): CharSequence? {
+    val serviceFee = this?.service
+    return if (serviceFee != null && (serviceFee.value > BigDecimal.ZERO)) {
+        serviceFee.format()
+    } else {
+        null
+    }
+}

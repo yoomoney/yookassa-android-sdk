@@ -29,6 +29,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import ru.yoomoney.sdk.kassa.payments.utils.changeToolbarButtonColor
 import ru.yoomoney.sdk.kassa.payments.R
+import ru.yoomoney.sdk.kassa.payments.ui.PrimaryButtonView
 
 internal const val EXTRA_TITLE_RES = "ru.yoo.money.android.extra.SAVE_PAYMENT_INFO_TITLE"
 internal const val EXTRA_TEXT_RES = "ru.yoo.money.android.extra.SAVE_PAYMENT_INFO_TEXT"
@@ -45,8 +46,11 @@ class SavePaymentMethodInfoActivity : AppCompatActivity() {
         }
         findViewById<TextView>(R.id.title).setText(intent.getIntExtra(EXTRA_TITLE_RES, 0))
         findViewById<TextView>(R.id.info).setText(intent.getIntExtra(EXTRA_TEXT_RES, 0))
+        findViewById<PrimaryButtonView>(R.id.understandButton).setOnClickListener {
+            finish()
+        }
 
-        intent.getIntExtra(EXTRA_ADDITIONAL_TEXT_RES, 0)?.takeIf { it != 0 }?.let {
+        intent.getIntExtra(EXTRA_ADDITIONAL_TEXT_RES, 0).takeIf { it != 0 }?.let {
             findViewById<TextView>(R.id.additionalInfo).setText(it)
         }
     }

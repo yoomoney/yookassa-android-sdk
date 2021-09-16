@@ -23,9 +23,9 @@ package ru.yoomoney.sdk.kassa.payments.payment.loadOptionList
 
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.Amount
 import ru.yoomoney.sdk.kassa.payments.model.CurrentUser
-import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
+import ru.yoomoney.sdk.kassa.payments.model.PaymentOptionsResponse
 import ru.yoomoney.sdk.kassa.payments.model.Result
 
 internal interface PaymentOptionListRepository {
-    fun getPaymentOptions(amount: Amount, currentUser: CurrentUser): Result<List<PaymentOption>>
+    fun getPaymentOptions(amount: Amount, currentUser: CurrentUser): Result<PaymentOptionsResponse>
 }

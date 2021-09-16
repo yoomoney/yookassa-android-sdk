@@ -19,10 +19,24 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package ru.yoomoney.sdk.kassa.payments.contract
+package ru.yoomoney.sdk.kassa.payments.unbind
 
-import ru.yoomoney.sdk.kassa.payments.payment.tokenize.TokenizeInputModel
+import ru.yoomoney.sdk.kassa.payments.model.Result
+import ru.yoomoney.sdk.kassa.payments.payment.GetLoadedPaymentOptionListRepository
+import ru.yoomoney.sdk.kassa.payments.payment.unbindCard.UnbindCardGateway
 
-internal interface TokenizeUseCase {
-    suspend fun tokenize(model: TokenizeInputModel): Contract.Action
+internal class UnbindCardUseCaseImpl(
+    private val unbindCardGateway: UnbindCardGateway,
+    private val getLoadedPaymentOptionListRepository: GetLoadedPaymentOptionListRepository
+) : UnbindCardUseCase {
+
+    override suspend fun unbindCard(bindingId: String): UnbindCard.Action {
+        return when (unbindCardGateway.unbindCard(bindingId)) {
+            is Result.Success -> {
+                getLoadedPaymentOptionListRepository.isActual = false
+                UnbindCard.Action.UnbindSuccess
+            }
+            is Result.Fail -> UnbindCard.Action.UnbindFailed
+        }
+    }
 }

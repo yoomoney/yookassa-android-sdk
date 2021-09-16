@@ -29,7 +29,7 @@ import ru.yoomoney.sdk.kassa.payments.extensions.execute
 import ru.yoomoney.sdk.kassa.payments.http.HostProvider
 import ru.yoomoney.sdk.kassa.payments.methods.PaymentOptionsRequest
 import ru.yoomoney.sdk.kassa.payments.model.CurrentUser
-import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
+import ru.yoomoney.sdk.kassa.payments.model.PaymentOptionsResponse
 import ru.yoomoney.sdk.kassa.payments.payment.loadOptionList.PaymentOptionListRepository
 import ru.yoomoney.sdk.kassa.payments.model.Result
 
@@ -39,10 +39,11 @@ internal class ApiV3PaymentOptionListRepository(
     private val gatewayId: String?,
     private val tokensStorage: TokensStorage,
     private val shopToken: String,
-    private val savePaymentMethod: SavePaymentMethod
+    private val savePaymentMethod: SavePaymentMethod,
+    private val merchantCustomerId: String?
 ) : PaymentOptionListRepository {
 
-    override fun getPaymentOptions(amount: Amount, currentUser: CurrentUser): Result<List<PaymentOption>> {
+    override fun getPaymentOptions(amount: Amount, currentUser: CurrentUser): Result<PaymentOptionsResponse> {
         val userAuthToken: String? = if (!tokensStorage.passportAuthToken.isNullOrEmpty() && !tokensStorage.paymentAuthToken.isNullOrEmpty()) {
             tokensStorage.passportAuthToken
         } else {
@@ -55,7 +56,8 @@ internal class ApiV3PaymentOptionListRepository(
             gatewayId = gatewayId,
             userAuthToken = userAuthToken,
             shopToken = shopToken,
-            savePaymentMethod = savePaymentMethod
+            savePaymentMethod = savePaymentMethod,
+            merchantCustomerId = merchantCustomerId
         )
         return httpClient.value.execute(paymentRequest)
     }

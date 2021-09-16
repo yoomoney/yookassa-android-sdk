@@ -12,59 +12,59 @@ TranslatorComment:Translation source key: https://tanker.yandex-team.ru/?project
   <string name='ym_auth_hint_sms'>Enter text message code</string>
   <!--TranslatorComment:
 TranslatorComment:Translation source key: https://tanker.yandex-team.ru/?project=passport&keyset=Frontend&key=profile.access.2fa-disable.otp&branch=master-->
-  <string name='ym_auth_hint_totp'>Enter a one-time password</string>
-  <string name='ym_auth_hint_password'>Enter the password</string>
+  <string name='ym_auth_hint_totp'>Enter one-time password</string>
+  <string name='ym_auth_hint_password'>Enter access code</string>
   <!--TranslatorComment:
 TranslatorComment:Translation source key: https://tanker.yandex-team.ru/?project=yamoney-lk&keyset=blocks%2Fcommon.blocks%3Asecure-auth&key=secure-auth-empty-emergency&branch=master-->
-  <string name='ym_auth_hint_emergency'>Enter the emergency code</string>
+  <string name='ym_auth_hint_emergency'>Enter emergency code</string>
   <!--TranslatorComment:
 TranslatorComment:Translation source key: https://tanker.yandex-team.ru/?project=direct2&keyset=b-online-set-phrases-prices&key=ok&branch=iget2-test-->
-  <string name='ym_logout_dialog_button_positive'>Logout</string>
+  <string name='ym_logout_dialog_button_positive'>Sign out</string>
   <!--TranslatorComment:
 TranslatorComment:Translation source key: https://tanker.yandex-team.ru/?project=abro&keyset=yandex_browser_strings&key=bro_firstscreen_welcome_cancel&branch=master-->
   <string name='ym_logout_dialog_button_negative'>Cancel</string>
-  <string name='ym_logout_dialog_message'>Are you sure you want to log out of account %1$s?</string>
+  <string name='ym_logout_dialog_message'>Are you sure you want to sign out of account %1$s\?</string>
   <!--TranslatorComment:
 TranslatorComment:Translation source key: https://tanker.yandex-team.ru/?project=suburbantrains&keyset=iOS_v3&key=retryKey&branch=iOS_3.20.0_dev36-->
   <string name='ym_retry'>Try again</string>
-  <string name='ym_no_wallet_dialog_message'>You do not have a YooMoney Wallet</string>
+  <string name='ym_no_wallet_dialog_message'>You don\'t have a YooMoney wallet</string>
   <string name='ym_no_wallet_dialog_shoose_payment_option'>Select payment method</string>
   <!-- errors -->
-  <string name='ym_error_something_went_wrong'>Seems we\'ve had a technical error</string>
+  <string name='ym_error_something_went_wrong'>Looks like a technical error</string>
   <!--TranslatorComment:
 TranslatorComment:Translation source key: https://tanker.yandex-team.ru/?project=ym_ios_msdk&keyset=General&key=Common.PlaceholderView.title&branch=master-->
-  <string name='ym_error_no_internet'>Connection error. Try again once you\'re online.</string>
+  <string name='ym_error_no_internet'>Connection error. Try again once you\'re online</string>
   <!--TranslatorComment:
 TranslatorComment:Translation source key: https://tanker.yandex-team.ru/?project=direct-app-android&keyset=Glossary&key=payment_fragment_no_way&branch=master-->
   <string name='ym_no_payment_options_error'>No available payment methods</string>
   <!--TranslatorComment:
 TranslatorComment:Translation source key: https://tanker.yandex-team.ru/?project=home&keyset=auth&key=password-invalid&branch=feedback-->
   <string name='ym_wrong_passcode_error'>Incorrect password</string>
-  <string name='ym_server_error'>Seems we\'ve had a technical error</string>
-  <string name='ym_unknown_error'>Seems we\'ve had a technical error</string>
+  <string name='ym_server_error'>Looks like a technical error</string>
+  <string name='ym_unknown_error'>Looks like a technical error</string>
   <string name='ym_sberbank'>SberPay</string>
   <string name='ym_payment_option_google_pay'>Google Pay</string>
   <string name='ym_license_agreement_part_1'>By clicking this button, accept</string>
   <string name='ym_license_agreement_part_2'>the terms and conditions of the service</string>
   <string name='ym_license_agreement_url'>https://yoomoney.ru/page?id=526623</string>
-  <string name='ym_contract_save_payment_method_wallet_title'>Allow to write off money</string>
+  <string name='ym_contract_save_payment_method_wallet_title'>Allowing autopayments</string>
   <string name='ym_save_payment_method_wallet_info_title'>Permission to debit money without your participation</string>
-  <string name='ym_save_payment_method_wallet_info_text'>It means that you\'re allowing YooMoney to debit money from the wallet upon store\'s request without an additional confirmation from you. You can cancel these autopayments at any moment in the wallet settings (on the YooMoney website).</string>
-  <string name='ym_contract_save_payment_method_wallet_switch_title'>Allow to write off money</string>
-  <string name='ym_contract_save_payment_method_gpay_switch_title'>Разрешить списывать деньги</string>
-  <string name='ym_save_payment_method_wallet_switch_text_part_1'>Allow the store</string>
-  <string name='ym_save_payment_method_wallet_switch_text_part_2'>to debit money without my participation</string>
-  <string name='ym_save_payment_method_wallet_message_text_part_1'>After the payment, the wallet will be linked: the store will be able</string>
-  <string name='ym_save_payment_method_wallet_message_text_part_2'>to debit money without your participation</string>
-  <string name='ym_save_payment_method_gpay_switch_text_part_1'>Allow the store</string>
-  <string name='ym_save_payment_method_gpay_switch_text_part_2'>to debit money without my participation</string>
-  <string name='ym_save_payment_method_bank_card_info_title'>Permission to debit money upon store\'s request</string>
-  <string name='ym_save_payment_method_bank_card_info_text'>It means that you\'re allowing YooMoney to debit money upon store\'s request without an additional confirmation from you, from this card or a new one in case it\'s reissued (if your bank can update the details automatically).</string>
-  <string name='ym_save_payment_method_bank_card_additional_info'>You can cancel linking at any moment via store\'s support service.</string>
-  <string name='ym_save_payment_method_bank_card_switch_text_part_1'>Link the card and</string>
-  <string name='ym_save_payment_method_bank_card_switch_text_part_2'>debit money upon store\'s request</string>
-  <string name='ym_save_payment_method_bank_card_message_text_part_1'>After the payment, the card will be linked, so that</string>
-  <string name='ym_save_payment_method_bank_card_message_text_part_2'>money could be debited upon store\'s request</string>
+  <string name='ym_save_payment_method_wallet_info_text'>It means that you\'re allowing YooMoney to debit money from the wallet upon store\'s request without an additional confirmation from you. You can disable these autopayments at any moment in the wallet settings (on the YooMoney website).</string>
+  <string name='ym_contract_save_payment_method_wallet_switch_title'>Allow autopayments</string>
+  <string name='ym_contract_save_payment_method_gpay_switch_title'>Allow autopayments</string>
+  <string name='ym_save_payment_method_wallet_switch_text_part_1'>The store will be able</string>
+  <string name='ym_save_payment_method_wallet_switch_text_part_2'>to debit money without your participation</string>
+  <string name='ym_save_payment_method_wallet_message_text_part_1'>By making this payment, you allow saving this wallet and</string>
+  <string name='ym_save_payment_method_wallet_message_text_part_2'>debiting money without your participation</string>
+  <string name='ym_save_payment_method_gpay_switch_text_part_1'>"After the payment, this card will be saved: the store will be able "</string>
+  <string name='ym_save_payment_method_gpay_switch_text_part_2'>to debit money without your participation</string>
+  <string name='ym_save_payment_method_bank_card_info_title'>How autopayments work</string>
+  <string name='ym_save_payment_method_bank_card_info_text'>"If you allow autopayments,  we\'ll link the card (including if it\'s been used via Google Pay)  to the store. After that, the store will be able to send requests for debiting money automatically, then the payment is made without an additional confirmation from you. "</string>
+  <string name='ym_save_payment_method_bank_card_additional_info'>Autopayments will continue even after you reissue the card, even if your bank can update the data automatically. You can cancel them and unlink the card at any moment via store\'s support service.</string>
+  <string name='ym_save_payment_method_bank_card_switch_text_part_1'>After the payment, this card will be saved: the store will be able</string>
+  <string name='ym_save_payment_method_bank_card_switch_text_part_2'>to debit money without your participation</string>
+  <string name='ym_save_payment_method_bank_card_message_text_part_1'>By making this payment, you allow saving the card  and</string>
+  <string name='ym_save_payment_method_bank_card_message_text_part_2'>debit money without your participation</string>
   <string name='ym_support_email'>support@yoomoney.ru</string>
   <string name='ym_support_help_url'>https://yoomoney.ru/page?id=536720</string>
   <string name='ym_support_phone'>+78002506699</string>
@@ -82,20 +82,104 @@ TranslatorComment:Translation source key: https://tanker.yandex-team.ru/?project
   <string name='ym_cvc_hint'>CVC</string>
   <string name='ym_check_card_number_error'>Check the card number</string>
   <string name='ym_check_expiry_error'>Check the month and date</string>
-  <string name='ym_yoo_login_to_pay'>Sign in to your wallet to pay via YooMoney</string>
+  <string name='ym_yoo_login_to_pay'>Sign in to your account to pay via YooMoney</string>
   <string name='ym_confirm_retry_timer_text'>Get a new code in %s</string>
   <string name='ym_payment_auth_wrong_code_try_again'>Invalid code. Double-check and try again</string>
-  <string name='ym_payment_auth_wrong_code_with_attempts'>Invalid again. Attempts left: %d</string>
-  <string name='ym_payment_auth_no_attempts'>No attempts left</string>
-  <string name='ym_payment_auth_wrong_code'>Invalid code</string>
+  <string name='ym_payment_auth_wrong_code_with_attempts'>Invalid code again. Attempts left: %d</string>
+  <string name='ym_payment_auth_no_attempts'>No attempts left, you need to get a new code</string>
+  <string name='ym_payment_auth_wrong_code'>Invalid code. Double-check and try again</string>
   <string name='ym_payment_auth_retry_text'>Try again</string>
   <string name='ym_check_cvc'>Check the CVC</string>
-  <string name='ym_linked_card'>Linked card</string>
-  <string name='ym_saved_card'>Saved card</string>
+  <string name='ym_linked_card'>Bank card</string>
+  <string name='ym_saved_card'>Bank card</string>
   <string name='ym_google_pay_description'>You\'ll be redirected into the Google Pay app: confirm the payment</string>
-  <string name='ym_sber_pay_description'>Next, open the Sberbank Online application - confirm the payment</string>
-  <string name='ym_sber_phone_input_info'>For the text message from Sberbank with the payment code</string>
-  <string name='ym_label_phone_in_sbol'>Phone number in Sberbank Online</string>
-  <string name='ym_save_payment_method_title'>Let\'s link the card</string>
-  <string name='ym_navigation_item_back'>Назад</string>
+  <string name='ym_sber_pay_description'>Next, the SberBank Online application will be opened: confirm the payment</string>
+  <string name='ym_sber_phone_input_info'>Phone number for payment confirmation via SberBank Online</string>
+  <string name='ym_label_phone_in_sbol'>Your phone number in SberBank Online</string>
+  <string name='ym_save_payment_method_title'>Let\'s save the card</string>
+  <string name='ym_navigation_item_back'>Back</string>
+  <!--Название карты ЮMoney в списке способов оплаты https://jira.yamoney.ru/secure/attachment/599255/Screenshot%202021-07-05%20at%2011.50.03.png-->
+  <string name='ym_linked_wallet_card'>YooMoney card</string>
+  <!--Название карты не ЮMoney в списке способов оплаты https://jira.yamoney.ru/secure/attachment/599255/Screenshot%202021-07-05%20at%2011.50.03.png-->
+  <string name='ym_linked_not_wallet_card'>Bank card</string>
+  <!--Сообщение об автосписаниях после отвязки карты https://jira.yamoney.ru/secure/attachment/598559/image-2021-07-01-16-51-31-120.png-->
+  <string name='ym_informer_unbind_text'>Autopayments will continue after you remove the card. To cancel autopayments, contact store\'s support service</string>
+  <!--Кнопка для открытия информационной формы https://jira.yamoney.ru/secure/attachment/598563/Screenshot%202021-07-01%20at%2016.54.13.png-->
+  <string name='ym_informer_unbind_action'>Learn more</string>
+  <!--Текст на кнопке для отмены отвязки карты https://jira.yamoney.ru/secure/attachment/598559/image-2021-07-01-16-51-31-120.png-->
+  <string name='ym_cancel_action'>Cancel</string>
+  <!--Текст на кнопке для возврата назад https://jira.yamoney.ru/secure/attachment/598563/Screenshot%202021-07-01%20at%2016.54.13.png-->
+  <string name='ym_back_action'>Back</string>
+  <!--Текст на кнопке для отвязки карты https://jira.yamoney.ru/secure/attachment/598559/image-2021-07-01-16-51-31-120.png-->
+  <string name='ym_unbind_card_action'>Remove the card</string>
+  <!--Сообщение о том, что отвзяать карту ЮMoney можно только в личном кабинете https://jira.yamoney.ru/secure/attachment/598563/Screenshot%202021-07-01%20at%2016.54.13.png-->
+  <string name='ym_informer_unbind_card_wallet'>You can only unlink this card in the wallet settings</string>
+  <!--Сообщение об неуспешной отвязке карты https://jira.yamoney.ru/secure/attachment/598559/image-2021-07-01-16-51-31-120.png-->
+  <string name='ym_unbinding_card_failed'>Couldn\'t unlink card ••••%s</string>
+  <!--Сообщение об успешной отвязке карты https://jira.yamoney.ru/secure/attachment/598560/image-2021-07-01-16-51-31-059.png-->
+  <string name='ym_unbinding_card_success'>Card ••••%s removed</string>
+  <!--Кнопка "Понятно" https://jira.yamoney.ru/secure/attachment/600596/Screenshot%202021-07-08%20at%2017.04.12.png-->
+  <string name='ym_understand_button'>Got it</string>
+  <!--Переключатель для включения автосписаний https://jira.yamoney.ru/secure/attachment/600597/Screenshot%202021-07-08%20at%2017.04.18.png-->
+  <string name='ym_auto_write_off_approve_with_switch'>Allow autopayments</string>
+  <!--Краткое объяснение, что будет после включения автосписаний https://jira.yamoney.ru/secure/attachment/600597/Screenshot%202021-07-08%20at%2017.04.18.png-->
+  <string name='ym_save_payment_method_linked_card_message_text_with_switch_part_1'>After the payment, this card will be saved: the store will be able</string>
+  <!--Краткое объяснение, что будет после включения автосписаний https://jira.yamoney.ru/secure/attachment/600597/Screenshot%202021-07-08%20at%2017.04.18.png-->
+  <string name='ym_save_payment_method_linked_card_message_text_with_switch_part_2'>to debit money without your participation</string>
+  <!--Предупреждение об автосписаниях https://jira.yamoney.ru/secure/attachment/600596/Screenshot%202021-07-08%20at%2017.04.12.png-->
+  <string name='ym_auto_write_off_approve_without_switch'>Allowing autopayments</string>
+  <!--Заголовок экрана с информацией об автосписаниях https://jira.yamoney.ru/secure/attachment/600596/Screenshot%202021-07-08%20at%2017.04.12.png-->
+  <string name='ym_how_works_auto_write_title'>How autopayments work</string>
+  <!--Текста экрана с информацией об автосписаниях https://jira.yamoney.ru/secure/attachment/600596/Screenshot%202021-07-08%20at%2017.04.12.png-->
+  <string name='ym_how_works_auto_write_body'>If you allow autopayments, we\'ll link the bank card (including if it\'s been used via Google Pay) to the store. After that, the store will be able to send requests for debiting money automatically, then the payment is made without an additional confirmation from you. \n \nAutopayments will continue even after you reissue the card, even if your bank can update the data automatically. You can cancel them and unlink the card at any moment via store\'s support service.</string>
+  <!--Краткое объяснение автосписаний https://jira.yamoney.ru/secure/attachment/600596/Screenshot%202021-07-08%20at%2017.04.12.png-->
+  <string name='ym_save_payment_method_linked_card_message_text_part_1'>By making this payment, you allow saving this card and </string>
+  <!--Краткое объяснение автосписаний https://jira.yamoney.ru/secure/attachment/600596/Screenshot%202021-07-08%20at%2017.04.12.png-->
+  <string name='ym_save_payment_method_linked_card_message_text_part_2'>debiting money without your participation</string>
+  <!--Текст переключателя для сохранения платежных данных https://jira.yamoney.ru/secure/attachment/600598/Screenshot%202021-07-08%20at%2017.04.26.png-->
+  <string name='ym_save_payment_details_with_switch'>Save payment details</string>
+  <!--Первая часть текста-объяснения сохранения платежных данных https://jira.yamoney.ru/secure/attachment/600598/Screenshot%202021-07-08%20at%2017.04.26.png-->
+  <string name='ym_save_payment_method_linked_saved_card_message_text_part_1'>This store</string>
+  <!--Вторая часть текста-объяснения сохранения платежных данных https://jira.yamoney.ru/secure/attachment/600598/Screenshot%202021-07-08%20at%2017.04.26.png-->
+  <string name='ym_save_payment_method_linked_saved_card_message_text_part_2'>will save your bank card details</string>
+  <!--Третья часть текста-объяснения сохранения платежных данных https://jira.yamoney.ru/secure/attachment/600598/Screenshot%202021-07-08%20at%2017.04.26.png-->
+  <string name='ym_save_payment_method_linked_saved_card_message_text_part_3'> : next time you won\'t need to enter them</string>
+  <string name='ym_save_payment_details_without_switch'>Saving payment details</string>
+  <!--Оповещение пользователя об автосписаниях и сохраненных платежных данных https://jira.yamoney.ru/secure/attachment/600599/Screenshot%202021-07-08%20at%2017.04.37.png-->
+  <string name='ym_auto_write_off_save_payments_without_switch'>Allowing autopayments and saving payment details</string>
+  <!--Объяснение операции разрешения на автосписание и сохранение данных https://jira.yamoney.ru/secure/attachment/600599/Screenshot%202021-07-08%20at%2017.04.37.png-->
+  <string name='ym_save_payment_method_linked_card_auto_write_off_message_text_part_1'>By making this payment, you allow </string>
+  <!--Объяснение операции разрешения на автосписание и сохранение данных https://jira.yamoney.ru/secure/attachment/600599/Screenshot%202021-07-08%20at%2017.04.37.png-->
+  <string name='ym_save_payment_method_linked_card_auto_write_off_message_text_part_2'>saving bank card details and debiting money without your participation</string>
+  <!--Текст у переключателя на разрешение автосписаний и сохранение платежных данных https://jira.yamoney.ru/secure/attachment/600600/Screenshot%202021-07-08%20at%2017.04.50.png-->
+  <string name='ym_auto_write_off_save_payments_with_switch'>Allow autopayments and save payment details</string>
+  <!--Начало описания операции переключателя https://jira.yamoney.ru/secure/attachment/600600/Screenshot%202021-07-08%20at%2017.04.50.png-->
+  <string name='ym_save_payment_method_linked_card_auto_write_off_message_text_with_switch_part_1'>After the payment, the store will</string>
+  <!--Конец описания операции переключателя https://jira.yamoney.ru/secure/attachment/600600/Screenshot%202021-07-08%20at%2017.04.50.png-->
+  <string name='ym_save_payment_method_linked_card_auto_write_off_message_text_with_switch_part_2'>save your bank card details to be able to debit money without your participation</string>
+  <!--Заголовок экрана с информацией по автосписаниям и сохранению платежных данных https://jira.yamoney.ru/secure/attachment/600599/Screenshot%202021-07-08%20at%2017.04.37.png-->
+  <string name='ym_auto_write_off_and_save_card_title'>Autopayments \nand saving payment details</string>
+  <!--Текст с информацией по автосписаниям и сохранению платежных данных https://jira.yamoney.ru/secure/attachment/600599/Screenshot%202021-07-08%20at%2017.04.37.png-->
+  <string name='ym_auto_write_off_and_save_card_body'>If you allowed it, your bank card details will be saved for this store and its partners: card number, cardholder\'s name, and expiration date (everything except the CVC). Next time, you won\'t need to enter them for payments in this store. \n \nBesides that, we\'ll link the card (including if it\'s been used via Google Pay) to the store. After that, the store will be able to send requests for debiting money automatically: then the payment is made without an additional confirmation from you. \n \nAutopayments will continue even after you reissue the card, even if your bank can update the data automatically. You can cancel them and unlink the card at any moment via store\'s support service.</string>
+  <!--Заголовок экрана с информацией по сохранению платежных данных https://jira.yamoney.ru/secure/attachment/600598/Screenshot%202021-07-08%20at%2017.04.26.png-->
+  <string name='ym_save_card_title'>Saving payment details</string>
+  <!--Текст с информацией по сохранению платежных данных https://jira.yamoney.ru/secure/attachment/600598/Screenshot%202021-07-08%20at%2017.04.26.png-->
+  <string name='ym_save_card_body'>If you allowed it, your bank card details will be saved for this store and its partners: card number, cardholder\'s name, and expiration date (everything except the CVC). Next time, you won\'t need to enter them for payments in this store. \n \nYou can delete the bank card details during the payment process (tap on the three dots next to the card and select \"Remove the card\") or by contacting the support service.</string>
+  <!--Заголовок экрана с инстуркцией по отвязке карты https://jira.yamoney.ru/secure/attachment/600609/Screenshot%202021-07-08%20at%2017.18.18.png-->
+  <string name='ym_how_unbind_wallet_card_title'>How to unlink a card from the wallet</string>
+  <!--Текст экрана с инстуркцией по отвязке карты https://jira.yamoney.ru/secure/attachment/600609/Screenshot%202021-07-08%20at%2017.18.18.png-->
+  <string name='ym_how_unbind_wallet_card_body'>To do that, go to the wallet settings on the YooMoney website or in the app. \nIn the app: tap on your profile picture, select \"Bank cards\", swipe the one you need to the left, and tap \"Remove\". \nOn the website: go to the wallet settings, open the \"Linked cards\" tab, find the one you need, and click \"Unlink\".</string>
+  <!--Сообщение на попапе для отвязки карты https://jira.yamoney.ru/secure/attachment/601859/Screenshot%202021-07-14%20at%2011.51.25.png-->
+  <string name='ym_unbinding_alert_message'>Autopayments will continue after you remove the card. To cancel autopayments, contact store\'s support service</string>
+  <string name='ym_save_payment_method_linked_saved_card_message_text_with_switch_part_1'>By making this payment, you allow the store</string>
+  <string name='ym_save_payment_method_linked_saved_card_message_text_with_switch_part_2'>to save your bank card details</string>
+  <string name='ym_save_payment_method_linked_saved_card_message_text_with_switch_part_3'>: next time you won\'t need to enter them</string>
+  <!-- Сообщение о безопасной сделке https://jira.yamoney.ru/secure/attachment/602517/Screenshot%202021-07-16%20at%2010.37.34.png-->
+  <string name='ym_safe_payments_agreement_part_1'>The payment can have</string>
+  <!-- Сообщение о безопасной сделке https://jira.yamoney.ru/secure/attachment/602517/Screenshot%202021-07-16%20at%2010.37.34.png-->
+  <string name='ym_safe_payments_agreement_part_2'>multiple recipients</string>
+  <!-- Заголовок безопасной сделки https://jira.yamoney.ru/secure/attachment/602532/Screenshot%202021-07-16%20at%2011.19.52.png-->
+  <string name='ym_safe_payments_agreement_title'>Why the payment has multiple recipients</string>
+  <!-- Текст безопасной сделки https://jira.yamoney.ru/secure/attachment/602532/Screenshot%202021-07-16%20at%2011.19.52.png-->
+  <string name='ym_safe_payments_agreement_message'>It can happen when you pay on an online platform where it\'s possible to buy from multiple sellers at once (for example, on marketplaces). \nYou can find the list of recipients on the platform where you\'re making the payment.</string>
 </resources>

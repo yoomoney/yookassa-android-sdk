@@ -55,16 +55,21 @@ import ru.yoomoney.sdk.kassa.payments.userAuth.MoneyAuthFragment
 import ru.yoomoney.sdk.kassa.payments.model.toType
 import ru.yoomoney.sdk.kassa.payments.payment.GetLoadedPaymentOptionListRepository
 import ru.yoomoney.sdk.kassa.payments.contract.ContractFragment
+import ru.yoomoney.sdk.kassa.payments.model.LinkedCard
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.PaymentOptionListFragment
+import ru.yoomoney.sdk.kassa.payments.tokenize.TokenizeFragment
 import ru.yoomoney.sdk.kassa.payments.ui.view.BackPressedAppCompatDialog
 import ru.yoomoney.sdk.kassa.payments.ui.view.BackPressedBottomSheetDialog
 import ru.yoomoney.sdk.kassa.payments.ui.view.WithBackPressedListener
+import ru.yoomoney.sdk.kassa.payments.unbind.UnbindCardFragment
 import javax.inject.Inject
 
 private const val PAYMENT_OPTION_LIST_FRAGMENT_TAG = "paymentOptionListFragment"
 private const val CONTRACT_FRAGMENT_TAG = "contractFragment"
+private const val TOKENIZE_FRAGMENT_TAG = "tokenizeFragment"
 private const val AUTH_FRAGMENT_TAG = "authFragment"
 private const val PAYMENT_AUTH_FRAGMENT_TAG = "paymentAuthFragment"
+private const val UNBIND_CARD_FRAGMENT_TAG = "unbindCardFragment"
 
 internal class MainDialogFragment : BottomSheetDialogFragment() {
 
@@ -141,27 +146,8 @@ internal class MainDialogFragment : BottomSheetDialogFragment() {
         view.viewTreeObserver?.addOnGlobalLayoutListener(onGlobalLayoutListener)
 
         (dialog as? WithBackPressedListener)?.onBackPressed = {
-            val contractShown =
-                isHidden || childFragmentManager.findFragmentByTag(CONTRACT_FRAGMENT_TAG)?.isHidden == false
-            val paymentAuthShown = childFragmentManager.findFragmentByTag(PAYMENT_AUTH_FRAGMENT_TAG)?.isHidden == false
-
-            when {
-                paymentAuthShown -> {
-                    router.navigateTo(
-                        Screen.Contract(
-                            Screen.PaymentAuth.PaymentAuthResult.CANCEL))
-                }
-                contractShown -> {
-                    router.takeUnless { loadedPaymentOptionListRepository.getLoadedPaymentOptions().size == 1 }
-                        ?.let {
-                            childFragmentManager.popBackStack()
-                            it.navigateTo(Screen.PaymentOptions())
-                        }
-                        ?: dismissAllowingStateLoss()
-                }
-            }
-
-            contractShown || paymentAuthShown
+            requireActivity().onBackPressed()
+            true
         }
 
         dialog?.setOnShowListener {
@@ -204,27 +190,13 @@ internal class MainDialogFragment : BottomSheetDialogFragment() {
     }
 
     private fun onScreenChanged(screen: Screen) {
+        val currentFragment = childFragmentManager.fragments.lastOrNull()
         when (screen) {
-            is Screen.Contract -> {
-                with(childFragmentManager) {
-                    val fragment = (findFragmentByTag(CONTRACT_FRAGMENT_TAG) as ContractFragment?)
-                    if (fragment != null) {
-                        (findFragmentByTag(PAYMENT_AUTH_FRAGMENT_TAG) as? PaymentAuthFragment)?.let {
-                            popBackStackImmediate()
-                        }
-                        if (screen.paymentAuthResult != null) {
-                            fragment.paymentAuthResult(screen.paymentAuthResult)
-                        } else {
-                            fragment.takeUnless { it.isHidden }?.reload()
-                        }
-                    } else {
-                        transitToFragment(
-                            findFragmentByTag(PAYMENT_OPTION_LIST_FRAGMENT_TAG)!!,
-                            ContractFragment(), CONTRACT_FRAGMENT_TAG
-                        )
-                    }
-                }
-            }
+            is Screen.Contract -> transitToFragment(
+                requireNotNull(currentFragment),
+                ContractFragment(),
+                CONTRACT_FRAGMENT_TAG
+            )
             is Screen.PaymentOptions -> {
                 with(childFragmentManager) {
                     val paymentOptionListFragment =
@@ -235,16 +207,17 @@ internal class MainDialogFragment : BottomSheetDialogFragment() {
                             ?.popBackStack()
                     }
 
-                    if (screen.moneyAuthResult != null) {
-                        paymentOptionListFragment.onAuthResult(screen.moneyAuthResult)
-                    } else {
-                        paymentOptionListFragment.onAppear()
-                    }
+                    paymentOptionListFragment.onAppear()
                 }
             }
             is Screen.MoneyAuth -> {
                 (childFragmentManager.findFragmentByTag(AUTH_FRAGMENT_TAG) as MoneyAuthFragment).authorize()
             }
+            is Screen.Tokenize -> transitToFragment(
+                requireNotNull(currentFragment),
+                TokenizeFragment.newInstance(screen.tokenizeInputModel),
+                TOKENIZE_FRAGMENT_TAG
+            )
             is Screen.TokenizeSuccessful -> {
                 val result = Intent()
                     .putExtra(EXTRA_PAYMENT_TOKEN, screen.tokenOutputModel.token)
@@ -255,19 +228,25 @@ internal class MainDialogFragment : BottomSheetDialogFragment() {
                     finish()
                 }
             }
-            is Screen.TokenizeCancelled -> {
-                with(requireActivity()) {
-                    setResult(Activity.RESULT_CANCELED)
-                    finish()
-                }
+            is Screen.TokenizeCancelled -> with(requireActivity()) {
+                setResult(Activity.RESULT_CANCELED)
+                finish()
             }
-            is Screen.PaymentAuth -> {
-                transitToFragment(
-                    childFragmentManager.findFragmentByTag(CONTRACT_FRAGMENT_TAG)!!,
-                    PaymentAuthFragment.createFragment(screen.amount, screen.linkWalletToApp),
-                    PAYMENT_AUTH_FRAGMENT_TAG
-                )
-            }
+            is Screen.PaymentAuth -> transitToFragment(
+                requireNotNull(currentFragment),
+                PaymentAuthFragment.createFragment(screen.amount, screen.linkWalletToApp),
+                PAYMENT_AUTH_FRAGMENT_TAG
+            )
+            is Screen.UnbindLinkedCard -> transitToFragment(
+                requireNotNull(currentFragment),
+                UnbindCardFragment.createFragment(screen.paymentOption as LinkedCard),
+                UNBIND_CARD_FRAGMENT_TAG
+            )
+            is Screen.UnbindInstrument -> transitToFragment(
+                requireNotNull(currentFragment),
+                UnbindCardFragment.createFragment(screen.instrumentBankCard),
+                UNBIND_CARD_FRAGMENT_TAG
+            )
         }
     }
 

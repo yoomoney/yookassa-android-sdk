@@ -23,12 +23,21 @@ package ru.yoomoney.sdk.kassa.payments.utils
 
 import androidx.annotation.DrawableRes
 import ru.yoomoney.sdk.kassa.payments.R
+import ru.yoomoney.sdk.kassa.payments.extensions.getIconResId
+import ru.yoomoney.sdk.kassa.payments.model.CardBrand
 
 private const val VISA = "4"
 private const val MASTERCARD = "5"
 internal var UNKNOWN_CARD_ICON = R.drawable.ym_ic_unknown_list
 
 private val banks by lazy { initBanks() }
+
+@DrawableRes
+internal fun getBankOrBrandLogo(pan: String, brand: CardBrand): Int {
+    return getBankLogo(pan).let {
+        it.takeIf { it != UNKNOWN_CARD_ICON} ?: brand.getIconResId()
+    }
+}
 
 @DrawableRes
 internal fun getBankLogo(pan: String): Int {

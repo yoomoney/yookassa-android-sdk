@@ -29,7 +29,7 @@ import ru.yoomoney.sdk.kassa.payments.extensions.toPaymentOptionResponse
 import ru.yoomoney.sdk.kassa.payments.http.HostProvider
 import ru.yoomoney.sdk.kassa.payments.methods.base.GetRequest
 import ru.yoomoney.sdk.kassa.payments.model.CurrentUser
-import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
+import ru.yoomoney.sdk.kassa.payments.model.PaymentOptionsResponse
 import ru.yoomoney.sdk.kassa.payments.model.Result
 
 private const val PAYMENT_OPTIONS_METHOD_PATH = "/payment_options"
@@ -45,8 +45,9 @@ internal data class PaymentOptionsRequest(
     private val gatewayId: String?,
     private val userAuthToken: String?,
     private val shopToken: String,
-    private val savePaymentMethod: SavePaymentMethod
-) : GetRequest<Result<List<PaymentOption>>> {
+    private val savePaymentMethod: SavePaymentMethod,
+    private val merchantCustomerId: String?
+) : GetRequest<Result<PaymentOptionsResponse>> {
 
     override fun getHeaders(): List<Pair<String, String>> {
         val headers = mutableListOf("Authorization" to Credentials.basic(shopToken, ""))
@@ -62,6 +63,9 @@ internal data class PaymentOptionsRequest(
         params[CURRENCY] = amount.currency.toString()
         if (gatewayId != null) {
             params[GATEWAY_ID] = gatewayId
+        }
+        merchantCustomerId?.let {
+            params["merchant_customer_id"] = merchantCustomerId
         }
 
         when (savePaymentMethod) {
@@ -81,7 +85,7 @@ internal data class PaymentOptionsRequest(
                 .joinToString(prefix = "?", separator = "&"))
             ?: path
 
-    override fun convertJsonToResponse(jsonObject: JSONObject): Result<List<PaymentOption>> {
+    override fun convertJsonToResponse(jsonObject: JSONObject): Result<PaymentOptionsResponse> {
         return jsonObject.toPaymentOptionResponse()
     }
 }

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ The MIT License (MIT)
   ~ Copyright © 2020 NBCO YooMoney LLC
   ~
@@ -20,23 +19,22 @@
   ~ OTHER DEALINGS IN THE SOFTWARE.
   -->
 
-<ViewAnimator
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ViewAnimator xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootContainer"
     android:layout_width="@dimen/ym_dialogWidth"
     android:layout_height="3dp"
-    tools:layout_width="match_parent"
     android:measureAllChildren="false"
-    android:transitionName="@string/ym_transition_name">
+    android:transitionName="@string/ym_transition_name"
+    tools:layout_width="match_parent">
 
     <ru.yoomoney.sdk.kassa.payments.ui.view.LoadingView
         android:id="@+id/loadingView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/ym_bottomDialog_maxHeight"
         android:layout_gravity="center"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
     <FrameLayout
         android:id="@+id/contentView"
@@ -56,116 +54,116 @@
                 android:orientation="vertical">
 
                 <TextView
-                    style="@style/Text.Title3"
                     android:id="@+id/title"
+                    style="@style/Text.Title3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/ym_screen_indentEnd"
                     android:layout_marginStart="@dimen/ym_screen_indentStart"
                     android:layout_marginTop="@dimen/ym_space_l"
+                    android:layout_marginEnd="@dimen/ym_screen_indentEnd"
                     android:ellipsize="end"
-                    tools:text="Комета" />
+                    tools:text="Комета"/>
 
                 <ru.yoomoney.sdk.gui.widget.text.TextBodyView
-                    style="@style/Text.Body.Secondary"
                     android:id="@+id/subtitle"
+                    style="@style/Text.Body.Secondary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/ym_screen_indentEnd"
                     android:layout_marginStart="@dimen/ym_screen_indentStart"
+                    android:layout_marginEnd="@dimen/ym_screen_indentEnd"
                     android:ellipsize="end"
-                    tools:text="Программа лояльности, не меняя концепции, изложенной выше, развивает медиабизнес." />
+                    tools:text="Программа лояльности, не меняя концепции, изложенной выше, развивает медиабизнес."/>
 
                 <TextView
-                    style="@style/Text.Title2"
                     android:id="@+id/sum"
+                    style="@style/Text.Title2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:includeFontPadding="false"
+                    android:layout_marginStart="@dimen/ym_screen_indentStart"
                     android:layout_marginTop="@dimen/ym_space_xs"
                     android:layout_marginEnd="@dimen/ym_screen_indentEnd"
-                    android:layout_marginStart="@dimen/ym_screen_indentStart"
-                    tools:text="29 675,50 Р" />
+                    android:includeFontPadding="false"
+                    tools:text="29 675,50 Р"/>
 
 
                 <LinearLayout
                     android:id="@+id/feeLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/ym_screen_indentEnd"
-                    android:layout_marginLeft="@dimen/ym_screen_indentStart"
-                    android:layout_marginRight="@dimen/ym_screen_indentEnd"
                     android:layout_marginStart="@dimen/ym_screen_indentStart"
+                    android:layout_marginLeft="@dimen/ym_screen_indentStart"
                     android:layout_marginTop="@dimen/ym_space_3xs"
-                    android:visibility="gone"
-                    android:orientation="horizontal">
+                    android:layout_marginEnd="@dimen/ym_screen_indentEnd"
+                    android:layout_marginRight="@dimen/ym_screen_indentEnd"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         style="@style/Text.Body"
-                        android:textColor="@color/color_type_secondary"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/ym_contract_fee" />
+                        android:text="@string/ym_contract_fee"
+                        android:textColor="@color/color_type_secondary"/>
 
                     <TextView
-                        style="@style/Text.Body"
                         android:id="@+id/feeView"
-                        android:textColor="@color/color_type_secondary"
+                        style="@style/Text.Body"
                         android:layout_width="wrap_content"
-                        android:layout_marginLeft="@dimen/ym_space_2xs"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/ym_space_2xs"
                         android:includeFontPadding="false"
-                        tools:text="3 Р" />
+                        android:textColor="@color/color_type_secondary"
+                        tools:text="3 Р"/>
                 </LinearLayout>
 
                 <include
                     android:id="@+id/paymentOption"
-                    android:visibility="gone"
                     layout="@layout/ym_item_common"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"/>
 
                 <include
                     android:id="@+id/yooMoneyAccountView"
-                    android:visibility="gone"
                     layout="@layout/ym_yoo_money_info_view"
-                    android:layout_marginStart="@dimen/ym_space_m"
-                    android:layout_marginEnd="@dimen/ym_space_m"
-                    android:layout_marginTop="@dimen/ym_space_2xl"
-                    android:layout_marginBottom="@dimen/ym_space_2xl"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/ym_space_m"
+                    android:layout_marginTop="@dimen/ym_space_2xl"
+                    android:layout_marginEnd="@dimen/ym_space_m"
+                    android:layout_marginBottom="@dimen/ym_space_2xl"
+                    android:visibility="gone"/>
 
                 <include
                     android:id="@+id/googlePayView"
-                    android:visibility="gone"
                     layout="@layout/ym_google_pay_info"
-                    android:layout_marginStart="@dimen/ym_space_m"
-                    android:layout_marginEnd="@dimen/ym_space_m"
-                    android:layout_marginTop="@dimen/ym_space_2xl"
-                    android:layout_marginBottom="@dimen/ym_space_2xl"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/ym_space_m"
+                    android:layout_marginTop="@dimen/ym_space_2xl"
+                    android:layout_marginEnd="@dimen/ym_space_m"
+                    android:layout_marginBottom="@dimen/ym_space_2xl"
+                    android:visibility="gone"/>
 
                 <include
                     android:id="@+id/sberPayView"
-                    android:visibility="gone"
                     layout="@layout/ym_sber_pay_info"
-                    android:layout_marginStart="@dimen/ym_space_m"
-                    android:layout_marginEnd="@dimen/ym_space_m"
-                    android:layout_marginTop="@dimen/ym_space_2xl"
-                    android:layout_marginBottom="@dimen/ym_space_2xl"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/ym_space_m"
+                    android:layout_marginTop="@dimen/ym_space_2xl"
+                    android:layout_marginEnd="@dimen/ym_space_m"
+                    android:layout_marginBottom="@dimen/ym_space_2xl"
+                    android:visibility="gone"/>
 
                 <ru.yoomoney.sdk.kassa.payments.ui.view.BankCardView
                     android:id="@+id/bankCardView"
-                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/ym_space_m"
                     android:layout_marginTop="@dimen/ym_spaceXL"
                     android:layout_marginEnd="@dimen/ym_space_m"
-                    android:layout_marginStart="@dimen/ym_space_m"/>
+                    android:visibility="gone"/>
 
                 <ViewSwitcher
                     android:id="@+id/switches"
@@ -184,6 +182,7 @@
                             android:id="@+id/allowWalletLinking"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:visibility="gone"
                             tools:ym_title="allowWalletLinking"
                             tools:ym_description="@string/ym_allow_wallet_linking"/>
 
@@ -191,18 +190,18 @@
                             android:id="@+id/savePaymentMethodSelection"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            tools:ym_title="savePaymentMethodSelection"
-                            tools:ym_description="savePaymentMethodSelection description"/>
+                            tools:ym_description="savePaymentMethodSelection description"
+                            tools:ym_title="savePaymentMethodSelection"/>
 
                         <ru.yoomoney.sdk.gui.widget.text.TextBodyView
                             android:id="@+id/savePaymentMethodMessageTitle"
                             style="?ym_TitleTextAppearance"
-                            android:layout_marginStart="@dimen/ym_screen_indentStart"
-                            android:layout_marginEnd="@dimen/ym_screen_indentEnd"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/ym_screen_indentStart"
+                            android:layout_marginEnd="@dimen/ym_screen_indentEnd"
                             android:ellipsize="end"
-                            android:maxLines="1"
+                            android:maxLines="2"
                             tools:text="Title"/>
 
                         <ru.yoomoney.sdk.gui.widget.text.TextCaption1View
@@ -210,8 +209,8 @@
                             style="?ym_SubtitleTextAppearance"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/ym_space3XS"
                             android:layout_marginStart="@dimen/ym_screen_indentStart"
+                            android:layout_marginTop="@dimen/ym_space3XS"
                             android:layout_marginEnd="@dimen/ym_space_l"
                             tools:text="SubTitle"
                             tools:visibility="visible"/>
@@ -222,41 +221,41 @@
                         android:id="@+id/additionalInfoInputViewContainer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/ym_screen_indentEnd"
-                        android:layout_marginLeft="@dimen/ym_screen_indentStart"
-                        android:layout_marginRight="@dimen/ym_screen_indentEnd"
                         android:layout_marginStart="@dimen/ym_screen_indentStart"
+                        android:layout_marginLeft="@dimen/ym_screen_indentStart"
                         android:layout_marginTop="@dimen/ym_space2XL"
+                        android:layout_marginEnd="@dimen/ym_screen_indentEnd"
+                        android:layout_marginRight="@dimen/ym_screen_indentEnd"
                         android:measureAllChildren="false">
 
                         <ru.yoomoney.sdk.kassa.payments.ui.view.YmProgressBar
-                            style="?android:progressBarStyle"
                             android:id="@+id/paymentAuthLoading"
+                            style="?android:progressBarStyle"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"/>
 
                         <LinearLayout
                             android:id="@+id/phoneInputContainer"
                             android:layout_width="match_parent"
-                            android:orientation="vertical"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
 
                             <ru.yoomoney.sdk.kassa.payments.ui.CheckoutTextInputView
                                 android:id="@+id/phoneInput"
-                                app:label="@string/ym_label_phone_in_sbol"
                                 android:layout_width="match_parent"
                                 android:layout_height="60dp"
                                 android:inputType="phone"
-                                app:hint="+7 900 000 00 00" />
+                                app:hint="+7 900 000 00 00"
+                                app:label="@string/ym_label_phone_in_sbol"/>
 
                             <TextView
                                 style="@style/Text.Body"
-                                android:textSize="@dimen/ym_text_caption2"
-                                android:textColor="@color/color_type_ghost"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:includeFontPadding="false"
                                 android:text="@string/ym_sber_phone_input_info"
-                                android:includeFontPadding="false"/>
+                                android:textColor="@color/color_type_ghost"
+                                android:textSize="@dimen/ym_text_caption2"/>
 
                         </LinearLayout>
                     </ViewAnimator>
@@ -266,23 +265,23 @@
                     android:id="@+id/nextButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/ym_screen_indentEnd"
                     android:layout_marginStart="@dimen/ym_screen_indentStart"
                     android:layout_marginTop="@dimen/ym_decor_marginTop_m"
+                    android:layout_marginEnd="@dimen/ym_screen_indentEnd"
                     android:layout_marginBottom="@dimen/ym_space_m"
-                    app:ym_text="@string/ym_contract_continue" />
+                    app:ym_text="@string/ym_contract_continue"/>
 
                 <TextView
-                    style="@style/Text.Caption1.Secondary"
                     android:id="@+id/licenseAgreement"
+                    style="@style/Text.Caption1.Secondary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAlignment="center"
-                    android:textColor="@color/color_type_secondary"
                     android:layout_marginStart="@dimen/ym_screen_indentStart"
                     android:layout_marginEnd="@dimen/ym_screen_indentEnd"
                     android:layout_marginBottom="@dimen/ym_screen_indentBottom"
-                    android:maxLines="3" />
+                    android:maxLines="3"
+                    android:textAlignment="center"
+                    android:textColor="@color/color_type_secondary"/>
 
             </LinearLayout>
 
@@ -291,8 +290,8 @@
         <ru.yoomoney.sdk.kassa.payments.ui.DialogTopBar
             android:id="@+id/topBar"
             android:layout_width="match_parent"
-            android:background="@drawable/ym_bottom_sheet_dialog_rounded_top_corners"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:background="@drawable/ym_bottom_sheet_dialog_rounded_top_corners"/>
 
     </FrameLayout>
 
@@ -301,5 +300,5 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/ym_bottomDialog_maxHeight"
         android:visibility="gone"
-        app:ym_error_button_text="@string/ym_retry" />
+        app:ym_error_button_text="@string/ym_retry"/>
 </ViewAnimator>

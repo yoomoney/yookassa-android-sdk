@@ -41,7 +41,9 @@ import ru.yoomoney.sdk.kassa.payments.metrics.YandexMetricaExceptionReporter
 import ru.yoomoney.sdk.kassa.payments.model.UnhandledException
 import ru.yoomoney.sdk.kassa.payments.userAuth.MoneyAuthFragment
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.PaymentOptionListFragment
+import ru.yoomoney.sdk.kassa.payments.tokenize.TokenizeFragment
 import ru.yoomoney.sdk.kassa.payments.ui.view.BankCardView
+import ru.yoomoney.sdk.kassa.payments.unbind.UnbindCardFragment
 import ru.yoomoney.sdk.kassa.payments.utils.getAllPaymentMethods
 import ru.yoomoney.sdk.kassa.payments.utils.isBuildDebug
 import ru.yoomoney.sdk.march.Defaults
@@ -53,6 +55,7 @@ internal fun setComponent(
     uiParameters: UiParameters,
     paymentMethodId: PaymentMethodId?,
     okHttpModule: OkHttpModule,
+    paymentOptionsListModule: PaymentOptionsListModule,
     tokensStorageModule: TokensStorageModule,
     currentUserModule: CurrentUserModule,
     yandexMetricaReporterModule: YandexMetricaReporterModule
@@ -65,6 +68,7 @@ internal fun setComponent(
         paymentMethodId = paymentMethodId,
         exceptionReporter = YandexMetricaExceptionReporter(YandexMetrica.getReporter(context, BuildConfig.APP_METRICA_KEY)),
         okHttpModule = okHttpModule,
+        paymentOptionsListModule = paymentOptionsListModule,
         currentUserModule = currentUserModule,
         tokensStorageModule = tokensStorageModule,
         yandexMetricaReporterModule = yandexMetricaReporterModule
@@ -83,6 +87,7 @@ internal object CheckoutInjector {
         paymentMethodId: PaymentMethodId?,
         exceptionReporter: ExceptionReporter,
         okHttpModule: OkHttpModule = OkHttpModule(),
+        paymentOptionsListModule: PaymentOptionsListModule = PaymentOptionsListModule(),
         yandexMetricaReporterModule: YandexMetricaReporterModule = YandexMetricaReporterModule(),
         currentUserModule: CurrentUserModule = CurrentUserModule(),
         tokensStorageModule: TokensStorageModule = TokensStorageModule()
@@ -120,6 +125,7 @@ internal object CheckoutInjector {
             .uiParameters(uiParameters)
             .paymentMethodId(paymentMethodId)
             .okHttpModule(okHttpModule)
+            .paymentOptionsListModule(paymentOptionsListModule)
             .mainReporterModule(yandexMetricaReporterModule)
             .tokensStorageModule(tokensStorageModule)
             .currentUserModule(currentUserModule)
@@ -135,6 +141,14 @@ internal object CheckoutInjector {
     }
 
     fun injectContractFragment(fragment: ContractFragment) {
+        component.inject(fragment)
+    }
+
+    fun injectUntieCardFragment(fragment: UnbindCardFragment) {
+        component.inject(fragment)
+    }
+
+    fun injectTokenizeFragment(fragment: TokenizeFragment) {
         component.inject(fragment)
     }
 

@@ -104,6 +104,7 @@ internal class BankCardView
     private val expiryEditText: EditText
     private val cvcEditText: EditText
 
+    private val cardNumberFullText: TextView
     private val cardNumberTitle: TextView
     private val expiryTitle: TextView
     private val cvcTitle: TextView
@@ -132,7 +133,7 @@ internal class BankCardView
         }
     private var cardCorrectnessState: CorrectnessState = CorrectnessState.NA
         set(value) {
-            when(value) {
+            when (value) {
                 CorrectnessState.CORRECT -> CardNumberInputSuccess
                 CorrectnessState.INCORRECT -> CardNumberInputError
                 else -> null
@@ -157,6 +158,8 @@ internal class BankCardView
 
     private val isScanBankCardAvailable: Boolean
 
+    private var isChangeCardAvailable: Boolean = true
+
     private var mode = Mode.EDIT
 
     init {
@@ -178,6 +181,7 @@ internal class BankCardView
         expiryEditText = findViewById(R.id.expiry)
         cvcEditText = findViewById(R.id.cvc)
 
+        cardNumberFullText = findViewById(R.id.cardNumberFull)
         cardNumberTitle = findViewById(R.id.cardNumberTitle)
         expiryTitle = findViewById(R.id.expiryTitle)
         cvcTitle = findViewById(R.id.cvcTitle)
@@ -224,9 +228,11 @@ internal class BankCardView
             resources.getString(R.string.ym_card_number_only_enter_hint)
         }
 
-        setUpCardNumber()
-        setUpExpiry()
-        setUpCvc()
+        if (isChangeCardAvailable) {
+            setUpCardNumber()
+            setUpExpiry()
+            setUpCvc()
+        }
     }
 
     private fun setUpCardNumber() {
@@ -362,7 +368,7 @@ internal class BankCardView
 
                 bankCardLogo.apply {
                     setImageDrawable(ContextCompat.getDrawable(context, bankLogo))
-                    alpha = 0.0f;
+                    alpha = 0.0f
 
                     animate()
                         .alpha(1.0f)
@@ -372,18 +378,26 @@ internal class BankCardView
 
                 cardNumberEditText.animate()
                     .translationX(getDimensionPixelOffset(R.dimen.ym_spaceXL).toFloat())
-                    .duration = duration;
+                    .duration = duration
+
+                cardNumberFullText.animate()
+                    .translationX(getDimensionPixelOffset(R.dimen.ym_spaceXL).toFloat())
+                    .duration = duration
             }
 
         } else {
             bankCardLogo.animate()
                 .translationX(-100F)
                 .alpha(0.0f)
-                .duration = duration;
+                .duration = duration
 
             cardNumberEditText.animate()
                 .translationX(-1F)
-                .duration = duration;
+                .duration = duration
+
+            cardNumberFullText.animate()
+                .translationX(-1F)
+                .duration = duration
 
             cardImageDrawable = -1
         }
@@ -569,6 +583,52 @@ internal class BankCardView
         checkBankCardReady()
     }
 
+    fun setChangeCardAvailable(isAvailable: Boolean) {
+        isChangeCardAvailable = isAvailable
+    }
+
+    fun setCardData(cardNumber: String) {
+        with(cardNumberFullText) {
+            show()
+            visible = true
+            isClickable = false
+            isFocusable = false
+            text = cardNumber.replace("*", "•").replace("....".toRegex(), "$0 ")
+        }
+
+        cardNumberTitle.makeInActive()
+    }
+
+    fun setCardData(cardNumber: String, cardName: String) {
+        with(cardNumberFullText) {
+            show()
+            visible = true
+            isClickable = false
+            isFocusable = false
+            text = cardNumber.replace("*", "•").replace("....".toRegex(), "$0 ")
+        }
+
+        cardNumberTitle.text = cardName
+        cardNumberTitle.setTextColor(getColor(R.color.color_type_primary))
+    }
+
+    fun hideAdditionalInfo() {
+        cardNumberEditText.hide()
+        cardScanView.hide()
+        continueWithCardView.hide()
+        clearCardNumberView.hide()
+    }
+
+    fun showBankLogo(cardNumber: String) {
+        bankCardLogo.show()
+        setBankCardIcon(getBankLogo(cardNumber), true)
+    }
+
+    fun showBankLogo(@DrawableRes bankLogo: Int) {
+        bankCardLogo.show()
+        setBankCardIcon(bankLogo, true)
+    }
+
     fun presetBankCardInfo(cardNumber: String) {
         mode = Mode.PRESET
 
@@ -646,13 +706,13 @@ internal class BankCardView
         show()
         animate()
             .alpha(1.0f)
-            .duration = duration;
+            .duration = duration
     }
 
     private fun View.fadeOut() {
         animate()
             .alpha(0.0f)
-            .duration = duration;
+            .duration = duration
 
         hide()
     }
@@ -661,7 +721,7 @@ internal class BankCardView
         bankCardAnalyticsLogger?.onNewEvent(event)
     }
 
-    private inner class AutoProceedWatcher internal constructor(
+    private inner class AutoProceedWatcher(
         private val textView: TextView,
         @StringRes private val errorRes: Int,
         @androidx.annotation.IntRange(from = 0)

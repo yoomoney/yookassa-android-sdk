@@ -26,6 +26,11 @@ package ru.yoomoney.sdk.kassa.payments.extensions
 import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
+import androidx.annotation.ColorRes
+import androidx.core.content.ContextCompat
+import com.google.android.material.snackbar.Snackbar
+import ru.yoomoney.sdk.kassa.payments.R
 
 internal var View.visible
     get() = visibility == View.VISIBLE
@@ -43,5 +48,20 @@ internal fun View.hideSoftKeyboard() {
         if (imm.isActive) {
             imm.hideSoftInputFromWindow(windowToken, 0)
         }
+    }
+}
+
+internal fun View.showSnackbar(
+    message: CharSequence,
+    @ColorRes textColorResId: Int,
+    @ColorRes backgroundColorResId: Int
+): Snackbar {
+    return Snackbar.make(this, message, Snackbar.LENGTH_SHORT).apply {
+        view.elevation = resources.getDimension(R.dimen.ym_elevationL)
+        val textView =
+            view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
+        textView.setTextColor(ContextCompat.getColor(context, textColorResId))
+        view.setBackgroundColor(ContextCompat.getColor(view.context, backgroundColorResId))
+        show()
     }
 }

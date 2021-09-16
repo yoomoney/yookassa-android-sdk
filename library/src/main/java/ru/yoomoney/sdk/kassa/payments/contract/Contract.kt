@@ -21,12 +21,65 @@
 
 package ru.yoomoney.sdk.kassa.payments.contract
 
-import ru.yoomoney.sdk.kassa.payments.checkoutParameters.Amount
+import ru.yoomoney.sdk.kassa.payments.checkoutParameters.SavePaymentMethod
+import ru.yoomoney.sdk.kassa.payments.model.AbstractWallet
+import ru.yoomoney.sdk.kassa.payments.model.BankCardPaymentOption
 import ru.yoomoney.sdk.kassa.payments.model.Confirmation
+import ru.yoomoney.sdk.kassa.payments.model.GooglePay
+import ru.yoomoney.sdk.kassa.payments.model.LinkedCard
+import ru.yoomoney.sdk.kassa.payments.model.PaymentIdCscConfirmation
+import ru.yoomoney.sdk.kassa.payments.model.PaymentInstrumentBankCard
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOptionInfo
-import ru.yoomoney.sdk.kassa.payments.payment.selectOption.SelectedPaymentOptionOutputModel
-import ru.yoomoney.sdk.kassa.payments.payment.tokenize.TokenizeOutputModel
+import ru.yoomoney.sdk.kassa.payments.model.SberBank
+import ru.yoomoney.sdk.kassa.payments.model.Wallet
+import ru.yoomoney.sdk.kassa.payments.payment.selectOption.SelectedPaymentMethodOutputModel
+import ru.yoomoney.sdk.kassa.payments.payment.tokenize.TokenizeInputModel
+
+internal sealed class ContractInfo {
+    abstract val paymentOption: PaymentOption
+
+    data class WalletContractInfo(
+        override val paymentOption: Wallet,
+        val walletUserAuthName: String?,
+        val walletUserAvatarUrl: String?,
+        val showAllowWalletLinking: Boolean,
+        val allowWalletLinking: Boolean
+    ): ContractInfo()
+
+    data class WalletLinkedCardContractInfo(
+        override val paymentOption: LinkedCard,
+        val showAllowWalletLinking: Boolean,
+        val allowWalletLinking: Boolean
+    ): ContractInfo()
+
+    data class PaymentIdCscConfirmationContractInfo(
+        override val paymentOption: PaymentIdCscConfirmation,
+        val allowWalletLinking: Boolean
+    ): ContractInfo()
+
+    data class NewBankCardContractInfo(
+        override val paymentOption: BankCardPaymentOption
+    ): ContractInfo()
+
+    data class LinkedBankCardContractInfo(
+        override val paymentOption: BankCardPaymentOption,
+        val instrument: PaymentInstrumentBankCard
+    ): ContractInfo()
+
+    data class AbstractWalletContractInfo(
+        override val paymentOption: AbstractWallet
+    ): ContractInfo()
+
+    data class GooglePayContractInfo(
+        override val paymentOption: GooglePay
+    ): ContractInfo()
+
+    data class SberBankContractInfo(
+        override val paymentOption: SberBank,
+        val userPhoneNumber: String?
+    ): ContractInfo()
+}
 
 internal object Contract {
 
@@ -40,42 +93,39 @@ internal object Contract {
         data class Content(
             val shopTitle: CharSequence,
             val shopSubtitle: CharSequence,
-            val paymentOption: PaymentOption,
-            val savePaymentMethod: Boolean,
-            val showAllowWalletLinking: Boolean,
-            val allowWalletLinking: Boolean,
-            val confirmation: Confirmation
+            val isSinglePaymentMethod: Boolean,
+            val shouldSavePaymentMethod: Boolean,
+            val shouldSavePaymentInstrument: Boolean,
+            val savePaymentMethod: SavePaymentMethod,
+            val contractInfo: ContractInfo,
+            val confirmation: Confirmation,
+            val isSplitPayment: Boolean,
+            val customerId: String?
         ) : State()
 
         data class GooglePay(
             val content: Content,
             val paymentOptionId: Int
         ) : State()
-
-        data class Tokenize(val content: Content, val paymentOptionInfo: PaymentOptionInfo?): State()
-
-        data class TokenizeError(
-            val content: Content,
-            val paymentOptionInfo: PaymentOptionInfo?,
-            val error: Throwable
-        ): State()
     }
 
     sealed class Action {
         object Load : Action()
         data class LoadContractFailed(val error: Throwable) : Action()
-        data class LoadContractSuccess(val outputModel: SelectedPaymentOptionOutputModel) : Action()
+        data class LoadContractSuccess(val outputModel: SelectedPaymentMethodOutputModel) : Action()
+
         data class Tokenize(val paymentOptionInfo: PaymentOptionInfo? = null): Action()
-        data class TokenizeFailed(val error: Throwable) : Action()
-        data class TokenizeSuccess(val content: TokenizeOutputModel) : Action()
+        data class TokenizePaymentInstrument(val instrument: PaymentInstrumentBankCard, val csc: String?): Action()
+        object TokenizeCancelled: Action() {
+            override fun toString() = "Action.TokenizeCancelled"
+        }
+
         object RestartProcess: Action() {
             override fun toString() = "Action.RestartProcess"
         }
         data class ChangeSavePaymentMethod(val savePaymentMethod: Boolean): Action()
         data class ChangeAllowWalletLinking(val isAllowed: Boolean): Action()
-        data class PaymentAuthRequired(val charge: Amount): Action()
-        object PaymentAuthSuccess: Action()
-        object PaymentAuthCancel: Action()
+
         object Logout: Action()
         object LogoutSuccessful: Action()
         object GooglePayCancelled: Action()
@@ -88,7 +138,12 @@ internal object Contract {
         object CancelProcess: Effect() {
             override fun toString() = "Effect.CancelProcess"
         }
-        data class TokenizeComplete(val tokenizeOutputModel: TokenizeOutputModel) : Effect()
-        data class PaymentAuthRequired(val charge: Amount): Effect()
+        data class ShowTokenize(val tokenizeInputModel: TokenizeInputModel): Effect() {
+            override fun toString() = "Effect.ShowTokenize"
+        }
+        data class StartGooglePay(
+            val content: State.Content,
+            val paymentOptionId: Int
+        ) : Effect()
     }
 }

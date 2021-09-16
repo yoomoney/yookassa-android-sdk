@@ -19,8 +19,11 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package ru.yoomoney.sdk.kassa.payments.contract
+package ru.yoomoney.sdk.kassa.payments.model
 
-internal interface SelectPaymentOptionUseCase {
-    suspend fun select(): Contract.Action
-}
+internal data class ShopProperties(
+    val isSafeDeal: Boolean,
+    val isMarketplace: Boolean
+)
+
+internal val ShopProperties.isSplitPayment get() = isSafeDeal || isMarketplace

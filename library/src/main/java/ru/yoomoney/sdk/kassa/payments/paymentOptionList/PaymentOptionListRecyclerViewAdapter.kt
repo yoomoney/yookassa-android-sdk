@@ -21,51 +21,64 @@
 
 package ru.yoomoney.sdk.kassa.payments.paymentOptionList
 
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.ym_item_common.view.divider
 import kotlinx.android.synthetic.main.ym_item_common.view.image
+import kotlinx.android.synthetic.main.ym_item_common.view.options
 import kotlinx.android.synthetic.main.ym_item_common.view.primaryText
 import kotlinx.android.synthetic.main.ym_item_common.view.secondaryText
-import ru.yoomoney.sdk.kassa.payments.R
+import kotlinx.android.synthetic.main.ym_item_payment_option.view.delete
 import ru.yoomoney.sdk.kassa.payments.extensions.visible
 
 internal class PaymentOptionListRecyclerViewAdapter internal constructor(
-        private val listener: PaymentOptionClickListener,
-        private val paymentOptions: List<PaymentOptionListItem>
+    private val paymentOptionClickListener: PaymentOptionClickListener,
+    private val paymentOptionsListItem: List<PaymentOptionListItem>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.ym_item_common, parent, false)
-        return ViewHolder(v)
+        return PaymentOptionsViewHolder(PaymentOptionView(parent.context).apply {
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+        })
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val paymentOption = paymentOptions[position]
+        val paymentOption = paymentOptionsListItem[position]
+        val viewHolder = (holder as PaymentOptionsViewHolder)
+        viewHolder.isSwipeAvailable = paymentOption.hasOptions && !paymentOption.instrumentId.isNullOrEmpty()
 
-        (holder as ViewHolder).view.apply {
+        viewHolder.view.apply {
             image.setImageDrawable(paymentOption.icon)
             primaryText.text = paymentOption.title
-            setOnClickListener {
-                listener.onPaymentOptionClick(paymentOption.optionId)
-            }
 
             with(secondaryText) {
                 visible = paymentOption.additionalInfo != null
                 text = paymentOption.additionalInfo
             }
 
+            setOnClickListener {
+                paymentOptionClickListener.onPaymentOptionClick(paymentOption.optionId, paymentOption.instrumentId)
+            }
+
             divider.visible = position != itemCount - 1
+            with(options) {
+                visible = paymentOption.hasOptions
+                setOnClickListener {
+                    paymentOptionClickListener.onOptionsMenuClick(paymentOption.optionId, paymentOption.instrumentId)
+                }
+            }
+            delete.setOnClickListener { paymentOptionClickListener.onDeleteClick(paymentOption.optionId, paymentOption.instrumentId) }
         }
     }
 
-    override fun getItemCount() = paymentOptions.size
-
-    class ViewHolder internal constructor(internal var view: View) : RecyclerView.ViewHolder(view)
+    override fun getItemCount() = paymentOptionsListItem.size
 
     interface PaymentOptionClickListener {
-        fun onPaymentOptionClick(optionId: Int)
+        fun onPaymentOptionClick(optionId: Int, instrumentId: String?)
+        fun onOptionsMenuClick(optionId: Int, instrumentId: String?)
+        fun onDeleteClick(optionId: Int, instrumentId: String?)
     }
 }

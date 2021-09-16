@@ -19,9 +19,10 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package ru.yoomoney.sdk.kassa.payments.contract
+package ru.yoomoney.sdk.kassa.payments.tokenize
 
 import ru.yoomoney.sdk.kassa.payments.model.AbstractWallet
+import ru.yoomoney.sdk.kassa.payments.model.NoConfirmation
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
 import ru.yoomoney.sdk.kassa.payments.model.Result
 import ru.yoomoney.sdk.kassa.payments.model.SelectedOptionNotFoundException
@@ -29,8 +30,10 @@ import ru.yoomoney.sdk.kassa.payments.model.WalletInfo
 import ru.yoomoney.sdk.kassa.payments.model.YooMoney
 import ru.yoomoney.sdk.kassa.payments.payment.CheckPaymentAuthRequiredGateway
 import ru.yoomoney.sdk.kassa.payments.payment.GetLoadedPaymentOptionListRepository
-import ru.yoomoney.sdk.kassa.payments.payment.tokenize.TokenOutputModel
 import ru.yoomoney.sdk.kassa.payments.payment.tokenize.TokenizeInputModel
+import ru.yoomoney.sdk.kassa.payments.payment.tokenize.TokenizeInstrumentInputModel
+import ru.yoomoney.sdk.kassa.payments.payment.tokenize.TokenizeOutputModel
+import ru.yoomoney.sdk.kassa.payments.payment.tokenize.TokenizePaymentOptionInputModel
 import ru.yoomoney.sdk.kassa.payments.payment.tokenize.TokenizeRepository
 import ru.yoomoney.sdk.kassa.payments.paymentAuth.PaymentAuthTokenRepository
 
@@ -43,29 +46,53 @@ internal class TokenizeUseCaseImpl(
     private val paymenPaymentAuthTokenRepository: PaymentAuthTokenRepository
 ) : TokenizeUseCase {
 
-    override suspend fun tokenize(model: TokenizeInputModel): Contract.Action {
+    override suspend fun tokenize(model: TokenizeInputModel): Tokenize.Action {
         val option = getLoadedPaymentOptionListRepository
             .getLoadedPaymentOptions()
             .find { it.id == model.paymentOptionId }
-            ?: return Contract.Action.TokenizeFailed(SelectedOptionNotFoundException(model.paymentOptionId))
+            ?: return Tokenize.Action.TokenizeFailed(SelectedOptionNotFoundException(model.paymentOptionId))
 
         check(option !is AbstractWallet) { CANNOT_TOKENIZE_ABSTRACT_WALLET }
 
         return when {
-            isPaymentAuthRequired(option) -> Contract.Action.PaymentAuthRequired(option.charge)
+            isPaymentAuthRequired(option) -> Tokenize.Action.PaymentAuthRequired(option.charge)
             else -> {
-                when(val result = tokenizeRepository.getToken(
-                    paymentOption = option,
-                    paymentOptionInfo = model.paymentOptionInfo ?: WalletInfo(),
-                    confirmation = model.confirmation,
-                    savePaymentMethod = model.savePaymentMethod
-                )) {
-                    is Result.Success -> Contract.Action.TokenizeSuccess(TokenOutputModel(token = result.value, option = option))
-                    is Result.Fail -> Contract.Action.TokenizeFailed(result.value)
+                val result = when (model) {
+                    is TokenizePaymentOptionInputModel -> {
+                        tokenizeRepository.getToken(
+                            paymentOption = option,
+                            paymentOptionInfo = model.paymentOptionInfo ?: WalletInfo(),
+                            confirmation = model.confirmation,
+                            savePaymentMethod = model.savePaymentMethod,
+                            savePaymentInstrument = model.savePaymentInstrument
+                        )
+                    }
+                    is TokenizeInstrumentInputModel -> {
+                        tokenizeRepository.getToken(
+                            instrumentBankCard = model.instrumentBankCard,
+                            amount = option.charge,
+                            savePaymentMethod = model.savePaymentMethod,
+                            csc = model.csc,
+                            confirmation = model.confirmation
+                        )
+                    }
+                }
+
+                when (result) {
+                    is Result.Success -> Tokenize.Action.TokenizeSuccess(
+                        TokenizeOutputModel(
+                            token = result.value,
+                            option = option,
+                            instrumentBankCard = model.instrumentBankCard
+                        )
+                    )
+                    is Result.Fail -> Tokenize.Action.TokenizeFailed(result.value)
                 }.also {
-                    model.allowWalletLinking?.takeUnless { it }?.let {
-                        paymenPaymentAuthTokenRepository.isUserAccountRemember = model.allowWalletLinking
+                    model.allowWalletLinking.takeUnless { it }?.let {
                         paymenPaymentAuthTokenRepository.paymentAuthToken = null
+                    }
+                    model.allowWalletLinking?.let {
+                        paymenPaymentAuthTokenRepository.isUserAccountRemember = model.allowWalletLinking
                     }
                 }
             }

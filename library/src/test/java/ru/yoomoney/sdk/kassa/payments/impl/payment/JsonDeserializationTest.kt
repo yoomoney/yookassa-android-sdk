@@ -60,11 +60,13 @@ import ru.yoomoney.sdk.kassa.payments.model.ErrorCode
 import ru.yoomoney.sdk.kassa.payments.model.Fee
 import ru.yoomoney.sdk.kassa.payments.model.GooglePay
 import ru.yoomoney.sdk.kassa.payments.model.LinkedCard
-import ru.yoomoney.sdk.kassa.payments.model.NewCard
+import ru.yoomoney.sdk.kassa.payments.model.BankCardPaymentOption
 import ru.yoomoney.sdk.kassa.payments.model.PaymentMethodBankCard
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
+import ru.yoomoney.sdk.kassa.payments.model.PaymentOptionsResponse
 import ru.yoomoney.sdk.kassa.payments.model.Result
 import ru.yoomoney.sdk.kassa.payments.model.SberBank
+import ru.yoomoney.sdk.kassa.payments.model.ShopProperties
 import ru.yoomoney.sdk.kassa.payments.model.Status
 import ru.yoomoney.sdk.kassa.payments.model.Wallet
 import java.math.BigDecimal
@@ -165,6 +167,10 @@ class JsonDeserializationTest {
         val jsonObject = JSONObject(
             """{
           "type": "list",
+          "shop_properties": {
+            "is_safe_deal": true,
+            "is_marketplace": true
+          },
           "items": [
             {
               "payment_method_type": "bank_card",
@@ -175,6 +181,7 @@ class JsonDeserializationTest {
                 "value": "2.00",
                 "currency": "RUB"
               },
+              "create_binding": "false",
               "save_payment_method": "allowed"
             },
             {
@@ -192,6 +199,7 @@ class JsonDeserializationTest {
                 "value": "5.00",
                 "currency": "RUB"
               },
+              "create_binding": "false",
               "save_payment_method": "allowed"
             },
             {
@@ -203,6 +211,7 @@ class JsonDeserializationTest {
                 "value": "4.00",
                 "currency": "RUB"
               },
+              "create_binding": "false",
               "save_payment_method": "allowed"
             },
             {
@@ -219,6 +228,7 @@ class JsonDeserializationTest {
               "card_name": "My card",
               "card_mask": "518901******0446",
               "card_type": "MasterCard",
+              "create_binding": "false",
               "save_payment_method": "allowed"
             },
             {
@@ -238,45 +248,55 @@ class JsonDeserializationTest {
                 "value": "5.00",
                 "currency": "RUB"
               },
+              "create_binding": "false",
               "save_payment_method": "forbidden"
             }
           ]
         }"""
         )
 
-        val newCard = NewCard(
+        val newCard = BankCardPaymentOption(
             0,
             Amount(BigDecimal("2.00"), RUB), null, true,
-            confirmationTypes = listOf(ConfirmationType.REDIRECT)
+            confirmationTypes = listOf(ConfirmationType.REDIRECT),
+            paymentInstruments = emptyList(),
+            savePaymentInstrument = false
         )
         val wallet = Wallet(
             1,
             Amount(BigDecimal("3.00"), RUB),
             null, "123456789",
             Amount(BigDecimal("5.00"), RUB), true,
-            confirmationTypes = listOf(ConfirmationType.REDIRECT)
+            confirmationTypes = listOf(ConfirmationType.REDIRECT),
+            savePaymentInstrument = false
         )
         val abstractWallet = AbstractWallet(
             2,
             Amount(BigDecimal("4.00"), RUB), null, true,
-            confirmationTypes = listOf(ConfirmationType.REDIRECT)
+            confirmationTypes = listOf(ConfirmationType.REDIRECT),
+            savePaymentInstrument = false
         )
         val bankCard = LinkedCard(
             3, Amount(BigDecimal("5.00"), RUB), null,
             "123456789", CardBrand.MASTER_CARD, "518901******0446", "My card", true, true,
-            confirmationTypes = listOf(ConfirmationType.REDIRECT)
+            confirmationTypes = listOf(ConfirmationType.REDIRECT), savePaymentInstrument = false
         )
         val sberbank = SberBank(
             4,
             Amount(BigDecimal("2.00"), RUB), null, false,
-            listOf(ConfirmationType.REDIRECT, ConfirmationType.EXTERNAL, ConfirmationType.MOBILE_APPLICATION)
+            listOf(ConfirmationType.REDIRECT, ConfirmationType.EXTERNAL, ConfirmationType.MOBILE_APPLICATION), false
         )
         val googlePay = GooglePay(
             5,
-            Amount(BigDecimal("5.00"), RUB), null, false, emptyList()
+            Amount(BigDecimal("5.00"), RUB), null, false, emptyList(), false
         )
 
-        val paymentOptions: Result<List<PaymentOption>> = Result.Success(listOf(newCard, wallet, abstractWallet, bankCard, sberbank, googlePay))
+        val paymentOptions: Result<PaymentOptionsResponse> = Result.Success(
+            PaymentOptionsResponse(
+                paymentOptions = listOf(newCard, wallet, abstractWallet, bankCard, sberbank, googlePay),
+                shopProperties = ShopProperties(isSafeDeal = true, isMarketplace = true)
+            )
+        )
 
         assertThat(jsonObject.toPaymentOptionResponse(), equalTo(paymentOptions))
     }
@@ -331,7 +351,7 @@ class JsonDeserializationTest {
             "code": "forbidden"
         }"""
         )
-        val paymentOptions: Result<List<PaymentOption>> = Result.Fail(
+        val paymentOptions: Result<PaymentOptionsResponse> = Result.Fail(
             ApiMethodException(
                 Error(
                     ErrorCode.FORBIDDEN,

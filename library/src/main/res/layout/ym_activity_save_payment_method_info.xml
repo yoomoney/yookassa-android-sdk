@@ -59,13 +59,24 @@
 
         <TextView
             style="@style/Text.Body"
+            android:layout_weight="1"
             android:id="@+id/additionalInfo"
             android:textColor="@color/color_type_secondary"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginLeft="@dimen/ym_space_m"
             android:layout_marginRight="@dimen/ym_space_m"
             android:layout_marginTop="@dimen/ym_space_xs" />
+
+        <ru.yoomoney.sdk.kassa.payments.ui.PrimaryButtonView
+            android:id="@+id/understandButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/ym_screen_indentEnd"
+            android:layout_marginStart="@dimen/ym_screen_indentStart"
+            android:layout_marginTop="@dimen/ym_decor_marginTop_m"
+            android:layout_marginBottom="@dimen/ym_space_m"
+            app:ym_text="@string/ym_understand_button"/>
       </LinearLayout>
 
 </ScrollView>

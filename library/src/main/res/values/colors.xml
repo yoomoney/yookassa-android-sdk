@@ -35,4 +35,10 @@
     <color name="ym_color_cursor">#00A884</color>
     <color name="ym_avatar_background">#1A0A2540</color>
     <color name="ym_avatar_foreground">#ffffff</color>
+    <color name="ym_red_button_disabled">@color/color_ghost</color>
+    <color name="ym_green_button_disabled">@color/color_ghost</color>
+    <color name="ym_green_button_pressed">#2600A884</color>
+    <color name="ym_informer_view_message_text">#0A2540</color>
+    <color name="ym_text_color_secondary">#666666</color>
+    <color name="ym_informer_view_background">#ffebebeb</color>
 </resources>

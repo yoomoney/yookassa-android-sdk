@@ -60,5 +60,6 @@ data class PaymentParameters
     @Keep val customReturnUrl: String? = null,
     @Keep val userPhoneNumber: String? = null,
     @Keep val googlePayParameters: GooglePayParameters = GooglePayParameters(),
-    @Keep val authCenterClientId: String? = null
+    @Keep val authCenterClientId: String? = null,
+    @Keep val customerId: String? = null
 ) : Parcelable

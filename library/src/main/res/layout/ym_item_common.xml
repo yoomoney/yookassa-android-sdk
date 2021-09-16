@@ -49,7 +49,7 @@
         android:layout_marginLeft="@dimen/ym_screen_indentStart"
         android:layout_marginStart="@dimen/ym_screen_indentStart"
         app:layout_constraintBottom_toTopOf="@+id/secondaryText"
-        app:layout_constraintEnd_toStartOf="@+id/endText"
+        app:layout_constraintEnd_toStartOf="@+id/options"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/image"
         app:layout_constraintTop_toTopOf="parent"
@@ -59,32 +59,32 @@
         tools:targetApi="jelly_bean" />
 
     <TextView
-        style="@style/Text.Caption1"
+        style="@style/Text.Caption1.Secondary"
         android:id="@+id/secondaryText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/primaryText"
-        app:layout_constraintEnd_toStartOf="@+id/endText"
+        app:layout_constraintEnd_toStartOf="@+id/options"
         app:layout_constraintTop_toBottomOf="@+id/primaryText"
         app:layout_constraintVertical_chainStyle="packed"
         tools:text="Secondary text"
         tools:visibility="visible" />
 
-    <TextView
-        android:id="@+id/endText"
+    <ImageView
+        android:id="@+id/options"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawablePadding="@dimen/ym_iconPlusText_iconMargin_xl"
-        android:layout_marginEnd="@dimen/ym_screen_indentEnd"
-        android:layout_marginRight="@dimen/ym_screen_indentEnd"
-        android:padding="@dimen/ym_space_xs"
-        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/ym_ic_more_options"
+        android:padding="@dimen/ym_spaceM"
+        android:clickable="true"
+        android:focusable="true"
+        app:tint="@color/color_type_secondary"
+        android:background="?attr/selectableItemBackgroundBorderless"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:drawableEnd="@drawable/ym_ic_add_card"
-        tools:text="* 1234"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <include
         layout="@layout/ym_divider"

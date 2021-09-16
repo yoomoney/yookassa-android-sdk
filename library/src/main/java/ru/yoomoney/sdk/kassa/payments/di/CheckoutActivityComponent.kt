@@ -37,7 +37,11 @@ import ru.yoomoney.sdk.kassa.payments.userAuth.MoneyAuthFragment
 import ru.yoomoney.sdk.kassa.payments.userAuth.di.UserAuthModule
 import ru.yoomoney.sdk.kassa.payments.contract.ContractFragment
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.PaymentOptionListFragment
+import ru.yoomoney.sdk.kassa.payments.tokenize.TokenizeFragment
+import ru.yoomoney.sdk.kassa.payments.tokenize.di.TokenizeModule
 import ru.yoomoney.sdk.kassa.payments.ui.view.BankCardView
+import ru.yoomoney.sdk.kassa.payments.unbind.UnbindCardFragment
+import ru.yoomoney.sdk.kassa.payments.unbind.di.UnbindCardModule
 import javax.inject.Singleton
 
 @Singleton
@@ -56,7 +60,9 @@ import javax.inject.Singleton
         CoreModule::class,
         UserAuthModule::class,
         ContractModule::class,
-        PaymentAuthModule::class
+        PaymentAuthModule::class,
+        UnbindCardModule::class,
+        TokenizeModule::class
     ]
 )
 internal interface CheckoutActivityComponent {
@@ -68,6 +74,10 @@ internal interface CheckoutActivityComponent {
     fun inject(mainDialogFragment: MainDialogFragment)
 
     fun inject(contractFragment: ContractFragment)
+
+    fun inject(contractFragment: TokenizeFragment)
+
+    fun inject(unbindCardFragment: UnbindCardFragment)
 
     fun inject(paymentAuthFragment: PaymentAuthFragment)
 
@@ -94,6 +104,8 @@ internal interface CheckoutActivityComponent {
         fun paymentMethodId(paymentMethodId: PaymentMethodId?): Builder
 
         fun okHttpModule(okHttpModule: OkHttpModule): Builder
+
+        fun paymentOptionsListModule(paymentOptionsListModule: PaymentOptionsListModule): Builder
 
         fun mainReporterModule(yandexMetricaReporterModule: YandexMetricaReporterModule): Builder
 

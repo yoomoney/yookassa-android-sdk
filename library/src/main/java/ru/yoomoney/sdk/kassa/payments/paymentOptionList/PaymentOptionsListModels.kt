@@ -22,8 +22,8 @@
 package ru.yoomoney.sdk.kassa.payments.paymentOptionList
 
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentMethodType
+import ru.yoomoney.sdk.kassa.payments.model.BankCardPaymentOption
 import ru.yoomoney.sdk.kassa.payments.model.GooglePay
-import ru.yoomoney.sdk.kassa.payments.model.NewCard
 import ru.yoomoney.sdk.kassa.payments.model.PaymentIdCscConfirmation
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
 import ru.yoomoney.sdk.kassa.payments.model.SberBank
@@ -33,14 +33,14 @@ internal sealed class PaymentOptionListOutputModel(open val options: List<Paymen
 
 internal data class PaymentOptionListSuccessOutputModel(
     override val options: List<PaymentOption>
-): PaymentOptionListOutputModel(options)
+) : PaymentOptionListOutputModel(options)
 
 internal data class PaymentOptionListNoWalletOutputModel(
     override val options: List<PaymentOption>
 ) : PaymentOptionListOutputModel(options)
 
 private fun PaymentOption.toAllowed() = when (this) {
-    is NewCard -> PaymentMethodType.BANK_CARD
+    is BankCardPaymentOption -> PaymentMethodType.BANK_CARD
     is YooMoney -> PaymentMethodType.YOO_MONEY
     is SberBank -> PaymentMethodType.SBERBANK
     is GooglePay -> PaymentMethodType.GOOGLE_PAY

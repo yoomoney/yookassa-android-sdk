@@ -21,7 +21,9 @@
 
 package ru.yoomoney.sdk.kassa.payments.payment.tokenize
 
+import ru.yoomoney.sdk.kassa.payments.checkoutParameters.Amount
 import ru.yoomoney.sdk.kassa.payments.model.Confirmation
+import ru.yoomoney.sdk.kassa.payments.model.PaymentInstrumentBankCard
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOptionInfo
 import ru.yoomoney.sdk.kassa.payments.model.Result
@@ -32,6 +34,15 @@ internal interface TokenizeRepository {
         paymentOption: PaymentOption,
         paymentOptionInfo: PaymentOptionInfo,
         savePaymentMethod: Boolean,
+        savePaymentInstrument: Boolean,
+        confirmation: Confirmation
+    ): Result<String>
+
+    fun getToken(
+        instrumentBankCard: PaymentInstrumentBankCard,
+        amount: Amount,
+        savePaymentMethod: Boolean,
+        csc: String?,
         confirmation: Confirmation
     ): Result<String>
 }

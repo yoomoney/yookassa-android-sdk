@@ -19,38 +19,35 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package ru.yoomoney.sdk.kassa.payments.contract
+package ru.yoomoney.sdk.kassa.payments.tokenize
 
 import ru.yoomoney.sdk.kassa.payments.metrics.AuthTokenType
 import ru.yoomoney.sdk.kassa.payments.metrics.AuthType
 import ru.yoomoney.sdk.kassa.payments.metrics.ErrorScreenReporter
 import ru.yoomoney.sdk.kassa.payments.metrics.Reporter
-import ru.yoomoney.sdk.kassa.payments.model.LinkedCard
-import ru.yoomoney.sdk.kassa.payments.model.NewCard
-import ru.yoomoney.sdk.kassa.payments.model.PaymentIdCscConfirmation
-import ru.yoomoney.sdk.kassa.payments.payment.tokenize.TokenOutputModel
+import ru.yoomoney.sdk.kassa.payments.metrics.TokenizeScheme
+import ru.yoomoney.sdk.kassa.payments.model.PaymentInstrumentBankCard
+import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
+import ru.yoomoney.sdk.kassa.payments.payment.tokenize.TokenizeOutputModel
 import ru.yoomoney.sdk.march.Logic
 import ru.yoomoney.sdk.march.Out
-import ru.yoomoney.sdk.kassa.payments.metrics.TokenizeScheme
-import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
 
-internal class ContractAnalytics(
+internal class TokenizeAnalytics(
     private val reporter: Reporter,
     private val errorScreenReporter: ErrorScreenReporter,
-    private val businessLogic: Logic<Contract.State, Contract.Action>,
+    private val businessLogic: Logic<Tokenize.State, Tokenize.Action>,
     private val getUserAuthType: () -> AuthType,
     private val getUserAuthTokenType: () -> AuthTokenType,
-    private val getTokenizeScheme: (PaymentOption) -> TokenizeScheme
-) : Logic<Contract.State, Contract.Action> {
+    private val getTokenizeScheme: (PaymentOption, PaymentInstrumentBankCard?) -> TokenizeScheme
+) : Logic<Tokenize.State, Tokenize.Action> {
 
-    override fun invoke(state: Contract.State, action: Contract.Action): Out<Contract.State, Contract.Action> {
+    override fun invoke(state: Tokenize.State, action: Tokenize.Action): Out<Tokenize.State, Tokenize.Action> {
         val nameArgsPairs = when (action) {
-            Contract.Action.Logout -> listOf("actionLogout" to null)
-            is Contract.Action.TokenizeSuccess -> {
-                if (action.content is TokenOutputModel) {
+            is Tokenize.Action.TokenizeSuccess -> {
+                if (action.content is TokenizeOutputModel) {
                     listOf(
                         "actionTokenize" to listOf(
-                            getTokenizeScheme(action.content.option),
+                            getTokenizeScheme(action.content.option, action.content.instrumentBankCard),
                             getUserAuthType(),
                             getUserAuthTokenType()
                         )
@@ -58,20 +55,6 @@ internal class ContractAnalytics(
                 } else {
                     listOf(null to null)
                 }
-            }
-            is Contract.Action.LoadContractSuccess -> {
-                listOf(
-                    "screenPaymentContract" to listOf(
-                        getUserAuthType(),
-                        getTokenizeScheme(action.outputModel.paymentOption)
-                    ),
-                    when (action.outputModel.paymentOption) {
-                        is NewCard -> "screenBankCardForm" to listOf(getUserAuthType())
-                        is LinkedCard -> "screenLinkedCardForm" to null
-                        is PaymentIdCscConfirmation -> "screenRecurringCardForm" to null
-                        else -> null to null
-                    }
-                )
             }
             else -> listOf(null to null)
         }
@@ -82,7 +65,7 @@ internal class ContractAnalytics(
             }
         }
 
-        errorScreenReporter.takeIf { action is Contract.Action.LoadContractFailed }?.report()
+        errorScreenReporter.takeIf { action is Tokenize.Action.TokenizeFailed }?.report()
 
         return businessLogic(state, action)
     }

@@ -5,6 +5,10 @@
 ### NEXT_VERSION_DESCRIPTION_BEGIN
 ### NEXT_VERSION_DESCRIPTION_END
 
+## [6.3.0] (16-09-2021)
+
+- Addded support of linked to merchant shop cards and safe payment
+
 ## [6.1.5] (30-08-2021)
 
 - Added english version of readme

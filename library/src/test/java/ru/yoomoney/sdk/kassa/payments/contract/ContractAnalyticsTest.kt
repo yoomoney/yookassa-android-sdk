@@ -19,7 +19,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package ru.yoomoney.sdk.kassa.payments.сontract
+package ru.yoomoney.sdk.kassa.payments.contract
 
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.mock
@@ -27,47 +27,40 @@ import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Test
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.Amount
-import ru.yoomoney.sdk.kassa.payments.contract.Contract
-import ru.yoomoney.sdk.kassa.payments.contract.ContractAnalytics
 import ru.yoomoney.sdk.kassa.payments.extensions.RUB
-import ru.yoomoney.sdk.kassa.payments.metrics.AuthTokenTypeSingle
 import ru.yoomoney.sdk.kassa.payments.metrics.AuthTypeYooMoneyLogin
 import ru.yoomoney.sdk.kassa.payments.metrics.ErrorScreenReporterImpl
 import ru.yoomoney.sdk.kassa.payments.metrics.Reporter
 import ru.yoomoney.sdk.kassa.payments.metrics.TokenizeScheme
 import ru.yoomoney.sdk.kassa.payments.metrics.TokenizeSchemeLinkedCard
-import ru.yoomoney.sdk.kassa.payments.metrics.TokenizeSchemeSberPay
 import ru.yoomoney.sdk.kassa.payments.model.CardBrand
 import ru.yoomoney.sdk.kassa.payments.model.ConfirmationType
 import ru.yoomoney.sdk.kassa.payments.model.Fee
 import ru.yoomoney.sdk.kassa.payments.model.LinkedCard
-import ru.yoomoney.sdk.kassa.payments.model.NewCard
+import ru.yoomoney.sdk.kassa.payments.model.BankCardPaymentOption
 import ru.yoomoney.sdk.kassa.payments.model.PaymentIdCscConfirmation
+import ru.yoomoney.sdk.kassa.payments.model.PaymentInstrumentBankCard
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
 import ru.yoomoney.sdk.kassa.payments.model.SdkException
-import ru.yoomoney.sdk.kassa.payments.model.Wallet
-import ru.yoomoney.sdk.kassa.payments.payment.selectOption.SelectedPaymentOptionOutputModel
-import ru.yoomoney.sdk.kassa.payments.payment.tokenize.TokenOutputModel
+import ru.yoomoney.sdk.kassa.payments.payment.selectOption.SelectedPaymentMethodOutputModel
 import java.math.BigDecimal
 
 class ContractAnalyticsTest {
     private val reporter: Reporter = mock()
 
     private val userAuthType = AuthTypeYooMoneyLogin()
-    private val userAuthTokenType = AuthTokenTypeSingle()
     private val errorScreenReporter = ErrorScreenReporterImpl(
         reporter = reporter,
         getAuthType = { userAuthType },
         getTokenizeScheme = { null }
     )
-    private val getTokenizeScheme: (PaymentOption) -> TokenizeScheme = mock()
+    private val getTokenizeScheme: (PaymentOption, PaymentInstrumentBankCard?) -> TokenizeScheme = mock()
 
     private val contractAnalytics = ContractAnalytics(
         reporter = reporter,
         errorScreenReporter = errorScreenReporter,
         businessLogic = mock(),
         getUserAuthType = { userAuthType },
-        getUserAuthTokenType = { userAuthTokenType },
         getTokenizeScheme = getTokenizeScheme
     )
 
@@ -86,53 +79,21 @@ class ContractAnalyticsTest {
     }
 
     @Test
-    fun `verify actionTokenize analytics sends`() {
-        // given
-        val wallet = Wallet(
-            1,
-            Amount(BigDecimal("3.00"), RUB),
-            null, "123456789",
-            Amount(BigDecimal("5.00"), RUB), true,
-            confirmationTypes = listOf(ConfirmationType.REDIRECT)
-        )
-
-        whenever(getTokenizeScheme(any())).thenReturn(TokenizeSchemeSberPay())
-
-        // when
-        contractAnalytics(
-            Contract.State.Loading,
-            Contract.Action.TokenizeSuccess(
-                TokenOutputModel(
-                    "token",
-                    wallet
-                )
-            )
-        )
-
-        // then
-        verify(reporter).report(
-            "actionTokenize", listOf(
-                TokenizeSchemeSberPay(),
-                userAuthType,
-                userAuthTokenType
-            )
-        )
-    }
-
-    @Test
     fun `verify screenBankCardForm analytics sends`() {
         // given
-        val newCard = NewCard(
+        val newCard = BankCardPaymentOption(
             0,
             Amount(BigDecimal("2.00"), RUB), null, true,
-            confirmationTypes = listOf(ConfirmationType.REDIRECT)
+            confirmationTypes = listOf(ConfirmationType.REDIRECT),
+            savePaymentInstrument = false,
+            paymentInstruments = emptyList()
         )
 
         // when
         contractAnalytics(
             Contract.State.Loading,
             Contract.Action.LoadContractSuccess(
-                SelectedPaymentOptionOutputModel(newCard, false)
+                SelectedPaymentMethodOutputModel(newCard, instrument = null, walletLinkingPossible = false)
             )
         )
 
@@ -154,16 +115,15 @@ class ContractAnalyticsTest {
             brand = CardBrand.MASTER_CARD,
             pan = "1234567887654321",
             savePaymentMethodAllowed = true,
-            confirmationTypes = listOf(ConfirmationType.REDIRECT)
+            confirmationTypes = listOf(ConfirmationType.REDIRECT),
+            savePaymentInstrument = false
         )
-
-
 
         // when
         contractAnalytics(
             Contract.State.Loading,
             Contract.Action.LoadContractSuccess(
-                SelectedPaymentOptionOutputModel(linkedCard, false)
+                SelectedPaymentMethodOutputModel(linkedCard, null, false)
             )
         )
 
@@ -184,14 +144,16 @@ class ContractAnalyticsTest {
             expiryYear = "2020",
             expiryMonth = "12",
             savePaymentMethodAllowed = true,
-            confirmationTypes = emptyList()
+            confirmationTypes = emptyList(),
+            brand = CardBrand.MASTER_CARD,
+            savePaymentInstrument = false
         )
 
         // when
         contractAnalytics(
             Contract.State.Loading,
             Contract.Action.LoadContractSuccess(
-                SelectedPaymentOptionOutputModel(cscConfirmation, false)
+                SelectedPaymentMethodOutputModel(cscConfirmation, null, false)
             )
         )
 
@@ -227,16 +189,17 @@ class ContractAnalyticsTest {
             brand = CardBrand.MASTER_CARD,
             pan = "1234567887654321",
             savePaymentMethodAllowed = true,
-            confirmationTypes = listOf(ConfirmationType.REDIRECT)
+            confirmationTypes = listOf(ConfirmationType.REDIRECT),
+            savePaymentInstrument = false
         )
 
-        whenever(getTokenizeScheme(any())).thenReturn(TokenizeSchemeLinkedCard())
+        whenever(getTokenizeScheme(linkedCard, null)).thenReturn(TokenizeSchemeLinkedCard())
 
         // when
         contractAnalytics(
             Contract.State.Loading,
             Contract.Action.LoadContractSuccess(
-                SelectedPaymentOptionOutputModel(linkedCard, false)
+                SelectedPaymentMethodOutputModel(linkedCard, null, false)
             )
         )
 

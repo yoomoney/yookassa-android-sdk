@@ -25,8 +25,11 @@ import android.graphics.drawable.Drawable
 
 internal data class PaymentOptionListItem(
     val optionId: Int,
+    val instrumentId: String? = null,
     val icon: Drawable,
     val title: CharSequence,
     val additionalInfo: CharSequence? = null,
-    val canLogout: Boolean = false
+    val canLogout: Boolean = false,
+    val hasOptions: Boolean,
+    val isWalletLinked: Boolean
 )

@@ -33,10 +33,30 @@ internal fun getMessageWithLink(
     context: Context,
     firstMessagePartRes: Int,
     secondMessagePartRes: Int,
+    thirdMessagePartRes: Int? = null,
     action: () -> Unit
 ): CharSequence {
-    val firstMessagePart = context.getText(firstMessagePartRes)
-    val secondMessagePart = context.getText(secondMessagePartRes)
+    return if (thirdMessagePartRes == null) {
+        getMessageWithLink(
+            firstMessagePart = context.getText(firstMessagePartRes),
+            secondMessagePart = context.getText(secondMessagePartRes),
+            action = action
+        )
+    }  else {
+        getMessageWithLink(
+            firstMessagePart = context.getText(firstMessagePartRes),
+            secondMessagePart = context.getText(secondMessagePartRes),
+            thirdMessagePart = context.getText(thirdMessagePartRes),
+            action = action
+        )
+    }
+}
+
+fun getMessageWithLink(
+    firstMessagePart: CharSequence,
+    secondMessagePart: CharSequence,
+    action: () -> Unit
+): CharSequence {
     return SpannableStringBuilder(
         "$firstMessagePart $secondMessagePart"
     ).apply {
@@ -56,6 +76,36 @@ internal fun getMessageWithLink(
             },
             length - secondMessagePart.length,
             length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+    }
+}
+
+private fun getMessageWithLink(
+    firstMessagePart: CharSequence,
+    secondMessagePart: CharSequence,
+    thirdMessagePart: CharSequence,
+    action: () -> Unit
+): CharSequence {
+    return SpannableStringBuilder(
+        "$firstMessagePart $secondMessagePart $thirdMessagePart"
+    ).apply {
+        setSpan(
+            object : ClickableSpan() {
+                override fun onClick(widget: View) {
+                    action()
+                }
+
+                override fun updateDrawState(ds: TextPaint) {
+                    super.updateDrawState(ds)
+                    ds.apply {
+                        color = InMemoryColorSchemeRepository.colorScheme.primaryColor
+                        isUnderlineText = false
+                    }
+                }
+            },
+            length - secondMessagePart.length - thirdMessagePart.length - 1,
+            length - thirdMessagePart.length,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
     }

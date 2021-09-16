@@ -86,7 +86,7 @@ internal class TokensStorage(
         }
 
     override var isUserAccountRemember: Boolean
-        get() = preferences.getBoolean(KEY_YOO_USER_IS_REMEMBER, true)
+        get() = preferences.getBoolean(KEY_YOO_USER_IS_REMEMBER, false)
         set(value) {
             preferences[KEY_YOO_USER_IS_REMEMBER] = value
         }

@@ -21,19 +21,25 @@
 
 package ru.yoomoney.sdk.kassa.payments.paymentOptionList
 
+import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.Amount
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.SavePaymentMethod
 import ru.yoomoney.sdk.kassa.payments.extensions.RUB
+import ru.yoomoney.sdk.kassa.payments.model.BankCardPaymentOption
+import ru.yoomoney.sdk.kassa.payments.model.CardBrand
+import ru.yoomoney.sdk.kassa.payments.model.Fee
+import ru.yoomoney.sdk.kassa.payments.model.GetConfirmation
+import ru.yoomoney.sdk.kassa.payments.model.NoConfirmation
+import ru.yoomoney.sdk.kassa.payments.model.PaymentInstrumentBankCard
+import ru.yoomoney.sdk.kassa.payments.model.ShopProperties
+import ru.yoomoney.sdk.kassa.payments.payment.tokenize.TokenizeInstrumentInputModel
 import ru.yoomoney.sdk.march.Effect
-import ru.yoomoney.sdk.kassa.payments.paymentOptionList.PaymentOptionList
-import ru.yoomoney.sdk.kassa.payments.paymentOptionList.PaymentOptionListSuccessOutputModel
-import ru.yoomoney.sdk.kassa.payments.paymentOptionList.PaymentOptionsListBusinessLogic
-import ru.yoomoney.sdk.kassa.payments.paymentOptionList.PaymentOptionsListUseCase
 import java.math.BigDecimal
 
 internal class PaymentOptionsListBusinessLogicEffectTest {
@@ -43,33 +49,17 @@ internal class PaymentOptionsListBusinessLogicEffectTest {
     private val source: () -> PaymentOptionList.Action = mock()
     private val useCase: PaymentOptionsListUseCase = mock()
     private val contentState = PaymentOptionList.State.Content(PaymentOptionListSuccessOutputModel(listOf()))
-
-    private val logic =
-        PaymentOptionsListBusinessLogic(
-            showState = { showState(it) },
-            showEffect = { showEffect(it) },
-            source = { source() },
-            useCase = useCase,
-            paymentParameters = PaymentParameters(
-                amount = Amount(BigDecimal.ONE, RUB),
-                title = "",
-                subtitle = "",
-                clientApplicationKey = "",
-                shopId = "",
-                savePaymentMethod = SavePaymentMethod.ON,
-                authCenterClientId = ""
-            ),
-            logoutUseCase = mock()
-        )
+    private val shopPropertiesRepository: ShopPropertiesRepository = mock()
 
     @Test
     fun `Should send ProceedWithPaymentMethod effect with Content state and ProceedWithPaymentMethod action`() {
         // given
         val paymentOptionId = 11
-        val expected = PaymentOptionList.Effect.ProceedWithPaymentMethod
-        val out = logic(
+        val instrumentId = "instrumentId"
+        val expected = PaymentOptionList.Effect.ShowContract
+        val out = createLogic().invoke(
             contentState,
-            PaymentOptionList.Action.ProceedWithPaymentMethod(paymentOptionId)
+            PaymentOptionList.Action.ProceedWithPaymentMethod(paymentOptionId, instrumentId)
         )
 
         // when
@@ -79,6 +69,224 @@ internal class PaymentOptionsListBusinessLogicEffectTest {
         verify(showEffect).invoke(expected)
         verify(source).invoke()
     }
+
+    @Test
+    fun `Should show StartTokenization effect with Content state and ProceedWithPaymentMethod action`() {
+        // given
+        val paymentOptionId = 11
+        val instrumentId = "instrumentId"
+        val paymentInstrument = PaymentInstrumentBankCard(
+            paymentInstrumentId = instrumentId,
+            last4 = "last4",
+            first6 = "first6",
+            cscRequired = false,
+            cardType = CardBrand.MASTER_CARD
+        )
+        val expected = PaymentOptionList.Effect.StartTokenization(
+            TokenizeInstrumentInputModel(
+                paymentOptionId = paymentOptionId,
+                savePaymentMethod = false,
+                instrumentBankCard = paymentInstrument,
+                allowWalletLinking = false,
+                confirmation = NoConfirmation,
+                csc = null
+            )
+        )
+
+        val getConfirmation: GetConfirmation = mock()
+        whenever(getConfirmation(any())).thenReturn(NoConfirmation)
+
+        whenever(useCase.selectPaymentOption(paymentOptionId, instrumentId)).thenReturn(
+            BankCardPaymentOption(
+                id = paymentOptionId,
+                charge = Amount(BigDecimal.TEN, RUB),
+                fee = null,
+                savePaymentMethodAllowed = true,
+                confirmationTypes = emptyList(),
+                paymentInstruments = listOf(paymentInstrument),
+                savePaymentInstrument = true
+            )
+        )
+        whenever(shopPropertiesRepository.shopProperties).thenReturn(ShopProperties(false, false))
+
+        val paymentParameters = cratePaymentParameters(savePaymentMethod = SavePaymentMethod.OFF)
+        val out = createLogic(paymentParameters = paymentParameters, getConfirmation = getConfirmation).invoke(
+            contentState,
+            PaymentOptionList.Action.ProceedWithPaymentMethod(paymentOptionId, instrumentId)
+        )
+
+        // when
+        runBlocking { out.sources.func() }
+
+        // then
+        verify(showEffect).invoke(expected)
+        verify(source).invoke()
+    }
+
+    @Test
+    fun `Should show ShowContract effect with Content state and ProceedWithPaymentMethod action because of cscRequired is true`() {
+        // given
+        val paymentOptionId = 11
+        val instrumentId = "instrumentId"
+        val paymentInstrument = PaymentInstrumentBankCard(
+            paymentInstrumentId = instrumentId,
+            last4 = "last4",
+            first6 = "first6",
+            cscRequired = true,
+            cardType = CardBrand.MASTER_CARD
+        )
+        val expected = PaymentOptionList.Effect.ShowContract
+
+        val getConfirmation: GetConfirmation = mock()
+        whenever(getConfirmation(any())).thenReturn(NoConfirmation)
+
+        whenever(useCase.selectPaymentOption(paymentOptionId, instrumentId)).thenReturn(
+            BankCardPaymentOption(
+                id = paymentOptionId,
+                charge = Amount(BigDecimal.TEN, RUB),
+                fee = null,
+                savePaymentMethodAllowed = true,
+                confirmationTypes = emptyList(),
+                paymentInstruments = listOf(paymentInstrument),
+                savePaymentInstrument = true
+            )
+        )
+        whenever(shopPropertiesRepository.shopProperties).thenReturn(ShopProperties(false, false))
+
+        val paymentParameters = cratePaymentParameters(savePaymentMethod = SavePaymentMethod.OFF)
+        val out = createLogic(paymentParameters = paymentParameters, getConfirmation = getConfirmation).invoke(
+            contentState,
+            PaymentOptionList.Action.ProceedWithPaymentMethod(paymentOptionId, instrumentId)
+        )
+
+        // when
+        runBlocking { out.sources.func() }
+
+        // then
+        verify(showEffect).invoke(expected)
+        verify(source).invoke()
+    }
+
+    @Test
+    fun `Should show ShowContract effect with Content state and ProceedWithPaymentMethod action because of SavePaymentMethod_ON`() {
+        // given
+        val paymentOptionId = 11
+        val instrumentId = "instrumentId"
+        val paymentInstrument = PaymentInstrumentBankCard(
+            paymentInstrumentId = instrumentId,
+            last4 = "last4",
+            first6 = "first6",
+            cscRequired = false,
+            cardType = CardBrand.MASTER_CARD
+        )
+        val expected = PaymentOptionList.Effect.ShowContract
+
+        val getConfirmation: GetConfirmation = mock()
+        whenever(getConfirmation(any())).thenReturn(NoConfirmation)
+
+        whenever(useCase.selectPaymentOption(paymentOptionId, instrumentId)).thenReturn(
+            BankCardPaymentOption(
+                id = paymentOptionId,
+                charge = Amount(BigDecimal.TEN, RUB),
+                fee = null,
+                savePaymentMethodAllowed = true,
+                confirmationTypes = emptyList(),
+                paymentInstruments = listOf(paymentInstrument),
+                savePaymentInstrument = true
+            )
+        )
+        whenever(shopPropertiesRepository.shopProperties).thenReturn(ShopProperties(false, false))
+
+        val paymentParameters = cratePaymentParameters(savePaymentMethod = SavePaymentMethod.ON)
+        val out = createLogic(paymentParameters = paymentParameters, getConfirmation = getConfirmation).invoke(
+            contentState,
+            PaymentOptionList.Action.ProceedWithPaymentMethod(paymentOptionId, instrumentId)
+        )
+
+        // when
+        runBlocking { out.sources.func() }
+
+        // then
+        verify(showEffect).invoke(expected)
+        verify(source).invoke()
+    }
+
+    @Test
+    fun `Should show ShowContract effect with Content state and ProceedWithPaymentMethod action because of fee`() {
+        // given
+        val paymentOptionId = 11
+        val instrumentId = "instrumentId"
+        val paymentInstrument = PaymentInstrumentBankCard(
+            paymentInstrumentId = instrumentId,
+            last4 = "last4",
+            first6 = "first6",
+            cscRequired = false,
+            cardType = CardBrand.MASTER_CARD
+        )
+        val expected = PaymentOptionList.Effect.ShowContract
+
+        val getConfirmation: GetConfirmation = mock()
+        whenever(getConfirmation(any())).thenReturn(NoConfirmation)
+
+        whenever(useCase.selectPaymentOption(paymentOptionId, instrumentId)).thenReturn(
+            BankCardPaymentOption(
+                id = paymentOptionId,
+                charge = Amount(BigDecimal.TEN, RUB),
+                fee = Fee(service = Amount(BigDecimal.ONE, RUB)),
+                savePaymentMethodAllowed = true,
+                confirmationTypes = emptyList(),
+                paymentInstruments = listOf(paymentInstrument),
+                savePaymentInstrument = true
+            )
+        )
+        whenever(shopPropertiesRepository.shopProperties).thenReturn(ShopProperties(false, false))
+
+        val paymentParameters = cratePaymentParameters(savePaymentMethod = SavePaymentMethod.OFF)
+        val out = createLogic(paymentParameters = paymentParameters, getConfirmation = getConfirmation).invoke(
+            contentState,
+            PaymentOptionList.Action.ProceedWithPaymentMethod(paymentOptionId, instrumentId)
+        )
+
+        // when
+        runBlocking { out.sources.func() }
+
+        // then
+        verify(showEffect).invoke(expected)
+        verify(source).invoke()
+    }
+
+    private fun createLogic(
+        paymentParameters: PaymentParameters = cratePaymentParameters(),
+        getConfirmation: GetConfirmation = mock()
+    ) = PaymentOptionsListBusinessLogic(
+        showState = { showState(it) },
+        showEffect = { showEffect(it) },
+        source = { source() },
+        useCase = useCase,
+        paymentParameters = paymentParameters,
+        logoutUseCase = mock(),
+        getConfirmation = getConfirmation,
+        unbindCardUseCase = mock(),
+        shopPropertiesRepository = shopPropertiesRepository
+    )
+
+    private fun cratePaymentParameters(
+        amount: Amount = Amount(BigDecimal.ONE, RUB),
+        title: String = "title",
+        subtitle: String = "subtitle",
+        clientApplicationKey: String = "clientApplicationKey",
+        shopId: String = "shopId",
+        savePaymentMethod: SavePaymentMethod = SavePaymentMethod.ON,
+        authCenterClientId: String = "authCenterClientId"
+    ) = PaymentParameters(
+        amount = amount,
+        title = title,
+        subtitle = subtitle,
+        clientApplicationKey = clientApplicationKey,
+        shopId = shopId,
+        savePaymentMethod = savePaymentMethod,
+        authCenterClientId = authCenterClientId
+    )
 
     private suspend fun <E> List<Effect<E>>.func() {
         forEach {

@@ -26,8 +26,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.ViewModelProvider
+import kotlinx.android.synthetic.main.ym_fragment_payment_auth.rootContainer
 import ru.yoomoney.sdk.auth.Config
 import ru.yoomoney.sdk.auth.RemoteConfig
 import ru.yoomoney.sdk.auth.YooMoneyAuth
@@ -50,6 +53,7 @@ import ru.yoomoney.sdk.march.RuntimeViewModel
 import ru.yoomoney.sdk.march.observe
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.TestParameters
+import ru.yoomoney.sdk.kassa.payments.extensions.hideSoftKeyboard
 import ru.yoomoney.sdk.kassa.payments.http.HostProvider
 import ru.yoomoney.sdk.kassa.payments.metrics.MoneyAuthLoginSchemeAuthSdk
 import ru.yoomoney.sdk.kassa.payments.utils.canResolveIntent
@@ -63,9 +67,6 @@ internal class MoneyAuthFragment : Fragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    @Inject
-    lateinit var router: Router
 
     @Inject
     lateinit var reporter: Reporter
@@ -124,16 +125,8 @@ internal class MoneyAuthFragment : Fragment() {
                     is MoneyAuth.AuthorizeStrategy.InApp -> collectCurrentUser()
                     is MoneyAuth.AuthorizeStrategy.App2App -> collectCurrentUserFromYooMoneyApp()
                 }
-            MoneyAuth.State.CompleteAuth -> router.navigateTo(
-                Screen.PaymentOptions(
-                    Screen.MoneyAuth.Result.SUCCESS
-                )
-            )
-            MoneyAuth.State.CancelAuth -> router.navigateTo(
-                Screen.PaymentOptions(
-                    Screen.MoneyAuth.Result.CANCEL
-                )
-            )
+            MoneyAuth.State.CompleteAuth -> finishWithResult(Screen.MoneyAuth.Result.SUCCESS)
+            MoneyAuth.State.CancelAuth -> finishWithResult(Screen.MoneyAuth.Result.CANCEL)
             MoneyAuth.State.WaitingForAuthStarted -> Unit
         }
     }
@@ -144,11 +137,7 @@ internal class MoneyAuthFragment : Fragment() {
         when (requestCode) {
             REQUEST_MONEY_AUTHORIZATION -> {
                 if (data?.getStringExtra(KEY_ACCESS_TOKEN) == null) {
-                    router.navigateTo(
-                        Screen.PaymentOptions(
-                            Screen.MoneyAuth.Result.CANCEL
-                        )
-                    )
+                    finishWithResult(Screen.MoneyAuth.Result.CANCEL)
                     return
                 }
 
@@ -164,13 +153,17 @@ internal class MoneyAuthFragment : Fragment() {
             REQUEST_CODE_APP_2_APP_AUTHORIZATION -> {
                 val cryptogram = data?.getStringExtra(YooMoneyAuth.KEY_CRYPTOGRAM)
                 if (cryptogram == null) {
-                    router.navigateTo(Screen.PaymentOptions(Screen.MoneyAuth.Result.CANCEL))
+                    finishWithResult(Screen.MoneyAuth.Result.CANCEL)
                     return
                 }
                 viewModel.handleAction(MoneyAuth.Action.GetTransferData(cryptogram))
             }
             else -> Unit
         }
+    }
+
+    private fun finishWithResult(authResult: Screen.MoneyAuth.Result) {
+        setFragmentResult(MONEY_AUTH_RESULT_KEY, bundleOf(MONEY_AUTH_RESULT_EXTRA to authResult))
     }
 
     private fun collectCurrentUser() {
@@ -212,5 +205,10 @@ internal class MoneyAuthFragment : Fragment() {
 
     private fun collectCurrentUserFromYooMoneyApp() {
         startActivityForResult(yooMoneyIntent, REQUEST_CODE_APP_2_APP_AUTHORIZATION)
+    }
+
+    companion object {
+        const val MONEY_AUTH_RESULT_KEY = "ru.yoomoney.sdk.kassa.payments.impl.paymentAuth.MONEY_AUTH_RESULT_KEY"
+        const val MONEY_AUTH_RESULT_EXTRA = "ru.yoomoney.sdk.kassa.payments.impl.paymentAuth.MONEY_AUTH_RESULT_EXTRA"
     }
 }
