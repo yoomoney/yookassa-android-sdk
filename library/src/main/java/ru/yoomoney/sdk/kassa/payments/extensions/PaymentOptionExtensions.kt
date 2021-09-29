@@ -25,7 +25,10 @@ package ru.yoomoney.sdk.kassa.payments.extensions
 
 import android.content.Context
 import android.graphics.drawable.InsetDrawable
+import android.net.Uri
 import androidx.appcompat.content.res.AppCompatResources
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.ym_yoo_money_info_view.yooImage
 import ru.yoomoney.sdk.kassa.payments.R
 import ru.yoomoney.sdk.kassa.payments.metrics.TokenizeSchemeBankCard
 import ru.yoomoney.sdk.kassa.payments.metrics.TokenizeSchemeGooglePay
@@ -50,17 +53,15 @@ import ru.yoomoney.sdk.kassa.payments.model.RedirectConfirmation
 import ru.yoomoney.sdk.kassa.payments.model.SberBank
 import ru.yoomoney.sdk.kassa.payments.model.Wallet
 import ru.yoomoney.sdk.kassa.payments.model.YooMoney
+import ru.yoomoney.sdk.kassa.payments.ui.view.cropToCircle
 import ru.yoomoney.sdk.kassa.payments.utils.INVOICING_AUTHORITY
 import ru.yoomoney.sdk.kassa.payments.utils.SBERPAY_PATH
 import ru.yoomoney.sdk.kassa.payments.utils.getBankOrBrandLogo
 
-internal fun PaymentOption.getIcon(context: Context) = checkNotNull(
+internal fun PaymentOption.getPlaceholderIcon(context: Context) = checkNotNull(
     when (this) {
         is BankCardPaymentOption, is PaymentIdCscConfirmation -> {
-            InsetDrawable(
-                AppCompatResources.getDrawable(context, R.drawable.ym_ic_add_card),
-                context.resources.getDimensionPixelSize(R.dimen.ym_space2XS)
-            )
+            AppCompatResources.getDrawable(context, R.drawable.ym_ic_add_card)
         }
         is Wallet, is AbstractWallet -> AppCompatResources.getDrawable(context, R.drawable.ym_ic_yoomoney)
         is LinkedCard -> {
@@ -75,7 +76,7 @@ internal fun PaymentOption.getIcon(context: Context) = checkNotNull(
     }
 ) { "icon not found for $this" }
 
-internal fun PaymentOption.getTitle(context: Context): CharSequence = when (this) {
+internal fun PaymentOption.getPlaceholderTitle(context: Context): CharSequence = when (this) {
     is BankCardPaymentOption -> context.getText(R.string.ym_payment_option_new_card)
     is Wallet -> context.getText(R.string.ym_payment_option_yoomoney)
     is AbstractWallet -> context.getText(R.string.ym_payment_option_yoomoney)

@@ -32,6 +32,8 @@ import ru.yoomoney.sdk.kassa.payments.checkoutParameters.Amount
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentMethodType
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.SavePaymentMethod
+import ru.yoomoney.sdk.kassa.payments.config
+import ru.yoomoney.sdk.kassa.payments.config.ConfigRepository
 import ru.yoomoney.sdk.kassa.payments.contract.Contract
 import ru.yoomoney.sdk.kassa.payments.contract.ContractBusinessLogic
 import ru.yoomoney.sdk.kassa.payments.contract.ContractInfo
@@ -49,6 +51,7 @@ import ru.yoomoney.sdk.kassa.payments.payment.selectOption.SelectedPaymentMethod
 import ru.yoomoney.sdk.kassa.payments.payment.tokenize.TokenizeInstrumentInputModel
 import ru.yoomoney.sdk.kassa.payments.payment.tokenize.TokenizePaymentOptionInputModel
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.ShopPropertiesRepository
+import ru.yoomoney.sdk.kassa.payments.savePaymentMethodOptionTexts
 import ru.yoomoney.sdk.kassa.payments.utils.getAllPaymentMethods
 import ru.yoomoney.sdk.march.Effect
 import java.math.BigDecimal
@@ -60,6 +63,7 @@ internal class ContractBusinessLogicEffectTest {
     private val source: () -> Contract.Action = mock()
     private val getConfirmation: GetConfirmation = mock()
     private val shopPropertiesRepository: ShopPropertiesRepository = mock()
+    private val configRepository: ConfigRepository = mock()
 
     private val paymentOptionId = 123
 
@@ -392,6 +396,7 @@ internal class ContractBusinessLogicEffectTest {
     @Test
     fun `check initial shouldSavePaymentMethod and shouldSavePaymentInstrument flags`() {
         whenever(shopPropertiesRepository.shopProperties).thenReturn(ShopProperties(false, false))
+        whenever(configRepository.getConfig()).thenReturn(config)
         `check content shouldSavePaymentMethod shouldSavePaymentInstrument flags`(
             clientSavePaymentMethod = SavePaymentMethod.ON,
             apiSavePaymentMethod = true,
@@ -518,7 +523,9 @@ internal class ContractBusinessLogicEffectTest {
             contractInfo = contractInfo,
             confirmation = confirmation,
             isSplitPayment = false,
-            customerId = customerId
+            customerId = customerId,
+            savePaymentMethodOptionTexts = savePaymentMethodOptionTexts,
+            userAgreementUrl = "Нажимая кнопку, вы принимаете <a href='https://yoomoney.ru/page?id=526623'>условия сервиса</>"
         )
     }
 
@@ -534,7 +541,8 @@ internal class ContractBusinessLogicEffectTest {
         getConfirmation = getConfirmation,
         loadedPaymentOptionListRepository = mock(),
         shopPropertiesRepository = shopPropertiesRepository,
-        userAuthInfoRepository = mock()
+        userAuthInfoRepository = mock(),
+        configRepository = configRepository
     )
 
     private fun getPaymentParameters(

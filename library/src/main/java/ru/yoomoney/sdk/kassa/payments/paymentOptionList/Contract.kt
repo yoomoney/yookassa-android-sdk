@@ -24,19 +24,30 @@ package ru.yoomoney.sdk.kassa.payments.paymentOptionList
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.Amount
 import ru.yoomoney.sdk.kassa.payments.model.PaymentInstrumentBankCard
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
-import ru.yoomoney.sdk.kassa.payments.unbind.UnbindCard
 import ru.yoomoney.sdk.kassa.payments.payment.tokenize.TokenizeInputModel
 
 internal object PaymentOptionList {
     sealed class State {
-        object Loading : State() {
-            override fun toString() = "State.Loading"
-        }
+        abstract val yooMoneyLogoUrl: String
 
-        data class Error(val error: Throwable) : State()
-        data class Content(val content: PaymentOptionListOutputModel) : State()
-        data class WaitingForAuthState(val content: Content) : State()
+        data class Loading(
+            override val yooMoneyLogoUrl: String
+        ) : State()
+
+        data class Error(
+            override val yooMoneyLogoUrl: String,
+            val error: Throwable
+        ) : State()
+        data class Content(
+            override val yooMoneyLogoUrl: String,
+            val content: PaymentOptionListOutputModel
+        ) : State()
+        data class WaitingForAuthState(
+            override val yooMoneyLogoUrl: String,
+            val content: Content
+        ) : State()
         data class ContentWithUnbindingAlert(
+            override val yooMoneyLogoUrl: String,
             val instrumentBankCard: PaymentInstrumentBankCard,
             val content: PaymentOptionListOutputModel,
             val optionId: Int,
@@ -46,7 +57,8 @@ internal object PaymentOptionList {
     }
 
     sealed class Action {
-        data class Load(val amount: Amount, val paymentMethodId: String?) : Action()
+        object ConfigLoadFinish: Action()
+        object Load : Action()
         object Logout : Action()
 
         data class ProceedWithPaymentMethod(val optionId: Int, val instrumentId: String?) : Action()

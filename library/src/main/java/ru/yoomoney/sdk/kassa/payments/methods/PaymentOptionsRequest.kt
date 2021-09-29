@@ -25,6 +25,7 @@ import okhttp3.Credentials
 import org.json.JSONObject
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.Amount
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.SavePaymentMethod
+import ru.yoomoney.sdk.kassa.payments.config.ConfigRepository
 import ru.yoomoney.sdk.kassa.payments.extensions.toPaymentOptionResponse
 import ru.yoomoney.sdk.kassa.payments.http.HostProvider
 import ru.yoomoney.sdk.kassa.payments.methods.base.GetRequest
@@ -40,6 +41,7 @@ private const val SAVE_PAYMENT_METHOD = "save_payment_method"
 
 internal data class PaymentOptionsRequest(
     private val hostProvider: HostProvider,
+    private val configRepository: ConfigRepository,
     private val amount: Amount,
     private val currentUser: CurrentUser,
     private val gatewayId: String?,
@@ -86,6 +88,6 @@ internal data class PaymentOptionsRequest(
             ?: path
 
     override fun convertJsonToResponse(jsonObject: JSONObject): Result<PaymentOptionsResponse> {
-        return jsonObject.toPaymentOptionResponse()
+        return jsonObject.toPaymentOptionResponse(configRepository.getConfig().paymentMethods)
     }
 }

@@ -37,16 +37,20 @@ import ru.yoomoney.sdk.kassa.payments.extensions.RUB
 import ru.yoomoney.sdk.kassa.payments.model.AbstractWallet
 import ru.yoomoney.sdk.kassa.payments.model.BankCardPaymentOption
 import ru.yoomoney.sdk.kassa.payments.model.CardBrand
+import ru.yoomoney.sdk.kassa.payments.model.Config
 import ru.yoomoney.sdk.kassa.payments.model.ConfirmationType
 import ru.yoomoney.sdk.kassa.payments.model.Fee
 import ru.yoomoney.sdk.kassa.payments.model.GooglePay
 import ru.yoomoney.sdk.kassa.payments.model.LinkedCard
 import ru.yoomoney.sdk.kassa.payments.model.PaymentInstrumentBankCard
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
+import ru.yoomoney.sdk.kassa.payments.model.SavePaymentMethodOptionTexts
 import ru.yoomoney.sdk.kassa.payments.model.SberBank
 import ru.yoomoney.sdk.kassa.payments.model.Wallet
 import java.math.BigDecimal
 import java.util.Arrays
+
+const val logoUrl = "https://static.yoomoney.ru/mobile-app-content-front/msdk/payment-options/v1/iokassa-light-eng.png"
 
 fun <T> on(arg: T): OngoingStubbing<T> = `when`(arg)
 
@@ -65,7 +69,9 @@ internal fun createNewCardPaymentOption(
         savePaymentMethodAllowed = savePaymentMethodAllowed,
         confirmationTypes = listOf(ConfirmationType.EXTERNAL),
         paymentInstruments = emptyList(),
-        savePaymentInstrument = createBinding
+        savePaymentInstrument = createBinding,
+        icon = null,
+        title = null
     )
 
 internal fun createBankCardPaymentOption(
@@ -86,6 +92,8 @@ internal fun createBankCardPaymentOption(
         fee = fee,
         savePaymentMethodAllowed = savePaymentMethodAllowed,
         confirmationTypes = confirmationTypes,
+        icon = null,
+        title = null,
         paymentInstruments = instruments,
         savePaymentInstrument = savePaymentInstrument
     )
@@ -102,6 +110,8 @@ internal fun createWalletPaymentOption(id: Int): PaymentOption =
         balance = Amount(BigDecimal.TEN, RUB),
         savePaymentMethodAllowed = true,
         confirmationTypes = listOf(ConfirmationType.REDIRECT),
+        icon = null,
+        title = null,
         savePaymentInstrument = false
     )
 
@@ -115,6 +125,8 @@ internal fun createAbstractWalletPaymentOption(id: Int): PaymentOption =
         ),
         savePaymentMethodAllowed = true,
         confirmationTypes = listOf(ConfirmationType.REDIRECT),
+        icon = null,
+        title = null,
         savePaymentInstrument = false
     )
 
@@ -132,6 +144,8 @@ internal fun createSbolSmsInvoicingPaymentOption(id: Int, isSberPayAllowed: Bool
         } else {
             listOf(ConfirmationType.EXTERNAL, ConfirmationType.REDIRECT)
         },
+        icon = null,
+        title = null,
         savePaymentInstrument = false
     )
 
@@ -148,6 +162,8 @@ internal fun createLinkedCardPaymentOption(id: Int): PaymentOption =
         pan = "1234567887654321",
         savePaymentMethodAllowed = true,
         confirmationTypes = listOf(ConfirmationType.REDIRECT),
+        icon = null,
+        title = null,
         savePaymentInstrument = false
     )
 
@@ -161,16 +177,8 @@ internal fun createGooglePayPaymentOptionWithFee(id: Int, savePaymentMethodAllow
         ),
         savePaymentMethodAllowed = savePaymentMethodAllowed,
         confirmationTypes = emptyList(),
-        savePaymentInstrument = false
-    )
-
-internal fun createGooglePayPaymentOption(id: Int, fee: Fee? = null, savePaymentMethodAllowed: Boolean = false): PaymentOption =
-    GooglePay(
-        id = id,
-        charge = Amount(BigDecimal.TEN, RUB),
-        fee = fee,
-        savePaymentMethodAllowed = savePaymentMethodAllowed,
-        confirmationTypes = emptyList(),
+        icon = null,
+        title = null,
         savePaymentInstrument = false
     )
 
@@ -183,7 +191,6 @@ internal fun equalToDrawable(drawable: Drawable?): Matcher<Drawable?> = object :
         if (drawable === item) return true
         return (item as? Drawable)?.pixelsEqualTo(drawable) == true
     }
-
 }
 
 internal fun createPaymentInstrumentBankCard(cscRequired: Boolean = false) = PaymentInstrumentBankCard(
@@ -192,6 +199,57 @@ internal fun createPaymentInstrumentBankCard(cscRequired: Boolean = false) = Pay
     first6 = "123456",
     cscRequired = cscRequired,
     cardType = CardBrand.MASTER_CARD
+)
+
+internal fun createGooglePayPaymentOption(
+    id: Int,
+    fee: Fee? = null,
+    savePaymentMethodAllowed: Boolean = false
+): PaymentOption =
+    GooglePay(
+        id = id,
+        charge = Amount(BigDecimal.TEN, RUB),
+        fee = fee,
+        savePaymentMethodAllowed = savePaymentMethodAllowed,
+        confirmationTypes = emptyList(),
+        savePaymentInstrument = false,
+        icon = null,
+        title = null
+    )
+
+internal val savePaymentMethodOptionTexts = SavePaymentMethodOptionTexts(
+    switchRecurrentOnBindOnTitle = "Разрешить автосписания \nи сохранить платёжные данные",
+    switchRecurrentOnBindOnSubtitle = "После оплаты магазин <a href=''>сохранит данные карты и сможет списывать деньги без вашего участия</>",
+    switchRecurrentOnBindOffTitle = "Разрешить автосписания",
+    switchRecurrentOnBindOffSubtitle = "После оплаты привяжем карту: магазин сможет <a href=''>списывать деньги без вашего участия</>",
+    switchRecurrentOffBindOnTitle = "Сохранить платёжные данные",
+    switchRecurrentOffBindOnSubtitle = "Магазин <a href=''>сохранит данные вашей карты</> — \nв следующий раз можно будет их не вводить",
+    messageRecurrentOnBindOnTitle = "Разрешим автосписания и сохраним платёжные данные",
+    messageRecurrentOnBindOnSubtitle = "Заплатив здесь, вы соглашаетесь <a href=''>сохранить данные карты и списывать деньги без вашего участия</>",
+    messageRecurrentOnBindOffTitle = "Разрешим автосписания",
+    messageRecurrentOnBindOffSubtitle = "Заплатив здесь, вы разрешаете привязать карту и <a href=''>списывать деньги без вашего участия</>",
+    messageRecurrentOffBindOnTitle = "Сохраним платёжные данные",
+    messageRecurrentOffBindOnSubtitle = "Заплатив здесь, вы разрешаете магазину <a href=''>сохранить данные вашей карты</> — в следующий раз можно их не вводить\n",
+    screenRecurrentOnBindOnTitle = "Автосписания \nи сохранение платёжных данных",
+    screenRecurrentOnBindOnText = "Если вы это разрешили, магазин сохранит данные банковской карты — номер, имя владельца, срок действия (всё, кроме кода CVC). В следующий раз не нужно будет их вводить, чтобы заплатить в этом магазине. \n \nКроме того, мы привяжем карту (в том числе использованную через Google Pay) к магазину. После этого магазин сможет присылать запросы на автоматические списания денег — тогда платёж выполняется без дополнительного подтверждения с вашей стороны. \n \nАвтосписания продолжатся даже при перевыпуске карты, если ваш банк умеет автоматически обновлять данные. Отменить их и отвязать карту можно в любой момент — через службу поддержки магазина.",
+    screenRecurrentOnBindOffTitle = "Как работают автоматические списания",
+    screenRecurrentOnBindOffText = "Если вы согласитесь на автосписания, мы привяжем банковскую карту (в том числе использованную через Google Pay) к магазину. После этого магазин сможет присылать запросы на автоматические списания денег — тогда платёж выполняется без дополнительного подтверждения с вашей стороны. \n \nАвтосписания продолжатся даже при перевыпуске карты, если ваш банк умеет автоматически обновлять данные. Отменить их и отвязать карту можно в любой момент — через службу поддержки магазина.",
+    screenRecurrentOffBindOnTitle = "Сохранение платёжных данных",
+    screenRecurrentOffBindOnText = "Если вы это разрешили, магазин сохранит данные вашей банковской карты — номер, имя владельца и срок действия (всё, кроме кода CVC). В следующий раз не нужно будет вводить их, чтобы заплатить в этом магазине. \n \nУдалить данные можно в процессе оплаты (нажмите «Редактировать мои карты») или через службу поддержки.",
+    screenRecurrentOnSberpayTitle = "Как работают автоматические списания",
+    screenRecurrentOnSberpayText = "Если вы согласитесь на автосписания, мы привяжем банковскую карту (в том числе использованную через Google Pay) к магазину. После этого магазин сможет присылать запросы на автоматические списания денег — тогда платёж выполняется без дополнительного подтверждения с вашей стороны. \n \nАвтосписания продолжатся даже при перевыпуске карты, если ваш банк умеет автоматически обновлять данные. Отменить их и отвязать карту можно в любой момент — через службу поддержки магазина."
+)
+
+internal val config = Config(
+    yooMoneyLogoUrlLight = "todo",
+    yooMoneyLogoUrlDark = "todo",
+    paymentMethods = emptyList(),
+    savePaymentMethodOptionTexts = savePaymentMethodOptionTexts,
+    userAgreementUrl = "Нажимая кнопку, вы принимаете <a href='https://yoomoney.ru/page?id=526623'>условия сервиса</>",
+    gateway = "yoomoney",
+    yooMoneyApiEndpoint = "https://sdk.yookassa.ru/api/frontend/v3",
+    yooMoneyPaymentAuthorizationApiEndpoint = "https://yoomoney.ru/api/wallet-auth/v1",
+    yooMoneyAuthApiEndpoint = null
 )
 
 // from https://gist.github.com/XinyueZ/3cca89416a1e443f914ed37f80ed59f2

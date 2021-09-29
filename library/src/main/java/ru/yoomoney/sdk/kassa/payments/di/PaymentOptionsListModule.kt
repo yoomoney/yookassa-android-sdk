@@ -26,6 +26,7 @@ import dagger.Module
 import dagger.Provides
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.TestParameters
+import ru.yoomoney.sdk.kassa.payments.config.ConfigRepository
 import ru.yoomoney.sdk.kassa.payments.extensions.CheckoutOkHttpClient
 import ru.yoomoney.sdk.kassa.payments.http.HostProvider
 import ru.yoomoney.sdk.kassa.payments.metrics.ErrorReporter
@@ -49,7 +50,8 @@ internal open class PaymentOptionsListModule {
         paymentParameters: PaymentParameters,
         testParameters: TestParameters,
         tokensStorage: TokensStorage,
-        errorReporter: ErrorReporter
+        errorReporter: ErrorReporter,
+        configRepository: ConfigRepository
     ): PaymentOptionListRepository {
         return if (testParameters.mockConfiguration != null) {
             MockPaymentOptionListRepository(
@@ -66,7 +68,8 @@ internal open class PaymentOptionsListModule {
                     tokensStorage = tokensStorage,
                     shopToken = paymentParameters.clientApplicationKey,
                     savePaymentMethod = paymentParameters.savePaymentMethod,
-                    merchantCustomerId = paymentParameters.customerId
+                    merchantCustomerId = paymentParameters.customerId,
+                    configRepository = configRepository
                 ),
                 errorReporter
             )

@@ -67,6 +67,8 @@ class TokenizeBusinessLogicEffectTest {
             id = 1,
             charge = charge,
             fee = null,
+            icon = null,
+            title = null,
             savePaymentMethodAllowed = true,
             confirmationTypes = listOf(ConfirmationType.EXTERNAL),
             paymentInstruments = emptyList(),

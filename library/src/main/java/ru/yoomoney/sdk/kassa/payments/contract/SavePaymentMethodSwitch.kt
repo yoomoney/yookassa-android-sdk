@@ -21,70 +21,72 @@
 
 package ru.yoomoney.sdk.kassa.payments.contract
 
-import android.content.Context
-import ru.yoomoney.sdk.kassa.payments.R
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.SavePaymentMethod
-import ru.yoomoney.sdk.kassa.payments.contract.SavePaymentOptionFormatter.Companion.getGpayRecurrentMessageSubtitle
-import ru.yoomoney.sdk.kassa.payments.contract.SavePaymentOptionFormatter.Companion.getNewBankCardBindMessageSubtitle
-import ru.yoomoney.sdk.kassa.payments.contract.SavePaymentOptionFormatter.Companion.getNewBankCardMessageRecurrentBindSubtitle
-import ru.yoomoney.sdk.kassa.payments.contract.SavePaymentOptionFormatter.Companion.getNewBankCardMessageRecurrentSubtitle
-import ru.yoomoney.sdk.kassa.payments.contract.SavePaymentOptionFormatter.Companion.getNewBankCardSwitchBindSubtitle
-import ru.yoomoney.sdk.kassa.payments.contract.SavePaymentOptionFormatter.Companion.getNewBankCardSwitchRecurrentBindSubtitle
-import ru.yoomoney.sdk.kassa.payments.contract.SavePaymentOptionFormatter.Companion.getNewBankCardSwitchRecurrentSubtitle
+import ru.yoomoney.sdk.kassa.payments.model.SavePaymentMethodOptionTexts
 
 internal sealed class SavePaymentMethodOption {
 
     data class SwitchSavePaymentMethodOption(
-        val title: CharSequence,
-        val subtitle: CharSequence
+        val title: String,
+        val subtitle: String,
+        val screenTitle: String,
+        val screenText: String
     ): SavePaymentMethodOption()
 
     data class MessageSavePaymentMethodOption(
-        val title: CharSequence,
-        val subtitle: CharSequence
+        val title: String,
+        val subtitle: String,
+        val screenTitle: String,
+        val screenText: String
     ): SavePaymentMethodOption()
 
     object None: SavePaymentMethodOption()
 }
 
-internal fun Contract.State.Content.getSavePaymentMethodOption(context: Context): SavePaymentMethodOption {
+internal fun Contract.State.Content.getSavePaymentMethodOption(): SavePaymentMethodOption {
     val isBindAllowed = contractInfo.paymentOption.savePaymentInstrument && !customerId.isNullOrBlank()
     val isRecurrentAllowed = contractInfo.paymentOption.savePaymentMethodAllowed
     return when(contractInfo) {
         is ContractInfo.WalletContractInfo -> SavePaymentMethodOption.None
         is ContractInfo.WalletLinkedCardContractInfo -> SavePaymentMethodOption.None
         is ContractInfo.AbstractWalletContractInfo -> SavePaymentMethodOption.None
-        is ContractInfo.SberBankContractInfo -> SavePaymentMethodOption.None
-        is ContractInfo.LinkedBankCardContractInfo -> getLinkedBankCardSavePaymentOption(
-            context = context,
+        is ContractInfo.SberBankContractInfo -> getSberPaySavePaymentOption(
             savePaymentMethod = savePaymentMethod,
+            savePaymentMethodOptionTexts = savePaymentMethodOptionTexts,
+            isRecurrentAllowed = isRecurrentAllowed
+        )
+        is ContractInfo.LinkedBankCardContractInfo -> getLinkedBankCardSavePaymentOption(
+            savePaymentMethod = savePaymentMethod,
+            savePaymentMethodOptionTexts = savePaymentMethodOptionTexts,
             isRecurrentAllowed = isRecurrentAllowed
         )
         is ContractInfo.PaymentIdCscConfirmationContractInfo -> SavePaymentMethodOption.None
         is ContractInfo.NewBankCardContractInfo -> getNewBankCardSavePaymentOption(
-            context = context,
             savePaymentMethod = savePaymentMethod,
+            savePaymentMethodOptionTexts = savePaymentMethodOptionTexts,
             isBindAllowed = isBindAllowed,
             isRecurrentAllowed = isRecurrentAllowed
         )
         is ContractInfo.GooglePayContractInfo -> getGooglePaySavePaymentOption(
-            context = context,
             savePaymentMethod = savePaymentMethod,
+            savePaymentMethodOptionTexts = savePaymentMethodOptionTexts,
             isRecurrentAllowed = isRecurrentAllowed
         )
     }
 }
 
 private fun getLinkedBankCardSavePaymentOption(
-    context: Context,
     savePaymentMethod: SavePaymentMethod,
+    savePaymentMethodOptionTexts: SavePaymentMethodOptionTexts,
     isRecurrentAllowed: Boolean
 ): SavePaymentMethodOption {
     return when(savePaymentMethod){
         SavePaymentMethod.ON -> when {
             isRecurrentAllowed -> SavePaymentMethodOption.MessageSavePaymentMethodOption(
-                title = context.getString(R.string.ym_auto_write_off_approve_without_switch),
-                subtitle = getNewBankCardMessageRecurrentSubtitle(context)
+                title = savePaymentMethodOptionTexts.messageRecurrentOnBindOffTitle,
+                subtitle = savePaymentMethodOptionTexts.messageRecurrentOnBindOffSubtitle,
+                screenTitle = savePaymentMethodOptionTexts.screenRecurrentOnBindOffTitle,
+                screenText = savePaymentMethodOptionTexts.screenRecurrentOnBindOffText
             )
             else -> SavePaymentMethodOption.None
         }
@@ -92,57 +94,72 @@ private fun getLinkedBankCardSavePaymentOption(
         SavePaymentMethod.USER_SELECTS -> when {
             isRecurrentAllowed ->
                 SavePaymentMethodOption.SwitchSavePaymentMethodOption(
-                    title = context.getString(R.string.ym_auto_write_off_approve_with_switch),
-                    subtitle = getNewBankCardSwitchRecurrentSubtitle(context)
+                    title = savePaymentMethodOptionTexts.switchRecurrentOnBindOffTitle,
+                    subtitle = savePaymentMethodOptionTexts.switchRecurrentOnBindOffSubtitle,
+                    screenTitle = savePaymentMethodOptionTexts.screenRecurrentOnBindOffTitle,
+                    screenText = savePaymentMethodOptionTexts.screenRecurrentOnBindOffText
                 )
             else -> SavePaymentMethodOption.None
         }
     }
 }
 
-
 private fun getNewBankCardSavePaymentOption(
-    context: Context,
     savePaymentMethod: SavePaymentMethod,
+    savePaymentMethodOptionTexts: SavePaymentMethodOptionTexts,
     isBindAllowed: Boolean,
     isRecurrentAllowed: Boolean
 ): SavePaymentMethodOption {
-    return when(savePaymentMethod){
+    return when(savePaymentMethod) {
         SavePaymentMethod.ON -> when {
             isBindAllowed && isRecurrentAllowed -> SavePaymentMethodOption.MessageSavePaymentMethodOption(
-                title = context.getString(R.string.ym_auto_write_off_save_payments_without_switch),
-                subtitle = getNewBankCardMessageRecurrentBindSubtitle(context)
+                title = savePaymentMethodOptionTexts.messageRecurrentOnBindOnTitle,
+                subtitle = savePaymentMethodOptionTexts.messageRecurrentOnBindOnSubtitle,
+                screenTitle = savePaymentMethodOptionTexts.screenRecurrentOnBindOnTitle,
+                screenText = savePaymentMethodOptionTexts.screenRecurrentOnBindOnText
             )
             isBindAllowed -> SavePaymentMethodOption.MessageSavePaymentMethodOption(
-                title = context.getString(R.string.ym_save_payment_details_without_switch),
-                subtitle = getNewBankCardBindMessageSubtitle(context)
+                title = savePaymentMethodOptionTexts.messageRecurrentOffBindOnTitle,
+                subtitle = savePaymentMethodOptionTexts.messageRecurrentOffBindOnSubtitle,
+                screenTitle = savePaymentMethodOptionTexts.screenRecurrentOffBindOnTitle,
+                screenText = savePaymentMethodOptionTexts.screenRecurrentOffBindOnText
             )
             isRecurrentAllowed -> SavePaymentMethodOption.MessageSavePaymentMethodOption(
-                title = context.getString(R.string.ym_auto_write_off_approve_without_switch),
-                subtitle = getNewBankCardMessageRecurrentSubtitle(context)
+                title = savePaymentMethodOptionTexts.messageRecurrentOnBindOffTitle,
+                subtitle = savePaymentMethodOptionTexts.messageRecurrentOnBindOffSubtitle,
+                screenTitle = savePaymentMethodOptionTexts.screenRecurrentOnBindOffTitle,
+                screenText = savePaymentMethodOptionTexts.screenRecurrentOnBindOffText
             )
             else -> SavePaymentMethodOption.None
         }
         SavePaymentMethod.OFF -> when {
             isBindAllowed -> SavePaymentMethodOption.SwitchSavePaymentMethodOption(
-                title = context.getString(R.string.ym_save_payment_details_with_switch),
-                subtitle = getNewBankCardSwitchBindSubtitle(context)
+                title = savePaymentMethodOptionTexts.switchRecurrentOffBindOnTitle,
+                subtitle = savePaymentMethodOptionTexts.switchRecurrentOffBindOnSubtitle,
+                screenTitle = savePaymentMethodOptionTexts.screenRecurrentOffBindOnTitle,
+                screenText = savePaymentMethodOptionTexts.screenRecurrentOffBindOnText
             )
             else -> SavePaymentMethodOption.None
         }
         SavePaymentMethod.USER_SELECTS -> when {
             isBindAllowed && isRecurrentAllowed -> SavePaymentMethodOption.SwitchSavePaymentMethodOption(
-                title = context.getString(R.string.ym_auto_write_off_save_payments_with_switch),
-                subtitle = getNewBankCardSwitchRecurrentBindSubtitle(context)
+                title = savePaymentMethodOptionTexts.switchRecurrentOnBindOnTitle,
+                subtitle = savePaymentMethodOptionTexts.switchRecurrentOnBindOnSubtitle,
+                screenTitle = savePaymentMethodOptionTexts.screenRecurrentOnBindOnTitle,
+                screenText = savePaymentMethodOptionTexts.screenRecurrentOnBindOnText
             )
             isBindAllowed ->  SavePaymentMethodOption.SwitchSavePaymentMethodOption(
-                title = context.getString(R.string.ym_save_payment_details_with_switch),
-                subtitle = getNewBankCardSwitchBindSubtitle(context)
+                title = savePaymentMethodOptionTexts.switchRecurrentOffBindOnTitle,
+                subtitle = savePaymentMethodOptionTexts.switchRecurrentOffBindOnSubtitle,
+                screenTitle = savePaymentMethodOptionTexts.screenRecurrentOffBindOnTitle,
+                screenText = savePaymentMethodOptionTexts.screenRecurrentOffBindOnText
             )
             isRecurrentAllowed ->
                 SavePaymentMethodOption.SwitchSavePaymentMethodOption(
-                    title = context.getString(R.string.ym_auto_write_off_approve_with_switch),
-                    subtitle = getNewBankCardSwitchRecurrentSubtitle(context)
+                    title = savePaymentMethodOptionTexts.switchRecurrentOnBindOffTitle,
+                    subtitle = savePaymentMethodOptionTexts.switchRecurrentOnBindOffSubtitle,
+                    screenTitle = savePaymentMethodOptionTexts.screenRecurrentOnBindOffTitle,
+                    screenText = savePaymentMethodOptionTexts.screenRecurrentOnBindOffText
                 )
             else -> SavePaymentMethodOption.None
         }
@@ -150,23 +167,56 @@ private fun getNewBankCardSavePaymentOption(
 }
 
 private fun getGooglePaySavePaymentOption(
-    context: Context,
     savePaymentMethod: SavePaymentMethod,
+    savePaymentMethodOptionTexts: SavePaymentMethodOptionTexts,
     isRecurrentAllowed: Boolean
 ): SavePaymentMethodOption {
     return when(savePaymentMethod){
         SavePaymentMethod.ON -> when {
             isRecurrentAllowed -> SavePaymentMethodOption.MessageSavePaymentMethodOption(
-                title = context.getString(R.string.ym_contract_save_payment_method_gpay_switch_title),
-                subtitle = getGpayRecurrentMessageSubtitle(context)
+                title = savePaymentMethodOptionTexts.messageRecurrentOnBindOffTitle,
+                subtitle = savePaymentMethodOptionTexts.messageRecurrentOnBindOffSubtitle,
+                screenTitle = savePaymentMethodOptionTexts.screenRecurrentOnBindOffTitle,
+                screenText = savePaymentMethodOptionTexts.screenRecurrentOnBindOffText
             )
             else -> SavePaymentMethodOption.None
         }
         SavePaymentMethod.USER_SELECTS -> when {
             isRecurrentAllowed ->
                 SavePaymentMethodOption.SwitchSavePaymentMethodOption(
-                    title = context.getString(R.string.ym_contract_save_payment_method_gpay_switch_title),
-                    subtitle = getGpayRecurrentMessageSubtitle(context)
+                    title = savePaymentMethodOptionTexts.switchRecurrentOnBindOffTitle,
+                    subtitle = savePaymentMethodOptionTexts.switchRecurrentOnBindOffSubtitle,
+                    screenTitle = savePaymentMethodOptionTexts.screenRecurrentOnBindOffTitle,
+                    screenText = savePaymentMethodOptionTexts.screenRecurrentOnBindOffText
+                )
+            else -> SavePaymentMethodOption.None
+        }
+        else -> SavePaymentMethodOption.None
+    }
+}
+
+private fun getSberPaySavePaymentOption(
+    savePaymentMethod: SavePaymentMethod,
+    savePaymentMethodOptionTexts: SavePaymentMethodOptionTexts,
+    isRecurrentAllowed: Boolean
+): SavePaymentMethodOption {
+    return when(savePaymentMethod){
+        SavePaymentMethod.ON -> when {
+            isRecurrentAllowed -> SavePaymentMethodOption.MessageSavePaymentMethodOption(
+                title = savePaymentMethodOptionTexts.messageRecurrentOnBindOffTitle,
+                subtitle = savePaymentMethodOptionTexts.messageRecurrentOnBindOffSubtitle,
+                screenTitle = savePaymentMethodOptionTexts.screenRecurrentOnSberpayTitle,
+                screenText = savePaymentMethodOptionTexts.screenRecurrentOnSberpayText
+            )
+            else -> SavePaymentMethodOption.None
+        }
+        SavePaymentMethod.USER_SELECTS -> when {
+            isRecurrentAllowed ->
+                SavePaymentMethodOption.SwitchSavePaymentMethodOption(
+                    title = savePaymentMethodOptionTexts.switchRecurrentOnBindOffTitle,
+                    subtitle = savePaymentMethodOptionTexts.switchRecurrentOnBindOffSubtitle,
+                    screenTitle = savePaymentMethodOptionTexts.screenRecurrentOnBindOffTitle,
+                    screenText = savePaymentMethodOptionTexts.screenRecurrentOnBindOffText
                 )
             else -> SavePaymentMethodOption.None
         }

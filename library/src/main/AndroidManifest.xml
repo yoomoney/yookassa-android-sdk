@@ -28,20 +28,24 @@
     <application>
         <activity
             android:name="ru.yoomoney.sdk.kassa.payments.utils.WebViewActivity"
-            android:theme="@style/ym_Theme" />
+            android:theme="@style/ym_Theme"
+            android:exported="false"/>
 
         <activity
             android:name="ru.yoomoney.sdk.kassa.payments.ui.PendingIntentActivity"
-            android:theme="@style/ym_Theme.Translucent" />
+            android:theme="@style/ym_Theme.Translucent"
+            android:exported="false"/>
 
         <activity
             android:name="ru.yoomoney.sdk.kassa.payments.ui.CheckoutActivity"
-            android:theme="@style/ym_Theme.Translucent" />
+            android:theme="@style/ym_Theme.Translucent"
+            android:exported="false"/>
 
         <activity
             android:name=".ui.ConfirmationActivity"
             android:launchMode="singleTask"
-            android:theme="@style/ym_Theme.Translucent">
+            android:theme="@style/ym_Theme.Translucent"
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -54,7 +58,8 @@
 
         <activity
             android:name="ru.yoomoney.sdk.kassa.payments.contract.SavePaymentMethodInfoActivity"
-            android:theme="@style/ym_Theme" />
+            android:theme="@style/ym_Theme"
+            android:exported="false"/>
 
         <meta-data
             android:name="com.google.android.gms.wallet.api.enabled"

@@ -66,7 +66,7 @@ internal class ConfirmationActivity : AppCompatActivity() {
             startConfirmationProcess(
                 confirmationUrl,
                 intent.getSerializableExtra(EXTRA_PAYMENT_METHOD_TYPE) as PaymentMethodType,
-                intent.getParcelableExtra(EXTRA_TEST_PARAMETERS) as TestParameters
+                requireNotNull(intent.getParcelableExtra(EXTRA_TEST_PARAMETERS))
             )
             return
         } else {

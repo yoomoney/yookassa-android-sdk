@@ -51,9 +51,9 @@ internal class CheckoutActivity : AppCompatActivity() {
 
     private val paymentParameters: PaymentParameters by lazy {
         if (intent.hasExtra(EXTRA_PAYMENT_PARAMETERS)) {
-            intent.getParcelableExtra(EXTRA_PAYMENT_PARAMETERS) as PaymentParameters
+            requireNotNull(intent.getParcelableExtra(EXTRA_PAYMENT_PARAMETERS))
         } else {
-            val cscParameter = intent.getParcelableExtra(EXTRA_CSC_PARAMETERS) as SavedBankCardPaymentParameters
+            val cscParameter = requireNotNull(intent.getParcelableExtra<SavedBankCardPaymentParameters>(EXTRA_CSC_PARAMETERS))
             PaymentParameters(
                 amount = cscParameter.amount,
                 title = cscParameter.title,
@@ -71,15 +71,15 @@ internal class CheckoutActivity : AppCompatActivity() {
         checkStartedWithCreateTokenizeIntent()
 
         val paymentMethodId: String? = if (!intent.hasExtra(EXTRA_PAYMENT_PARAMETERS)) {
-            (intent.getParcelableExtra(EXTRA_CSC_PARAMETERS) as SavedBankCardPaymentParameters).paymentMethodId
+            requireNotNull(intent.getParcelableExtra<SavedBankCardPaymentParameters>(EXTRA_CSC_PARAMETERS)).paymentMethodId
         } else {
             null
         }
         CheckoutInjector.setupComponent(
             this,
             paymentParameters,
-            intent.getParcelableExtra(EXTRA_TEST_PARAMETERS),
-            intent.getParcelableExtra(EXTRA_UI_PARAMETERS),
+            requireNotNull(intent.getParcelableExtra(EXTRA_TEST_PARAMETERS)),
+            requireNotNull(intent.getParcelableExtra(EXTRA_UI_PARAMETERS)),
             paymentMethodId,
             YandexMetricaExceptionReporter(YandexMetrica.getReporter(applicationContext, BuildConfig.APP_METRICA_KEY))
         )

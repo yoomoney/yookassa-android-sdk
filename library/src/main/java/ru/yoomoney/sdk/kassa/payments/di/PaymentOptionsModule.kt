@@ -28,6 +28,9 @@ import dagger.Provides
 import dagger.multibindings.IntoMap
 import ru.yoomoney.sdk.kassa.payments.payment.PaymentMethodRepository
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
+import ru.yoomoney.sdk.kassa.payments.checkoutParameters.TestParameters
+import ru.yoomoney.sdk.kassa.payments.config.ConfigRepository
+import ru.yoomoney.sdk.kassa.payments.secure.TokensStorage
 import ru.yoomoney.sdk.kassa.payments.metrics.Reporter
 import ru.yoomoney.sdk.kassa.payments.metrics.TokenizeSchemeParamProvider
 import ru.yoomoney.sdk.kassa.payments.metrics.UserAuthTypeParamProvider
@@ -43,6 +46,8 @@ import ru.yoomoney.sdk.kassa.payments.payment.loadPaymentInfo.PaymentMethodInfoG
 import ru.yoomoney.sdk.kassa.payments.errorFormatter.ErrorFormatter
 import ru.yoomoney.sdk.kassa.payments.model.GetConfirmation
 import ru.yoomoney.sdk.kassa.payments.payment.unbindCard.UnbindCardGateway
+import ru.yoomoney.sdk.kassa.payments.paymentOptionList.ConfigUseCase
+import ru.yoomoney.sdk.kassa.payments.paymentOptionList.ConfigUseCaseImpl
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.PaymentOptionList
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.PaymentOptionListAnalytics
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.PaymentOptionsListBusinessLogic
@@ -128,6 +133,12 @@ internal class PaymentOptionsModule {
         return UnbindCardUseCaseImpl(unbindCardInfoGateway, getLoadedPaymentOptionListRepository)
     }
 
+    @Provides
+    @Singleton
+    fun configUseCase(configRepository: ConfigRepository): ConfigUseCase {
+        return ConfigUseCaseImpl(configRepository)
+    }
+
     @[Provides IntoMap ViewModelKey(PAYMENT_OPTIONS)]
     fun viewModel(
         paymentOptionsListUseCase: PaymentOptionsListUseCase,
@@ -139,14 +150,16 @@ internal class PaymentOptionsModule {
         logoutUseCase: LogoutUseCase,
         getConfirmation: GetConfirmation,
         unbindCardUseCase: UnbindCardUseCase,
-        shopPropertiesRepository: ShopPropertiesRepository
+        shopPropertiesRepository: ShopPropertiesRepository,
+        configUseCase: ConfigUseCase,
+        configRepository: ConfigRepository
     ): ViewModel {
         return RuntimeViewModel<PaymentOptionList.State, PaymentOptionList.Action, PaymentOptionList.Effect>(
             featureName = "PaymentOptionList",
             initial = {
-                Out(PaymentOptionList.State.Loading) {
+                Out(PaymentOptionList.State.Loading(configRepository.getConfig().yooMoneyLogoUrlLight)) {
                     input { showState(state) }
-                    input { paymentOptionsListUseCase.loadPaymentOptions(paymentParameters.amount, paymentMethodId) }
+                    input { configUseCase.loadConfig() }
                 }
             },
             logic = {
@@ -159,9 +172,11 @@ internal class PaymentOptionsModule {
                         useCase = paymentOptionsListUseCase,
                         logoutUseCase = logoutUseCase,
                         paymentParameters = paymentParameters,
+                        paymentMethodId = paymentMethodId,
                         getConfirmation = getConfirmation,
                         unbindCardUseCase = unbindCardUseCase,
-                        shopPropertiesRepository = shopPropertiesRepository
+                        shopPropertiesRepository = shopPropertiesRepository,
+                        configRepository = configRepository
                     ),
                     getUserAuthType = userAuthTypeParamProvider,
                     getTokenizeScheme = tokenizeSchemeParamProvider

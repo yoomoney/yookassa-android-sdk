@@ -59,7 +59,7 @@ class WebViewActivity : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val url = intent.getStringExtra(EXTRA_URL)
+        val url = requireNotNull(intent.getStringExtra(EXTRA_URL))
         val logParam = intent.getStringExtra(EXTRA_LOG_PARAM)
 
         if (checkUrl(url)) {

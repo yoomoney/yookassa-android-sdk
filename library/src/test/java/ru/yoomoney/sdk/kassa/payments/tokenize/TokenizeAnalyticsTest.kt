@@ -65,10 +65,14 @@ class TokenizeAnalyticsTest {
     fun `verify actionTokenize analytics sends`() {
         // given
         val wallet = Wallet(
-            1,
-            Amount(BigDecimal("3.00"), RUB),
-            null, "123456789",
-            Amount(BigDecimal("5.00"), RUB), true,
+            id = 1,
+            charge = Amount(BigDecimal("3.00"), RUB),
+            fee = null,
+            icon = null,
+            title = null,
+            walletId = "123456789",
+            balance = Amount(BigDecimal("5.00"), RUB),
+            savePaymentMethodAllowed = true,
             confirmationTypes = listOf(ConfirmationType.REDIRECT),
             savePaymentInstrument = false
         )

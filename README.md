@@ -155,8 +155,7 @@ the library will use all available payment methods;
 * gatewayId (String): gatewayId for the store;
 * customReturnUrl (String): url of the page (only https supported) where you need to return after completing 3ds. It should only be used if a custom Activity is used for 3ds url. If Checkout.createConfirmationIntent() or Checkout.create3dsIntent() is used, don't specify this parameter;
 * userPhoneNumber (String): user's phone number. It's used for autofilling fields for payments via SberPay. Supported format: "+7XXXXXXXXXX".
-* googlePayParameters (GooglePayParameters): settings for payments via Google Pay;
-* customerId (String): unique customer id for your system, ex: email or phone number. 200 symbols max. Used by library to save user payment method and display saved methods. It is your responsibility to make sure that a particular customerId identifies the user, which is willing to make a purchase.
+* googlePayParameters (GooglePayParameters): settings for payments via Google Pay.
 
 Fields of the `Amount` class:
 * value (BigDecimal): amount;
@@ -201,27 +200,6 @@ class MyActivity extends AppCompatActivity {
         );
         Intent intent = Checkout.createTokenizeIntent(this, paymentParameters);
         startActivityForResult(intent, REQUEST_CODE_TOKENIZE);
-    }
-}
-```
-
-Kotlin:
-```kotlin
-class MyActivity : AppCompatActivity() {
-
-    ...
-
-    fun timeToStartCheckout() {
-        val paymentParameters = PaymentParameters(
-            amount = Amount(BigDecimal.TEN, Currency.getInstance("RUB")),
-            title = "Product name",
-            subtitle = "Product description",
-            clientApplicationKey = "live_AAAAAAAAAAAAAAAAAAAA",
-            shopId = "12345",
-            savePaymentMethod = SavePaymentMethod.OFF
-        )
-        val intent = createTokenizeIntent(this, paymentParameters)
-        startActivityForResult(intent, REQUEST_CODE_TOKENIZE)
     }
 }
 ```
@@ -280,28 +258,6 @@ class MyActivity extends AppCompatActivity {
 }
 ```
 
-Kotlin:
-```kotlin
-class MyActivity : AppCompatActivity() {
-
-    ...
-
-    fun timeToStartCheckout() {
-        val parameters = SavedBankCardPaymentParameters(
-            amount = Amount(BigDecimal.TEN, Currency.getInstance("RUB")),
-            title = "Product name",
-            subtitle = "Product description",
-            clientApplicationKey = "live_AAAAAAAAAAAAAAAAAAAA",
-            shopId = "12345",
-            paymentMethodId = "paymentId",
-            savePaymentMethod = SavePaymentMethod.OFF
-        )
-        val intent = createSavedCardTokenizeIntent(this, parameters)
-        startActivityForResult(intent, REQUEST_CODE_TOKENIZE)
-    }
-}
-```
-
 ### Getting tokenization results
 Tokenization result will be returned in `onActivityResult()`.
 
@@ -345,30 +301,6 @@ public final class MainActivity extends AppCompatActivity {
                 }
             }
         }
-}
-```
-
-Kotlin:
-```kotlin
-class MainActivity : AppCompatActivity() {
-
-    ...
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == REQUEST_CODE_TOKENIZE) {
-            when (resultCode) {
-                RESULT_OK -> {
-                    // successful tokenization
-                    val result = data?.let { createTokenizationResult(it) }
-                }
-                RESULT_CANCELED -> {
-                    // user canceled tokenization
-                }
-            }
-        }
-    }
 }
 ```
 
@@ -417,25 +349,6 @@ class MyActivity extends AppCompatActivity {
 }
 ```
 
-Kotlin:
-```kotlin
-class MyActivity : AppCompatActivity() {
-
-    ...
-
-    fun timeToStartCheckout() {
-        val paymentParameters = PaymentParameters(...)
-        val testParameters = TestParameters(
-            true,
-            true,
-            MockConfiguration(false, true, 5, Amount(BigDecimal.TEN, Currency.getInstance("RUB")))
-        )
-        val intent = createTokenizeIntent(this, paymentParameters, testParameters)
-        startActivityForResult(intent, REQUEST_CODE_TOKENIZE)
-    }
-}
-```
-
 ### Interface configuration
 
 You can use the`UiParameters` object for configuring the SDK interface. You can configure interface colors and if the YooMoney logo is displayed or hidden.
@@ -458,21 +371,6 @@ class MyActivity extends AppCompatActivity {
         UiParameters uiParameters = new UiParameters(true, new ColorScheme(Color.rgb(0, 114, 245)));
         Intent intent = Checkout.createTokenizeIntent(this, paymentParameters, new TestParameters(), uiParameters);
         startActivityForResult(intent, REQUEST_CODE_TOKENIZE);
-    }
-}
-```
-
-Kotlin:
-```kotlin
-class MyActivity : AppCompatActivity() {
-
-    ...
-
-    fun timeToStartCheckout() {
-        val paymentParameters = PaymentParameters(...)
-        val uiParameters = UiParameters(true, ColorScheme(Color.rgb(0, 114, 245)))
-        val intent = createTokenizeIntent(this, paymentParameters, TestParameters(), uiParameters)
-        startActivityForResult(intent, REQUEST_CODE_TOKENIZE)
     }
 }
 ```
@@ -532,33 +430,6 @@ class MyActivity extends AppCompatActivity {
 }
 ```
 
-Kotlin:
-```kotlin
-class MyActivity : AppCompatActivity() {
-
-    fun timeToStart3DS() {
-        val intent = createConfirmationIntent(this, "https://3dsurl.com/", PaymentMethodType.BANK_CARD)
-        startActivityForResult(intent, 1)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == 1) {
-            when (resultCode) {
-                RESULT_OK -> return // Процесс 3ds завершён
-                RESULT_CANCELED -> return // экран 3ds был закрыт
-                Checkout.RESULT_ERROR -> {
-                    // во время 3ds произошла какая-то ошибка (нет соединения или что-то еще)
-                    // более подробную информацию можно посмотреть в data
-                    // data.getIntExtra(Checkout.EXTRA_ERROR_CODE) - код ошибки из WebViewClient.ERROR_* или Checkout.ERROR_NOT_HTTPS_URL
-                    // data.getStringExtra(Checkout.EXTRA_ERROR_DESCRIPTION) - описание ошибки (может отсутствовать)
-                    // data.getStringExtra(Checkout.EXTRA_ERROR_FAILING_URL) - url по которому произошла ошибка (может отсутствовать)
-                }
-            }
-        }
-    }
-}
-```
-
 ## Scanning bank cards
 
 Create an `Activity` which processes action `ru.yoomoney.sdk.kassa.payments.action.SCAN_BANK_CARD`
@@ -592,18 +463,6 @@ public class ScanBankCardActivity extends Activity {
 
     }
 
-}
-```
-
-Kotlin:
-```kotlin
-class ScanBankCardActivity : Activity() {
-
-    private fun onScanningDone(cardNumber: String, expirationMonth: Int, expirationYear: Int) {
-        val result: Intent = Checkout.createScanBankCardResult(cardNumber, expirationMonth, expirationYear)
-        setResult(RESULT_OK, result)
-        finish()
-    }
 }
 ```
 

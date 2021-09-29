@@ -1,0 +1,53 @@
+{
+  "yooMoneyLogoUrlLight": "https://static.yoomoney.ru/mobile-app-content-front/msdk/payment-options/v1/iokassa-light-eng.png",
+  "yooMoneyLogoUrlDark": "https://static.yoomoney.ru/mobile-app-content-front/msdk/payment-options/v1/iokassa-dark-eng.png",
+  "paymentMethods": [
+    {
+      "method": "bank_card",
+      "title": "Bank card",
+      "iconUrl": "https://static.yoomoney.ru/mobile-app-content-front/msdk/payment-options/v1/ym_ic_add_card.png"
+    },
+    {
+      "method": "yoo_money",
+      "title": "YooMoney",
+      "iconUrl": "https://static.yoomoney.ru/mobile-app-content-front/msdk/payment-options/v1/ym_ic_yoomoney.png"
+    },
+    {
+      "method": "sberbank",
+      "title": "SberPay",
+      "iconUrl": "https://static.yoomoney.ru/mobile-app-content-front/msdk/payment-options/v1/ym_ic_sberbank.png"
+    },
+    {
+      "method": "google_pay",
+      "title": "Google Pay",
+      "iconUrl": "https://static.yoomoney.ru/mobile-app-content-front/msdk/payment-options/v1/ym_ic_google_pay.png"
+    }
+  ],
+  "savePaymentMethodOptionTexts": {
+    "switchRecurrentOnBindOnTitle": "Allow autopayments and save payment details",
+    "switchRecurrentOnBindOnSubtitle": "After the payment, the store will <a href=''>save your bank card details to be able to debit money without your participation</>",
+    "switchRecurrentOnBindOffTitle": "Allow autopayments",
+    "switchRecurrentOnBindOffSubtitle": "After the payment, this card will be saved: the store will be able <a href=''>to debit money without your participation</>",
+    "switchRecurrentOffBindOnTitle": "Save payment details",
+    "switchRecurrentOffBindOnSubtitle": "This store <a href=''>will save your bank card details</>: next time you won't need to enter them",
+    "messageRecurrentOnBindOnTitle": "Allowing autopayments and saving payment details",
+    "messageRecurrentOnBindOnSubtitle": "By making this payment, you allow <a href=''>saving bank card details and debiting money without your participation</>",
+    "messageRecurrentOnBindOffTitle": "Allowing autopayments",
+    "messageRecurrentOnBindOffSubtitle": "By making this payment, you allow saving this wallet and <a href=''>debiting money without your participation</>",
+    "messageRecurrentOffBindOnTitle": "Saving payment details",
+    "messageRecurrentOffBindOnSubtitle": "By making this payment, you allow the store <a href=''>to save your bank card details</>: next time you won't need to enter them",
+    "screenRecurrentOnBindOnTitle": "Autopayments \nand saving payment details",
+    "screenRecurrentOnBindOnText": "If you allowed it, your bank card details will be saved for this store and its partners: card number, cardholder's name, and expiration date (everything except the CVC). Next time, you won't need to enter them for payments in this store. \n \nBesides that, we'll link the card (including if it's been used via Google Pay) to the store. After that, the store will be able to send requests for debiting money automatically: then the payment is made without an additional confirmation from you. \n \nAutopayments will continue even after you reissue the card, even if your bank can update the data automatically. You can cancel them and unlink the card at any moment via store's support service.",
+    "screenRecurrentOnBindOffTitle": "How autopayments work",
+    "screenRecurrentOnBindOffText": "If you allow autopayments, we'll link the card (including if it's been used via Google Pay) to the store. After that, the store will be able to send requests for debiting money automatically, then the payment is made without an additional confirmation from you. \n \nAutopayments will continue even after you reissue the card, even if your bank can update the data automatically. You can cancel them and unlink the card at any moment via store's support service.",
+    "screenRecurrentOffBindOnTitle": "Saving payment details",
+    "screenRecurrentOffBindOnText": "If you allowed it, your bank card details will be saved for this store and its partners: card number, cardholder's name, and expiration date (everything except the CVC). Next time, you won't need to enter them for payments in this store. \n \nYou can delete the bank card details during the payment process (tap on the three dots next to the card and select \"Remove the card\") or by contacting the support service.",
+    "screenRecurrentOnSberpayTitle": "How autopayments work",
+    "screenRecurrentOnSberpayText": "If you allowed it, your bank card details will be saved for this store and its partners: card number, cardholder's name, and expiration date (everything except the CVC). Next time, you won't need to enter them for payments in this store. \n \nYou can delete the bank card details during the payment process (tap on the three dots next to the card and select \"Remove the card\") or by contacting the support service."
+  },
+  "userAgreementUrl": "By clicking this button, accept <a href='https://yoomoney.ru/page?id=526623'>the terms and conditions of the service</>",
+  "googlePayGateway": "yoomoney",
+  "yooMoneyApiEndpoint": "https://sdk.yookassa.ru/api/frontend/v3",
+  "yooMoneyPaymentAuthorizationApiEndpoint": "https://yoomoney.ru/api/wallet-auth/v1",
+  "yooMoneyAuthApiEndpoint": ""
+}

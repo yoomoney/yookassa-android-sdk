@@ -33,6 +33,8 @@ import ru.yoomoney.sdk.kassa.payments.checkoutParameters.Amount
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentMethodType
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.SavePaymentMethod
+import ru.yoomoney.sdk.kassa.payments.config
+import ru.yoomoney.sdk.kassa.payments.config.ConfigRepository
 import ru.yoomoney.sdk.kassa.payments.contract.Contract
 import ru.yoomoney.sdk.kassa.payments.contract.ContractBusinessLogic
 import ru.yoomoney.sdk.kassa.payments.contract.createGPayContractInfo
@@ -46,6 +48,7 @@ import ru.yoomoney.sdk.kassa.payments.model.NoConfirmation
 import ru.yoomoney.sdk.kassa.payments.payment.selectOption.SelectedPaymentMethodOutputModel
 import ru.yoomoney.sdk.kassa.payments.model.ShopProperties
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.ShopPropertiesRepository
+import ru.yoomoney.sdk.kassa.payments.savePaymentMethodOptionTexts
 import ru.yoomoney.sdk.kassa.payments.utils.func
 import ru.yoomoney.sdk.march.Logic
 import java.lang.IllegalStateException
@@ -69,6 +72,7 @@ internal class GpayContractBusinessLogicEffectTest(
     private val logoutUseCase: LogoutUseCase = mock()
     private val getConfirmation: GetConfirmation = mock()
     private val shopPropertiesRepository: ShopPropertiesRepository = mock()
+    private val configRepository: ConfigRepository = mock()
 
     private val paymentParameters = PaymentParameters(
         amount = Amount(BigDecimal.TEN, RUB),
@@ -92,7 +96,8 @@ internal class GpayContractBusinessLogicEffectTest(
             loadedPaymentOptionListRepository = mock(),
             selectPaymentMethodUseCase = mock(),
             userAuthInfoRepository = mock(),
-            shopPropertiesRepository = shopPropertiesRepository
+            shopPropertiesRepository = shopPropertiesRepository,
+            configRepository = configRepository
         )
     }
     @Test
@@ -108,7 +113,9 @@ internal class GpayContractBusinessLogicEffectTest(
             contractInfo = createGPayContractInfo(backendSavePaymentMethod, createGooglePayPaymentOption(1, fee, backendSavePaymentMethod) as GooglePay),
             customerId = null,
             isSinglePaymentMethod = false,
-            isSplitPayment = isSafeDeal || isMarketplace
+            isSplitPayment = isSafeDeal || isMarketplace,
+            userAgreementUrl = config.userAgreementUrl,
+            savePaymentMethodOptionTexts = savePaymentMethodOptionTexts
         )
         val expected = when (excpectedState) {
             Contract.State.Content::class -> content
@@ -117,6 +124,7 @@ internal class GpayContractBusinessLogicEffectTest(
         }
         Mockito.`when`(getConfirmation.invoke(anyOrNull())).thenReturn(NoConfirmation)
         Mockito.`when`(shopPropertiesRepository.shopProperties).thenReturn(ShopProperties(isSafeDeal = isSafeDeal, isMarketplace = isMarketplace))
+        Mockito.`when`(configRepository.getConfig()).thenReturn(config)
         val out =
             createLogic(paymentParameters = paymentParameters.copy(savePaymentMethod = merchantSavePaymentMethod)).invoke(
                 Contract.State.Loading, Contract.Action.LoadContractSuccess(
@@ -144,7 +152,6 @@ internal class GpayContractBusinessLogicEffectTest(
                 arrayOf(SavePaymentMethod.OFF, false, false, false, false, null, Contract.State.GooglePay::class),
                 arrayOf(SavePaymentMethod.USER_SELECTS, true, false, false, false, null, Contract.State.Content::class),
                 arrayOf(SavePaymentMethod.USER_SELECTS, false, false, false, false, null, Contract.State.GooglePay::class),
-
                 // With fee, should always show contract screen
                 arrayOf(SavePaymentMethod.ON, true, true, false, true, fee, Contract.State.Content::class),
                 arrayOf(SavePaymentMethod.ON, true, true, false, true, fee, Contract.State.Content::class),

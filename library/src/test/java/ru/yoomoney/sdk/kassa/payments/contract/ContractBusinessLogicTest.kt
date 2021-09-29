@@ -22,6 +22,7 @@
 package ru.yoomoney.sdk.kassa.payments.contract
 
 import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.whenever
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Assert.assertThat
 import org.junit.Test
@@ -30,6 +31,8 @@ import org.junit.runners.Parameterized
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.Amount
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.SavePaymentMethod
+import ru.yoomoney.sdk.kassa.payments.config
+import ru.yoomoney.sdk.kassa.payments.config.ConfigRepository
 import ru.yoomoney.sdk.kassa.payments.contract.Contract.Action
 import ru.yoomoney.sdk.kassa.payments.contract.Contract.State.Content
 import ru.yoomoney.sdk.kassa.payments.contract.Contract.State.Error
@@ -45,6 +48,7 @@ import ru.yoomoney.sdk.kassa.payments.model.NewCardInfo
 import ru.yoomoney.sdk.kassa.payments.model.PaymentInstrumentBankCard
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
 import ru.yoomoney.sdk.kassa.payments.payment.selectOption.SelectedPaymentMethodOutputModel
+import ru.yoomoney.sdk.kassa.payments.savePaymentMethodOptionTexts
 import ru.yoomoney.sdk.kassa.payments.model.ShopProperties
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.ShopPropertiesRepository
 import ru.yoomoney.sdk.march.generateBusinessLogicTests
@@ -58,6 +62,9 @@ internal class ContractBusinessLogicTest(
     val action: Action,
     val expected: Contract.State
 ) {
+
+    private val configRepository: ConfigRepository = mock()
+
     private val paymentParameters = PaymentParameters(
         amount = Amount(BigDecimal.TEN, RUB),
         title = "shopTitle",
@@ -76,14 +83,13 @@ internal class ContractBusinessLogicTest(
             val loadingState = Loading
             val paymentOption = BankCardPaymentOption(
                 paymentOptionId,
-                Amount(
-                    BigDecimal.TEN,
-                    Currency.getInstance("RUB")
-                ),
+                Amount(BigDecimal.TEN, Currency.getInstance("RUB")),
+                null,
+                null,
                 null,
                 false,
-                emptyList(),
-                emptyList(),
+               emptyList(), emptyList()
+            ,
                 false
             )
             val contentState = Content(
@@ -96,7 +102,9 @@ internal class ContractBusinessLogicTest(
                 contractInfo = ContractInfo.NewBankCardContractInfo(paymentOption),
                 confirmation = ExternalConfirmation,
                 isSplitPayment = true,
-                customerId = null
+                customerId = null,
+                savePaymentMethodOptionTexts = savePaymentMethodOptionTexts,
+                userAgreementUrl = config.userAgreementUrl
             )
 
             val loadContractSuccessAction = Action.LoadContractSuccess(
@@ -191,12 +199,14 @@ internal class ContractBusinessLogicTest(
         shopPropertiesRepository = object: ShopPropertiesRepository{
             override var shopProperties: ShopProperties = ShopProperties(isSafeDeal = true, isMarketplace = true)
         },
-        userAuthInfoRepository = mock()
+        userAuthInfoRepository = mock(),
+        configRepository = configRepository
     )
 
     @Test
     fun test() {
         // when
+        whenever(configRepository.getConfig()).thenReturn(config)
         val actual = logic(state, action)
 
         // then

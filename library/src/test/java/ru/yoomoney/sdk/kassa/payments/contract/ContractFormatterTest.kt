@@ -26,10 +26,9 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.ParameterizedRobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
-import ru.yoomoney.sdk.kassa.payments.R
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.SavePaymentMethod
 import ru.yoomoney.sdk.kassa.payments.model.ExternalConfirmation
-import ru.yoomoney.sdk.kassa.payments.utils.getMessageWithLink
+import ru.yoomoney.sdk.kassa.payments.savePaymentMethodOptionTexts
 
 internal enum class OptionCase {
     CARD_SWITCH_RECURRENT_NO_SAVE,
@@ -68,81 +67,69 @@ internal class GetSavePaymentMethodOptionTest(
             contractInfo = contractInfo,
             confirmation = ExternalConfirmation,
             isSplitPayment = false,
-            customerId = customerId
+            customerId = customerId,
+            savePaymentMethodOptionTexts = savePaymentMethodOptionTexts,
+            userAgreementUrl = "userAgreementUrl"
         )
 
         // when
         val expectedOption: SavePaymentMethodOption = when (expectedOptionCase) {
             OptionCase.CARD_SWITCH_RECURRENT_NO_SAVE -> SavePaymentMethodOption.SwitchSavePaymentMethodOption(
-                title = context.getString(R.string.ym_auto_write_off_approve_with_switch),
-                subtitle = getMessageWithLink(
-                    context,
-                    R.string.ym_save_payment_method_linked_card_message_text_with_switch_part_1,
-                    R.string.ym_save_payment_method_linked_card_message_text_with_switch_part_2
-                ) {}
+                title = "Разрешить автосписания",
+                subtitle = "После оплаты привяжем карту: магазин сможет <a href=''>списывать деньги без вашего участия</>",
+                screenTitle = "Как работают автоматические списания",
+                screenText = "Если вы согласитесь на автосписания, мы привяжем банковскую карту (в том числе использованную через Google Pay) к магазину. После этого магазин сможет присылать запросы на автоматические списания денег — тогда платёж выполняется без дополнительного подтверждения с вашей стороны. \n" +
+                        " \n" +
+                        "Автосписания продолжатся даже при перевыпуске карты, если ваш банк умеет автоматически обновлять данные. Отменить их и отвязать карту можно в любой момент — через службу поддержки магазина."
             )
             OptionCase.CARD_SWITCH_NO_RECURRENT_SAVE -> SavePaymentMethodOption.SwitchSavePaymentMethodOption(
-                title = context.getString(R.string.ym_save_payment_details_with_switch),
-                subtitle = getMessageWithLink(
-                    context,
-                    R.string.ym_save_payment_method_linked_saved_card_message_text_part_1,
-                    R.string.ym_save_payment_method_linked_saved_card_message_text_part_2,
-                    R.string.ym_save_payment_method_linked_saved_card_message_text_part_3
-                ) {}
+                title = "Сохранить платёжные данные",
+                subtitle = "Магазин <a href=''>сохранит данные вашей карты</> — \n" +
+                        "в следующий раз можно будет их не вводить",
+                screenTitle = "Сохранение платёжных данных",
+                screenText = "Если вы это разрешили, магазин сохранит данные вашей банковской карты — номер, имя владельца и срок действия (всё, кроме кода CVC). В следующий раз не нужно будет вводить их, чтобы заплатить в этом магазине. \n \nУдалить данные можно в процессе оплаты (нажмите «Редактировать мои карты») или через службу поддержки."
             )
             OptionCase.CARD_SWITCH_RECURRENT_SAVE -> SavePaymentMethodOption.SwitchSavePaymentMethodOption(
-                title = context.getString(R.string.ym_auto_write_off_save_payments_with_switch),
-                subtitle = getMessageWithLink(
-                    context,
-                    R.string.ym_save_payment_method_linked_card_auto_write_off_message_text_with_switch_part_1,
-                    R.string.ym_save_payment_method_linked_card_auto_write_off_message_text_with_switch_part_2
-                ) {}
+                title = "Разрешить автосписания \n" +
+                        "и сохранить платёжные данные",
+                subtitle = "После оплаты магазин <a href=''>сохранит данные карты и сможет списывать деньги без вашего участия</>",
+                screenTitle = "Автосписания \nи сохранение платёжных данных",
+                screenText = "Если вы это разрешили, магазин сохранит данные банковской карты — номер, имя владельца, срок действия (всё, кроме кода CVC). В следующий раз не нужно будет их вводить, чтобы заплатить в этом магазине. \n \nКроме того, мы привяжем карту (в том числе использованную через Google Pay) к магазину. После этого магазин сможет присылать запросы на автоматические списания денег — тогда платёж выполняется без дополнительного подтверждения с вашей стороны. \n \nАвтосписания продолжатся даже при перевыпуске карты, если ваш банк умеет автоматически обновлять данные. Отменить их и отвязать карту можно в любой момент — через службу поддержки магазина."
             )
 
             OptionCase.CARD_MESSAGE_RECURRENT_SAVE -> SavePaymentMethodOption.MessageSavePaymentMethodOption(
-                title = context.getString(R.string.ym_auto_write_off_save_payments_without_switch),
-                subtitle = getMessageWithLink(
-                    context,
-                    R.string.ym_save_payment_method_linked_card_auto_write_off_message_text_part_1,
-                    R.string.ym_save_payment_method_linked_card_auto_write_off_message_text_part_2
-                ) {}
+                title = "Разрешим автосписания и сохраним платёжные данные",
+                subtitle = "Заплатив здесь, вы соглашаетесь <a href=''>сохранить данные карты и списывать деньги без вашего участия</>",
+                screenTitle = "Автосписания \nи сохранение платёжных данных",
+                screenText = "Если вы это разрешили, магазин сохранит данные банковской карты — номер, имя владельца, срок действия (всё, кроме кода CVC). В следующий раз не нужно будет их вводить, чтобы заплатить в этом магазине. \n \nКроме того, мы привяжем карту (в том числе использованную через Google Pay) к магазину. После этого магазин сможет присылать запросы на автоматические списания денег — тогда платёж выполняется без дополнительного подтверждения с вашей стороны. \n \nАвтосписания продолжатся даже при перевыпуске карты, если ваш банк умеет автоматически обновлять данные. Отменить их и отвязать карту можно в любой момент — через службу поддержки магазина."
             )
             OptionCase.CARD_MESSAGE_NO_RECURRENT_SAVE -> SavePaymentMethodOption.MessageSavePaymentMethodOption(
-                title = context.getString(R.string.ym_save_payment_details_without_switch),
-                subtitle = getMessageWithLink(
-                    context,
-                    R.string.ym_save_payment_method_linked_saved_card_message_text_with_switch_part_1,
-                    R.string.ym_save_payment_method_linked_saved_card_message_text_with_switch_part_2,
-                    R.string.ym_save_payment_method_linked_saved_card_message_text_with_switch_part_3
-                ) {}
+                title = "Сохраним платёжные данные",
+                subtitle = "Заплатив здесь, вы разрешаете магазину <a href=''>сохранить данные вашей карты</> — в следующий раз можно их не вводить\n",
+                screenTitle = "Сохранение платёжных данных",
+                screenText = "Если вы это разрешили, магазин сохранит данные вашей банковской карты — номер, имя владельца и срок действия (всё, кроме кода CVC). В следующий раз не нужно будет вводить их, чтобы заплатить в этом магазине. \n \nУдалить данные можно в процессе оплаты (нажмите «Редактировать мои карты») или через службу поддержки."
             )
             OptionCase.CARD_MESSAGE_RECURRENT_NO_SAVE -> SavePaymentMethodOption.MessageSavePaymentMethodOption(
-                title = context.getString(R.string.ym_auto_write_off_approve_without_switch),
-                subtitle = getMessageWithLink(
-                    context,
-                    R.string.ym_save_payment_method_linked_card_message_text_part_1,
-                    R.string.ym_save_payment_method_linked_card_message_text_part_2
-                ) {}
+                title = "Разрешим автосписания",
+                subtitle = "Заплатив здесь, вы разрешаете привязать карту и <a href=''>списывать деньги без вашего участия</>",
+                screenTitle = "Как работают автоматические списания",
+                screenText = "Если вы согласитесь на автосписания, мы привяжем банковскую карту (в том числе использованную через Google Pay) к магазину. После этого магазин сможет присылать запросы на автоматические списания денег — тогда платёж выполняется без дополнительного подтверждения с вашей стороны. \n \nАвтосписания продолжатся даже при перевыпуске карты, если ваш банк умеет автоматически обновлять данные. Отменить их и отвязать карту можно в любой момент — через службу поддержки магазина."
             )
             OptionCase.GPAY_SWITCH_RECURRENT_NO_SAVE -> SavePaymentMethodOption.SwitchSavePaymentMethodOption(
-                title = context.getString(R.string.ym_contract_save_payment_method_gpay_switch_title),
-                subtitle = getMessageWithLink(
-                    context,
-                    R.string.ym_save_payment_method_gpay_switch_text_part_1,
-                    R.string.ym_save_payment_method_gpay_switch_text_part_2
-                ) {}
+                title = "Разрешить автосписания",
+                subtitle = "После оплаты привяжем карту: магазин сможет <a href=''>списывать деньги без вашего участия</>",
+                screenTitle = "Как работают автоматические списания",
+                screenText = "Если вы согласитесь на автосписания, мы привяжем банковскую карту (в том числе использованную через Google Pay) к магазину. После этого магазин сможет присылать запросы на автоматические списания денег — тогда платёж выполняется без дополнительного подтверждения с вашей стороны. \n \nАвтосписания продолжатся даже при перевыпуске карты, если ваш банк умеет автоматически обновлять данные. Отменить их и отвязать карту можно в любой момент — через службу поддержки магазина."
             )
             OptionCase.GPAY_MESSAGE_RECURRENT_NO_SAVE -> SavePaymentMethodOption.MessageSavePaymentMethodOption(
-                title = context.getString(R.string.ym_contract_save_payment_method_gpay_switch_title),
-                subtitle = getMessageWithLink(
-                    context,
-                    R.string.ym_save_payment_method_gpay_switch_text_part_1,
-                    R.string.ym_save_payment_method_gpay_switch_text_part_2
-                ) {}
+                title = "Разрешим автосписания",
+                subtitle = "Заплатив здесь, вы разрешаете привязать карту и <a href=''>списывать деньги без вашего участия</>",
+                screenTitle = "Как работают автоматические списания",
+                screenText = "Если вы согласитесь на автосписания, мы привяжем банковскую карту (в том числе использованную через Google Pay) к магазину. После этого магазин сможет присылать запросы на автоматические списания денег — тогда платёж выполняется без дополнительного подтверждения с вашей стороны. \n \nАвтосписания продолжатся даже при перевыпуске карты, если ваш банк умеет автоматически обновлять данные. Отменить их и отвязать карту можно в любой момент — через службу поддержки магазина."
             )
             OptionCase.NONE -> SavePaymentMethodOption.None
         }
-        val actual = content.getSavePaymentMethodOption(context)
+        val actual = content.getSavePaymentMethodOption()
 
         // then
 

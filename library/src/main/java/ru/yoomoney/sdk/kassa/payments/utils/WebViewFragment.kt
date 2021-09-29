@@ -153,15 +153,15 @@ internal class WebViewFragment : Fragment() {
         }
 
         @Suppress("OverridingDeprecatedMember")
-        override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+        override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
             val redirectUrl = checkNotNull(redirectUrl) { "returnUrl should be present" }
 
-            if (url?.startsWith(redirectUrl) == true) {
+            if (url.startsWith(redirectUrl) == true) {
                 Log.d(TAG, "success: $url")
                 listener?.onSuccess()
-                view?.stopLoading()
+                view.stopLoading()
             } else {
-                view?.loadUrl(url)
+                view.loadUrl(url)
             }
             return true
         }

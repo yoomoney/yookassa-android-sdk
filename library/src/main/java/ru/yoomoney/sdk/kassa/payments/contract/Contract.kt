@@ -31,6 +31,7 @@ import ru.yoomoney.sdk.kassa.payments.model.PaymentIdCscConfirmation
 import ru.yoomoney.sdk.kassa.payments.model.PaymentInstrumentBankCard
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOptionInfo
+import ru.yoomoney.sdk.kassa.payments.model.SavePaymentMethodOptionTexts
 import ru.yoomoney.sdk.kassa.payments.model.SberBank
 import ru.yoomoney.sdk.kassa.payments.model.Wallet
 import ru.yoomoney.sdk.kassa.payments.payment.selectOption.SelectedPaymentMethodOutputModel
@@ -100,7 +101,9 @@ internal object Contract {
             val contractInfo: ContractInfo,
             val confirmation: Confirmation,
             val isSplitPayment: Boolean,
-            val customerId: String?
+            val customerId: String?,
+            val savePaymentMethodOptionTexts: SavePaymentMethodOptionTexts,
+            val userAgreementUrl: String
         ) : State()
 
         data class GooglePay(

@@ -56,7 +56,8 @@ internal class GooglePayRepositoryImpl(
     useTestEnvironment: Boolean,
     private val loadedPaymentOptionsRepository: GetLoadedPaymentOptionListRepository,
     private val googlePayParameters: GooglePayParameters,
-    private val errorReporter: ErrorReporter
+    private val errorReporter: ErrorReporter,
+    private val getGateway: () -> String
 ) : GooglePayRepository {
 
     private var paymentOptionId: Int? = null
@@ -127,7 +128,7 @@ internal class GooglePayRepositoryImpl(
             .setPaymentMethodTokenizationParameters(
                 PaymentMethodTokenizationParameters.newBuilder()
                     .setPaymentMethodTokenizationType(WalletConstants.PAYMENT_METHOD_TOKENIZATION_TYPE_PAYMENT_GATEWAY)
-                    .addParameter("gateway", "yoomoney")
+                    .addParameter("gateway", getGateway())
                     .addParameter("gatewayMerchantId", shopId)
                     .build()
             )

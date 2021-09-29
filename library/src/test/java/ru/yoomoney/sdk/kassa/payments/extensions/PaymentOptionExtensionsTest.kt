@@ -71,7 +71,7 @@ class PaymentOptionExtensionsTest {
         val paymentOption = createWalletPaymentOption(1)
 
         // invoke
-        val icon = paymentOption.getIcon(context)
+        val icon = paymentOption.getPlaceholderIcon(context)
 
         // assert
         assertThat(icon,
@@ -90,7 +90,7 @@ class PaymentOptionExtensionsTest {
         val paymentOption = createAbstractWalletPaymentOption(1)
 
         // invoke
-        val icon = paymentOption.getIcon(context)
+        val icon = paymentOption.getPlaceholderIcon(context)
 
         // assert
         assertThat(icon,
@@ -109,7 +109,7 @@ class PaymentOptionExtensionsTest {
         val paymentOption = createLinkedCardPaymentOption(1) as LinkedCard
 
         // invoke
-        val icon = paymentOption.getIcon(context) as InsetDrawable
+        val icon = paymentOption.getPlaceholderIcon(context) as InsetDrawable
 
         // assert
         assertThat(icon.drawable,
@@ -128,10 +128,10 @@ class PaymentOptionExtensionsTest {
         val paymentOption = createNewCardPaymentOption(1)
 
         // invoke
-        val icon = paymentOption.getIcon(context) as InsetDrawable
+        val icon = paymentOption.getPlaceholderIcon(context)
 
         // assert
-        assertThat(icon.drawable,
+        assertThat(icon,
             equalToDrawable(
                 AppCompatResources.getDrawable(
                     context,
@@ -147,7 +147,7 @@ class PaymentOptionExtensionsTest {
         val paymentOption = createGooglePayPaymentOptionWithFee(1)
 
         // invoke
-        val icon = paymentOption.getIcon(context)
+        val icon = paymentOption.getPlaceholderIcon(context)
 
         // assert
         assertThat(icon,
@@ -166,7 +166,7 @@ class PaymentOptionExtensionsTest {
         val paymentOption = createWalletPaymentOption(1) as Wallet
 
         // invoke
-        val title = paymentOption.getTitle(context)
+        val title = paymentOption.getPlaceholderTitle(context)
 
         // assert
         assertThat(title, equalTo(context.getText(R.string.ym_payment_option_yoomoney)))
@@ -178,7 +178,7 @@ class PaymentOptionExtensionsTest {
         val paymentOption = createAbstractWalletPaymentOption(1)
 
         // invoke
-        val title = paymentOption.getTitle(context)
+        val title = paymentOption.getPlaceholderTitle(context)
 
         // assert
         assertThat(title, equalTo(context.getText(R.string.ym_payment_option_yoomoney)))
@@ -191,7 +191,7 @@ class PaymentOptionExtensionsTest {
         val paymentOption = createLinkedCardPaymentOption(1) as LinkedCard
 
         // invoke
-        val title = paymentOption.getTitle(context)
+        val title = paymentOption.getPlaceholderTitle(context)
 
         // assert
         assertThat(title.toString(), equalTo("•••• " + paymentOption.pan.takeLast(4)))
@@ -204,7 +204,7 @@ class PaymentOptionExtensionsTest {
         val paymentOption = (createLinkedCardPaymentOption(1) as LinkedCard).copy(name = "")
 
         // invoke
-        val title = paymentOption.getTitle(context)
+        val title = paymentOption.getPlaceholderTitle(context)
 
         // assert
         assertThat(title.toString(), equalTo("•••• " + paymentOption.pan.takeLast(4)))
@@ -217,7 +217,7 @@ class PaymentOptionExtensionsTest {
         val paymentOption = (createLinkedCardPaymentOption(1) as LinkedCard).copy(name = "•••• 4321")
 
         // invoke
-        val title = paymentOption.getTitle(context)
+        val title = paymentOption.getPlaceholderTitle(context)
 
         // assert
         assertThat(title.toString(), equalTo(paymentOption.name))
@@ -230,7 +230,7 @@ class PaymentOptionExtensionsTest {
         val paymentOption = createNewCardPaymentOption(1)
 
         // invoke
-        val title = paymentOption.getTitle(context)
+        val title = paymentOption.getPlaceholderTitle(context)
 
         // assert
         assertThat(title, equalTo(context.getText(R.string.ym_payment_option_new_card)))
@@ -243,7 +243,7 @@ class PaymentOptionExtensionsTest {
         val paymentOption = createGooglePayPaymentOptionWithFee(1)
 
         // invoke
-        val title = paymentOption.getTitle(context)
+        val title = paymentOption.getPlaceholderTitle(context)
 
         // assert
         assertThat(title, equalTo(context.getText(R.string.ym_payment_option_google_pay)))

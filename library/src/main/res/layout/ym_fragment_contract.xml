@@ -165,11 +165,44 @@
                     android:layout_marginEnd="@dimen/ym_space_m"
                     android:visibility="gone"/>
 
-                <ViewSwitcher
+                <LinearLayout
+                    android:id="@+id/phoneInputContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:layout_marginEnd="@dimen/ym_screen_indentEnd"
+                    android:layout_marginLeft="@dimen/ym_screen_indentStart"
+                    android:layout_marginRight="@dimen/ym_screen_indentEnd"
+                    android:layout_marginStart="@dimen/ym_screen_indentStart"
+                    android:layout_marginTop="@dimen/ym_space2XL"
+                    android:layout_marginBottom="@dimen/ym_space_2xl">
+
+                    <ru.yoomoney.sdk.kassa.payments.ui.CheckoutTextInputView
+                        android:id="@+id/phoneInput"
+                        app:label="@string/ym_label_phone_in_sbol"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:inputType="phone"
+                        app:hint="+7 900 000 00 00" />
+
+                    <TextView
+                        style="@style/Text.Body"
+                        android:textSize="@dimen/ym_text_caption2"
+                        android:textColor="@color/color_type_ghost"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ym_sber_phone_input_info"
+                        android:includeFontPadding="false"/>
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/switches"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/ym_spaceM"
+                    android:orientation="vertical"
                     android:measureAllChildren="false">
 
                     <LinearLayout
@@ -217,49 +250,7 @@
 
                     </LinearLayout>
 
-                    <ViewAnimator
-                        android:id="@+id/additionalInfoInputViewContainer"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/ym_screen_indentStart"
-                        android:layout_marginLeft="@dimen/ym_screen_indentStart"
-                        android:layout_marginTop="@dimen/ym_space2XL"
-                        android:layout_marginEnd="@dimen/ym_screen_indentEnd"
-                        android:layout_marginRight="@dimen/ym_screen_indentEnd"
-                        android:measureAllChildren="false">
-
-                        <ru.yoomoney.sdk.kassa.payments.ui.view.YmProgressBar
-                            android:id="@+id/paymentAuthLoading"
-                            style="?android:progressBarStyle"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
-
-                        <LinearLayout
-                            android:id="@+id/phoneInputContainer"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <ru.yoomoney.sdk.kassa.payments.ui.CheckoutTextInputView
-                                android:id="@+id/phoneInput"
-                                android:layout_width="match_parent"
-                                android:layout_height="60dp"
-                                android:inputType="phone"
-                                app:hint="+7 900 000 00 00"
-                                app:label="@string/ym_label_phone_in_sbol"/>
-
-                            <TextView
-                                style="@style/Text.Body"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:includeFontPadding="false"
-                                android:text="@string/ym_sber_phone_input_info"
-                                android:textColor="@color/color_type_ghost"
-                                android:textSize="@dimen/ym_text_caption2"/>
-
-                        </LinearLayout>
-                    </ViewAnimator>
-                </ViewSwitcher>
+                </LinearLayout>
 
                 <ru.yoomoney.sdk.kassa.payments.ui.PrimaryButtonView
                     android:id="@+id/nextButton"

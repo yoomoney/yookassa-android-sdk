@@ -26,7 +26,9 @@ import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.TextPaint
 import android.text.style.ClickableSpan
+import android.text.style.URLSpan
 import android.view.View
+import androidx.core.text.HtmlCompat
 import ru.yoomoney.sdk.kassa.payments.ui.color.InMemoryColorSchemeRepository
 
 internal fun getMessageWithLink(
@@ -79,6 +81,37 @@ fun getMessageWithLink(
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
     }
+}
+
+fun formatHtmlWithLinks(htmlText: String, action: (url: String) -> Unit): CharSequence {
+    val text = HtmlCompat.fromHtml(htmlText, HtmlCompat.FROM_HTML_MODE_LEGACY)
+    val strBuilder = SpannableStringBuilder(text)
+    val urls = strBuilder.getSpans(0, text.length, URLSpan::class.java)
+    for (span in urls) {
+        strBuilder.makeLinkClickable(span, action)
+    }
+    return strBuilder
+}
+
+fun SpannableStringBuilder.makeLinkClickable(span: URLSpan, action: (url: String) -> Unit) {
+    val start = getSpanStart(span)
+    val end = getSpanEnd(span)
+    val flags = getSpanFlags(span)
+    val clickable: ClickableSpan = object : ClickableSpan() {
+        override fun onClick(view: View) {
+            action(span.url)
+        }
+
+        override fun updateDrawState(textPaint: TextPaint) {
+            super.updateDrawState(textPaint)
+            textPaint.apply {
+                color = InMemoryColorSchemeRepository.colorScheme.primaryColor
+                isUnderlineText = false
+            }
+        }
+    }
+    setSpan(clickable, start, end, flags)
+    removeSpan(span)
 }
 
 private fun getMessageWithLink(

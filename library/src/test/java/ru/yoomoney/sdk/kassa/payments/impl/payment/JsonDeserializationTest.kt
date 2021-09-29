@@ -86,12 +86,14 @@ class JsonDeserializationTest {
              "currency": "RUB"
             }"""
         )
-        assertThat(jsonObject.toAmount(), equalTo(
-            Amount(
-                BigDecimal("4.00"),
-                RUB
+        assertThat(
+            jsonObject.toAmount(), equalTo(
+                Amount(
+                    BigDecimal("4.00"),
+                    RUB
+                )
             )
-        ))
+        )
     }
 
     @Test
@@ -256,49 +258,81 @@ class JsonDeserializationTest {
         )
 
         val newCard = BankCardPaymentOption(
-            0,
-            Amount(BigDecimal("2.00"), RUB), null, true,
+            id = 0,
+            charge = Amount(BigDecimal("2.00"), RUB),
+            fee = null,
+            icon = null,
+            title = null,
+            savePaymentMethodAllowed = true,
             confirmationTypes = listOf(ConfirmationType.REDIRECT),
             paymentInstruments = emptyList(),
             savePaymentInstrument = false
         )
         val wallet = Wallet(
-            1,
-            Amount(BigDecimal("3.00"), RUB),
-            null, "123456789",
-            Amount(BigDecimal("5.00"), RUB), true,
+            id = 1,
+            charge = Amount(BigDecimal("3.00"), RUB),
+            fee = null,
+            icon = null,
+            title = null,
+            walletId = "123456789",
+            balance = Amount(BigDecimal("5.00"), RUB),
+            savePaymentMethodAllowed = true,
             confirmationTypes = listOf(ConfirmationType.REDIRECT),
             savePaymentInstrument = false
         )
         val abstractWallet = AbstractWallet(
-            2,
-            Amount(BigDecimal("4.00"), RUB), null, true,
+            id = 2,
+            charge = Amount(BigDecimal("4.00"), RUB),
+            fee = null,
+            icon = null,
+            title = null,
+            savePaymentMethodAllowed = true,
             confirmationTypes = listOf(ConfirmationType.REDIRECT),
             savePaymentInstrument = false
         )
         val bankCard = LinkedCard(
-            3, Amount(BigDecimal("5.00"), RUB), null,
-            "123456789", CardBrand.MASTER_CARD, "518901******0446", "My card", true, true,
+            id = 3,
+            charge = Amount(BigDecimal("5.00"), RUB),
+            fee = null,
+            icon = null,
+            title = null,
+            cardId = "123456789",
+            brand = CardBrand.MASTER_CARD, pan = "518901******0446",
+            name = "My card",
+            isLinkedToWallet = true,
+            savePaymentMethodAllowed = true,
             confirmationTypes = listOf(ConfirmationType.REDIRECT), savePaymentInstrument = false
         )
         val sberbank = SberBank(
-            4,
-            Amount(BigDecimal("2.00"), RUB), null, false,
-            listOf(ConfirmationType.REDIRECT, ConfirmationType.EXTERNAL, ConfirmationType.MOBILE_APPLICATION), false
+            id = 4,
+            charge = Amount(BigDecimal("2.00"), RUB),
+            fee = null,
+            icon = null,
+            title = null,
+            savePaymentMethodAllowed = false,
+            confirmationTypes = listOf(ConfirmationType.REDIRECT, ConfirmationType.EXTERNAL, ConfirmationType.MOBILE_APPLICATION),
+            savePaymentInstrument = false
         )
         val googlePay = GooglePay(
-            5,
-            Amount(BigDecimal("5.00"), RUB), null, false, emptyList(), false
+            id = 5,
+            charge = Amount(BigDecimal("5.00"), RUB),
+            fee = null,
+            icon = null,
+            title = null,
+            savePaymentMethodAllowed = false,
+            confirmationTypes = emptyList(),
+            savePaymentInstrument = false
         )
 
-        val paymentOptions: Result<PaymentOptionsResponse> = Result.Success(
+        val paymentOptions: Result<PaymentOptionsResponse> =
+            Result.Success(
             PaymentOptionsResponse(
                 paymentOptions = listOf(newCard, wallet, abstractWallet, bankCard, sberbank, googlePay),
                 shopProperties = ShopProperties(isSafeDeal = true, isMarketplace = true)
             )
         )
 
-        assertThat(jsonObject.toPaymentOptionResponse(), equalTo(paymentOptions))
+        assertThat(jsonObject.toPaymentOptionResponse(emptyList()), equalTo(paymentOptions))
     }
 
     @Test
@@ -320,21 +354,23 @@ class JsonDeserializationTest {
                 }
             }"""
         )
-        val paymentMethod: Result<PaymentMethodBankCard> = Result.Success(PaymentMethodBankCard(
-            type = PaymentMethodType.BANK_CARD,
-            id = "1da5c87d-0984-50e8-a7f3-8de646dd9ec9",
-            saved = true,
-            cscRequired = true,
-            title = "Основная карта",
-            card = CardInfo(
-                first = "427918",
-                last = "7918",
-                expiryYear = "2017",
-                expiryMonth = "07",
-                cardType = CardBrand.MASTER_CARD,
-                source = PaymentMethodType.GOOGLE_PAY
+        val paymentMethod: Result<PaymentMethodBankCard> = Result.Success(
+            PaymentMethodBankCard(
+                type = PaymentMethodType.BANK_CARD,
+                id = "1da5c87d-0984-50e8-a7f3-8de646dd9ec9",
+                saved = true,
+                cscRequired = true,
+                title = "Основная карта",
+                card = CardInfo(
+                    first = "427918",
+                    last = "7918",
+                    expiryYear = "2017",
+                    expiryMonth = "07",
+                    cardType = CardBrand.MASTER_CARD,
+                    source = PaymentMethodType.GOOGLE_PAY
+                )
             )
-        ))
+        )
 
         assertThat(jsonObject.toPaymentMethodResponse(), equalTo(paymentMethod))
     }
@@ -362,7 +398,7 @@ class JsonDeserializationTest {
                 )
             )
         )
-        assertThat(jsonObject.toPaymentOptionResponse(), equalTo(paymentOptions))
+        assertThat(jsonObject.toPaymentOptionResponse(emptyList()), equalTo(paymentOptions))
     }
 
     @Test
@@ -553,10 +589,12 @@ class JsonDeserializationTest {
               }
             }"""
         )
-        val checkoutTokenIssueInitResponse: Result<CheckoutTokenIssueInitResponse> =  Result.Success(CheckoutTokenIssueInitResponse.AuthRequired(
-            authContextId = "string",
-            processId = "string"
-        ))
+        val checkoutTokenIssueInitResponse: Result<CheckoutTokenIssueInitResponse> = Result.Success(
+            CheckoutTokenIssueInitResponse.AuthRequired(
+                authContextId = "string",
+                processId = "string"
+            )
+        )
         assertThat(jsonObject.toCheckoutTokenIssueInitResponse(), equalTo(checkoutTokenIssueInitResponse))
     }
 

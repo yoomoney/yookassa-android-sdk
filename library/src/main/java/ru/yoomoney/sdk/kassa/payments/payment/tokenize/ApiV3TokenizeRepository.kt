@@ -35,6 +35,7 @@ import ru.yoomoney.sdk.kassa.payments.model.Result
 import ru.yoomoney.sdk.kassa.payments.paymentAuth.PaymentAuthTokenRepository
 import ru.yoomoney.sdk.kassa.payments.tmx.ProfilingTool
 import ru.yoomoney.sdk.kassa.payments.tmx.TmxSessionIdStorage
+import ru.yoomoney.sdk.kassa.payments.paymentOptionList.ConfigUseCase
 import java.util.concurrent.Semaphore
 
 internal class ApiV3TokenizeRepository(
@@ -44,6 +45,7 @@ internal class ApiV3TokenizeRepository(
     private val paymentAuthTokenRepository: PaymentAuthTokenRepository,
     private val tmxSessionIdStorage: TmxSessionIdStorage,
     private val profilingTool: ProfilingTool,
+    private val configUseCase: ConfigUseCase,
     private val merchantCustomerId: String?
 ) : TokenizeRepository, ProfilingTool.SessionIdListener {
 

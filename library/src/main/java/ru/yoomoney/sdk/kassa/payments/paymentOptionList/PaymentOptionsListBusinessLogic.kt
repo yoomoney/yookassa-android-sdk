@@ -23,10 +23,12 @@ package ru.yoomoney.sdk.kassa.payments.paymentOptionList
 
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.SavePaymentMethod
+import ru.yoomoney.sdk.kassa.payments.config.ConfigRepository
 import ru.yoomoney.sdk.kassa.payments.contract.Contract
 import ru.yoomoney.sdk.kassa.payments.logout.LogoutUseCase
 import ru.yoomoney.sdk.kassa.payments.model.AbstractWallet
 import ru.yoomoney.sdk.kassa.payments.model.BankCardPaymentOption
+import ru.yoomoney.sdk.kassa.payments.model.Config
 import ru.yoomoney.sdk.kassa.payments.model.GetConfirmation
 import ru.yoomoney.sdk.kassa.payments.model.LinkedCard
 import ru.yoomoney.sdk.kassa.payments.model.isSplitPayment
@@ -40,6 +42,7 @@ import ru.yoomoney.sdk.march.Logic
 import ru.yoomoney.sdk.march.Out
 import ru.yoomoney.sdk.march.input
 import ru.yoomoney.sdk.march.output
+import javax.inject.Inject
 
 internal class PaymentOptionsListBusinessLogic(
     private val showState: suspend (State) -> Action,
@@ -47,11 +50,16 @@ internal class PaymentOptionsListBusinessLogic(
     private val source: suspend () -> Action,
     private val useCase: PaymentOptionsListUseCase,
     private val paymentParameters: PaymentParameters,
+    private val paymentMethodId: String?,
     private val logoutUseCase: LogoutUseCase,
     private val unbindCardUseCase: UnbindCardUseCase,
     private val getConfirmation: GetConfirmation,
-    private val shopPropertiesRepository: ShopPropertiesRepository
+    private val shopPropertiesRepository: ShopPropertiesRepository,
+    private val configRepository: ConfigRepository
 ) : Logic<State, Action> {
+
+    private val currentConfig: Config get() = configRepository.getConfig()
+    private val currentLogoUrl: String get() = configRepository.getConfig().yooMoneyLogoUrlLight
 
     override fun invoke(state: State, action: Action): Out<State, Action> = when (state) {
         is State.Loading -> state.whenLoading(action)
@@ -63,10 +71,13 @@ internal class PaymentOptionsListBusinessLogic(
 
     private fun State.Loading.whenLoading(action: Action): Out<State, Action> {
         return when (action) {
-            is Action.LoadPaymentOptionListSuccess -> Out(State.Content(action.content)) {
+            is Action.ConfigLoadFinish -> Out(this) {
+                input { useCase.loadPaymentOptions(paymentParameters.amount, paymentMethodId) }
+            }
+            is Action.LoadPaymentOptionListSuccess -> Out(State.Content(currentLogoUrl, action.content)) {
                 handlePaymentOptionsListSuccess(action)
             }
-            is Action.LoadPaymentOptionListFailed -> Out(State.Error(action.error)) {
+            is Action.LoadPaymentOptionListFailed -> Out(State.Error(currentLogoUrl, action.error)) {
                 input { showState(this.state) }
             }
             is Action.Logout -> Out(this) {
@@ -83,16 +94,16 @@ internal class PaymentOptionsListBusinessLogic(
     private fun State.Content.whenContent(action: Action): Out<State, Action> {
         return when (action) {
             is Action.Load -> {
-                val state = takeIf { useCase.isPaymentOptionsActual } ?: State.Loading
+                val state = takeIf { useCase.isPaymentOptionsActual } ?: State.Loading(currentLogoUrl)
                 Out(state) {
                     input { showState(this.state) }
-                    input { useCase.loadPaymentOptions(action.amount, action.paymentMethodId) }
+                    input { useCase.loadPaymentOptions(paymentParameters.amount, paymentMethodId) }
                 }
             }
             is Action.ProceedWithPaymentMethod -> {
                 when (val option = useCase.selectPaymentOption(action.optionId, action.instrumentId)) {
                     is AbstractWallet -> {
-                        Out(State.WaitingForAuthState(this)) {
+                        Out(State.WaitingForAuthState(currentLogoUrl, this)) {
                             output { showEffect(Effect.RequireAuth) }
                             input(source)
                         }
@@ -142,10 +153,10 @@ internal class PaymentOptionsListBusinessLogic(
                     }
                 }
             }
-            is Action.LoadPaymentOptionListSuccess -> Out(State.Content(action.content)) {
+            is Action.LoadPaymentOptionListSuccess -> Out(State.Content(currentLogoUrl, action.content)) {
                 handlePaymentOptionsListSuccess(action)
             }
-            is Action.Logout -> Out(State.Loading) {
+            is Action.Logout -> Out(State.Loading(currentLogoUrl)) {
                 input {
                     logoutUseCase.logout()
                     if (paymentParameters.paymentMethodTypes.size == 1) {
@@ -191,6 +202,7 @@ internal class PaymentOptionsListBusinessLogic(
                         } else {
                             Out(
                                 State.ContentWithUnbindingAlert(
+                                    currentLogoUrl,
                                     paymentOption.paymentInstruments.first { it.paymentInstrumentId == action.instrumentId },
                                     content,
                                     paymentOption.id,
@@ -220,7 +232,7 @@ internal class PaymentOptionsListBusinessLogic(
                     input { useCase.loadPaymentOptions(paymentParameters.amount) }
                 }
             }
-            is Action.LoadPaymentOptionListSuccess -> Out(State.Content(action.content)) {
+            is Action.LoadPaymentOptionListSuccess -> Out(State.Content(currentLogoUrl, action.content)) {
                 when (action.content) {
                     is PaymentOptionListSuccessOutputModel -> {
                         if (action.content.options.find { it is LinkedCard } == null) {
@@ -233,7 +245,7 @@ internal class PaymentOptionsListBusinessLogic(
                     is PaymentOptionListNoWalletOutputModel -> input { showState(state) }
                 }
             }
-            is Action.LoadPaymentOptionListFailed -> Out(State.Error(action.error)) {
+            is Action.LoadPaymentOptionListFailed -> Out(State.Error(currentLogoUrl, action.error)) {
                 input { showState(this.state) }
             }
             else -> Out(content) {
@@ -265,7 +277,7 @@ internal class PaymentOptionsListBusinessLogic(
 
     private fun State.ContentWithUnbindingAlert.whenShowUnbindingAlertState(action: Action): Out<State, Action> {
         return when (action) {
-            is Action.ClickOnCancel -> Out(State.Content(content)) {
+            is Action.ClickOnCancel -> Out(State.Content(currentLogoUrl, content)) {
                 input { showState(this.state) }
             }
             is Action.ClickOnUnbind -> Out(this) {
@@ -279,12 +291,12 @@ internal class PaymentOptionsListBusinessLogic(
             }
             is Action.UnbindFailed -> {
                 val instrumentBankCard = this.instrumentBankCard
-                Out(State.Content(content)) {
+                Out(State.Content(currentLogoUrl, content)) {
                     output { showEffect(Effect.UnbindFailed(instrumentBankCard)) }
                     input(source)
                 }
             }
-            is Action.LoadPaymentOptionListSuccess -> Out(State.Content(action.content)) {
+            is Action.LoadPaymentOptionListSuccess -> Out(State.Content(currentLogoUrl, action.content)) {
                 input { showState(this.state) }
             }
             else -> Out.skip(this, source)
@@ -293,9 +305,9 @@ internal class PaymentOptionsListBusinessLogic(
 
     private fun State.Error.whenError(action: Action): Out<State, Action> {
         return when (action) {
-            is Action.Load -> Out(State.Loading) {
+            is Action.Load -> Out(State.Loading(currentLogoUrl)) {
                 input { showState(this.state) }
-                input { useCase.loadPaymentOptions(paymentParameters.amount, action.paymentMethodId) }
+                input { useCase.loadPaymentOptions(paymentParameters.amount, paymentMethodId) }
             }
             else -> Out.skip(this, source)
         }

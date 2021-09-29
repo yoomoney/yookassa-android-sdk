@@ -24,6 +24,7 @@ package ru.yoomoney.sdk.kassa.payments.contract
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.SavePaymentMethod
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.isNullOrZero
+import ru.yoomoney.sdk.kassa.payments.config.ConfigRepository
 import ru.yoomoney.sdk.kassa.payments.contract.Contract.Action
 import ru.yoomoney.sdk.kassa.payments.contract.Contract.Effect
 import ru.yoomoney.sdk.kassa.payments.contract.Contract.State
@@ -61,7 +62,8 @@ internal class ContractBusinessLogic(
     private val getConfirmation: GetConfirmation,
     private val loadedPaymentOptionListRepository: GetLoadedPaymentOptionListRepository,
     private val userAuthInfoRepository: UserAuthInfoRepository,
-    private val shopPropertiesRepository: ShopPropertiesRepository
+    private val shopPropertiesRepository: ShopPropertiesRepository,
+    private val configRepository: ConfigRepository
 ) : Logic<State, Action> {
 
     override fun invoke(state: State, action: Action): Out<State, Action> = when (state) {
@@ -209,20 +211,22 @@ internal class ContractBusinessLogic(
         val content = State.Content(
             shopTitle = paymentParameters.title,
             shopSubtitle = paymentParameters.subtitle,
+            confirmation = getConfirmation(outputModel.paymentOption),
             isSinglePaymentMethod = paymentMethodsCount == 1,
             contractInfo = contractInfo,
             shouldSavePaymentMethod = shouldSavePaymentMethod && outputModel.paymentOption.savePaymentMethodAllowed,
             shouldSavePaymentInstrument = shouldSavePaymentInstrument,
             savePaymentMethod = paymentParameters.savePaymentMethod,
-            confirmation = getConfirmation(outputModel.paymentOption),
             isSplitPayment = isSplitPayment,
-            customerId = paymentParameters.customerId
+            customerId = paymentParameters.customerId,
+            savePaymentMethodOptionTexts = configRepository.getConfig().savePaymentMethodOptionTexts,
+            userAgreementUrl = configRepository.getConfig().userAgreementUrl
         )
         return when (outputModel.paymentOption) {
             is GooglePay -> {
                 val fee = outputModel.paymentOption.fee?.service
                 val savePaymentMethodAllowed = outputModel.paymentOption.savePaymentMethodAllowed
-                if((savePaymentMethodAllowed && paymentParameters.savePaymentMethod != SavePaymentMethod.OFF) || !fee.isNullOrZero() || isSplitPayment) {
+                if ((savePaymentMethodAllowed && paymentParameters.savePaymentMethod != SavePaymentMethod.OFF) || !fee.isNullOrZero() || isSplitPayment) {
                     Out(content) {
                         input { showState(this.state) }
                     }

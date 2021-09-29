@@ -33,9 +33,9 @@ import ru.yoomoney.sdk.kassa.payments.model.Result
 import ru.yoomoney.sdk.kassa.payments.model.SdkException
 
 internal class InternetDependentRepository(
-        private val context: Context,
-        private val paymentOptionListRepository: PaymentOptionListRepository,
-        private val errorReporter: ErrorReporter
+    private val context: Context,
+    private val paymentOptionListRepository: PaymentOptionListRepository,
+    private val errorReporter: ErrorReporter
 ) : PaymentOptionListRepository {
 
     override fun getPaymentOptions(amount: Amount, currentUser: CurrentUser): Result<PaymentOptionsResponse> {

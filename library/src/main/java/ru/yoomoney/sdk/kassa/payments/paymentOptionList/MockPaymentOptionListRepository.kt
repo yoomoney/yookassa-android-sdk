@@ -99,6 +99,8 @@ internal class MockPaymentOptionListRepository(
                 id = id.next(),
                 charge = amount,
                 fee = fee,
+                icon = null,
+                title = null,
                 walletId = "11234567887654321",
                 balance = Amount(
                     BigDecimal.TEN,
@@ -112,22 +114,35 @@ internal class MockPaymentOptionListRepository(
         addAll(generateLinkedCards(id, amount, fee).take(linkedCardsCount))
         add(
             SberBank(
-                id.next(),
-                amount,
-                fee,
-                false,
-                listOf(ConfirmationType.REDIRECT, ConfirmationType.EXTERNAL),
+                id = id.next(),
+                charge = amount,
+                fee = fee,
+                icon = null,
+                title = null,
+                savePaymentMethodAllowed = true,
+                confirmationTypes = listOf(ConfirmationType.MOBILE_APPLICATION, ConfirmationType.REDIRECT, ConfirmationType.EXTERNAL),
                 savePaymentInstrument = false
             )
         )
-        add(GooglePay(id.next(), amount, fee, false, emptyList(), false))
+        add(
+            GooglePay(
+                id = id.next(),
+                charge = amount,
+                fee = fee,
+                icon = null,
+                title = null,
+                savePaymentMethodAllowed = false,
+                confirmationTypes = emptyList(),
+                savePaymentInstrument = false
+            )
+        )
         add(
             BankCardPaymentOption(
-                id.next(),
-                amount,
-                fee,
-                savePaymentOptionVariant.savePaymentMethodAllowed,
-                listOf(ConfirmationType.REDIRECT),
+                id = id.next(),
+                charge = amount,
+                fee = fee,
+                savePaymentInstrument = savePaymentOptionVariant.createBinding,
+                confirmationTypes = listOf(ConfirmationType.REDIRECT),
                 paymentInstruments = listOf(
                     PaymentInstrumentBankCard(
                         paymentInstrumentId = "1",
@@ -151,7 +166,9 @@ internal class MockPaymentOptionListRepository(
                         cardType= CardBrand.MASTER_CARD
                     )
                 ),
-                savePaymentInstrument = savePaymentOptionVariant.createBinding
+                icon = null,
+                title = null,
+                savePaymentMethodAllowed = savePaymentOptionVariant.savePaymentMethodAllowed
             )
         )
     }.toList(),
@@ -171,24 +188,38 @@ internal class MockPaymentOptionListRepository(
                 id = id.next(),
                 charge = Amount(amount.value, amount.currency),
                 fee = fee,
+                icon = null,
+                title = null,
                 savePaymentMethodAllowed = true,
                 confirmationTypes = listOf(ConfirmationType.REDIRECT),
                 savePaymentInstrument = false
             ),
             SberBank(
-                id.next(),
-                Amount(amount.value, amount.currency), fee,
-                savePaymentMethodAllowed = false,
-                confirmationTypes = listOf(ConfirmationType.REDIRECT, ConfirmationType.EXTERNAL),
+                id = id.next(),
+                charge = Amount(amount.value, amount.currency),
+                fee = fee,
+                icon = null,
+                title = null,
+                savePaymentMethodAllowed = true,
+                confirmationTypes = listOf(ConfirmationType.MOBILE_APPLICATION, ConfirmationType.REDIRECT, ConfirmationType.EXTERNAL),
                 savePaymentInstrument = false
             ),
-            GooglePay(id.next(), amount, fee, false, emptyList(), false),
+            GooglePay(
+                id = id.next(),
+                charge = amount,
+                fee = fee,
+                icon = null,
+                title = null,
+                savePaymentMethodAllowed = false,
+                confirmationTypes = emptyList(),
+                savePaymentInstrument = false
+            ),
             BankCardPaymentOption(
-                id.next(),
-                Amount(amount.value, amount.currency),
-                fee,
-                true,
-                listOf(ConfirmationType.REDIRECT),
+                id = id.next(),
+                charge = Amount(amount.value, amount.currency),
+                fee = fee,
+                savePaymentMethodAllowed = true,
+                confirmationTypes = listOf(ConfirmationType.REDIRECT),
                 paymentInstruments = listOf(
                     PaymentInstrumentBankCard(
                         paymentInstrumentId = "1",
@@ -212,7 +243,9 @@ internal class MockPaymentOptionListRepository(
                         cardType= CardBrand.MASTER_CARD
                     )
                 ),
-                savePaymentInstrument = false
+                savePaymentInstrument = false,
+                icon = null,
+                title = null
             )
         ),
             shopProperties = ShopProperties(true, true)
@@ -229,6 +262,8 @@ internal class MockPaymentOptionListRepository(
             id = id.next(),
             charge = charge,
             fee = fee,
+            icon = null,
+            title = null,
             cardId = cardId,
             brand = randomCardBrand(),
             pan = cardId.replaceRange(4, 12, "*".repeat(8)),

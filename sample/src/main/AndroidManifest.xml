@@ -34,7 +34,8 @@
 
         <activity
             android:name="ru.yoo.sdk.kassa.payments.sample.MainActivity"
-            android:windowSoftInputMode="stateHidden|adjustPan">
+            android:windowSoftInputMode="stateHidden|adjustPan"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

@@ -47,6 +47,7 @@ internal class CheckoutAuthSessionGenerateRequest(
     override fun convertJsonToResponse(jsonObject: JSONObject) = jsonObject.toAuthSessionGenerateResponse()
 
     override fun getPayload() = listOf(
-            AUTH_CONTEXT_ID to authContextId,
-            AUTH_TYPE to authType.toJsonString())
+        AUTH_CONTEXT_ID to authContextId,
+        AUTH_TYPE to authType.toJsonString()
+    )
 }

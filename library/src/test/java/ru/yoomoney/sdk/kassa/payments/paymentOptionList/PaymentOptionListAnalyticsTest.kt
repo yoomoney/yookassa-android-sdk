@@ -26,6 +26,7 @@ import com.nhaarman.mockitokotlin2.verify
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
+import ru.yoomoney.sdk.kassa.payments.logoUrl
 import ru.yoomoney.sdk.kassa.payments.metrics.AuthType
 import ru.yoomoney.sdk.kassa.payments.metrics.AuthTypePaymentAuth
 import ru.yoomoney.sdk.kassa.payments.metrics.AuthTypeWithoutAuth
@@ -135,7 +136,7 @@ internal class PaymentOptionListAnalyticsTest(
 
         // when
         analytics.invoke(
-            PaymentOptionList.State.Loading,
+            PaymentOptionList.State.Loading(logoUrl),
             PaymentOptionList.Action.LoadPaymentOptionListSuccess(PaymentOptionListNoWalletOutputModel(emptyList()))
         )
 
@@ -151,7 +152,7 @@ internal class PaymentOptionListAnalyticsTest(
 
         // when
         analytics.invoke(
-            PaymentOptionList.State.Loading,
+            PaymentOptionList.State.Loading(logoUrl),
             PaymentOptionList.Action.LoadPaymentOptionListFailed(RuntimeException())
         )
 

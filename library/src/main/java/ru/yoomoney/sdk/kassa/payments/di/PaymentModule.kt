@@ -27,6 +27,7 @@ import dagger.Module
 import dagger.Provides
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.TestParameters
+import ru.yoomoney.sdk.kassa.payments.config.ConfigRepository
 import ru.yoomoney.sdk.kassa.payments.extensions.CheckoutOkHttpClient
 import ru.yoomoney.sdk.kassa.payments.http.HostProvider
 import ru.yoomoney.sdk.kassa.payments.metrics.ErrorReporter
@@ -74,7 +75,8 @@ internal class PaymentModule {
         paymentParameters: PaymentParameters,
         testParameters: TestParameters,
         getLoadedPaymentOptionListRepository: GetLoadedPaymentOptionListRepository,
-        errorReporter: ErrorReporter
+        errorReporter: ErrorReporter,
+        configRepository: ConfigRepository
     ): GooglePayRepository {
         return if (testParameters.mockConfiguration != null) {
             MockGooglePayRepository(true)
@@ -85,7 +87,8 @@ internal class PaymentModule {
                 useTestEnvironment = testParameters.googlePayTestEnvironment,
                 loadedPaymentOptionsRepository = getLoadedPaymentOptionListRepository,
                 googlePayParameters = paymentParameters.googlePayParameters,
-                errorReporter = errorReporter
+                errorReporter = errorReporter,
+                getGateway = { configRepository.getConfig().gateway }
             )
         }
     }

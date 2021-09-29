@@ -21,8 +21,12 @@
 
 package ru.yoomoney.sdk.kassa.payments.paymentOptionList
 
+import com.google.gson.Gson
+import com.google.gson.JsonObject
 import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.whenever
 import org.hamcrest.CoreMatchers.equalTo
+import org.json.JSONObject
 import org.junit.Assert.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -30,15 +34,19 @@ import org.junit.runners.Parameterized
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.Amount
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.SavePaymentMethod
+import ru.yoomoney.sdk.kassa.payments.config.ConfigRepository
 import ru.yoomoney.sdk.kassa.payments.extensions.RUB
+import ru.yoomoney.sdk.kassa.payments.logoUrl
 import ru.yoomoney.sdk.kassa.payments.model.CardBrand
+import ru.yoomoney.sdk.kassa.payments.model.Config
 import ru.yoomoney.sdk.kassa.payments.model.PaymentInstrumentBankCard
 import ru.yoomoney.sdk.kassa.payments.model.SdkException
+import ru.yoomoney.sdk.kassa.payments.model.toConfig
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.PaymentOptionList.Action
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.PaymentOptionList.State
+import ru.yoomoney.sdk.kassa.payments.utils.readTextFromResources
 import ru.yoomoney.sdk.march.generateBusinessLogicTests
 import java.math.BigDecimal
-import java.util.Currency
 
 @RunWith(Parameterized::class)
 internal class PaymentOptionsListBusinessLogicTest(
@@ -47,6 +55,9 @@ internal class PaymentOptionsListBusinessLogicTest(
     val action: Action,
     val expected: State
 ) {
+
+    private val configRepository: ConfigRepository = mock()
+
     companion object {
         @[Parameterized.Parameters(name = "{0}") JvmStatic]
         fun data(): Collection<Array<out Any>> {
@@ -63,11 +74,12 @@ internal class PaymentOptionsListBusinessLogicTest(
             )
 
             val failure = SdkException()
-            val loadingState = State.Loading
-            val errorState = State.Error(failure)
-            val contentState = State.Content(contentData)
-            val waitingForAuthState = State.WaitingForAuthState(contentState)
+            val loadingState = State.Loading(logoUrl)
+            val errorState = State.Error(logoUrl, failure)
+            val contentState = State.Content(logoUrl, contentData)
+            val waitingForAuthState = State.WaitingForAuthState(logoUrl, contentState)
             val contentWithUnbindingAlert = State.ContentWithUnbindingAlert(
+                logoUrl,
                 paymentInstrument,
                 contentData,
                 unbindingId,
@@ -78,11 +90,7 @@ internal class PaymentOptionsListBusinessLogicTest(
 
             val successDataAction = Action.LoadPaymentOptionListSuccess(contentData)
             val failAction = Action.LoadPaymentOptionListFailed(failure)
-            val loadAction = Action.Load(
-                Amount(
-                    BigDecimal.TEN,
-                    Currency.getInstance("RUB")
-                ), null)
+            val loadAction = Action.Load
             val logoutAction = Action.Logout
             val proceedWithPaymentMethodAction = Action.ProceedWithPaymentMethod(paymentOptionId, instrumentId)
             val successAuth = Action.PaymentAuthSuccess
@@ -102,6 +110,7 @@ internal class PaymentOptionsListBusinessLogicTest(
                         State.Content::class -> contentState
                         State.WaitingForAuthState::class -> waitingForAuthState
                         State.ContentWithUnbindingAlert::class -> contentWithUnbindingAlert
+                        State.Loading::class -> loadingState
                         else -> it.objectInstance ?: error(it)
                     }
                 },
@@ -129,11 +138,11 @@ internal class PaymentOptionsListBusinessLogicTest(
                         waitingForAuthState.content
                     } else {
                         when (state to action) {
-                            contentState to loadAction -> State.Loading
+                            contentState to loadAction -> State.Loading(logoUrl)
                             contentState to proceedWithPaymentMethodAction -> contentState
-                            contentState to logoutAction -> State.Loading
+                            contentState to logoutAction -> State.Loading(logoUrl)
 
-                            errorState to loadAction -> State.Loading
+                            errorState to loadAction -> State.Loading(logoUrl)
 
                             loadingState to successDataAction -> contentState
                             loadingState to failAction -> errorState
@@ -154,25 +163,34 @@ internal class PaymentOptionsListBusinessLogicTest(
         }
     }
 
-    private val logic =
-        PaymentOptionsListBusinessLogic(
-            mock(), mock(), mock(), mock(), PaymentParameters(
-                amount = Amount(BigDecimal.ONE, RUB),
-                title = "",
-                subtitle = "",
-                clientApplicationKey = "",
-                shopId = "",
-                savePaymentMethod = SavePaymentMethod.ON,
-                authCenterClientId = ""
-            ),
-            mock(),
-            mock(),
-            mock(),
-            mock()
-        )
+    private val logic = PaymentOptionsListBusinessLogic(
+        showState = mock(),
+        showEffect = mock(),
+        source = mock(),
+        useCase = mock(),
+        paymentParameters = PaymentParameters(
+            amount = Amount(BigDecimal.ONE, RUB),
+            title = "",
+            subtitle = "",
+            clientApplicationKey = "",
+            shopId = "",
+            savePaymentMethod = SavePaymentMethod.ON,
+            authCenterClientId = ""
+        ),
+        paymentMethodId = null,
+        logoutUseCase = mock(),
+        unbindCardUseCase = mock(),
+        getConfirmation = mock(),
+        shopPropertiesRepository = mock(),
+        configRepository = configRepository
+    )
 
     @Test
     fun test() {
+        whenever(configRepository.getConfig()).thenReturn(
+            Gson().fromJson<Config>(readTextFromResources("ym_default_config.json"), Config::class.java)
+        )
+
         // when
         val actual = logic(state, action)
 

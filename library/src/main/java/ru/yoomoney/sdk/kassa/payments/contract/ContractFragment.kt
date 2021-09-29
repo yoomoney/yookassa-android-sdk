@@ -44,7 +44,6 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.ym_dialog_top_bar.view.backButton
-import kotlinx.android.synthetic.main.ym_fragment_contract.additionalInfoInputViewContainer
 import kotlinx.android.synthetic.main.ym_fragment_contract.allowWalletLinking
 import kotlinx.android.synthetic.main.ym_fragment_contract.bankCardView
 import kotlinx.android.synthetic.main.ym_fragment_contract.contentView
@@ -57,6 +56,7 @@ import kotlinx.android.synthetic.main.ym_fragment_contract.licenseAgreement
 import kotlinx.android.synthetic.main.ym_fragment_contract.loadingView
 import kotlinx.android.synthetic.main.ym_fragment_contract.nextButton
 import kotlinx.android.synthetic.main.ym_fragment_contract.phoneInput
+import kotlinx.android.synthetic.main.ym_fragment_contract.phoneInputContainer
 import kotlinx.android.synthetic.main.ym_fragment_contract.rootContainer
 import kotlinx.android.synthetic.main.ym_fragment_contract.savePaymentMethodMessageSubTitle
 import kotlinx.android.synthetic.main.ym_fragment_contract.savePaymentMethodMessageTitle
@@ -65,7 +65,6 @@ import kotlinx.android.synthetic.main.ym_fragment_contract.sberPayView
 import kotlinx.android.synthetic.main.ym_fragment_contract.subtitle
 import kotlinx.android.synthetic.main.ym_fragment_contract.sum
 import kotlinx.android.synthetic.main.ym_fragment_contract.switches
-import kotlinx.android.synthetic.main.ym_fragment_contract.switchesContainer
 import kotlinx.android.synthetic.main.ym_fragment_contract.title
 import kotlinx.android.synthetic.main.ym_fragment_contract.topBar
 import kotlinx.android.synthetic.main.ym_fragment_contract.yooMoneyAccountView
@@ -85,7 +84,6 @@ import ru.yoomoney.sdk.kassa.payments.contract.Contract.State
 import ru.yoomoney.sdk.kassa.payments.contract.di.ContractModule
 import ru.yoomoney.sdk.kassa.payments.extensions.configureForPhoneInput
 import ru.yoomoney.sdk.kassa.payments.extensions.format
-import ru.yoomoney.sdk.kassa.payments.extensions.getTitle
 import ru.yoomoney.sdk.kassa.payments.extensions.hideSoftKeyboard
 import ru.yoomoney.sdk.kassa.payments.extensions.isPhoneNumber
 import ru.yoomoney.sdk.kassa.payments.extensions.showChild
@@ -106,6 +104,7 @@ import ru.yoomoney.sdk.kassa.payments.model.SbolSmsInvoicingInfo
 import ru.yoomoney.sdk.kassa.payments.model.Wallet
 import ru.yoomoney.sdk.kassa.payments.payment.googlePay.GooglePayRepository
 import ru.yoomoney.sdk.kassa.payments.errorFormatter.ErrorFormatter
+import ru.yoomoney.sdk.kassa.payments.extensions.getPlaceholderTitle
 import ru.yoomoney.sdk.kassa.payments.metrics.Reporter
 import ru.yoomoney.sdk.kassa.payments.metrics.bankCard.BankCardAnalyticsLogger
 import ru.yoomoney.sdk.kassa.payments.metrics.bankCard.BankCardEvent
@@ -129,10 +128,10 @@ import ru.yoomoney.sdk.march.RuntimeViewModel
 import ru.yoomoney.sdk.march.observe
 import ru.yoomoney.sdk.kassa.payments.model.MobileApplication
 import ru.yoomoney.sdk.kassa.payments.model.PaymentInstrumentBankCard
-import ru.yoomoney.sdk.kassa.payments.model.SberBank
 import ru.yoomoney.sdk.kassa.payments.model.SberPay
 import ru.yoomoney.sdk.kassa.payments.model.formatService
 import ru.yoomoney.sdk.kassa.payments.tokenize.TokenizeFragment
+import ru.yoomoney.sdk.kassa.payments.utils.formatHtmlWithLinks
 import ru.yoomoney.sdk.kassa.payments.utils.getBankOrBrandLogo
 import javax.inject.Inject
 
@@ -179,7 +178,8 @@ internal class ContractFragment : Fragment(R.layout.ym_fragment_contract) {
         super.onViewCreated(view, savedInstanceState)
         setupView()
         setFragmentResultListener(TokenizeFragment.TOKENIZE_RESULT_KEY) { key, bundle ->
-            val result = bundle.getSerializable(TokenizeFragment.TOKENIZE_RESULT_EXTRA) as Screen.Tokenize.TokenizeResult
+            val result =
+                bundle.getSerializable(TokenizeFragment.TOKENIZE_RESULT_EXTRA) as Screen.Tokenize.TokenizeResult
             if (result == Screen.Tokenize.TokenizeResult.CANCEL) {
                 viewModel.handleAction(Action.TokenizeCancelled)
             }
@@ -295,12 +295,11 @@ internal class ContractFragment : Fragment(R.layout.ym_fragment_contract) {
             requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
             topBar.onBackButton { onBackPressed() }
         }
-
         title.text = content.shopTitle
         subtitle.text = content.shopSubtitle
 
         val paymentOption = content.contractInfo.paymentOption
-        topBar.title = paymentOption.getTitle(requireContext())
+        topBar.title = paymentOption.title ?: paymentOption.getPlaceholderTitle(requireContext())
         sum.text = paymentOption.charge.format().makeStartBold()
         setUpFee(paymentOption.fee)
         nextButton.setOnClickListener {
@@ -308,26 +307,18 @@ internal class ContractFragment : Fragment(R.layout.ym_fragment_contract) {
             viewModel.handleAction(Action.Tokenize())
         }
 
-        val savePaymentMethodOption = content.getSavePaymentMethodOption(requireContext())
+        val savePaymentMethodOption = content.getSavePaymentMethodOption()
         setUpSavePaymentMethodOption(content, savePaymentMethodOption)
 
-
-        if (content.contractInfo.paymentOption !is SberBank) {
-            nextButton.isEnabled = isNextButtonEnabled(content.contractInfo.paymentOption)
-            switches.showChild(switchesContainer)
-        }
-
-        switches.visible =
-            content.confirmation !is MobileApplication
-                    || (content.savePaymentMethod != SavePaymentMethod.OFF && content.contractInfo.paymentOption !is SberBank)
-
+        nextButton.isEnabled = isNextButtonEnabled(content.contractInfo.paymentOption)
+        switches.visible = content.confirmation !is MobileApplication || (content.savePaymentMethod != SavePaymentMethod.OFF)
         showContractInfo(content, content.contractInfo)
         resumePostponedTransition(rootContainer)
         loadingView.updateLayoutParams<ViewGroup.LayoutParams> { height = rootContainer.getViewHeight() }
     }
 
     private fun showContractInfo(content: State.Content, contractInfo: ContractInfo) {
-        when(contractInfo) {
+        when (contractInfo) {
             is ContractInfo.WalletContractInfo -> {
                 setUpWalletLinking(contractInfo.showAllowWalletLinking)
                 setUpAuthorizedWallet(contractInfo, contractInfo.paymentOption)
@@ -336,7 +327,10 @@ internal class ContractFragment : Fragment(R.layout.ym_fragment_contract) {
             is ContractInfo.WalletLinkedCardContractInfo -> {
                 setUpWalletLinking(contractInfo.showAllowWalletLinking)
                 allowWalletLinking.isChecked = contractInfo.allowWalletLinking
-                setUpLinkedBankCardView(contractInfo.paymentOption.pan.replace("*", "•"), contractInfo.paymentOption.brand)
+                setUpLinkedBankCardView(
+                    contractInfo.paymentOption.pan.replace("*", "•"),
+                    contractInfo.paymentOption.brand
+                )
                 switches.visible = contractInfo.showAllowWalletLinking
             }
             is ContractInfo.PaymentIdCscConfirmationContractInfo -> {
@@ -354,7 +348,7 @@ internal class ContractFragment : Fragment(R.layout.ym_fragment_contract) {
         }
 
         licenseAgreement.apply {
-            text = getTransactionAgreementText(content.isSplitPayment)
+            text = getTransactionAgreementText(content)
             movementMethod = LinkMovementMethod.getInstance()
         }
     }
@@ -403,7 +397,7 @@ internal class ContractFragment : Fragment(R.layout.ym_fragment_contract) {
     }
 
     private fun setUpSavePaymentMethodOption(content: State.Content, option: SavePaymentMethodOption) {
-        when(option) {
+        when (option) {
             is SavePaymentMethodOption.SwitchSavePaymentMethodOption -> setUpSwitchSavePaymentMethodOption(
                 option,
                 content.shouldSavePaymentMethod || content.shouldSavePaymentInstrument
@@ -422,7 +416,16 @@ internal class ContractFragment : Fragment(R.layout.ym_fragment_contract) {
             title = savePaymentMethodOption.title
             with(findViewById<TextView>(R.id.descriptionView)) {
                 movementMethod = LinkMovementMethod.getInstance()
-                text = savePaymentMethodOption.subtitle
+                text = formatHtmlWithLinks(savePaymentMethodOption.subtitle) {
+                    ContextCompat.startActivity(
+                        requireContext(),
+                        SavePaymentMethodInfoActivity.create(
+                            requireContext(),
+                            savePaymentMethodOption.screenTitle,
+                            savePaymentMethodOption.screenText
+                        ).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK), null
+                    )
+                }
             }
             onCheckedChangedListener(null)
             isChecked = checked
@@ -438,7 +441,16 @@ internal class ContractFragment : Fragment(R.layout.ym_fragment_contract) {
     private fun setUpMessageSavePaymentMethodOption(option: SavePaymentMethodOption.MessageSavePaymentMethodOption) {
         savePaymentMethodMessageTitle.text = option.title
         savePaymentMethodMessageSubTitle.apply {
-            text = option.subtitle
+            text = formatHtmlWithLinks(option.subtitle) {
+                ContextCompat.startActivity(
+                    requireContext(),
+                    SavePaymentMethodInfoActivity.create(
+                        requireContext(),
+                        option.screenTitle,
+                        option.screenText
+                    ).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK), null
+                )
+            }
             movementMethod = LinkMovementMethod.getInstance()
         }
 
@@ -608,9 +620,7 @@ internal class ContractFragment : Fragment(R.layout.ym_fragment_contract) {
             }
         } else {
             nextButton.isEnabled = phoneInput.text?.isPhoneNumber ?: false
-            switches.showChild(additionalInfoInputViewContainer)
-            additionalInfoInputViewContainer.showChild(phoneInput)
-
+            phoneInputContainer.show()
 
             nextButton.setOnClickListener { _ ->
                 view?.hideSoftKeyboard()
@@ -631,27 +641,23 @@ internal class ContractFragment : Fragment(R.layout.ym_fragment_contract) {
         }
     }
 
-    private fun getLicenseAgreementText(): CharSequence {
-        return getMessageWithLink(
-            requireContext(),
-            R.string.ym_license_agreement_part_1,
-            R.string.ym_license_agreement_part_2
-        ) {
+    private fun getLicenseAgreementText(content: State.Content): CharSequence {
+        return formatHtmlWithLinks(content.userAgreementUrl) {
             ContextCompat.startActivity(
                 requireContext(),
                 WebViewActivity.create(
                     requireContext(),
-                    requireContext().getString(R.string.ym_license_agreement_url)
+                    it
                 ).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                 null
             )
         }
     }
 
-    private fun getTransactionAgreementText(isSplitPayment: Boolean): CharSequence {
+    private fun getTransactionAgreementText(content: State.Content): CharSequence {
         val result = SpannableStringBuilder()
-        result.append(getLicenseAgreementText())
-        if (isSplitPayment) {
+        result.append(getLicenseAgreementText(content))
+        if (content.isSplitPayment) {
             result.append("\n")
             result.append(getSafeTransactionAgreementText())
         }

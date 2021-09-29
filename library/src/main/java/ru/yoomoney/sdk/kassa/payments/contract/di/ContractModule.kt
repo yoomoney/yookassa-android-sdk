@@ -62,12 +62,14 @@ import ru.yoomoney.sdk.kassa.payments.paymentAuth.PaymentAuthTokenRepository
 import ru.yoomoney.sdk.march.Out
 import ru.yoomoney.sdk.march.RuntimeViewModel
 import ru.yoomoney.sdk.march.input
+import ru.yoomoney.sdk.kassa.payments.config.ConfigRepository
 import ru.yoomoney.sdk.kassa.payments.contract.ContractAnalytics
 import ru.yoomoney.sdk.kassa.payments.contract.ContractBusinessLogic
 import ru.yoomoney.sdk.kassa.payments.extensions.toTokenizeScheme
 import ru.yoomoney.sdk.kassa.payments.http.HostProvider
 import ru.yoomoney.sdk.kassa.payments.metrics.UserAuthTokenTypeParamProvider
 import ru.yoomoney.sdk.kassa.payments.model.GetConfirmation
+import ru.yoomoney.sdk.kassa.payments.paymentOptionList.ConfigUseCase
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.ShopPropertiesRepository
 import ru.yoomoney.sdk.kassa.payments.utils.getSberbankPackage
 
@@ -82,7 +84,8 @@ internal class ContractModule {
         tokensStorage: TokensStorage,
         paymentParameters: PaymentParameters,
         profilingTool: ProfilingTool,
-        tmxSessionIdStorage: TmxSessionIdStorage
+        tmxSessionIdStorage: TmxSessionIdStorage,
+        configUseCase: ConfigUseCase
     ): TokenizeRepository {
         val mockConfiguration = testParameters.mockConfiguration
         return if (mockConfiguration != null) {
@@ -95,6 +98,7 @@ internal class ContractModule {
                 paymentAuthTokenRepository = tokensStorage,
                 profilingTool = profilingTool,
                 tmxSessionIdStorage = tmxSessionIdStorage,
+                configUseCase = configUseCase,
                 merchantCustomerId = paymentParameters.customerId
             )
         }
@@ -172,7 +176,8 @@ internal class ContractModule {
         loadedPaymentOptionListRepository: GetLoadedPaymentOptionListRepository,
         userAuthInfoRepository: TokensStorage,
         paymentAuthTokenRepository: PaymentAuthTokenRepository,
-        shopPropertiesRepository: ShopPropertiesRepository
+        shopPropertiesRepository: ShopPropertiesRepository,
+        configRepository: ConfigRepository
     ): ViewModel {
         val sberbankPackage = getSberbankPackage(testParameters.hostParameters.isDevHost)
         return RuntimeViewModel<Contract.State, Contract.Action, Contract.Effect>(
@@ -197,7 +202,8 @@ internal class ContractModule {
                         getConfirmation = getConfirmation,
                         loadedPaymentOptionListRepository = loadedPaymentOptionListRepository,
                         shopPropertiesRepository = shopPropertiesRepository,
-                        userAuthInfoRepository = userAuthInfoRepository
+                        userAuthInfoRepository = userAuthInfoRepository,
+                        configRepository = configRepository
                     ),
                     getUserAuthType = userAuthTypeParamProvider,
                     getTokenizeScheme = { paymentOption, paymentInstrument ->

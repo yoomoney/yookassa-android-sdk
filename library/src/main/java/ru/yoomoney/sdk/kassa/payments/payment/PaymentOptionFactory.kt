@@ -37,6 +37,7 @@ import ru.yoomoney.sdk.kassa.payments.payment.InstrumentType.LINKED_BANK_CARD
 import ru.yoomoney.sdk.kassa.payments.payment.InstrumentType.UNKNOWN
 import ru.yoomoney.sdk.kassa.payments.payment.InstrumentType.WALLET
 import ru.yoomoney.sdk.kassa.payments.model.AbstractWallet
+import ru.yoomoney.sdk.kassa.payments.model.ConfigPaymentOption
 import ru.yoomoney.sdk.kassa.payments.model.ConfirmationType
 import ru.yoomoney.sdk.kassa.payments.model.GooglePay
 import ru.yoomoney.sdk.kassa.payments.model.LinkedCard
@@ -47,7 +48,8 @@ import ru.yoomoney.sdk.kassa.payments.model.Wallet
 
 internal fun paymentOptionFactory(
     id: Int,
-    jsonObject: JSONObject
+    jsonObject: JSONObject,
+    paymentMethods: List<ConfigPaymentOption>
 ): PaymentOption? {
 
     val charge = jsonObject.getJSONObject("charge").toAmount()
@@ -67,70 +69,95 @@ internal fun paymentOptionFactory(
                 val paymentInstruments = jsonObject.optJSONArray("payment_instruments")?.mapIndexed { i, jsonObject ->
                     jsonObject.toPaymentInstrumentBankCard()
                 } ?: emptyList()
+                val paymentMethodParams = getPaymentOptionParams(paymentMethods, "bank_card")
                 BankCardPaymentOption(
-                    id,
-                    charge,
-                    jsonObject.getFee(),
-                    savePaymentMethodAllowed,
-                    confirmationTypes,
-                    paymentInstruments,
-                    savePaymentInstrument
+                    id = id,
+                    charge = charge,
+                    fee = jsonObject.getFee(),
+                    icon = paymentMethodParams?.iconUrl,
+                    title = paymentMethodParams?.title,
+                    savePaymentMethodAllowed = savePaymentMethodAllowed,
+                    confirmationTypes = confirmationTypes,
+                    paymentInstruments = paymentInstruments,
+                    savePaymentInstrument = savePaymentInstrument
                 )
             }
-            SBERBANK -> SberBank(
-                id,
-                charge,
-                jsonObject.getFee(),
-                savePaymentMethodAllowed,
-                confirmationTypes,
-                savePaymentInstrument
-            )
-            GOOGLE_PAY -> GooglePay(
-                id,
-                charge,
-                jsonObject.getFee(),
-                savePaymentMethodAllowed,
-                confirmationTypes,
-                savePaymentInstrument
-            )
-            YOO_MONEY -> when (InstrumentType.parse(
-                jsonObject.optString("instrument_type")
-            )) {
-                WALLET -> Wallet(
+            SBERBANK -> {
+                val paymentMethodParams = getPaymentOptionParams(paymentMethods, "sberbank")
+                SberBank(
                     id = id,
                     charge = charge,
                     fee = jsonObject.getFee(),
-                    walletId = jsonObject.optString("id"),
-                    balance = jsonObject.optJSONObject("balance").toAmount(),
+                    icon = paymentMethodParams?.iconUrl,
+                    title = paymentMethodParams?.title,
                     savePaymentMethodAllowed = savePaymentMethodAllowed,
                     confirmationTypes = confirmationTypes,
                     savePaymentInstrument = savePaymentInstrument
                 )
-                LINKED_BANK_CARD -> LinkedCard(
+            }
+            GOOGLE_PAY -> {
+                val paymentMethodParams = getPaymentOptionParams(paymentMethods, "google_pay")
+                GooglePay(
                     id = id,
                     charge = charge,
                     fee = jsonObject.getFee(),
-                    cardId = jsonObject.getString("id"),
-                    name = jsonObject.optString("card_name"),
-                    pan = jsonObject.getString("card_mask"),
-                    brand = jsonObject.getCardBrand(),
+                    icon = paymentMethodParams?.iconUrl,
+                    title = paymentMethodParams?.title,
                     savePaymentMethodAllowed = savePaymentMethodAllowed,
-                    isLinkedToWallet = true,
                     confirmationTypes = confirmationTypes,
                     savePaymentInstrument = savePaymentInstrument
                 )
-                UNKNOWN -> AbstractWallet(
-                    id,
-                    charge,
-                    null,
-                    savePaymentMethodAllowed,
-                    confirmationTypes = confirmationTypes,
-                    savePaymentInstrument = savePaymentInstrument
-                )
+            }
+            YOO_MONEY -> {
+                val paymentMethodParams = getPaymentOptionParams(paymentMethods, "yoo_money")
+                when (InstrumentType.parse(
+                    jsonObject.optString("instrument_type")
+                )) {
+                    WALLET -> Wallet(
+                        id = id,
+                        charge = charge,
+                        fee = jsonObject.getFee(),
+                        walletId = jsonObject.optString("id"),
+                        balance = jsonObject.optJSONObject("balance").toAmount(),
+                        savePaymentMethodAllowed = savePaymentMethodAllowed,
+                        confirmationTypes = confirmationTypes,
+                        icon = paymentMethodParams?.iconUrl,
+                        title = paymentMethodParams?.title,
+                        savePaymentInstrument = savePaymentInstrument
+                    )
+                    LINKED_BANK_CARD -> LinkedCard(
+                        id = id,
+                        charge = charge,
+                        fee = jsonObject.getFee(),
+                        cardId = jsonObject.getString("id"),
+                        name = jsonObject.optString("card_name"),
+                        pan = jsonObject.getString("card_mask"),
+                        brand = jsonObject.getCardBrand(),
+                        icon = null,
+                        title = null,
+                        savePaymentMethodAllowed = savePaymentMethodAllowed,
+                        isLinkedToWallet = true,
+                        confirmationTypes = confirmationTypes,
+                        savePaymentInstrument = savePaymentInstrument
+                    )
+                    UNKNOWN -> AbstractWallet(
+                        id = id,
+                        charge = charge,
+                        fee = null,
+                        icon = paymentMethodParams?.iconUrl,
+                        title = paymentMethodParams?.title,
+                        savePaymentMethodAllowed = savePaymentMethodAllowed,
+                        confirmationTypes = confirmationTypes,
+                        savePaymentInstrument = savePaymentInstrument
+                    )
+                }
             }
         }
     }
 }
+
+internal fun getPaymentOptionParams(paymentMethods: List<ConfigPaymentOption>, paymentMethod: String) =
+    paymentMethods.find { it.method == paymentMethod }
 
 internal enum class InstrumentType(val type: String) {
     WALLET("wallet"),

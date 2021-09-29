@@ -104,6 +104,8 @@ internal class PaymentOptionsListUseCaseImpl(
                                 expiryYear = response.value.card.expiryYear,
                                 savePaymentMethodAllowed = paymentOption.savePaymentMethodAllowed,
                                 confirmationTypes = paymentOption.confirmationTypes,
+                                icon = paymentOption.icon,
+                                title = paymentOption.title,
                                 savePaymentInstrument = paymentOption.savePaymentInstrument
                             )
                         )

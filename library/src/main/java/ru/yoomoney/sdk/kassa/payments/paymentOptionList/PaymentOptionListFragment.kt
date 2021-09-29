@@ -23,6 +23,7 @@ package ru.yoomoney.sdk.kassa.payments.paymentOptionList
 
 import android.content.DialogInterface
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableStringBuilder
@@ -40,20 +41,20 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.ym_dialog_top_bar.view.logo
 import kotlinx.android.synthetic.main.ym_fragment_payment_options.contentContainer
 import kotlinx.android.synthetic.main.ym_fragment_payment_options.topBar
 import ru.yoomoney.sdk.gui.dialog.YmAlertDialog
 import ru.yoomoney.sdk.kassa.payments.R
-import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.UiParameters
 import ru.yoomoney.sdk.kassa.payments.di.CheckoutInjector
 import ru.yoomoney.sdk.kassa.payments.di.PaymentOptionsListFormatter
 import ru.yoomoney.sdk.kassa.payments.di.PaymentOptionsModule.Companion.PAYMENT_OPTIONS
 import ru.yoomoney.sdk.kassa.payments.errorFormatter.ErrorFormatter
 import ru.yoomoney.sdk.kassa.payments.extensions.getAdditionalInfo
-import ru.yoomoney.sdk.kassa.payments.extensions.getIcon
-import ru.yoomoney.sdk.kassa.payments.extensions.getTitle
-import ru.yoomoney.sdk.kassa.payments.extensions.getIconResId
+import ru.yoomoney.sdk.kassa.payments.extensions.getPlaceholderIcon
+import ru.yoomoney.sdk.kassa.payments.extensions.getPlaceholderTitle
 import ru.yoomoney.sdk.kassa.payments.model.BankCardPaymentOption
 import ru.yoomoney.sdk.kassa.payments.extensions.showSnackbar
 import ru.yoomoney.sdk.kassa.payments.model.LinkedCard
@@ -62,7 +63,6 @@ import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
 import ru.yoomoney.sdk.kassa.payments.model.Wallet
 import ru.yoomoney.sdk.kassa.payments.navigation.Router
 import ru.yoomoney.sdk.kassa.payments.navigation.Screen
-import ru.yoomoney.sdk.kassa.payments.payment.PaymentMethodId
 import ru.yoomoney.sdk.kassa.payments.ui.CheckoutAlertDialog
 import ru.yoomoney.sdk.kassa.payments.ui.changeViewWithAnimation
 import ru.yoomoney.sdk.kassa.payments.ui.getViewHeight
@@ -85,14 +85,7 @@ internal class PaymentOptionListFragment : Fragment(R.layout.ym_fragment_payment
     PaymentOptionListRecyclerViewAdapter.PaymentOptionClickListener {
 
     @Inject
-    lateinit var paymentParameters: PaymentParameters
-
-    @Inject
     lateinit var uiParameters: UiParameters
-
-    @Inject
-    @JvmField
-    var paymentMethodId: PaymentMethodId? = null
 
     @Inject
     @PaymentOptionsListFormatter
@@ -134,7 +127,7 @@ internal class PaymentOptionListFragment : Fragment(R.layout.ym_fragment_payment
         val minLoadingHeight =
             resources.getDimensionPixelSize(R.dimen.ym_payment_options_loading_min_height).takeIf { !isTablet }
 
-        setFragmentResultListener(MoneyAuthFragment.MONEY_AUTH_RESULT_KEY) { _, bundle ->
+            setFragmentResultListener(MoneyAuthFragment.MONEY_AUTH_RESULT_KEY) { _, bundle ->
             val result = bundle.getSerializable(MoneyAuthFragment.MONEY_AUTH_RESULT_EXTRA) as Screen.MoneyAuth.Result
             onAuthResult(result)
         }
@@ -187,10 +180,7 @@ internal class PaymentOptionListFragment : Fragment(R.layout.ym_fragment_payment
 
     fun onAppear() {
         viewModel.handleAction(
-            PaymentOptionList.Action.Load(
-                paymentParameters.amount,
-                paymentMethodId
-            )
+            PaymentOptionList.Action.Load
         )
     }
 
@@ -204,10 +194,7 @@ internal class PaymentOptionListFragment : Fragment(R.layout.ym_fragment_payment
     }
 
     private fun onUnbindingCardResult(panUnbindingCard: String) {
-        viewModel.handleAction(PaymentOptionList.Action.Load(
-            paymentParameters.amount,
-            paymentMethodId
-        ))
+        viewModel.handleAction(PaymentOptionList.Action.Load)
         view?.showSnackbar(
             message = getString(
                 R.string.ym_unbinding_card_success,
@@ -219,6 +206,9 @@ internal class PaymentOptionListFragment : Fragment(R.layout.ym_fragment_payment
     }
 
     private fun showState(state: PaymentOptionList.State) {
+        Picasso.get().load(Uri.parse(state.yooMoneyLogoUrl))
+            .placeholder(topBar.logo.drawable)
+            .into(topBar.logo)
         showState(!isTablet) {
             when (state) {
                 is PaymentOptionList.State.Loading -> showLoadingState()
@@ -277,6 +267,7 @@ internal class PaymentOptionListFragment : Fragment(R.layout.ym_fragment_payment
         loadingView.updateLayoutParams<ViewGroup.LayoutParams> { height = contentContainer.getViewHeight() }
     }
 
+    //todo
     private fun showPaymentOptions(content: PaymentOptionListSuccessOutputModel) {
         val listItems: List<PaymentOptionListItem> = content.options.map {
             it.getPaymentOptionListItems(requireContext())
@@ -323,10 +314,7 @@ internal class PaymentOptionListFragment : Fragment(R.layout.ym_fragment_payment
         errorView.setErrorText(errorFormatter.format(throwable))
         errorView.setErrorButtonListener(View.OnClickListener {
             viewModel.handleAction(
-                PaymentOptionList.Action.Load(
-                    paymentParameters.amount,
-                    paymentMethodId
-                )
+                PaymentOptionList.Action.Load
             )
         })
     }
@@ -385,15 +373,16 @@ private fun PaymentOption.getPaymentOptionListItems(context: Context): List<Paym
     val instruments = (this as? BankCardPaymentOption)?.getInstrumentListItems(context) ?: emptyList()
     return instruments + PaymentOptionListItem(
         optionId = id,
-        icon = getIcon(context),
-        title = getTitle(context),
         additionalInfo = getAdditionalInfo(context).let { info ->
             info?.takeIf { _ -> this is Wallet }
                 ?.makeStartMedium(context) ?: info
         },
         canLogout = this is Wallet,
         hasOptions = this is LinkedCard,
-        isWalletLinked = this is LinkedCard && this.isLinkedToWallet
+        isWalletLinked = this is LinkedCard && this.isLinkedToWallet,
+        title = this.title ?: getPlaceholderTitle(context),
+        urlLogo = this.icon,
+        logo = getPlaceholderIcon(context)
     )
 }
 
@@ -402,12 +391,18 @@ private fun BankCardPaymentOption.getInstrumentListItems(context: Context): List
         PaymentOptionListItem(
             optionId = id,
             instrumentId = paymentInstrument.paymentInstrumentId,
-            icon = requireNotNull(ContextCompat.getDrawable(context, getBankOrBrandLogo(paymentInstrument.cardNumber, paymentInstrument.cardType))),
-            title = "•••• " + paymentInstrument.last4,
             additionalInfo = context.resources.getString(R.string.ym_linked_not_wallet_card),
             canLogout = false,
             hasOptions = true,
-            isWalletLinked = false
+            isWalletLinked = false,
+            logo = requireNotNull(
+                ContextCompat.getDrawable(
+                    context,
+                    getBankOrBrandLogo(paymentInstrument.cardNumber, paymentInstrument.cardType)
+                )
+            ),
+            title = "•••• " + paymentInstrument.last4,
+            urlLogo = null
         )
     }
 }

@@ -99,7 +99,7 @@ object Checkout {
      */
     @[JvmStatic Keep]
     fun createTokenizationResult(data: Intent): TokenizationResult {
-        val token = data.getStringExtra(EXTRA_PAYMENT_TOKEN)
+        val token = requireNotNull(data.getStringExtra(EXTRA_PAYMENT_TOKEN))
         val type = data.getSerializableExtra(EXTRA_PAYMENT_METHOD_TYPE) as PaymentMethodType
         return TokenizationResult(token, type)
     }

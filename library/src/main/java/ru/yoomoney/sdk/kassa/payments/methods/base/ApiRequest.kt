@@ -22,11 +22,17 @@
 package ru.yoomoney.sdk.kassa.payments.methods.base
 
 import org.json.JSONObject
+import ru.yoomoney.sdk.kassa.payments.utils.getLanguage
 
 internal interface ApiRequest<out T> {
     fun getUrl(): String
     fun getHeaders(): List<Pair<String, String>>
     fun convertJsonToResponse(jsonObject: JSONObject): T
+}
+
+
+internal fun acceptLanguageHeader(): Pair<String, String> {
+    return "Accept-Language" to getLanguage()
 }
 
 internal interface GetRequest<out T> : ApiRequest<T>

@@ -27,12 +27,17 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.text.HtmlCompat
 import ru.yoomoney.sdk.kassa.payments.utils.changeToolbarButtonColor
 import ru.yoomoney.sdk.kassa.payments.R
 import ru.yoomoney.sdk.kassa.payments.ui.PrimaryButtonView
 
 internal const val EXTRA_TITLE_RES = "ru.yoo.money.android.extra.SAVE_PAYMENT_INFO_TITLE"
 internal const val EXTRA_TEXT_RES = "ru.yoo.money.android.extra.SAVE_PAYMENT_INFO_TEXT"
+
+internal const val EXTRA_TITLE_STRING = "ru.yoo.money.android.extra.SAVE_PAYMENT_INFO_TITLE_STRING"
+internal const val EXTRA_TEXT_STRING = "ru.yoo.money.android.extra.SAVE_PAYMENT_INFO_TEXT_STRING"
+
 internal const val EXTRA_ADDITIONAL_TEXT_RES = "ru.yoo.money.android.extra.ADDITIONAL_TEXT_RES"
 
 class SavePaymentMethodInfoActivity : AppCompatActivity() {
@@ -44,8 +49,12 @@ class SavePaymentMethodInfoActivity : AppCompatActivity() {
             setNavigationOnClickListener { finish() }
             changeToolbarButtonColor()
         }
-        findViewById<TextView>(R.id.title).setText(intent.getIntExtra(EXTRA_TITLE_RES, 0))
-        findViewById<TextView>(R.id.info).setText(intent.getIntExtra(EXTRA_TEXT_RES, 0))
+        findViewById<TextView>(R.id.title).text =
+            intent.getStringExtra(EXTRA_TITLE_STRING)?.let { HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY) }
+                ?: resources.getString(intent.getIntExtra(EXTRA_TITLE_RES, 0))
+        findViewById<TextView>(R.id.info).text =
+            intent.getStringExtra(EXTRA_TEXT_STRING)?.let { HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY) }
+                ?: resources.getString(intent.getIntExtra(EXTRA_TEXT_RES, 0))
         findViewById<PrimaryButtonView>(R.id.understandButton).setOnClickListener {
             finish()
         }
@@ -61,6 +70,13 @@ class SavePaymentMethodInfoActivity : AppCompatActivity() {
                 putExtra(EXTRA_TITLE_RES, titleRes)
                 putExtra(EXTRA_TEXT_RES, textRes)
                 putExtra(EXTRA_ADDITIONAL_TEXT_RES, additionalTextRes)
+            }
+        }
+
+        fun create(context: Context, title: String, text: String): Intent {
+            return Intent(context, SavePaymentMethodInfoActivity::class.java).apply {
+                putExtra(EXTRA_TITLE_STRING, title)
+                putExtra(EXTRA_TEXT_STRING, text)
             }
         }
     }

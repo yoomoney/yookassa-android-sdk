@@ -41,7 +41,7 @@ internal class PendingIntentActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
-            intent.getParcelableExtra<PendingIntent>(EXTRA_PENDING_INTENT).intentSender.also {
+            intent.getParcelableExtra<PendingIntent>(EXTRA_PENDING_INTENT)?.intentSender?.also {
                 startIntentSenderForResult(it, 1, null, 0, 0, 0)
             }
         }

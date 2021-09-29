@@ -80,7 +80,9 @@ internal class TokenizeBusinessLogicTest(
                     savePaymentMethodAllowed = true,
                     confirmationTypes = listOf(ConfirmationType.EXTERNAL),
                     paymentInstruments = emptyList(),
-                    savePaymentInstrument = false
+                    savePaymentInstrument = false,
+                    icon = null,
+                    title = null
                 ),
                 instrumentBankCard = null
             )

@@ -28,9 +28,9 @@
 
     <ImageView
         android:id="@+id/sberImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ym_ic_sberbank"
+        android:layout_width="@dimen/ym_space3XL"
+        android:layout_height="@dimen/ym_space3XL"
+        android:src="@drawable/ym_ic_sberpay_info"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>

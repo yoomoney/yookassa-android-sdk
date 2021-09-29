@@ -35,6 +35,8 @@ internal sealed class PaymentOption : Parcelable {
     abstract val id: Int
     abstract val charge: Amount
     abstract val fee: Fee?
+    abstract val icon: String?
+    abstract val title: String?
     abstract val savePaymentMethodAllowed: Boolean
     abstract val confirmationTypes: List<ConfirmationType>
     abstract val savePaymentInstrument: Boolean
@@ -45,6 +47,8 @@ internal data class GooglePay(
     override val id: Int,
     override val charge: Amount,
     override val fee: Fee?,
+    override val icon: String?,
+    override val title: String?,
     override val savePaymentMethodAllowed: Boolean,
     override val confirmationTypes: List<ConfirmationType>,
     override val savePaymentInstrument: Boolean
@@ -55,6 +59,8 @@ internal data class BankCardPaymentOption(
     override val id: Int,
     override val charge: Amount,
     override val fee: Fee?,
+    override val icon: String?,
+    override val title: String?,
     override val savePaymentMethodAllowed: Boolean,
     override val confirmationTypes: List<ConfirmationType>,
     val paymentInstruments: List<PaymentInstrumentBankCard>,
@@ -70,6 +76,8 @@ internal data class Wallet(
     override val fee: Fee?,
     val walletId: String,
     val balance: Amount,
+    override val icon: String?,
+    override val title: String?,
     override val savePaymentMethodAllowed: Boolean,
     override val confirmationTypes: List<ConfirmationType>,
     override val savePaymentInstrument: Boolean
@@ -80,6 +88,8 @@ internal data class AbstractWallet(
     override val id: Int,
     override val charge: Amount,
     override val fee: Fee?,
+    override val icon: String?,
+    override val title: String?,
     override val savePaymentMethodAllowed: Boolean,
     override val confirmationTypes: List<ConfirmationType>,
     override val savePaymentInstrument: Boolean
@@ -90,6 +100,8 @@ internal data class LinkedCard(
     override val id: Int,
     override val charge: Amount,
     override val fee: Fee?,
+    override val icon: String?,
+    override val title: String?,
     val cardId: String,
     val brand: CardBrand,
     val pan: String,
@@ -105,6 +117,8 @@ internal data class SberBank(
     override val id: Int,
     override val charge: Amount,
     override val fee: Fee?,
+    override val icon: String?,
+    override val title: String?,
     override val savePaymentMethodAllowed: Boolean,
     override val confirmationTypes: List<ConfirmationType>,
     override val savePaymentInstrument: Boolean
@@ -121,6 +135,8 @@ internal data class PaymentIdCscConfirmation(
     override val id: Int,
     override val charge: Amount,
     override val fee: Fee?,
+    override val icon: String?,
+    override val title: String?,
     val paymentMethodId: String,
     val first: String,
     val last: String,

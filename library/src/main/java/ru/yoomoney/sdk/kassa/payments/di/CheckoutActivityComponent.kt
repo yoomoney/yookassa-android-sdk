@@ -28,6 +28,7 @@ import ru.yoomoney.sdk.kassa.payments.payment.PaymentMethodId
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.TestParameters
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.UiParameters
+import ru.yoomoney.sdk.kassa.payments.config.ConfigModule
 import ru.yoomoney.sdk.kassa.payments.ui.CheckoutActivity
 import ru.yoomoney.sdk.kassa.payments.ui.MainDialogFragment
 import ru.yoomoney.sdk.kassa.payments.contract.di.ContractModule
@@ -61,6 +62,7 @@ import javax.inject.Singleton
         UserAuthModule::class,
         ContractModule::class,
         PaymentAuthModule::class,
+        ConfigModule::class,
         UnbindCardModule::class,
         TokenizeModule::class
     ]

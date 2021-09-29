@@ -31,6 +31,7 @@ import ru.yoomoney.sdk.kassa.payments.checkoutParameters.Amount
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.SavePaymentMethod
 import ru.yoomoney.sdk.kassa.payments.extensions.RUB
+import ru.yoomoney.sdk.kassa.payments.logoUrl
 import ru.yoomoney.sdk.kassa.payments.model.BankCardPaymentOption
 import ru.yoomoney.sdk.kassa.payments.model.CardBrand
 import ru.yoomoney.sdk.kassa.payments.model.Fee
@@ -48,8 +49,31 @@ internal class PaymentOptionsListBusinessLogicEffectTest {
     private val showEffect: (PaymentOptionList.Effect) -> Unit = mock()
     private val source: () -> PaymentOptionList.Action = mock()
     private val useCase: PaymentOptionsListUseCase = mock()
-    private val contentState = PaymentOptionList.State.Content(PaymentOptionListSuccessOutputModel(listOf()))
     private val shopPropertiesRepository: ShopPropertiesRepository = mock()
+    private val contentState = PaymentOptionList.State.Content(logoUrl, PaymentOptionListSuccessOutputModel(listOf()))
+
+    private val logic =
+        PaymentOptionsListBusinessLogic(
+            showState = { showState(it) },
+            showEffect = { showEffect(it) },
+            source = { source() },
+            useCase = useCase,
+            paymentParameters = PaymentParameters(
+                amount = Amount(BigDecimal.ONE, RUB),
+                title = "",
+                subtitle = "",
+                clientApplicationKey = "",
+                shopId = "",
+                savePaymentMethod = SavePaymentMethod.ON,
+                authCenterClientId = ""
+            ),
+            logoutUseCase = mock(),
+            getConfirmation = mock(),
+            unbindCardUseCase = mock(),
+            paymentMethodId = null,
+            configRepository = mock(),
+            shopPropertiesRepository = mock()
+        )
 
     @Test
     fun `Should send ProceedWithPaymentMethod effect with Content state and ProceedWithPaymentMethod action`() {
@@ -57,7 +81,7 @@ internal class PaymentOptionsListBusinessLogicEffectTest {
         val paymentOptionId = 11
         val instrumentId = "instrumentId"
         val expected = PaymentOptionList.Effect.ShowContract
-        val out = createLogic().invoke(
+        val out = logic(
             contentState,
             PaymentOptionList.Action.ProceedWithPaymentMethod(paymentOptionId, instrumentId)
         )
@@ -104,7 +128,9 @@ internal class PaymentOptionsListBusinessLogicEffectTest {
                 savePaymentMethodAllowed = true,
                 confirmationTypes = emptyList(),
                 paymentInstruments = listOf(paymentInstrument),
-                savePaymentInstrument = true
+                savePaymentInstrument = true,
+                icon = null,
+                title = null
             )
         )
         whenever(shopPropertiesRepository.shopProperties).thenReturn(ShopProperties(false, false))
@@ -148,7 +174,9 @@ internal class PaymentOptionsListBusinessLogicEffectTest {
                 savePaymentMethodAllowed = true,
                 confirmationTypes = emptyList(),
                 paymentInstruments = listOf(paymentInstrument),
-                savePaymentInstrument = true
+                savePaymentInstrument = true,
+                icon = null,
+                title = null
             )
         )
         whenever(shopPropertiesRepository.shopProperties).thenReturn(ShopProperties(false, false))
@@ -192,7 +220,9 @@ internal class PaymentOptionsListBusinessLogicEffectTest {
                 savePaymentMethodAllowed = true,
                 confirmationTypes = emptyList(),
                 paymentInstruments = listOf(paymentInstrument),
-                savePaymentInstrument = true
+                savePaymentInstrument = true,
+                icon = null,
+                title = null
             )
         )
         whenever(shopPropertiesRepository.shopProperties).thenReturn(ShopProperties(false, false))
@@ -236,7 +266,9 @@ internal class PaymentOptionsListBusinessLogicEffectTest {
                 savePaymentMethodAllowed = true,
                 confirmationTypes = emptyList(),
                 paymentInstruments = listOf(paymentInstrument),
-                savePaymentInstrument = true
+                savePaymentInstrument = true,
+                icon = null,
+                title = null
             )
         )
         whenever(shopPropertiesRepository.shopProperties).thenReturn(ShopProperties(false, false))
@@ -267,7 +299,9 @@ internal class PaymentOptionsListBusinessLogicEffectTest {
         logoutUseCase = mock(),
         getConfirmation = getConfirmation,
         unbindCardUseCase = mock(),
-        shopPropertiesRepository = shopPropertiesRepository
+        shopPropertiesRepository = shopPropertiesRepository,
+        configRepository = mock(),
+        paymentMethodId = "paymentMethodId"
     )
 
     private fun cratePaymentParameters(

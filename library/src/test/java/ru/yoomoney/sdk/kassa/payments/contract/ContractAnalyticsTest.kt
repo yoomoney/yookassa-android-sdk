@@ -25,6 +25,7 @@ import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
+import okio.ByteString.Companion.decodeHex
 import org.junit.Test
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.Amount
 import ru.yoomoney.sdk.kassa.payments.extensions.RUB
@@ -82,11 +83,15 @@ class ContractAnalyticsTest {
     fun `verify screenBankCardForm analytics sends`() {
         // given
         val newCard = BankCardPaymentOption(
-            0,
-            Amount(BigDecimal("2.00"), RUB), null, true,
+            id = 0,
+            charge = Amount(BigDecimal("2.00"), RUB),
+            fee = null,
+            savePaymentMethodAllowed = true,
             confirmationTypes = listOf(ConfirmationType.REDIRECT),
             savePaymentInstrument = false,
-            paymentInstruments = emptyList()
+            paymentInstruments = emptyList(),
+            title = null,
+            icon = null
         )
 
         // when
@@ -111,6 +116,8 @@ class ContractAnalyticsTest {
                 Amount(BigDecimal.ONE, RUB),
                 Amount(BigDecimal("0.5"), RUB)
             ),
+            title = null,
+            icon = null,
             cardId = "12345654321",
             brand = CardBrand.MASTER_CARD,
             pan = "1234567887654321",
@@ -143,6 +150,8 @@ class ContractAnalyticsTest {
             last = "7890",
             expiryYear = "2020",
             expiryMonth = "12",
+            title = null,
+            icon = null,
             savePaymentMethodAllowed = true,
             confirmationTypes = emptyList(),
             brand = CardBrand.MASTER_CARD,
@@ -190,7 +199,9 @@ class ContractAnalyticsTest {
             pan = "1234567887654321",
             savePaymentMethodAllowed = true,
             confirmationTypes = listOf(ConfirmationType.REDIRECT),
-            savePaymentInstrument = false
+            savePaymentInstrument = false,
+            icon = null,
+            title = null
         )
 
         whenever(getTokenizeScheme(linkedCard, null)).thenReturn(TokenizeSchemeLinkedCard())

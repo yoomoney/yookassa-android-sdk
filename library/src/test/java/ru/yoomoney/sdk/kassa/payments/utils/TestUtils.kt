@@ -21,7 +21,10 @@
 
 package ru.yoomoney.sdk.kassa.payments.utils
 
+import ru.yoomoney.sdk.kassa.payments.Checkout
 import ru.yoomoney.sdk.march.Effect
+import java.io.File
+import java.util.Scanner
 
 internal suspend fun <E> List<Effect<E>>.func() {
     forEach {
@@ -31,4 +34,12 @@ internal suspend fun <E> List<Effect<E>>.func() {
             else -> error("unexpected")
         }
     }
+}
+
+fun readTextFromResources(resourceName: String): String {
+    val classLoader = Checkout::class.java.classLoader!!
+    val resource = classLoader.getResource(resourceName)
+    return Scanner(File(resource.path))
+        .useDelimiter("\\A")
+        .next()
 }

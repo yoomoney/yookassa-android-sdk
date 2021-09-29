@@ -21,8 +21,10 @@
 
 package ru.yoomoney.sdk.kassa.payments.paymentOptionList
 
+import android.net.Uri
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.ym_item_common.view.divider
 import kotlinx.android.synthetic.main.ym_item_common.view.image
 import kotlinx.android.synthetic.main.ym_item_common.view.options
@@ -50,9 +52,21 @@ internal class PaymentOptionListRecyclerViewAdapter internal constructor(
         val viewHolder = (holder as PaymentOptionsViewHolder)
         viewHolder.isSwipeAvailable = paymentOption.hasOptions && !paymentOption.instrumentId.isNullOrEmpty()
 
+        val paymentOptionPlaceholder = paymentOption.logo
+
         viewHolder.view.apply {
-            image.setImageDrawable(paymentOption.icon)
+            image.setImageDrawable(paymentOptionPlaceholder)
+
+            paymentOption.urlLogo?.let {
+                Picasso.get().load(Uri.parse(it))
+                    .placeholder(paymentOptionPlaceholder)
+                    .into(image)
+            }
+
             primaryText.text = paymentOption.title
+            setOnClickListener {
+                paymentOptionClickListener.onPaymentOptionClick(paymentOption.optionId, paymentOption.instrumentId)
+            }
 
             with(secondaryText) {
                 visible = paymentOption.additionalInfo != null

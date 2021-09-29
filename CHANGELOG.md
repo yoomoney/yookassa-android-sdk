@@ -5,6 +5,11 @@
 ### NEXT_VERSION_DESCRIPTION_BEGIN
 ### NEXT_VERSION_DESCRIPTION_END
 
+## [6.4.0] (29-09-2021)
+
+- Added getting static data in the config
+- Added recurring payments for SberPay
+
 ## [6.3.0] (16-09-2021)
 
 - Addded support of linked to merchant shop cards and safe payment

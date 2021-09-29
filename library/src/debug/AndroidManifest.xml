@@ -24,10 +24,10 @@
     <application>
         <activity
             android:name="ru.yoomoney.sdk.kassa.payments.utils.WebViewActivity"
-            android:exported="true" />
+            android:exported="false" />
 
         <activity
             android:name="ru.yoomoney.sdk.kassa.payments.ui.PendingIntentActivity"
-            android:exported="true" />
+            android:exported="false" />
     </application>
 </manifest>
