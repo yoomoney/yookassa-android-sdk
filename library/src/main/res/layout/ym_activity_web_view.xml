@@ -37,7 +37,7 @@
         app:navigationIcon="@drawable/ym_ic_close"
         app:navigationContentDescription="@string/ym_navigation_item_back"/>
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/web_view"
         android:name="ru.yoomoney.sdk.kassa.payments.utils.WebViewFragment"
         android:layout_width="match_parent"

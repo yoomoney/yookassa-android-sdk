@@ -5,6 +5,12 @@
 ### NEXT_VERSION_DESCRIPTION_BEGIN
 ### NEXT_VERSION_DESCRIPTION_END
 
+## [6.4.1] (12-10-2021)
+
+- Fixed proguard rules for packages
+- Updated auth-sdk library
+- Replaced <fragment> FragmentContainerView
+
 ## [6.4.0] (29-09-2021)
 
 - Added getting static data in the config

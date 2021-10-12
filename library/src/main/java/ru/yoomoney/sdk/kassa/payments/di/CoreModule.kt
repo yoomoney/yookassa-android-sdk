@@ -31,8 +31,6 @@ import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.TestParameters
 import ru.yoomoney.sdk.kassa.payments.payment.PaymentMethodRepository
 import ru.yoomoney.sdk.kassa.payments.payment.PaymentMethodRepositoryImpl
-import ru.yoomoney.sdk.kassa.payments.tmx.ProfilingTool
-import ru.yoomoney.sdk.kassa.payments.tmx.ThreatMetrixProfilingTool
 import ru.yoomoney.sdk.kassa.payments.tmx.TmxSessionIdStorage
 import ru.yoomoney.sdk.kassa.payments.navigation.AppRouter
 import ru.yoomoney.sdk.kassa.payments.navigation.Router
@@ -45,6 +43,7 @@ import ru.yoomoney.sdk.kassa.payments.model.GetConfirmation
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
 import ru.yoomoney.sdk.kassa.payments.utils.DEFAULT_REDIRECT_URL
 import ru.yoomoney.sdk.kassa.payments.utils.getSberbankPackage
+import ru.yoomoney.sdk.tmx.TmxProfiler
 import javax.inject.Singleton
 
 @Module
@@ -89,10 +88,8 @@ internal class CoreModule {
 
     @Provides
     @Singleton
-    fun profilingTool(context: Context): ProfilingTool {
-        return ThreatMetrixProfilingTool().apply {
-            init(context.applicationContext)
-        }
+    fun tmxProfiler(context: Context): TmxProfiler {
+        return TmxProfiler.create(context)
     }
 
     @Provides

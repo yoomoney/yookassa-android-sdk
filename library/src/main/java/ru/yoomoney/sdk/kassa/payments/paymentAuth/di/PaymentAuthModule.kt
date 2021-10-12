@@ -31,7 +31,6 @@ import ru.yoomoney.sdk.kassa.payments.di.ViewModelKey
 import ru.yoomoney.sdk.kassa.payments.extensions.CheckoutOkHttpClient
 import ru.yoomoney.sdk.kassa.payments.http.HostProvider
 import ru.yoomoney.sdk.kassa.payments.metrics.ErrorReporter
-import ru.yoomoney.sdk.kassa.payments.tmx.ProfilingTool
 import ru.yoomoney.sdk.kassa.payments.tmx.TmxSessionIdStorage
 import ru.yoomoney.sdk.kassa.payments.secure.TokensStorage
 import ru.yoomoney.sdk.kassa.payments.metrics.Reporter
@@ -55,6 +54,7 @@ import ru.yoomoney.sdk.kassa.payments.paymentAuth.SmsSessionRetryRepository
 import ru.yoomoney.sdk.march.Out
 import ru.yoomoney.sdk.march.RuntimeViewModel
 import ru.yoomoney.sdk.march.input
+import ru.yoomoney.sdk.tmx.TmxProfiler
 import javax.inject.Singleton
 
 @Module
@@ -67,7 +67,7 @@ internal class PaymentAuthModule {
         hostProvider: HostProvider,
         tokensStorage: TokensStorage,
         paymentParameters: PaymentParameters,
-        profilingTool: ProfilingTool,
+        profiler: TmxProfiler,
         tmxSessionIdStorage: TmxSessionIdStorage
     ): ApiV3PaymentAuthRepository {
         return ApiV3PaymentAuthRepository(
@@ -75,7 +75,7 @@ internal class PaymentAuthModule {
             tokensStorage = tokensStorage,
             shopToken = paymentParameters.clientApplicationKey,
             tmxSessionIdStorage = tmxSessionIdStorage,
-            profilingTool = profilingTool,
+            profiler = profiler,
             selectAppropriateAuthType = SelectAppropriateAuthType(),
             hostProvider = hostProvider
         )

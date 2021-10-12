@@ -33,10 +33,9 @@ import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOptionInfo
 import ru.yoomoney.sdk.kassa.payments.model.Result
 import ru.yoomoney.sdk.kassa.payments.paymentAuth.PaymentAuthTokenRepository
-import ru.yoomoney.sdk.kassa.payments.tmx.ProfilingTool
 import ru.yoomoney.sdk.kassa.payments.tmx.TmxSessionIdStorage
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.ConfigUseCase
-import java.util.concurrent.Semaphore
+import ru.yoomoney.sdk.tmx.TmxProfiler
 
 internal class ApiV3TokenizeRepository(
     private val hostProvider: HostProvider,
@@ -44,23 +43,10 @@ internal class ApiV3TokenizeRepository(
     private val shopToken: String,
     private val paymentAuthTokenRepository: PaymentAuthTokenRepository,
     private val tmxSessionIdStorage: TmxSessionIdStorage,
-    private val profilingTool: ProfilingTool,
+    private val profiler: TmxProfiler,
     private val configUseCase: ConfigUseCase,
     private val merchantCustomerId: String?
-) : TokenizeRepository, ProfilingTool.SessionIdListener {
-
-    private var tmxSessionId: String? = null
-    private val semaphore = Semaphore(0)
-
-    override fun onProfilingSessionId(sessionId: String) {
-        tmxSessionId = sessionId
-        semaphore.release()
-    }
-
-    override fun onProfilingError(status: String) {
-        tmxSessionId = status
-        semaphore.release()
-    }
+) : TokenizeRepository {
 
     override fun getToken(
         paymentOption: PaymentOption,
@@ -83,9 +69,7 @@ internal class ApiV3TokenizeRepository(
             savePaymentInstrument = savePaymentInstrument,
             merchantCustomerId = merchantCustomerId
         )
-        tmxSessionId = null
         tmxSessionIdStorage.tmxSessionId = null
-
         return httpClient.value.execute(tokenRequest)
     }
 
@@ -113,10 +97,12 @@ internal class ApiV3TokenizeRepository(
     }
 
     private fun acquireTmxSessionId(): String? {
-        tmxSessionId = tmxSessionIdStorage.tmxSessionId
+        val tmxSessionId = tmxSessionIdStorage.tmxSessionId
         if (tmxSessionId.isNullOrEmpty()) {
-            profilingTool.requestSessionId(this)
-            semaphore.acquire()
+            return when (val result = profiler.profile()) {
+                is TmxProfiler.Result.Success -> result.sessionId
+                is TmxProfiler.Result.Fail -> result.description
+            }
         }
         return tmxSessionId
     }

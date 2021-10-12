@@ -25,7 +25,6 @@ import android.os.Build
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.Amount
 import ru.yoomoney.sdk.kassa.payments.extensions.CheckoutOkHttpClient
 import ru.yoomoney.sdk.kassa.payments.model.AuthCheckApiMethodException
-import ru.yoomoney.sdk.kassa.payments.tmx.ProfilingTool
 import ru.yoomoney.sdk.kassa.payments.tmx.TmxSessionIdStorage
 import ru.yoomoney.sdk.kassa.payments.secure.TokensStorage
 import ru.yoomoney.sdk.kassa.payments.extensions.execute
@@ -42,8 +41,8 @@ import ru.yoomoney.sdk.kassa.payments.model.CurrentUser
 import ru.yoomoney.sdk.kassa.payments.model.ErrorCode
 import ru.yoomoney.sdk.kassa.payments.model.Result
 import ru.yoomoney.sdk.kassa.payments.model.map
+import ru.yoomoney.sdk.tmx.TmxProfiler
 import java.lang.IllegalStateException
-import java.util.concurrent.Semaphore
 
 internal class ApiV3PaymentAuthRepository(
     private val hostProvider: HostProvider,
@@ -51,16 +50,13 @@ internal class ApiV3PaymentAuthRepository(
     private val tokensStorage: TokensStorage,
     private val shopToken: String,
     private val tmxSessionIdStorage: TmxSessionIdStorage,
-    private val profilingTool: ProfilingTool,
+    private val profiler: TmxProfiler,
     private val selectAppropriateAuthType: (AuthType, Array<AuthTypeState>) -> AuthTypeState
-) : PaymentAuthTypeRepository, ProcessPaymentAuthRepository, ProfilingTool.SessionIdListener,
-    SmsSessionRetryRepository {
+) : PaymentAuthTypeRepository, ProcessPaymentAuthRepository, SmsSessionRetryRepository {
 
     private var processId: String? = null
     private var authContextId: String? = null
     private var authType: AuthType = AuthType.UNKNOWN
-    private var tmxSessionId: String? = null
-    private val tmxSessionIdSemaphore = Semaphore(0)
 
     override fun getPaymentAuthToken(
         currentUser: CurrentUser,
@@ -164,14 +160,14 @@ internal class ApiV3PaymentAuthRepository(
         amount: Amount,
         multipleUsage: Boolean
     ): Result<CheckoutTokenIssueInitResponse> {
-        tmxSessionId = tmxSessionIdStorage.tmxSessionId
+        var tmxSessionId = tmxSessionIdStorage.tmxSessionId
 
         if (tmxSessionId.isNullOrEmpty()) {
-            profilingTool.requestSessionId(this)
-            tmxSessionIdSemaphore.acquire()
+            tmxSessionId = when(val result = profiler.profile()) {
+                is TmxProfiler.Result.Success -> result.sessionId
+                is TmxProfiler.Result.Fail -> result.description
+            }
         }
-
-        tmxSessionId ?: return Result.Fail(IllegalStateException())
 
         val request = CheckoutTokenIssueInitRequest(
             instanceName = Build.MANUFACTURER + ", " + Build.MODEL,
@@ -208,15 +204,5 @@ internal class ApiV3PaymentAuthRepository(
     override fun retrySmsSession(): Result<AuthTypeState> {
         val userAuthToken: String = tokensStorage.userAuthToken ?: return Result.Fail(IllegalStateException())
         return authSessionGenerate(userAuthToken)
-    }
-
-    override fun onProfilingSessionId(sessionId: String) {
-        tmxSessionId = sessionId
-        tmxSessionIdSemaphore.release()
-    }
-
-    override fun onProfilingError(status: String) {
-        tmxSessionId = status
-        tmxSessionIdSemaphore.release()
     }
 }

@@ -34,7 +34,6 @@ import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.TestParameters
 import ru.yoomoney.sdk.kassa.payments.di.TokenStorageModule
 import ru.yoomoney.sdk.kassa.payments.di.ViewModelKey
-import ru.yoomoney.sdk.kassa.payments.tmx.ProfilingTool
 import ru.yoomoney.sdk.kassa.payments.tmx.TmxSessionIdStorage
 import ru.yoomoney.sdk.kassa.payments.secure.TokensStorage
 import ru.yoomoney.sdk.kassa.payments.contract.Contract
@@ -72,6 +71,7 @@ import ru.yoomoney.sdk.kassa.payments.model.GetConfirmation
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.ConfigUseCase
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.ShopPropertiesRepository
 import ru.yoomoney.sdk.kassa.payments.utils.getSberbankPackage
+import ru.yoomoney.sdk.tmx.TmxProfiler
 
 @Module
 internal class ContractModule {
@@ -83,7 +83,7 @@ internal class ContractModule {
         httpClient: CheckoutOkHttpClient,
         tokensStorage: TokensStorage,
         paymentParameters: PaymentParameters,
-        profilingTool: ProfilingTool,
+        profiler: TmxProfiler,
         tmxSessionIdStorage: TmxSessionIdStorage,
         configUseCase: ConfigUseCase
     ): TokenizeRepository {
@@ -96,7 +96,7 @@ internal class ContractModule {
                 httpClient = lazy { httpClient },
                 shopToken = paymentParameters.clientApplicationKey,
                 paymentAuthTokenRepository = tokensStorage,
-                profilingTool = profilingTool,
+                profiler = profiler,
                 tmxSessionIdStorage = tmxSessionIdStorage,
                 configUseCase = configUseCase,
                 merchantCustomerId = paymentParameters.customerId

@@ -28,8 +28,8 @@
 
     <ImageView
         android:id="@+id/payImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/ym_space3XL"
+        android:layout_height="@dimen/ym_space3XL"
         android:src="@drawable/ym_ic_google_pay"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>

@@ -34,6 +34,9 @@
 -keep class ru.yoomoney.sdk.kassa.payments.ui.** { *; }
 -keep class androidx.lifecycle.ViewModelKeyedFactory { *; }
 
+-keeppackagenames ru.yoomoney.sdk.kassa.payments.**
+-keeppackagenames ru.yoomoney.sdk.kassa.payments
+
 -dontwarn javax.annotation.Nullable
 -dontwarn org.conscrypt.OpenSSLProvider
 -dontwarn org.conscrypt.Conscrypt
