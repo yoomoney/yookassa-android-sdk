@@ -182,6 +182,9 @@ internal class UnbindCardFragment : Fragment(R.layout.ym_fragment_unbind_card) {
         setupButton(instrumentBankCard.paymentInstrumentId, false)
         setupToolbar(instrumentBankCard.last4)
         setupText(false)
+        informerView.updateLayoutParams<ViewGroup.LayoutParams> {
+            height = resources.getDimensionPixelSize(R.dimen.ym_informer_linked_card_height)
+        }
         informerView.setActionClickListener(
             listener = setupInformerViewAction(
                 R.string.ym_how_works_auto_write_title,
@@ -198,6 +201,9 @@ internal class UnbindCardFragment : Fragment(R.layout.ym_fragment_unbind_card) {
         setupButton(linkedCard.cardId, true)
         setupToolbar(linkedCard.pan.takeLast(4))
         setupText(true)
+        informerView.updateLayoutParams<ViewGroup.LayoutParams> {
+            height = resources.getDimensionPixelSize(R.dimen.ym_informer_wallet_linked_card_height)
+        }
         informerView.setActionClickListener(
             listener = setupInformerViewAction(
                 R.string.ym_how_unbind_wallet_card_title,

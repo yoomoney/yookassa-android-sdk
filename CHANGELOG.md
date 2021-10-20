@@ -5,6 +5,10 @@
 ### NEXT_VERSION_DESCRIPTION_BEGIN
 ### NEXT_VERSION_DESCRIPTION_END
 
+## [6.4.2] (20-10-2021)
+
+- Rename file META-INF/core_release.kotlin_module
+
 ## [6.4.1] (12-10-2021)
 
 - Fixed proguard rules for packages

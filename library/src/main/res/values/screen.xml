@@ -29,4 +29,6 @@
     <!-- -2px == wrap_content -->
     <dimen name="ym_payment_options_container_height">-2px</dimen>
     <dimen name="ym_bottomDialog_contract_view_height">400dp</dimen>
+    <dimen name="ym_informer_linked_card_height">150dp</dimen>
+    <dimen name="ym_informer_wallet_linked_card_height">106dp</dimen>
 </resources>

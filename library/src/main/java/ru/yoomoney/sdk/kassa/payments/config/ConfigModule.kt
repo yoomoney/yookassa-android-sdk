@@ -45,12 +45,19 @@ internal class ConfigModule {
         errorReporter: ErrorLoggerReporter,
         testParameters: TestParameters
     ): ConfigRepository {
-        return ApiConfigRepository(
-            configEndpoint = testParameters.hostParameters.configHost,
-            httpClient = lazy { httpClient },
-            getDefaultConfig = JSONObject(context.resources.openRawResource(R.raw.ym_default_config).readText()).toConfig(),
-            sp = context.getSharedPreferences("configPrefs", MODE_PRIVATE),
-            errorReporter = errorReporter
-        )
+        val defaultConfig = JSONObject(
+            context.resources.openRawResource(R.raw.ym_default_config).readText()
+        ).toConfig()
+        return if (testParameters.mockConfiguration != null) {
+            MockConfigRepository(defaultConfig)
+        } else {
+            ApiConfigRepository(
+                configEndpoint = testParameters.hostParameters.configHost,
+                httpClient = lazy { httpClient },
+                getDefaultConfig = defaultConfig,
+                sp = context.getSharedPreferences("configPrefs", MODE_PRIVATE),
+                errorReporter = errorReporter
+            )
+        }
     }
 }
