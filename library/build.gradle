@@ -98,7 +98,7 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$constraintlayout"
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
-    implementation 'com.yandex.android:mobmetricalib:3.16.2'
+    implementation 'com.yandex.android:mobmetricalib:3.21.0'
     implementation 'ru.tinkoff.decoro:decoro:1.5.0'
     implementation 'androidx.fragment:fragment-ktx:1.3.5'
 
