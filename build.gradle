@@ -34,7 +34,7 @@ buildscript {
     ext.mockito_version = '2.19.0'
     ext.espresso_version = '3.0.1'
     ext.gson_version = '2.8.6'
-    ext.yoo_sdk_auth_version = '1.3.27'
+    ext.yoo_sdk_auth_version = '1.3.28'
     ext.ui_lib_version = '1.29.1'
     ext.march_lib_version = "1.0.5"
     ext.junit = '4.13'
