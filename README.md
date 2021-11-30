@@ -155,7 +155,8 @@ the library will use all available payment methods;
 * gatewayId (String): gatewayId for the store;
 * customReturnUrl (String): url of the page (only https supported) where you need to return after completing 3ds. It should only be used if a custom Activity is used for 3ds url. If Checkout.createConfirmationIntent() or Checkout.create3dsIntent() is used, don't specify this parameter;
 * userPhoneNumber (String): user's phone number. It's used for autofilling fields for payments via SberPay. Supported format: "+7XXXXXXXXXX".
-* googlePayParameters (GooglePayParameters): settings for payments via Google Pay.
+* googlePayParameters (GooglePayParameters): settings for payments via Google Pay;
+* customerId (String): unique customer id for your system, ex: email or phone number. 200 symbols max. Used by library to save user payment method and display saved methods. It is your responsibility to make sure that a particular customerId identifies the user, which is willing to make a purchase. For example use two-factor authentication. Using wrong id will let the user to use payment methods that don't belong to this user.
 
 Fields of the `Amount` class:
 * value (BigDecimal): amount;
