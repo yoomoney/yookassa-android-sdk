@@ -38,6 +38,7 @@ private const val TMX_SESSION_ID = "tmx_session_id"
 private const val AMOUNT = "amount"
 private const val SAVE_PAYMENT_METHOD = "save_payment_method"
 private const val CSC = "csc"
+private const val CONFIRMATION = "confirmation_type"
 private const val PAYMENT_INSTRUMENT_ID = "payment_instrument_id"
 
 internal data class InstrumentTokenRequest(
@@ -65,6 +66,8 @@ internal data class InstrumentTokenRequest(
             PAYMENT_INSTRUMENT_ID to instrumentBankCard.paymentInstrumentId
         ).let { payload ->
             csc?.let { payload.plus(CSC to csc) } ?: payload
+        }.let { payload ->
+            confirmation.toJsonObject()?.let { payload + (CONFIRMATION to it) } ?: payload
         }
     }
 

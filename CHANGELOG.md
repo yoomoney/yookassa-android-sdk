@@ -5,6 +5,10 @@
 ### NEXT_VERSION_DESCRIPTION_BEGIN
 ### NEXT_VERSION_DESCRIPTION_END
 
+## [6.4.5] (06-12-2021)
+
+- Add confirmation in tokenize
+
 ## [6.4.4] (11-11-2021)
 
 - Update auth lib
