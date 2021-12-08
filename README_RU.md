@@ -83,8 +83,8 @@ dependencies {
 }
 ```
 
-Попросите у менеджера по подключению библиотеку `ThreatMetrix Android SDK 5.4-73.aar`.
-Создайте папку libs в модуле где подключаете sdk и добавьте туда файл `ThreatMetrix Android SDK 5.4-73.aar`. В build.gradle того же модуля в dependencies добавьте:
+Попросите у менеджера по подключению библиотеку `ThreatMetrix Android SDK 6.2-97.aar`.
+Создайте папку libs в модуле где подключаете sdk и добавьте туда файл `ThreatMetrix Android SDK 6.2-97.aar`. В build.gradle того же модуля в dependencies добавьте:
 ```groovy
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.aar"])

@@ -84,8 +84,8 @@ dependencies {
 }
 ```
 
-Ask your onboarding manager for the `ThreatMetrix Android SDK 5.4-73.aar` library.
-Create a libs folder in the module where you implement the sdk and add the `ThreatMetrix Android SDK 5.4-73.aar` there. Add the following in build.gradle of the same module in dependencies:
+Ask your onboarding manager for the `ThreatMetrix Android SDK 6.2-97.aar` library.
+Create a libs folder in the module where you implement the sdk and add the `ThreatMetrix Android SDK 6.2-97.aar` there. Add the following in build.gradle of the same module in dependencies:
 ```groovy
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.aar"])
