@@ -30,7 +30,6 @@ import ru.yoomoney.sdk.kassa.payments.payment.PaymentMethodRepository
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.TestParameters
 import ru.yoomoney.sdk.kassa.payments.config.ConfigRepository
-import ru.yoomoney.sdk.kassa.payments.secure.TokensStorage
 import ru.yoomoney.sdk.kassa.payments.metrics.Reporter
 import ru.yoomoney.sdk.kassa.payments.metrics.TokenizeSchemeParamProvider
 import ru.yoomoney.sdk.kassa.payments.metrics.UserAuthTypeParamProvider
@@ -44,6 +43,7 @@ import ru.yoomoney.sdk.kassa.payments.payment.googlePay.GooglePayRepository
 import ru.yoomoney.sdk.kassa.payments.payment.loadOptionList.PaymentOptionListRepository
 import ru.yoomoney.sdk.kassa.payments.payment.loadPaymentInfo.PaymentMethodInfoGateway
 import ru.yoomoney.sdk.kassa.payments.errorFormatter.ErrorFormatter
+import ru.yoomoney.sdk.kassa.payments.extensions.toTokenizeScheme
 import ru.yoomoney.sdk.kassa.payments.model.GetConfirmation
 import ru.yoomoney.sdk.kassa.payments.payment.unbindCard.UnbindCardGateway
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.ConfigUseCase
@@ -57,6 +57,7 @@ import ru.yoomoney.sdk.kassa.payments.paymentOptionList.unbind.UnbindCardUseCase
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.unbind.UnbindCardUseCaseImpl
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.ShopPropertiesRepository
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.ShopPropertiesRepositoryImpl
+import ru.yoomoney.sdk.kassa.payments.utils.getSberbankPackage
 import ru.yoomoney.sdk.march.Out
 import ru.yoomoney.sdk.march.RuntimeViewModel
 import ru.yoomoney.sdk.march.input
@@ -141,6 +142,7 @@ internal class PaymentOptionsModule {
 
     @[Provides IntoMap ViewModelKey(PAYMENT_OPTIONS)]
     fun viewModel(
+        context: Context,
         paymentOptionsListUseCase: PaymentOptionsListUseCase,
         paymentParameters: PaymentParameters,
         paymentMethodId: String?,
@@ -152,8 +154,10 @@ internal class PaymentOptionsModule {
         unbindCardUseCase: UnbindCardUseCase,
         shopPropertiesRepository: ShopPropertiesRepository,
         configUseCase: ConfigUseCase,
+        testParameters: TestParameters,
         configRepository: ConfigRepository
     ): ViewModel {
+        val sberbankPackage = getSberbankPackage(testParameters.hostParameters.isDevHost)
         return RuntimeViewModel<PaymentOptionList.State, PaymentOptionList.Action, PaymentOptionList.Effect>(
             featureName = "PaymentOptionList",
             initial = {
@@ -176,7 +180,11 @@ internal class PaymentOptionsModule {
                         getConfirmation = getConfirmation,
                         unbindCardUseCase = unbindCardUseCase,
                         shopPropertiesRepository = shopPropertiesRepository,
-                        configRepository = configRepository
+                        configRepository = configRepository,
+                        getTokenizeScheme = { paymentOption, paymentInstrument ->
+                            paymentOption.toTokenizeScheme(context, sberbankPackage, paymentInstrument)
+                        },
+                        tokenizeSchemeProvider = tokenizeSchemeParamProvider
                     ),
                     getUserAuthType = userAuthTypeParamProvider,
                     getTokenizeScheme = tokenizeSchemeParamProvider

@@ -22,11 +22,9 @@
 package ru.yoomoney.sdk.kassa.payments.paymentOptionList
 
 import com.google.gson.Gson
-import com.google.gson.JsonObject
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import org.hamcrest.CoreMatchers.equalTo
-import org.json.JSONObject
 import org.junit.Assert.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -37,11 +35,12 @@ import ru.yoomoney.sdk.kassa.payments.checkoutParameters.SavePaymentMethod
 import ru.yoomoney.sdk.kassa.payments.config.ConfigRepository
 import ru.yoomoney.sdk.kassa.payments.extensions.RUB
 import ru.yoomoney.sdk.kassa.payments.logoUrl
+import ru.yoomoney.sdk.kassa.payments.metrics.TokenizeScheme
 import ru.yoomoney.sdk.kassa.payments.model.CardBrand
 import ru.yoomoney.sdk.kassa.payments.model.Config
 import ru.yoomoney.sdk.kassa.payments.model.PaymentInstrumentBankCard
+import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
 import ru.yoomoney.sdk.kassa.payments.model.SdkException
-import ru.yoomoney.sdk.kassa.payments.model.toConfig
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.PaymentOptionList.Action
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.PaymentOptionList.State
 import ru.yoomoney.sdk.kassa.payments.utils.readTextFromResources
@@ -57,6 +56,7 @@ internal class PaymentOptionsListBusinessLogicTest(
 ) {
 
     private val configRepository: ConfigRepository = mock()
+    private val getTokenizeScheme: (PaymentOption, PaymentInstrumentBankCard?) -> TokenizeScheme = mock()
 
     companion object {
         @[Parameterized.Parameters(name = "{0}") JvmStatic]
@@ -182,13 +182,15 @@ internal class PaymentOptionsListBusinessLogicTest(
         unbindCardUseCase = mock(),
         getConfirmation = mock(),
         shopPropertiesRepository = mock(),
-        configRepository = configRepository
+        configRepository = configRepository,
+        getTokenizeScheme = getTokenizeScheme,
+        tokenizeSchemeProvider = mock()
     )
 
     @Test
     fun test() {
         whenever(configRepository.getConfig()).thenReturn(
-            Gson().fromJson<Config>(readTextFromResources("ym_default_config.json"), Config::class.java)
+            Gson().fromJson(readTextFromResources("ym_default_config.json"), Config::class.java)
         )
 
         // when

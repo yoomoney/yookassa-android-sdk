@@ -21,56 +21,63 @@
 
 package ru.yoomoney.sdk.kassa.payments.contract
 
+import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
 import ru.yoomoney.sdk.kassa.payments.metrics.AuthType
-import ru.yoomoney.sdk.kassa.payments.metrics.ErrorScreenReporter
 import ru.yoomoney.sdk.kassa.payments.metrics.Reporter
-import ru.yoomoney.sdk.kassa.payments.model.LinkedCard
-import ru.yoomoney.sdk.kassa.payments.model.BankCardPaymentOption
-import ru.yoomoney.sdk.kassa.payments.model.PaymentIdCscConfirmation
+import ru.yoomoney.sdk.kassa.payments.metrics.SavePaymentMethodProvider
 import ru.yoomoney.sdk.march.Logic
 import ru.yoomoney.sdk.march.Out
 import ru.yoomoney.sdk.kassa.payments.metrics.TokenizeScheme
+import ru.yoomoney.sdk.kassa.payments.metrics.TokenizeSchemeParamProvider
 import ru.yoomoney.sdk.kassa.payments.model.PaymentInstrumentBankCard
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
 
+private const val ACTION_SCREEN_PAYMENT_CONTRACT = "screenPaymentContract"
+private const val ACTION_SCREEN_PAYMENT_CONTRACT_ERROR = "screenErrorContract"
+private const val ACTION_LOGOUT = "actionLogout"
+
 internal class ContractAnalytics(
     private val reporter: Reporter,
-    private val errorScreenReporter: ErrorScreenReporter,
     private val businessLogic: Logic<Contract.State, Contract.Action>,
     private val getUserAuthType: () -> AuthType,
+    private val paymentParameters: PaymentParameters,
+    private val tokenizeSchemeParamProvider: TokenizeSchemeParamProvider,
     private val getTokenizeScheme: (PaymentOption, PaymentInstrumentBankCard?) -> TokenizeScheme
 ) : Logic<Contract.State, Contract.Action> {
 
     override fun invoke(state: Contract.State, action: Contract.Action): Out<Contract.State, Contract.Action> {
         val nameArgsPairs = when (action) {
-            Contract.Action.Logout -> listOf("actionLogout" to null)
+            Contract.Action.Logout -> listOf(ACTION_LOGOUT to null)
             is Contract.Action.LoadContractSuccess -> {
                 listOf(
-                    "screenPaymentContract" to listOf(
+                    ACTION_SCREEN_PAYMENT_CONTRACT to listOf(
                         getUserAuthType(),
                         getTokenizeScheme(
                             action.outputModel.paymentOption,
                             action.outputModel.instrument
                         )
-                    ),
-                    when (action.outputModel.paymentOption) {
-                        is BankCardPaymentOption -> "screenBankCardForm" to listOf(getUserAuthType())
-                        is LinkedCard -> "screenLinkedCardForm" to null
-                        is PaymentIdCscConfirmation -> "screenRecurringCardForm" to null
-                        else -> null to null
-                    }
+                    )
                 )
+            }
+            is Contract.Action.LoadContractFailed -> {
+                tokenizeSchemeParamProvider.invoke()?.let { tokenizeScheme ->
+                    listOf(
+                        ACTION_SCREEN_PAYMENT_CONTRACT_ERROR to listOf(
+                            getUserAuthType(),
+                            tokenizeScheme,
+                            SavePaymentMethodProvider().invoke(paymentParameters)
+                        )
+                    )
+                }
             }
             else -> listOf(null to null)
         }
 
-        nameArgsPairs.forEach { pair ->
+        nameArgsPairs?.forEach { pair ->
             pair.first?.let {
                 reporter.report(it, pair.second)
             }
         }
-
-        errorScreenReporter.takeIf { action is Contract.Action.LoadContractFailed }?.report()
 
         return businessLogic(state, action)
     }

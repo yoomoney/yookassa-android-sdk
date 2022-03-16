@@ -25,10 +25,7 @@ package ru.yoomoney.sdk.kassa.payments.extensions
 
 import android.content.Context
 import android.graphics.drawable.InsetDrawable
-import android.net.Uri
 import androidx.appcompat.content.res.AppCompatResources
-import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.ym_yoo_money_info_view.yooImage
 import ru.yoomoney.sdk.kassa.payments.R
 import ru.yoomoney.sdk.kassa.payments.metrics.TokenizeSchemeBankCard
 import ru.yoomoney.sdk.kassa.payments.metrics.TokenizeSchemeGooglePay

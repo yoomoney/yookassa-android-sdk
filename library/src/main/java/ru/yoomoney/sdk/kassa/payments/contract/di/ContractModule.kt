@@ -66,7 +66,7 @@ import ru.yoomoney.sdk.kassa.payments.contract.ContractAnalytics
 import ru.yoomoney.sdk.kassa.payments.contract.ContractBusinessLogic
 import ru.yoomoney.sdk.kassa.payments.extensions.toTokenizeScheme
 import ru.yoomoney.sdk.kassa.payments.http.HostProvider
-import ru.yoomoney.sdk.kassa.payments.metrics.UserAuthTokenTypeParamProvider
+import ru.yoomoney.sdk.kassa.payments.metrics.TokenizeSchemeParamProvider
 import ru.yoomoney.sdk.kassa.payments.model.GetConfirmation
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.ConfigUseCase
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.ShopPropertiesRepository
@@ -170,12 +170,11 @@ internal class ContractModule {
         testParameters: TestParameters,
         logoutUseCase: LogoutUseCase,
         reporter: Reporter,
-        errorScreenReporter: ErrorScreenReporter,
         userAuthTypeParamProvider: UserAuthTypeParamProvider,
         getConfirmation: GetConfirmation,
         loadedPaymentOptionListRepository: GetLoadedPaymentOptionListRepository,
         userAuthInfoRepository: TokensStorage,
-        paymentAuthTokenRepository: PaymentAuthTokenRepository,
+        tokenizeSchemeParamProvider: TokenizeSchemeParamProvider,
         shopPropertiesRepository: ShopPropertiesRepository,
         configRepository: ConfigRepository
     ): ViewModel {
@@ -191,7 +190,6 @@ internal class ContractModule {
             logic = {
                 ContractAnalytics(
                     reporter = reporter,
-                    errorScreenReporter = errorScreenReporter,
                     businessLogic = ContractBusinessLogic(
                         paymentParameters = paymentParameters,
                         showState = showState,
@@ -205,7 +203,9 @@ internal class ContractModule {
                         userAuthInfoRepository = userAuthInfoRepository,
                         configRepository = configRepository
                     ),
+                    tokenizeSchemeParamProvider = tokenizeSchemeParamProvider,
                     getUserAuthType = userAuthTypeParamProvider,
+                    paymentParameters = paymentParameters,
                     getTokenizeScheme = { paymentOption, paymentInstrument ->
                         paymentOption.toTokenizeScheme(context, sberbankPackage, paymentInstrument)
                     }

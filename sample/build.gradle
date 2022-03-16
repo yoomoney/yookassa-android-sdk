@@ -25,7 +25,7 @@ apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion target_sdk_version
-    buildToolsVersion '28.0.3'
+    buildToolsVersion '31.0.0'
     defaultConfig {
         applicationId "ru.yoo.sdk.kassa.payments.sample"
         minSdkVersion 21
@@ -75,12 +75,10 @@ android {
 
 dependencies {
     implementation project(':library')
-    implementation(fileTree(dir: "libs", include: ["profiling-tool.aar"]))
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "androidx.appcompat:appcompat:$appcompat"
     implementation "com.google.android.material:material:$material"
     implementation "androidx.recyclerview:recyclerview:$recyclerview"
     implementation "androidx.constraintlayout:constraintlayout:$constraintlayout"
-    implementation 'com.facebook.device.yearclass:yearclass:2.1.0'
     implementation 'io.card:android-sdk:5.5.1'
 }

@@ -27,6 +27,7 @@ import ru.yoomoney.sdk.kassa.payments.model.UnhandledException
 internal interface Reporter {
     fun report(name: String, args: List<Param>? = null)
     fun report(name: String, arg: String)
+    fun report(name: String, arg: Boolean)
 }
 
 internal interface ErrorReporter {

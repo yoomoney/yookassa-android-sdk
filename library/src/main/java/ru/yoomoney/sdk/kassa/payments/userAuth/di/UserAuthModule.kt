@@ -36,14 +36,12 @@ import ru.yoomoney.sdk.kassa.payments.di.ViewModelKey
 import ru.yoomoney.sdk.kassa.payments.http.HostProvider
 import ru.yoomoney.sdk.kassa.payments.metrics.Reporter
 import ru.yoomoney.sdk.kassa.payments.metrics.TokenizeSchemeParamProvider
-import ru.yoomoney.sdk.kassa.payments.metrics.UserAuthTokenTypeParamProvider
 import ru.yoomoney.sdk.kassa.payments.metrics.UserAuthTypeParamProvider
 import ru.yoomoney.sdk.kassa.payments.model.Executor
 import ru.yoomoney.sdk.kassa.payments.model.Result
 import ru.yoomoney.sdk.kassa.payments.payment.CheckPaymentAuthRequiredGateway
 import ru.yoomoney.sdk.kassa.payments.payment.CurrentUserRepository
 import ru.yoomoney.sdk.kassa.payments.payment.GetLoadedPaymentOptionListRepository
-import ru.yoomoney.sdk.kassa.payments.paymentAuth.PaymentAuthTokenRepository
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.PaymentOptionsListUseCase
 import ru.yoomoney.sdk.kassa.payments.secure.TokensStorage
 import ru.yoomoney.sdk.kassa.payments.tmx.TmxSessionIdStorage
@@ -119,14 +117,6 @@ internal class UserAuthModule {
             currentUserRepository,
             checkPaymentAuthRequiredGateway
         )
-    }
-
-    @Provides
-    @Singleton
-    fun userAuthTokenTypeParamProvider(
-        paymentAuthTokenRepository: PaymentAuthTokenRepository
-    ): UserAuthTokenTypeParamProvider {
-        return UserAuthTokenTypeParamProvider(paymentAuthTokenRepository)
     }
 
     @Provides

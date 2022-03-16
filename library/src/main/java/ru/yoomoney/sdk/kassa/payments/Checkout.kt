@@ -131,7 +131,7 @@ object Checkout {
         return WebViewActivity.create(
             context = context,
             url = url,
-            logParam = "screen3ds"
+            logParam = "openScreen3ds"
         )
     }
 
@@ -218,7 +218,7 @@ object Checkout {
             WebViewActivity.create(
                 context = context,
                 url = confirmationUrl,
-                logParam = "screen3ds"
+                logParam = "openScreen3ds"
             )
         }
     }

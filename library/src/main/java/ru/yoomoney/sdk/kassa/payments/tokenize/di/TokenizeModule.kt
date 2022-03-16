@@ -21,28 +21,27 @@
 
 package ru.yoomoney.sdk.kassa.payments.tokenize.di
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoMap
-import ru.yoomoney.sdk.kassa.payments.checkoutParameters.TestParameters
+import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
+import ru.yoomoney.sdk.kassa.payments.checkoutParameters.UiParameters
 import ru.yoomoney.sdk.kassa.payments.di.ViewModelKey
-import ru.yoomoney.sdk.kassa.payments.extensions.toTokenizeScheme
 import ru.yoomoney.sdk.kassa.payments.metrics.ErrorScreenReporter
 import ru.yoomoney.sdk.kassa.payments.metrics.Reporter
-import ru.yoomoney.sdk.kassa.payments.metrics.UserAuthTokenTypeParamProvider
+import ru.yoomoney.sdk.kassa.payments.metrics.TokenizeSchemeParamProvider
 import ru.yoomoney.sdk.kassa.payments.metrics.UserAuthTypeParamProvider
 import ru.yoomoney.sdk.kassa.payments.payment.CheckPaymentAuthRequiredGateway
 import ru.yoomoney.sdk.kassa.payments.payment.GetLoadedPaymentOptionListRepository
 import ru.yoomoney.sdk.kassa.payments.payment.tokenize.TokenizeRepository
 import ru.yoomoney.sdk.kassa.payments.paymentAuth.PaymentAuthTokenRepository
+import ru.yoomoney.sdk.kassa.payments.secure.TokensStorage
 import ru.yoomoney.sdk.kassa.payments.tokenize.Tokenize
 import ru.yoomoney.sdk.kassa.payments.tokenize.TokenizeAnalytics
 import ru.yoomoney.sdk.kassa.payments.tokenize.TokenizeBusinessLogic
 import ru.yoomoney.sdk.kassa.payments.tokenize.TokenizeUseCase
 import ru.yoomoney.sdk.kassa.payments.tokenize.TokenizeUseCaseImpl
-import ru.yoomoney.sdk.kassa.payments.utils.getSberbankPackage
 import ru.yoomoney.sdk.march.Out
 import ru.yoomoney.sdk.march.RuntimeViewModel
 import ru.yoomoney.sdk.march.input
@@ -67,15 +66,15 @@ internal class TokenizeModule {
 
     @[Provides IntoMap ViewModelKey(TOKENIZE)]
     fun viewModel(
-        context: Context,
-        testParameters: TestParameters,
         tokenizeUseCase: TokenizeUseCase,
         reporter: Reporter,
         errorScreenReporter: ErrorScreenReporter,
-        userAuthTokenTypeParamProvider: UserAuthTokenTypeParamProvider,
-        userAuthTypeParamProvider: UserAuthTypeParamProvider
+        paymentParameters: PaymentParameters,
+        uiParameters: UiParameters,
+        tokensStorage: TokensStorage,
+        userAuthTypeParamProvider: UserAuthTypeParamProvider,
+        tokenizeSchemeParamProvider: TokenizeSchemeParamProvider
     ): ViewModel {
-        val sberbankPackage = getSberbankPackage(testParameters.hostParameters.isDevHost)
         return RuntimeViewModel<Tokenize.State, Tokenize.Action, Tokenize.Effect>(
             featureName = "Tokenize",
             initial = {
@@ -93,11 +92,11 @@ internal class TokenizeModule {
                         source = source,
                         tokenizeUseCase = tokenizeUseCase
                     ),
-                    getUserAuthTokenType = userAuthTokenTypeParamProvider,
                     getUserAuthType = userAuthTypeParamProvider,
-                    getTokenizeScheme = { paymentOption, paymentInstrument ->
-                        paymentOption.toTokenizeScheme(context, sberbankPackage, paymentInstrument)
-                    }
+                    userAuthInfoRepository = tokensStorage,
+                    getTokenizeScheme = tokenizeSchemeParamProvider,
+                    paymentParameters = paymentParameters,
+                    uiParameters = uiParameters
                 )
             }
         )

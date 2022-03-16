@@ -20,8 +20,11 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="ru.yoomoney.sdk.kassa.payments">
-    <application>
+    <application
+        android:networkSecurityConfig="@xml/ym_network_security_config"
+        tools:targetApi="n">
         <activity
             android:name="ru.yoomoney.sdk.kassa.payments.utils.WebViewActivity"
             android:exported="false" />

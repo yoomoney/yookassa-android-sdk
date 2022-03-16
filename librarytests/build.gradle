@@ -1,0 +1,128 @@
+/*
+ * The MIT License (MIT)
+ * Copyright © 2022 NBCO YooMoney LLC
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the “Software”), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+ * of the Software, and to permit persons to whom the Software is furnished to do so, subject to the
+ * following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ * PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+ * OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android-extensions'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+
+apply from: file('espresso.gradle.kts')
+
+android {
+    compileSdkVersion target_sdk_version
+    buildToolsVersion "31.0.0"
+
+    resourcePrefix 'ym_'
+
+    defaultConfig {
+        minSdkVersion 21
+        versionCode project.ext.versionCode
+        versionName project.ext.versionName
+
+        multiDexEnabled true
+        targetSdkVersion rootProject.ext.target_sdk_version
+
+        missingDimensionStrategy 'metrica', 'metricaTest'
+
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+
+        buildConfigField "String", "THREAT_METRIX_ORIG_ID", "${optionalProperty('threatMetrixOrigId')}"
+        buildConfigField "String", "THREAT_METRIX_FP_SERVER", "${optionalProperty('threatMetrixFPServer')}"
+        buildConfigField "String", "THREAT_METRIX_CERTIFICATE_HASHES", "${optionalProperty('threatMetrixCertificateHashes')}"
+        buildConfigField "String", "APP_METRICA_KEY", "${optionalProperty('metricaKey')}"
+
+        buildConfigField "Integer", "VERSION_CODE", "${project.ext.versionCode}"
+        buildConfigField "String", "VERSION_NAME", "\"${project.ext.versionName}\""
+
+        vectorDrawables.useSupportLibrary = true
+
+        resValue "string", "ym_app_scheme", ""
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
+    useLibrary 'org.apache.http.legacy'
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    sourceSets {
+        main {
+            setRoot '../library/src'
+            java.srcDirs = ['../library/src/main/java']
+            manifest.srcFile '../library/src/main/AndroidManifest.xml'
+            resources.srcDirs = ['../library/src/main/resources']
+            res.srcDirs = ['../library/src/main/res', '../library/src/main/generated/res']
+            assets.srcDirs = ['../library/src/main/assets']
+        }
+        androidTest {
+            setRoot '../library/src'
+            java.srcDirs = ['../library/src/androidTest/java']
+            manifest.srcFile '../library/src/androidTest/AndroidManifest.xml'
+            resources.srcDirs = ['../library/src/androidTest/resources']
+            res.srcDirs = ['../library/src/androidTest/res']
+            assets.srcDirs = ['../library/src/androidTest/assets']
+        }
+        test {
+            setRoot '../library/src'
+            java.srcDirs = ['../library/src/test/java']
+            manifest.srcFile '../library/src/test/AndroidManifest.xml'
+            resources.srcDirs = ['../library/src/test/resources']
+            res.srcDirs = ['../library/src/test/res', '../library/src/test/res/xml']
+            assets.srcDirs = ['../library/src/test/assets']
+        }
+    }
+}
+
+repositories {
+    maven {
+        url 'https://nexus.yamoney.ru/repository/mobile-releases/'
+        content {
+            includeGroup "ru.yoomoney.sdk.tmx"
+        }
+    }
+}
+
+apply from: '../library/buildDependencies.gradle'
+apply from: '../library/buildTestDependencies.gradle'
+apply from: '../library/buildAndroidTestDependencies.gradle'
+
+dependencies {
+    implementation "ru.yoomoney.sdk.tmx:tmx-profiling:6.2.97"
+}

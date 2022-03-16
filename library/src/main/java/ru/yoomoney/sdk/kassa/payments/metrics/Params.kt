@@ -96,18 +96,6 @@ internal class AuthTypePaymentAuth : AuthType() {
     override val value = "paymentAuth"
 }
 
-internal sealed class AuthTokenType : Param() {
-    final override val name = "authTokenType"
-}
-
-internal class AuthTokenTypeSingle : AuthTokenType() {
-    override val value = "single"
-}
-
-internal class AuthTokenTypeMultiple : AuthTokenType() {
-    override val value = "multiple"
-}
-
 internal sealed class MoneyAuthLoginStatus : Param() {
     final override val name = "moneyAuthLoginStatus"
 }
@@ -178,4 +166,64 @@ internal sealed class SberPayConfirmationStatus : Param() {
 
 internal class SberPayConfirmationStatusSuccess : SberPayConfirmationStatus() {
     override val value = "Success"
+}
+
+internal sealed class SavePaymentMethodParam: Param() {
+    final override val name = "savePaymentMethod"
+}
+
+internal class SavePaymentMethodOn : SavePaymentMethodParam() {
+    override val value = "on"
+}
+
+internal class SavePaymentMethodOff : SavePaymentMethodParam() {
+    override val value = "off"
+}
+
+internal class SavePaymentMethodUserSelect : SavePaymentMethodParam() {
+    override val value = "userSelect"
+}
+
+internal sealed class UserAttiributionOnInit: Param() {
+    final override val name = "userAttiributionOnInit"
+}
+
+internal class AllAttributesOnInit : UserAttiributionOnInit() {
+    override val value = "YooMoney, CustomerId"
+}
+
+internal class CustomerIdOnInit : UserAttiributionOnInit() {
+    override val value = "CustomerId"
+}
+
+internal class YooMoneyOnInit : UserAttiributionOnInit() {
+    override val value = "YooMoney"
+}
+
+internal class NoneOnInit : UserAttiributionOnInit() {
+    override val value = "None"
+}
+
+internal sealed class CustomColor: Param() {
+    final override val name = "customColor"
+}
+
+internal class UsedCustomColor : CustomColor() {
+    override val value = "Custom"
+}
+
+internal class UsedDefaultColor : CustomColor() {
+    override val value = "Default"
+}
+
+internal sealed class YookassaIcon: Param() {
+    final override val name = "yookassaIcon"
+}
+
+internal class ShownYookassaIcon : YookassaIcon() {
+    override val value = "Shown"
+}
+
+internal class HiddenYookassaIcon : YookassaIcon() {
+    override val value = "Hidden"
 }

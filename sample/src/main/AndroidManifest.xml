@@ -35,12 +35,22 @@
         <activity
             android:name="ru.yoo.sdk.kassa.payments.sample.MainActivity"
             android:windowSoftInputMode="stateHidden|adjustPan"
-            android:exported="false">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <activity
+            tools:replace="exported"
+            android:name="io.card.payment.CardIOActivity"
+            android:exported="false"/>
+
+        <activity
+            tools:replace="exported"
+            android:name="io.card.payment.DataEntryActivity"
+            android:exported="false"/>
 
     </application>
 

@@ -27,11 +27,20 @@ import ru.yoomoney.sdk.kassa.payments.metrics.Reporter
 
 internal class ReporterLogger(private val reporter: Reporter) : Reporter {
     override fun report(name: String, args: List<Param>?) {
-        Log.d("ANALYTICS_EVENT", "$name ${args?.joinToString(",")}")
+        if (args == null) {
+            Log.d("ANALYTICS_EVENT", name)
+        } else {
+            Log.d("ANALYTICS_EVENT", "$name ${args.joinToString(",")}")
+        }
         reporter.report(name, args)
     }
 
     override fun report(name: String, arg: String) {
+        Log.d("ANALYTICS_EVENT", "$name - $arg")
+        reporter.report(name, arg)
+    }
+
+    override fun report(name: String, arg: Boolean) {
         Log.d("ANALYTICS_EVENT", "$name - $arg")
         reporter.report(name, arg)
     }

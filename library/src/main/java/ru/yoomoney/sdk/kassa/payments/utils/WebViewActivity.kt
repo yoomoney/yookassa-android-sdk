@@ -44,6 +44,8 @@ import ru.yoomoney.sdk.kassa.payments.extensions.visible
 import ru.yoomoney.sdk.kassa.payments.logging.ReporterLogger
 import ru.yoomoney.sdk.kassa.payments.metrics.YandexMetricaReporter
 
+private const val ACTION_CLOSE_3DS_SCREEN = "close3dsScreen"
+
 const val EXTRA_URL = "ru.yoomoney.sdk.kassa.payments.extra.URL"
 const val EXTRA_LOG_PARAM = "ru.yoomoney.sdk.kassa.payments.extra.LOG_PARAM"
 
@@ -51,6 +53,7 @@ class WebViewActivity : AppCompatActivity(),
     WebViewFragment.Listener {
 
     private lateinit var webViewFragment: WebViewFragment
+    private lateinit var reporterLogger: ReporterLogger
 
     private var progress: ContentLoadingProgressBar? = null
     private var showProgress: Boolean = false
@@ -58,15 +61,16 @@ class WebViewActivity : AppCompatActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        reporterLogger = ReporterLogger(YandexMetricaReporter(
+            YandexMetrica.getReporter(applicationContext, BuildConfig.APP_METRICA_KEY)
+        ))
 
         val url = requireNotNull(intent.getStringExtra(EXTRA_URL))
         val logParam = intent.getStringExtra(EXTRA_LOG_PARAM)
 
         if (checkUrl(url)) {
             if (savedInstanceState == null && logParam != null) {
-                ReporterLogger(YandexMetricaReporter(
-                    YandexMetrica.getReporter(applicationContext, BuildConfig.APP_METRICA_KEY)
-                )).report(logParam)
+                reporterLogger.report(logParam)
             }
 
             setContentView(R.layout.ym_activity_web_view)
@@ -77,7 +81,7 @@ class WebViewActivity : AppCompatActivity(),
                 load(url, DEFAULT_REDIRECT_URL)
             }
         } else {
-            onError(Checkout.ERROR_NOT_HTTPS_URL, "Not https:// url", url.toString())
+            onError(Checkout.ERROR_NOT_HTTPS_URL, "Not https:// url", url)
         }
     }
 
@@ -95,6 +99,7 @@ class WebViewActivity : AppCompatActivity(),
     override fun onContentChanged() {
         toolbar = findViewById<Toolbar>(R.id.toolbar)?.also { toolbar ->
             toolbar.setNavigationOnClickListener {
+                reporterLogger.report(ACTION_CLOSE_3DS_SCREEN, false)
                 setResult(Activity.RESULT_CANCELED)
                 finish()
             }
@@ -135,6 +140,7 @@ class WebViewActivity : AppCompatActivity(),
 
     override fun onBackPressed() {
         if (!(this::webViewFragment.isInitialized && webViewFragment.onBackPressed())) {
+            reporterLogger.report(ACTION_CLOSE_3DS_SCREEN, false)
             super.onBackPressed()
         }
     }
@@ -156,6 +162,7 @@ class WebViewActivity : AppCompatActivity(),
     }
 
     override fun onError(errorCode: Int, description: String?, failingUrl: String?) {
+        reporterLogger.report(ACTION_CLOSE_3DS_SCREEN, false)
         setResult(
             RESULT_ERROR,
             Intent()
@@ -168,6 +175,7 @@ class WebViewActivity : AppCompatActivity(),
     }
 
     override fun onSuccess() {
+        reporterLogger.report(ACTION_CLOSE_3DS_SCREEN, true)
         setResult(RESULT_OK, Intent().putExtras(intent))
         finish()
     }

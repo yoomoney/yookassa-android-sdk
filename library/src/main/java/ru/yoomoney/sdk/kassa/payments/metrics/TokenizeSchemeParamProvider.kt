@@ -21,7 +21,7 @@
 
 package ru.yoomoney.sdk.kassa.payments.metrics
 
-internal class TokenizeSchemeParamProvider : () -> TokenizeScheme? {
+internal open class TokenizeSchemeParamProvider : () -> TokenizeScheme? {
     var tokenizeScheme: TokenizeScheme? = null
 
     override operator fun invoke() = tokenizeScheme

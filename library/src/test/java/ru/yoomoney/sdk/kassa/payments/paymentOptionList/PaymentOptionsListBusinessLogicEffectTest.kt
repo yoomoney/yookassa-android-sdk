@@ -32,12 +32,14 @@ import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.SavePaymentMethod
 import ru.yoomoney.sdk.kassa.payments.extensions.RUB
 import ru.yoomoney.sdk.kassa.payments.logoUrl
+import ru.yoomoney.sdk.kassa.payments.metrics.TokenizeScheme
 import ru.yoomoney.sdk.kassa.payments.model.BankCardPaymentOption
 import ru.yoomoney.sdk.kassa.payments.model.CardBrand
 import ru.yoomoney.sdk.kassa.payments.model.Fee
 import ru.yoomoney.sdk.kassa.payments.model.GetConfirmation
 import ru.yoomoney.sdk.kassa.payments.model.NoConfirmation
 import ru.yoomoney.sdk.kassa.payments.model.PaymentInstrumentBankCard
+import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
 import ru.yoomoney.sdk.kassa.payments.model.ShopProperties
 import ru.yoomoney.sdk.kassa.payments.payment.tokenize.TokenizeInstrumentInputModel
 import ru.yoomoney.sdk.march.Effect
@@ -51,6 +53,7 @@ internal class PaymentOptionsListBusinessLogicEffectTest {
     private val useCase: PaymentOptionsListUseCase = mock()
     private val shopPropertiesRepository: ShopPropertiesRepository = mock()
     private val contentState = PaymentOptionList.State.Content(logoUrl, PaymentOptionListSuccessOutputModel(listOf()))
+    private val getTokenizeScheme: (PaymentOption, PaymentInstrumentBankCard?) -> TokenizeScheme = mock()
 
     private val logic =
         PaymentOptionsListBusinessLogic(
@@ -72,7 +75,9 @@ internal class PaymentOptionsListBusinessLogicEffectTest {
             unbindCardUseCase = mock(),
             paymentMethodId = null,
             configRepository = mock(),
-            shopPropertiesRepository = mock()
+            shopPropertiesRepository = mock(),
+            tokenizeSchemeProvider = mock(),
+            getTokenizeScheme = getTokenizeScheme
         )
 
     @Test
@@ -301,7 +306,9 @@ internal class PaymentOptionsListBusinessLogicEffectTest {
         unbindCardUseCase = mock(),
         shopPropertiesRepository = shopPropertiesRepository,
         configRepository = mock(),
-        paymentMethodId = "paymentMethodId"
+        paymentMethodId = "paymentMethodId",
+        tokenizeSchemeProvider = mock(),
+        getTokenizeScheme = getTokenizeScheme
     )
 
     private fun cratePaymentParameters(

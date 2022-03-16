@@ -29,9 +29,17 @@ import ru.yoomoney.sdk.kassa.payments.BuildConfig
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.SavedBankCardPaymentParameters
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentMethodType
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
+import ru.yoomoney.sdk.kassa.payments.checkoutParameters.UiParameters
 import ru.yoomoney.sdk.kassa.payments.di.CheckoutInjector
 import ru.yoomoney.sdk.kassa.payments.errorFormatter.ErrorFormatter
+import ru.yoomoney.sdk.kassa.payments.metrics.ColorMetricsProvider
+import ru.yoomoney.sdk.kassa.payments.metrics.Reporter
+import ru.yoomoney.sdk.kassa.payments.metrics.SavePaymentMethodProvider
+import ru.yoomoney.sdk.kassa.payments.metrics.UserAttiributionOnInitProvider
+import ru.yoomoney.sdk.kassa.payments.metrics.UserAuthTypeParamProvider
 import ru.yoomoney.sdk.kassa.payments.metrics.YandexMetricaExceptionReporter
+import ru.yoomoney.sdk.kassa.payments.metrics.YooKassaIconProvider
+import ru.yoomoney.sdk.kassa.payments.secure.TokensStorage
 import javax.inject.Inject
 
 internal const val EXTRA_CREATED_WITH_CHECKOUT_METHOD = "ru.yoomoney.sdk.kassa.payments.extra.CREATED_WITH_CHECKOUT_METHOD"
@@ -44,16 +52,28 @@ internal const val EXTRA_PAYMENT_TOKEN = "ru.yoomoney.sdk.kassa.payments.extra.P
 
 private val TAG_BOTTOM_SHEET = MainDialogFragment::class.java.name
 
+private const val ACTION_SDK_INITIALIZED = "actionSDKInitialised"
+
 internal class CheckoutActivity : AppCompatActivity() {
 
     @Inject
     lateinit var errorFormatter: ErrorFormatter
 
+    @Inject
+    lateinit var reporter: Reporter
+
+    @Inject
+    lateinit var userAuthParamProvider: UserAuthTypeParamProvider
+
+    @Inject
+    lateinit var tokensStorage: TokensStorage
+
     private val paymentParameters: PaymentParameters by lazy {
         if (intent.hasExtra(EXTRA_PAYMENT_PARAMETERS)) {
             requireNotNull(intent.getParcelableExtra(EXTRA_PAYMENT_PARAMETERS))
         } else {
-            val cscParameter = requireNotNull(intent.getParcelableExtra<SavedBankCardPaymentParameters>(EXTRA_CSC_PARAMETERS))
+            val cscParameter =
+                requireNotNull(intent.getParcelableExtra<SavedBankCardPaymentParameters>(EXTRA_CSC_PARAMETERS))
             PaymentParameters(
                 amount = cscParameter.amount,
                 title = cscParameter.title,
@@ -75,15 +95,17 @@ internal class CheckoutActivity : AppCompatActivity() {
         } else {
             null
         }
+        val uiParameters: UiParameters = requireNotNull(intent.getParcelableExtra(EXTRA_UI_PARAMETERS))
         CheckoutInjector.setupComponent(
             this,
             paymentParameters,
             requireNotNull(intent.getParcelableExtra(EXTRA_TEST_PARAMETERS)),
-            requireNotNull(intent.getParcelableExtra(EXTRA_UI_PARAMETERS)),
+            uiParameters,
             paymentMethodId,
             YandexMetricaExceptionReporter(YandexMetrica.getReporter(applicationContext, BuildConfig.APP_METRICA_KEY))
         )
         CheckoutInjector.injectCheckoutActivity(this)
+        sendInitializeAction(paymentParameters, uiParameters)
         super.onCreate(savedInstanceState)
 
         showDialog(supportFragmentManager)
@@ -115,5 +137,18 @@ internal class CheckoutActivity : AppCompatActivity() {
                 "Intent for CheckoutActivity should be created only with Checkout.createTokenizeIntent()."
             )
         }
+    }
+
+    private fun sendInitializeAction(paymentParameters: PaymentParameters, uiParameters: UiParameters) {
+        reporter.report(
+            ACTION_SDK_INITIALIZED,
+            listOf(
+                userAuthParamProvider.invoke(),
+                SavePaymentMethodProvider().invoke(paymentParameters),
+                YooKassaIconProvider().invoke(uiParameters),
+                ColorMetricsProvider().invoke(uiParameters),
+                UserAttiributionOnInitProvider(tokensStorage).invoke(paymentParameters)
+            )
+        )
     }
 }

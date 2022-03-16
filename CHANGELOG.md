@@ -5,6 +5,11 @@
 ### NEXT_VERSION_DESCRIPTION_BEGIN
 ### NEXT_VERSION_DESCRIPTION_END
 
+## [6.5.0] (16-03-2022)
+
+- Hide ThreatMetrix into mSdk
+- Update documentation
+
 ## [6.4.5] (06-12-2021)
 
 - Add confirmation in tokenize

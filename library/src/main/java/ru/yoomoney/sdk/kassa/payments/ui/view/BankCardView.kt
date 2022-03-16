@@ -86,6 +86,8 @@ internal const val EXTRA_CARD_NUMBER = "cardNumber"
 internal const val EXTRA_EXPIRY_MONTH = "expiryMonth"
 internal const val EXTRA_EXPIRY_YEAR = "expiryYear"
 
+internal const val MIN_EXPIRY_DATE = "01/22"
+
 internal class BankCardView
 @JvmOverloads constructor(
     context: Context,
@@ -511,7 +513,7 @@ internal class BankCardView
 
     private fun isExpiryCorrect(): Boolean {
         return expiryEditText.length() == MIN_LENGTH_EXPIRY && try {
-            expiryFormat.parse(expiryEditText.text.toString()) > minExpiry.time
+            expiryFormat.parse(expiryEditText.text.toString()) >= expiryFormat.parse(MIN_EXPIRY_DATE)
         } catch (e: ParseException) {
             false
         }

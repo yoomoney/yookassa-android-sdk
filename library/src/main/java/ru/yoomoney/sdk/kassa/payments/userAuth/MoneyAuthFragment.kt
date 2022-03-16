@@ -182,10 +182,7 @@ internal class MoneyAuthFragment : Fragment() {
             supportEmail = getString(R.string.ym_support_email),
             supportHelpUrl = getString(R.string.ym_support_help_url),
             supportPhone = getString(R.string.ym_support_phone),
-            migrationBannerVisible = true,
-            migrationBannerText = getString(R.string.ym_migration_banner_text),
-            migrationBannerButtonText = getString(R.string.ym_migration_banner_button_text),
-            migrationBannerImageUrl = "https://static.yoomoney.ru/files-front/mobile/img/android_migration_banner_logo.png",
+            migrationBannerVisible = false,
             applicationUserAgent = UserAgent.getUserAgent(requireContext()),
             remoteConfig = RemoteConfig(
                 restorePasswordEnabled = false,

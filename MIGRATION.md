@@ -1,6 +1,9 @@
 # Migration guide
 
 ### Table of Contents
+[6.4.5 -> 6.5.0](##6---6)
+- Удалить библиотеку ThreatMetrix-Android-SDK-.aar, теперь она встроена в само SDK.
+
 [6.0.0 -> 6.0.2](##6---6)
 - Убрать зависимость `implementation ("ru.yoomoney.sdk.auth:auth:$yoo_sdk_auth_version")` - теперь она подтягивается автоматически
 
@@ -74,7 +77,8 @@ dependencies {
 }
 ```
 
-### **Подключить `ThreatMetrix Android SDK 6.2-97
+### **Подключить `ThreatMetrix Android SDK 6.2-97.aar`**
+
 > Если вы не использовали платежный метод “ЮMoney”, и не подключали sdk авторизации, то этот блок можно пропустить.
 
 Попросите у менеджера по подключению библиотеку `ThreatMetrix Android SDK 6.2-97.aar`. Создайте папку libs в модуле где подключаете sdk и добавьте туда файл `ThreatMetrix Android SDK 6.2-97.aar`. В build.gradle того же модуля в dependencies добавьте:

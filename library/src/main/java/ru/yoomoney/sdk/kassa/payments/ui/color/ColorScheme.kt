@@ -36,25 +36,30 @@ import kotlinx.android.parcel.Parcelize
  * Caution: using red color will clash with error color on edit texts.
  */
 @[Parcelize Keep SuppressLint("ParcelCreator")]
-data class ColorScheme
+open class ColorScheme
 @Keep constructor(
     @[Keep ColorInt] val primaryColor: Int
 ) : Parcelable {
 
     @Keep
     companion object {
+
+        /**
+         * Current default color, used by mSDK
+         */
+        val defaultPrimaryColor = Color.rgb(0, 168, 132)
+
+        /**
+         * Legacy color, used by previous versions of mSDK
+         */
+        private val legacyPrimaryColor = Color.rgb(255, 219, 77)
+
         /**
          * Current default color scheme, used by mSDK
          */
         @[JvmStatic Keep]
         fun getDefaultScheme(): ColorScheme {
-            return ColorScheme(
-                primaryColor = Color.rgb(
-                    0,
-                    168,
-                    132
-                )
-            )
+            return ColorScheme(primaryColor = defaultPrimaryColor)
         }
 
         /**
@@ -62,13 +67,7 @@ data class ColorScheme
          */
         @[JvmStatic Keep]
         fun getLegacyScheme(): ColorScheme {
-            return ColorScheme(
-                primaryColor = Color.rgb(
-                    255,
-                    219,
-                    77
-                )
-            )
+            return ColorScheme(primaryColor = legacyPrimaryColor)
         }
     }
 }

@@ -1,0 +1,15 @@
+<network-security-config xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="ResourceName">
+    <debug-overrides>
+        <trust-anchors>
+            <!-- Trust user added CAs while debuggable only -->
+            <certificates src="user"/>
+        </trust-anchors>
+    </debug-overrides>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">jenkins-ot.test.yamoney.ru</domain>
+        <domain includeSubdomains="true">iva-test-cms1.yamoney.ru</domain>
+        <domain includeSubdomains="true">stubohub.appb2b1.cloud.yooteam.ru</domain>
+        <domain includeSubdomains="true">payment-api-v3.appb2b1.cloud.yooteam.ru</domain>
+    </domain-config>
+</network-security-config>

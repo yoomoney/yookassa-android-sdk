@@ -47,6 +47,10 @@ internal class YandexMetricaReporter(
     override fun report(name: String, arg: String) {
         metrica.reportEvent(name, mapOf(arg to "") + mapOf("msdkVersion" to BuildConfig.VERSION_NAME))
     }
+
+    override fun report(name: String, arg: Boolean) {
+        metrica.reportEvent(name, mapOf(arg.toString() to "") + mapOf("msdkVersion" to BuildConfig.VERSION_NAME))
+    }
 }
 
 internal class YandexMetricaErrorReporter(

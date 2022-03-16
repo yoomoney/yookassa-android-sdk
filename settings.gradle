@@ -20,3 +20,4 @@
  */
 
 include ':demo', ':library', 'sample'
+include ':librarytests'

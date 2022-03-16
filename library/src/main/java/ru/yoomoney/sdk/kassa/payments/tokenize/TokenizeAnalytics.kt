@@ -21,36 +21,58 @@
 
 package ru.yoomoney.sdk.kassa.payments.tokenize
 
-import ru.yoomoney.sdk.kassa.payments.metrics.AuthTokenType
+import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
+import ru.yoomoney.sdk.kassa.payments.checkoutParameters.UiParameters
 import ru.yoomoney.sdk.kassa.payments.metrics.AuthType
+import ru.yoomoney.sdk.kassa.payments.metrics.ColorMetricsProvider
 import ru.yoomoney.sdk.kassa.payments.metrics.ErrorScreenReporter
 import ru.yoomoney.sdk.kassa.payments.metrics.Reporter
+import ru.yoomoney.sdk.kassa.payments.metrics.SavePaymentMethodProvider
 import ru.yoomoney.sdk.kassa.payments.metrics.TokenizeScheme
+import ru.yoomoney.sdk.kassa.payments.metrics.UserAttiributionOnInitProvider
+import ru.yoomoney.sdk.kassa.payments.metrics.YooKassaIconProvider
 import ru.yoomoney.sdk.kassa.payments.model.PaymentInstrumentBankCard
 import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
 import ru.yoomoney.sdk.kassa.payments.payment.tokenize.TokenizeOutputModel
+import ru.yoomoney.sdk.kassa.payments.userAuth.UserAuthInfoRepository
 import ru.yoomoney.sdk.march.Logic
 import ru.yoomoney.sdk.march.Out
+
+private const val ACTION_TRY_TOKENIZE = "actionTryTokenize"
+private const val ACTION_TOKENIZE = "actionTokenize"
 
 internal class TokenizeAnalytics(
     private val reporter: Reporter,
     private val errorScreenReporter: ErrorScreenReporter,
     private val businessLogic: Logic<Tokenize.State, Tokenize.Action>,
     private val getUserAuthType: () -> AuthType,
-    private val getUserAuthTokenType: () -> AuthTokenType,
-    private val getTokenizeScheme: (PaymentOption, PaymentInstrumentBankCard?) -> TokenizeScheme
+    private val userAuthInfoRepository: UserAuthInfoRepository,
+    private val getTokenizeScheme: () -> TokenizeScheme?,
+    private val paymentParameters: PaymentParameters,
+    private val uiParameters: UiParameters
 ) : Logic<Tokenize.State, Tokenize.Action> {
 
     override fun invoke(state: Tokenize.State, action: Tokenize.Action): Out<Tokenize.State, Tokenize.Action> {
         val nameArgsPairs = when (action) {
-            is Tokenize.Action.TokenizeSuccess -> {
-                if (action.content is TokenizeOutputModel) {
+            is Tokenize.Action.Tokenize -> {
+                getTokenizeScheme()?.let { tokenizeScheme ->
                     listOf(
-                        "actionTokenize" to listOf(
-                            getTokenizeScheme(action.content.option, action.content.instrumentBankCard),
+                        ACTION_TRY_TOKENIZE to listOf(
                             getUserAuthType(),
-                            getUserAuthTokenType()
+                            tokenizeScheme,
+                            SavePaymentMethodProvider().invoke(paymentParameters),
+                            YooKassaIconProvider().invoke(uiParameters),
+                            ColorMetricsProvider().invoke(uiParameters),
+                            UserAttiributionOnInitProvider(userAuthInfoRepository).invoke(paymentParameters)
                         )
+                    )
+                } ?: listOf(null to null)
+            }
+            is Tokenize.Action.TokenizeSuccess -> {
+                val tokenizeScheme = getTokenizeScheme()
+                if (action.content is TokenizeOutputModel && tokenizeScheme != null) {
+                    listOf(
+                        ACTION_TOKENIZE to listOf(tokenizeScheme, getUserAuthType())
                     )
                 } else {
                     listOf(null to null)

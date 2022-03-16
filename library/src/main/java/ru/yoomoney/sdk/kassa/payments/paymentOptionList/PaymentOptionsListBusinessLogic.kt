@@ -24,25 +24,25 @@ package ru.yoomoney.sdk.kassa.payments.paymentOptionList
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.SavePaymentMethod
 import ru.yoomoney.sdk.kassa.payments.config.ConfigRepository
-import ru.yoomoney.sdk.kassa.payments.contract.Contract
 import ru.yoomoney.sdk.kassa.payments.logout.LogoutUseCase
+import ru.yoomoney.sdk.kassa.payments.metrics.TokenizeScheme
+import ru.yoomoney.sdk.kassa.payments.metrics.TokenizeSchemeParamProvider
 import ru.yoomoney.sdk.kassa.payments.model.AbstractWallet
 import ru.yoomoney.sdk.kassa.payments.model.BankCardPaymentOption
-import ru.yoomoney.sdk.kassa.payments.model.Config
 import ru.yoomoney.sdk.kassa.payments.model.GetConfirmation
 import ru.yoomoney.sdk.kassa.payments.model.LinkedCard
+import ru.yoomoney.sdk.kassa.payments.model.PaymentInstrumentBankCard
+import ru.yoomoney.sdk.kassa.payments.model.PaymentOption
 import ru.yoomoney.sdk.kassa.payments.model.isSplitPayment
 import ru.yoomoney.sdk.kassa.payments.payment.tokenize.TokenizeInstrumentInputModel
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.PaymentOptionList.Action
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.PaymentOptionList.Effect
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.PaymentOptionList.State
 import ru.yoomoney.sdk.kassa.payments.paymentOptionList.unbind.UnbindCardUseCase
-import ru.yoomoney.sdk.kassa.payments.unbind.UnbindCard
 import ru.yoomoney.sdk.march.Logic
 import ru.yoomoney.sdk.march.Out
 import ru.yoomoney.sdk.march.input
 import ru.yoomoney.sdk.march.output
-import javax.inject.Inject
 
 internal class PaymentOptionsListBusinessLogic(
     private val showState: suspend (State) -> Action,
@@ -55,10 +55,11 @@ internal class PaymentOptionsListBusinessLogic(
     private val unbindCardUseCase: UnbindCardUseCase,
     private val getConfirmation: GetConfirmation,
     private val shopPropertiesRepository: ShopPropertiesRepository,
-    private val configRepository: ConfigRepository
+    private val configRepository: ConfigRepository,
+    private val getTokenizeScheme: (PaymentOption, PaymentInstrumentBankCard?) -> TokenizeScheme,
+    private val tokenizeSchemeProvider: TokenizeSchemeParamProvider
 ) : Logic<State, Action> {
 
-    private val currentConfig: Config get() = configRepository.getConfig()
     private val currentLogoUrl: String get() = configRepository.getConfig().yooMoneyLogoUrlLight
 
     override fun invoke(state: State, action: Action): Out<State, Action> = when (state) {
@@ -101,7 +102,17 @@ internal class PaymentOptionsListBusinessLogic(
                 }
             }
             is Action.ProceedWithPaymentMethod -> {
-                when (val option = useCase.selectPaymentOption(action.optionId, action.instrumentId)) {
+                val option = useCase.selectPaymentOption(action.optionId, action.instrumentId)
+                option?.let { paymentOption ->
+                    val instrumentBankCard = if (option is BankCardPaymentOption) {
+                        option.paymentInstruments.firstOrNull { it.paymentInstrumentId == action.instrumentId }
+                    } else {
+                        null
+                    }
+                    tokenizeSchemeProvider.tokenizeScheme = getTokenizeScheme(paymentOption, instrumentBankCard)
+                }
+
+                when (option) {
                     is AbstractWallet -> {
                         Out(State.WaitingForAuthState(currentLogoUrl, this)) {
                             output { showEffect(Effect.RequireAuth) }

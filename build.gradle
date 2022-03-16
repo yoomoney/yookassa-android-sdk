@@ -28,7 +28,7 @@ allprojects {
 applyFromFileIfExists('buildInternal.gradle')
 
 buildscript {
-    ext.kotlin_version = '1.4.32'
+    ext.kotlin_version = '1.5.21'
     ext.dokka_version = '0.9.17'
     ext.okhttp_version = '4.3.1'
     ext.mockito_version = '2.19.0'
@@ -42,16 +42,16 @@ buildscript {
     ext.material = '1.2.1'
     ext.recyclerview = '1.1.0'
     ext.constraintlayout = '2.0.1'
-    ext.espresso_core = '3.3.0'
-    ext.espresso_intents = '3.3.0'
-    ext.espresso_web = '3.3.0'
+    ext.espresso_core = '3.4.0'
+    ext.espresso_intents = '3.4.0'
+    ext.espresso_web = '3.4.0'
     ext.androidx_junit = '1.1.2'
 
-    ext.target_sdk_version = 30
+    ext.target_sdk_version = 31
 
     repositories {
         google()
-        jcenter()
+        mavenCentral()
         maven { url "https://jitpack.io" }
         def file = file("buildscriptDependencies.gradle")
         if (file.exists()) {
@@ -60,7 +60,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.2'
+        classpath "com.android.tools.build:gradle:7.0.3"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:$dokka_version"
         classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6'
@@ -72,9 +72,8 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
         mavenCentral()
-        maven { url "http://pay.cards/maven" }
+        maven { url "https://pay.cards/maven" }
         maven { url "https://jitpack.io" }
     }
 }

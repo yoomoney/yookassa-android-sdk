@@ -22,7 +22,6 @@
 package ru.yoomoney.sdk.kassa.payments.di
 
 import android.content.Context
-import android.content.SharedPreferences
 import dagger.Module
 import dagger.Provides
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentParameters
@@ -32,14 +31,9 @@ import ru.yoomoney.sdk.kassa.payments.extensions.CheckoutOkHttpClient
 import ru.yoomoney.sdk.kassa.payments.http.HostProvider
 import ru.yoomoney.sdk.kassa.payments.metrics.ErrorReporter
 import ru.yoomoney.sdk.kassa.payments.secure.TokensStorage
-import ru.yoomoney.sdk.kassa.payments.payment.SharedPreferencesCurrentUserRepository
 import ru.yoomoney.sdk.kassa.payments.paymentMethodInfo.ApiV3PaymentMethodInfoGateway
 import ru.yoomoney.sdk.kassa.payments.paymentMethodInfo.MockPaymentInfoGateway
 import ru.yoomoney.sdk.kassa.payments.payment.googlePay.GooglePayRepositoryImpl
-import ru.yoomoney.sdk.kassa.payments.payment.googlePay.MockGooglePayRepository
-import ru.yoomoney.sdk.kassa.payments.model.AuthorizedUser
-import ru.yoomoney.sdk.kassa.payments.model.CurrentUser
-import ru.yoomoney.sdk.kassa.payments.payment.CurrentUserRepository
 import ru.yoomoney.sdk.kassa.payments.payment.GetLoadedPaymentOptionListRepository
 import ru.yoomoney.sdk.kassa.payments.payment.googlePay.GooglePayRepository
 import ru.yoomoney.sdk.kassa.payments.payment.loadPaymentInfo.PaymentMethodInfoGateway
@@ -78,18 +72,14 @@ internal class PaymentModule {
         errorReporter: ErrorReporter,
         configRepository: ConfigRepository
     ): GooglePayRepository {
-        return if (testParameters.mockConfiguration != null) {
-            MockGooglePayRepository(true)
-        } else {
-            GooglePayRepositoryImpl(
-                context = context,
-                shopId = paymentParameters.shopId,
-                useTestEnvironment = testParameters.googlePayTestEnvironment,
-                loadedPaymentOptionsRepository = getLoadedPaymentOptionListRepository,
-                googlePayParameters = paymentParameters.googlePayParameters,
-                errorReporter = errorReporter,
-                getGateway = { configRepository.getConfig().gateway }
-            )
-        }
+        return GooglePayRepositoryImpl(
+            context = context,
+            shopId = paymentParameters.shopId,
+            useTestEnvironment = testParameters.googlePayTestEnvironment,
+            loadedPaymentOptionsRepository = getLoadedPaymentOptionListRepository,
+            googlePayParameters = paymentParameters.googlePayParameters,
+            errorReporter = errorReporter,
+            getGateway = { configRepository.getConfig().gateway }
+        )
     }
 }
