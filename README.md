@@ -31,18 +31,18 @@ Android Checkout mobile SDK - version $versionName ([changelog](https://github.c
 
 * [Changelog](#changelog)
 * [Migration guide](#migration-guide)
-* [Connection via Gradle](#connection-via-Gradle)
+* [Connection via Gradle](#connection-via-gradle)
 * [Integration recommendations](#integration-recommendations)
     * [App configuration for digital goods sales](#app-configuration-for-digital-goods-sales)
     * [Recommended compatible versions](#recommended-compatible-versions)
 * [Library usage](#library-usage)
     * [Tokenization](#tokenization)
         * [Launching tokenization via all methods](#launching-tokenization-via-all-methods)
-        * [Launching tokenization via YooMoney wallet](#launching-tokenization-via-YooMoney-wallet)
-        * [Launching tokenization via SberPay](#launching-tokenization-via-SberPay)
+        * [Launching tokenization via YooMoney wallet](#launching-tokenization-via-yoomoney-wallet)
+        * [Launching tokenization via SberPay](#launching-tokenization-via-sberpay)
         * [Launching tokenization via a bank card](#launching-tokenization-via-a-bank-card)
-        * [Preparation for launching Google Pay tokenization](#preparation-for-launching-Google-Pay-tokenization)
-        * [Launching Google Pay tokenization](#launching-Google-Pay-tokenization)
+        * [Preparation for launching Google Pay tokenization](#preparation-for-launching-google-pay-tokenization)
+        * [Launching Google Pay tokenization](#launching-google-pay-tokenization)
         * [Launching tokenization for saved bank cards](#launching-tokenization-for-saved-bank-cards)
         * [Getting tokenization results](#getting-tokenization-results)
     * [Payment confirmation](#payment-confirmation)
@@ -52,7 +52,7 @@ Android Checkout mobile SDK - version $versionName ([changelog](https://github.c
     * [Recurring payments](#recurring-payments)
     * [Logging and mock mode configuration](#logging-and-mock-mode-configuration)
         * [Logging enabling](#logging-enabling)
-        * [Mock mode configuration](#configuring-mock-mode-configuration)
+        * [Mock mode configuration](#mock-mode-configuration)
     * [Interface configuration](#interface-configuration)
     * [Scanning a bank card](#scanning-a-bank-card)
 * [Useful links](#useful-links)
@@ -193,12 +193,12 @@ To launch tokenization via all available payment methods, call the `createTokeni
 <details open>
   <summary>Kotlin</summary>
 
-  ```kotlin
-  class MyActivity : AppCompatActivity() {
+```kotlin
+class MyActivity : AppCompatActivity() {
 
-      fun startTokenize() {
-          val paymentParameters = PaymentParameters(
-              amount = Amount(BigDecimal.TEN, Currency.getInstance("RUB")),
+    fun startTokenize() {
+        val paymentParameters = PaymentParameters(
+            amount = Amount(BigDecimal.TEN, Currency.getInstance("RUB")),
             title = "Product name",
             subtitle = "Product description",
             clientApplicationKey = "live_thisKeyIsNotReal", // key for client apps from the YooMoney Merchant Profile
@@ -209,47 +209,47 @@ To launch tokenization via all available payment methods, call the `createTokeni
             customReturnUrl = "https://custom.redirect.url", // url of the page (only https is supported) that the user should be returned to after completing 3ds.
             userPhoneNumber = "+79041234567", // user's phone number for autofilling the user phone number field in SberPay. Supported data format: "+7XXXXXXXXXX"
             authCenterClientId = "example_authCenterClientId" // ID received upon registering the app on the https://yookassa.ru website
-            )
-            val intent = createTokenizeIntent(this, paymentParameters)
-            startActivityForResult(intent, REQUEST_CODE_TOKENIZE)
-        }
+        )
+        val intent = createTokenizeIntent(this, paymentParameters)
+        startActivityForResult(intent, REQUEST_CODE_TOKENIZE)
     }
-    ```
-    </details>
+}
+```
+</details>
 
-    <details>
-      <summary>Java</summary>
+<details>
+  <summary>Java</summary>
 
-      ```java
-      class MyActivity extends AppCompatActivity {
+```java
+class MyActivity extends AppCompatActivity {
 
-          void startTokenize() {
-              Set<PaymentMethodType> paymentMethodTypes = new HashSet<PaymentMethodType>(){{
-                  add(PaymentMethodType.SBERBANK); // selected payment method - SberPay
+    void startTokenize() {
+        Set<PaymentMethodType> paymentMethodTypes = new HashSet<PaymentMethodType>(){{
+            add(PaymentMethodType.SBERBANK); // selected payment method - SberPay
             add(PaymentMethodType.YOO_MONEY); // selected payment method - YooMoney
             add(PaymentMethodType.BANK_CARD); // selected payment method - Bank card
             add(PaymentMethodType.GOOGLE_PAY); // selected payment method - Google Pay
           }};
-          PaymentParameters paymentParameters = new PaymentParameters(
-                  new Amount(BigDecimal.TEN, Currency.getInstance("RUB")),
-                  "Product name",
-                  "Product description",
-                  "live_thisKeyIsNotReal", // key for client apps from the YooMoney Merchant Profile
-                  "12345", // ID of the store in the YooMoney system
-                  SavePaymentMethod.OFF, // flag of the disabled option to save payment methods
-                  paymentMethodTypes, // the full list of available payment methods has been provided
-                  "gatewayId", // gatewayId of the store for Google Pay payments (required if payment methods include Google Pay)
-                  "https://custom.redirect.url", //  url of the page (only https is supported) that the user should be returned to after completing 3ds. Must be used only when own Activity for the 3ds url is used.
-                  userPhoneNumber = "+79041234567", // user's phone number for autofilling the user phone number field in SberPay. Supported data format: "+7XXXXXXXXXX"
-                  null, // settings for tokenization via GooglePay,
-                  "example_authCenterClientId" // ID received upon registering the app on the https://yookassa.ru website
-          );
-          Intent intent = Checkout.createTokenizeIntent(this, paymentParameters);
-          startActivityForResult(intent, REQUEST_CODE_TOKENIZE);
-      }
-  }
-  ```
-  </details>
+        PaymentParameters paymentParameters = new PaymentParameters(
+            new Amount(BigDecimal.TEN, Currency.getInstance("RUB")),
+            "Product name",
+            "Product description",
+            "live_thisKeyIsNotReal", // key for client apps from the YooMoney Merchant Profile
+            "12345", // ID of the store in the YooMoney system
+            SavePaymentMethod.OFF, // flag of the disabled option to save payment methods
+            paymentMethodTypes, // the full list of available payment methods has been provided
+            "gatewayId", // gatewayId of the store for Google Pay payments (required if payment methods include Google Pay)
+            "https://custom.redirect.url", //  url of the page (only https is supported) that the user should be returned to after completing 3ds. Must be used only when own Activity for the 3ds url is used.
+            userPhoneNumber = "+79041234567", // user's phone number for autofilling the user phone number field in SberPay. Supported data format: "+7XXXXXXXXXX"
+            null, // settings for tokenization via GooglePay,
+            "example_authCenterClientId" // ID received upon registering the app on the https://yookassa.ru website
+        );
+        Intent intent = Checkout.createTokenizeIntent(this, paymentParameters);
+        startActivityForResult(intent, REQUEST_CODE_TOKENIZE);
+    }
+}
+```
+</details>
 
 **Option 2**:
 
@@ -271,41 +271,41 @@ class MyActivity : AppCompatActivity() {
             gatewayId = "gatewayId", // gatewayId of the store for Google Pay payments (required if payment methods include Google Pay)
             customReturnUrl = "https://custom.redirect.url", // url of the page (only https is supported) that the user should be returned to after completing 3ds. Must be used only when own Activity for the 3ds url is used.
             userPhoneNumber = "+79041234567", // user's phone number for autofilling the user phone number field in SberPay. Supported data format: "+7XXXXXXXXXX"
-            )
-            val intent = createTokenizeIntent(this, paymentParameters)
-            startActivityForResult(intent, REQUEST_CODE_TOKENIZE)
-        }
+        )
+        val intent = createTokenizeIntent(this, paymentParameters)
+        startActivityForResult(intent, REQUEST_CODE_TOKENIZE)
     }
-    ```
-    </details>
+}
+```
+</details>
 
-    <details>
-      <summary>Java</summary>
+<details>
+  <summary>Java</summary>
 
-      ```java
-      class MyActivity extends AppCompatActivity {
+```java
+class MyActivity extends AppCompatActivity {
 
-          void startTokenize() {
-              PaymentParameters paymentParameters = new PaymentParameters(
-                      new Amount(BigDecimal.TEN, Currency.getInstance("RUB")),
-                      "Product name",
-                      "Product Description",
-                      "live_thisKeyIsNotReal", // key for client apps from the YooMoney Merchant Profile
-                      "12345", // ID of the store in the YooMoney system
-                      SavePaymentMethod.OFF, // flag of the disabled option to save payment methods
-                      null, // the full list of available payment methods has been provided
-                      "gatewayId", // gatewayId of the store for Google Pay payments (required if payment methods include Google Pay)
-                      "https://custom.redirect.url", // url of the page (only https is supported) that the user should be returned to after completing 3ds. Must be used only when own Activity for the 3ds url is used.
-                      "+79041234567", // user's phone number for autofilling the user phone number field in SberPay. Supported data format: "+7XXXXXXXXXX".
-                      null, // settings for tokenization via GooglePay,
-                      "example_authCenterClientId" // ID received upon registering the app on the https://yookassa.ru website
-              );
-              Intent intent = Checkout.createTokenizeIntent(this, paymentParameters);
-              startActivityForResult(intent, REQUEST_CODE_TOKENIZE);
-          }
-      }
-      ```
-      </details>
+    void startTokenize() {
+        PaymentParameters paymentParameters = new PaymentParameters(
+            new Amount(BigDecimal.TEN, Currency.getInstance("RUB")),
+            "Product name",
+            "Product Description",
+            "live_thisKeyIsNotReal", // key for client apps from the YooMoney Merchant Profile
+            "12345", // ID of the store in the YooMoney system
+            SavePaymentMethod.OFF, // flag of the disabled option to save payment methods
+            null, // the full list of available payment methods has been provided
+            "gatewayId", // gatewayId of the store for Google Pay payments (required if payment methods include Google Pay)
+            "https://custom.redirect.url", // url of the page (only https is supported) that the user should be returned to after completing 3ds. Must be used only when own Activity for the 3ds url is used.
+            "+79041234567", // user's phone number for autofilling the user phone number field in SberPay. Supported data format: "+7XXXXXXXXXX".
+            null, // settings for tokenization via GooglePay,
+            "example_authCenterClientId" // ID received upon registering the app on the https://yookassa.ru website
+        );
+        Intent intent = Checkout.createTokenizeIntent(this, paymentParameters);
+        startActivityForResult(intent, REQUEST_CODE_TOKENIZE);
+    }
+}
+```
+</details>
 
 **Processed results of the tokenization process are contained in the** [Get tokenization results](#get-tokenization-results) **section**
 
@@ -357,31 +357,31 @@ class MyActivity : AppCompatActivity() {
 <details>
   <summary>Java</summary>
 
-  ```java
-  class MyActivity extends AppCompatActivity {
+```java
+class MyActivity extends AppCompatActivity {
 
-      void startYooMoneyTokenize() {
-          Set<PaymentMethodType> paymentMethodTypes = new HashSet<>();
-          PaymentParameters paymentParameters = new PaymentParameters(
-                  new Amount(BigDecimal.TEN, Currency.getInstance("RUB")),
-                  "Product name",
-                  "Product description",
-                  "live_thisKeyIsNotReal", // key for client apps from the YooMoney Merchant Profile (https://yookassa.ru/my/api-keys-settings)
-                  "12345", // ID of the store in the YooMoney system
-                  SavePaymentMethod.OFF, // flag of the disabled option to save payment methods
-                  paymentMethodTypes.add(PaymentMethodType.YOO_MONEY), // selected payment method: YooMoney wallet,
-                  null, // gatewayId of the store for Google Pay payments (required if payment methods include Google Pay)
-                  null, // url of the page (only https is supported) that the user should be returned to after completing 3ds. Must be used only when own Activity for the 3ds url is used.
-                  null, // user's phone number for autofilling the user phone number field in SberPay. Supported data format: "+7XXXXXXXXXX"
-                  null, // settings for tokenization via GooglePay,
-                  "example_authCenterClientId" // authCenterClientId: ID received upon registering the app on the https://yookassa.ru website
-          );
-          Intent intent = Checkout.createTokenizeIntent(this, paymentParameters);
-          startActivityForResult(intent, REQUEST_CODE_TOKENIZE);
-      }
-  }
-  ```
-  </details>
+    void startYooMoneyTokenize() {
+        Set<PaymentMethodType> paymentMethodTypes = new HashSet<>();
+        PaymentParameters paymentParameters = new PaymentParameters(
+            new Amount(BigDecimal.TEN, Currency.getInstance("RUB")),
+            "Product name",
+            "Product description",
+            "live_thisKeyIsNotReal", // key for client apps from the YooMoney Merchant Profile (https://yookassa.ru/my/api-keys-settings)
+            "12345", // ID of the store in the YooMoney system
+            SavePaymentMethod.OFF, // flag of the disabled option to save payment methods
+            paymentMethodTypes.add(PaymentMethodType.YOO_MONEY), // selected payment method: YooMoney wallet,
+            null, // gatewayId of the store for Google Pay payments (required if payment methods include Google Pay)
+            null, // url of the page (only https is supported) that the user should be returned to after completing 3ds. Must be used only when own Activity for the 3ds url is used.
+            null, // user's phone number for autofilling the user phone number field in SberPay. Supported data format: "+7XXXXXXXXXX"
+            null, // settings for tokenization via GooglePay,
+            "example_authCenterClientId" // authCenterClientId: ID received upon registering the app on the https://yookassa.ru website
+        );
+        Intent intent = Checkout.createTokenizeIntent(this, paymentParameters);
+        startActivityForResult(intent, REQUEST_CODE_TOKENIZE);
+    }
+}
+```
+</details>
 
 **Processed results of the tokenization process are contained in the** [Get tokenization results](#get-tokenization-results) **section**
 
@@ -451,16 +451,16 @@ public class MyActivity extends Activity {
         }};
         paymentMethodTypes.add(PaymentMethodType.SBERBANK);
         PaymentParameters paymentParameters = new PaymentParameters(
-                new Amount(BigDecimal.valueOf(10.0), Currency.getInstance("RUB")),
-                "Product name",
-                "Product Description",
-                "live_thisKeyIsNotReal", // key for client apps from the YooMoney Merchant Profile (https://yookassa.ru/my/api-keys-settings)
-                "12345", // ID of the store in the YooMoney system
-                SavePaymentMethod.OFF, // flag of the disabled option to save payment methods
-                paymentMethodTypes, // selected payment method: SberPay,
-                null, // gateway of the store for Google Pay payments (required if payment methods include Google Pay)
-                null, // url of the page (only https is supported) that the user should be returned to after completing 3ds. Must be used only when own Activity for the 3ds url is used.
-                "+79041234567" // user's phone number for autofilling the user phone number field in SberPay. Supported data format: "+7XXXXXXXXXX"
+            new Amount(BigDecimal.valueOf(10.0), Currency.getInstance("RUB")),
+            "Product name",
+            "Product Description",
+            "live_thisKeyIsNotReal", // key for client apps from the YooMoney Merchant Profile (https://yookassa.ru/my/api-keys-settings)
+            "12345", // ID of the store in the YooMoney system
+            SavePaymentMethod.OFF, // flag of the disabled option to save payment methods
+            paymentMethodTypes, // selected payment method: SberPay,
+            null, // gateway of the store for Google Pay payments (required if payment methods include Google Pay)
+            null, // url of the page (only https is supported) that the user should be returned to after completing 3ds. Must be used only when own Activity for the 3ds url is used.
+            "+79041234567" // user's phone number for autofilling the user phone number field in SberPay. Supported data format: "+7XXXXXXXXXX"
         );
         Intent intent = Checkout.createTokenizeIntent(this, paymentParameters);
         startActivityForResult(intent, REQUEST_CODE_TOKENIZE);
@@ -508,13 +508,13 @@ class MyActivity extends AppCompatActivity {
     void startBankCardTokenize() {
         Set<PaymentMethodType> paymentMethodTypes = new HashSet<>();
         PaymentParameters paymentParameters = new PaymentParameters(
-                new Amount(BigDecimal.TEN, Currency.getInstance("RUB")),
-                "Product name",
-                "Product description",
-                "live_thisKeyIsNotReal", // key for client apps from the YooMoney Merchant Profile (https://yookassa.ru/my/api-keys-settings)
-                "12345", // ID of the store in the YooMoney system
-                SavePaymentMethod.OFF, // flag of the disabled option to save payment methods
-                paymentMethodTypes.add(PaymentMethodType.BANK_CARD) // selected payment method: bank card
+            new Amount(BigDecimal.TEN, Currency.getInstance("RUB")),
+            "Product name",
+            "Product description",
+            "live_thisKeyIsNotReal", // key for client apps from the YooMoney Merchant Profile (https://yookassa.ru/my/api-keys-settings)
+            "12345", // ID of the store in the YooMoney system
+            SavePaymentMethod.OFF, // flag of the disabled option to save payment methods
+            paymentMethodTypes.add(PaymentMethodType.BANK_CARD) // selected payment method: bank card
         );
         Intent intent = Checkout.createTokenizeIntent(this, paymentParameters);
         startActivityForResult(intent, REQUEST_CODE_TOKENIZE);
@@ -618,23 +618,23 @@ class MyActivity extends AppCompatActivity {
 
     private void startTokenize() {
         TestParameters testParameters = new TestParameters(
-                true, // showLogs - enable/disable display of SDK logs
-                true, // googlePayTestEnvironment - what type of environment should be used for Google Pay, test or production. Learn more at https://developers.google.com/pay/api/android/guides/test-and-deploy/integration-checklist
-                new MockConfiguration() // Enabling mock mode
+            true, // showLogs - enable/disable display of SDK logs
+            true, // googlePayTestEnvironment - what type of environment should be used for Google Pay, test or production. Learn more at https://developers.google.com/pay/api/android/guides/test-and-deploy/integration-checklist
+            new MockConfiguration() // Enabling mock mode
         );
         PaymentParameters paymentParameters = new PaymentParameters(
-                new Amount(BigDecimal.TEN, Currency.getInstance("RUB")),
-                "Product name",
-                "Product Description",
-                "live_thisKeyIsNotReal", // key for client apps from the YooMoney Merchant Profile
-                "12345", // ID of the store in the YooMoney system
-                SavePaymentMethod.OFF, // flag of the disabled option to save payment methods
-                null, // the full list of available payment methods has been provided
-                "gatewayId", // gatewayId of the store for Google Pay payments (required if payment methods include Google Pay)
-                "https://custom.redirect.url", // url of the page (only https is supported) that the user should be returned to after completing 3ds. Must be used only when own Activity for the 3ds url is used.
-                "+79041234567", // user's phone number for autofilling the user phone number field in SberPay. Supported data format: "+7XXXXXXXXXX".
-                null, // settings for tokenization via GooglePay,
-                "example_authCenterClientId" // ID received upon registering the app on the https://yookassa.ru website
+            new Amount(BigDecimal.TEN, Currency.getInstance("RUB")),
+            "Product name",
+            "Product Description",
+            "live_thisKeyIsNotReal", // key for client apps from the YooMoney Merchant Profile
+            "12345", // ID of the store in the YooMoney system
+            SavePaymentMethod.OFF, // flag of the disabled option to save payment methods
+            null, // the full list of available payment methods has been provided
+            "gatewayId", // gatewayId of the store for Google Pay payments (required if payment methods include Google Pay)
+            "https://custom.redirect.url", // url of the page (only https is supported) that the user should be returned to after completing 3ds. Must be used only when own Activity for the 3ds url is used.
+            "+79041234567", // user's phone number for autofilling the user phone number field in SberPay. Supported data format: "+7XXXXXXXXXX".
+            null, // settings for tokenization via GooglePay,
+            "example_authCenterClientId" // ID received upon registering the app on the https://yookassa.ru website
         );
         Intent intent = Checkout.createTokenizeIntent(this, paymentParameters, testParameters);
         startActivityForResult(intent, REQUEST_CODE_TOKENIZE);
@@ -684,13 +684,13 @@ class MyActivity extends AppCompatActivity {
     void startGooglePayTokenize() {
         Set<PaymentMethodType> paymentMethodTypes = new HashSet<>();
         PaymentParameters paymentParameters = new PaymentParameters(
-                new Amount(BigDecimal.TEN, Currency.getInstance("RUB")),
-                "Product name",
-                "Product description",
-                "live_thisKeyIsNotReal", // key for client apps from the YooMoney Merchant Profile (https://yookassa.ru/my/api-keys-settings)
-                "12345", // ID of the store in the YooMoney system
-                SavePaymentMethod.OFF, // flag of the disabled option to save payment methods
-                paymentMethodTypes.add(PaymentMethodType.GOOGLE_PAY) // selected payment method: Google Pay
+            new Amount(BigDecimal.TEN, Currency.getInstance("RUB")),
+            "Product name",
+            "Product description",
+            "live_thisKeyIsNotReal", // key for client apps from the YooMoney Merchant Profile (https://yookassa.ru/my/api-keys-settings)
+            "12345", // ID of the store in the YooMoney system
+            SavePaymentMethod.OFF, // flag of the disabled option to save payment methods
+            paymentMethodTypes.add(PaymentMethodType.GOOGLE_PAY) // selected payment method: Google Pay
         );
         Intent intent = Checkout.createTokenizeIntent(this, paymentParameters);
         startActivityForResult(intent, REQUEST_CODE_TOKENIZE);
@@ -776,13 +776,13 @@ class MyActivity extends AppCompatActivity {
 
     void startSavedCardTokenize() {
         SavedBankCardPaymentParameters parameters = new SavedBankCardPaymentParameters(
-                new Amount(BigDecimal.TEN, Currency.getInstance("RUB")),
-                "Product name",
-                "Product description",
-                "live_thisKeyIsNotReal", // key for client apps from the YooMoney Merchant Profile
-                "12345", // ID of the store in the YooMoney system
-                "paymentMethodIdExample", // unique payment ID
-                SavePaymentMethod.OFF // flag of the disabled option to save payment methods
+            new Amount(BigDecimal.TEN, Currency.getInstance("RUB")),
+            "Product name",
+            "Product description",
+            "live_thisKeyIsNotReal", // key for client apps from the YooMoney Merchant Profile
+            "12345", // ID of the store in the YooMoney system
+            "paymentMethodIdExample", // unique payment ID
+            SavePaymentMethod.OFF // flag of the disabled option to save payment methods
         );
         Intent intent = Checkout.createSavedCardTokenizeIntent(this, parameters);
         startActivityForResult(intent, REQUEST_CODE_TOKENIZE);
