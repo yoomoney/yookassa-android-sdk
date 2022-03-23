@@ -1305,11 +1305,11 @@ To customize the SDK interface, you can use the `UiParameters` object, namely se
   We don't recommend making this color too light if your theme is already designed with light colors, as it won't be visible on a white background, or choose a dark color for a dark theme, since it won't be visible either. We also don't recommend using red as it might mix up with color of error messages.
 
   | With icon     | Without icon       |
-    | ------------- |:------------------:|
+      | ------------- |:------------------:|
   | ![List of payments with icon](assets/images/custom_ui_parameters_examples/1_show_logo_true.png)     | ![List of payments without icon](assets/images/custom_ui_parameters_examples/2_show_logo_false.png)   |
 
   | Correct custom color     | Incorrect custom color         |
-    | ------------- |:------------------:|
+      | ------------- |:------------------:|
   | ![Correct color](assets/images/custom_ui_parameters_examples/3_good_color_example.png)     | ![Incorrect color](assets/images/custom_ui_parameters_examples/4_bad_color_example.png)   |
 
   <details open>

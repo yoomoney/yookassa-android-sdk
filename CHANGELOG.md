@@ -5,6 +5,10 @@
 ### NEXT_VERSION_DESCRIPTION_BEGIN
 ### NEXT_VERSION_DESCRIPTION_END
 
+## [6.5.1] (23-03-2022)
+
+- Solved the problem with launching sample application
+
 ## [6.5.0] (16-03-2022)
 
 - Hide ThreatMetrix into mSdk

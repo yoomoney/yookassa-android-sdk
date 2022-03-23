@@ -47,11 +47,11 @@ Android Checkout mobile SDK - версия $versionName ([changelog](https://git
         * [Запуск токенизации Google Pay](#запуск-токенизации-Google-Pay)
         * [Запуск токенизации для сохранённых банковских карт](#запуск-токенизации-для-сохранённых-банковских-карт)
         * [Получить результат токенизации](#получить-результат-токенизации)
-    * [Подтверждение платежа](#подтверждение-платежа)   
+    * [Подтверждение платежа](#подтверждение-платежа)
         * [SberPay](#sberpay)
         * [3DSecure](#3dsecure)
     * [Привязанная карта](#привязанная-карта)
-    * [Рекуррентные платежи](#рекуррентные-платежи)  
+    * [Рекуррентные платежи](#рекуррентные-платежи)
     * [Настройка логирования и mock режима](#настройка-логирования-и-mock-режима)
     * [Настройка интерфейса](#настройка-интерфейса)
         * [Включение логирования](#включение-логирования)
@@ -127,7 +127,7 @@ plugin {
 
 ## Токенизация
 
-Процесс токенизации — это обмен платёжных данных, на платёжный токен `payment_token`. Далее этот токен, используется для создания платежа [методом API](https://yookassa.ru/developers/api#create_payment) 
+Процесс токенизации — это обмен платёжных данных, на платёжный токен `payment_token`. Далее этот токен, используется для создания платежа [методом API](https://yookassa.ru/developers/api#create_payment)
 
 Для запуска процесса токенизации используется метод `Checkout.createTokenizeIntent()`. Метод отдаёт `Intent`, который нужно запустить в `startActivityForResult()`. После этого управление процессом перейдёт в SDK.
 Готовый платёжный токен можно получить в `onActivityResult()`
@@ -135,7 +135,7 @@ plugin {
 Обязательные параметры метода:
 - context (Context) - контекст приложения;
 - paymentParameters (PaymentParameters) - параметры платежа.
-  
+
 Опциональные параметры метода:
 - testParameters (TestParameters) - параметры для тестового режима - включить логирование/использовать mock-данные (см. [Настройка логирования и mock режима](#настройка-логирования-и-mock-режима));
 - uiParameters (UiParameters) - настройка интерфейса (см. [Настройка интерфейса](#настройка-интерфейса))
@@ -156,18 +156,18 @@ plugin {
 - customReturnUrl (String) - url страницы (поддерживается только https), на которую надо вернуться после прохождения 3ds. Должен использоваться только при при использовании своего Activity для 3ds url, (см. [3DSecure](#3dsecure));
 - userPhoneNumber (String) - номер телефона пользователя при оплате через SberPay, (см. [Запуск токенизации SberPay](#запуск-токенизации-SberPay));
 - googlePayParameters (GooglePayParameters) - настройки для оплаты через Google Pay, (см.  [Запуск токенизации Google Pay](#запуск-токенизации-Google-Pay));
-- authCenterClientId (String) - уникальный идентификатор приложения для токенизации через ЮMoney. (см. [Запуск токенизации кошельком ЮMoney](#запуск-токенизации-кошельком-ЮMoney)) 
+- authCenterClientId (String) - уникальный идентификатор приложения для токенизации через ЮMoney. (см. [Запуск токенизации кошельком ЮMoney](#запуск-токенизации-кошельком-ЮMoney))
 
 Поля класса `Amount`:
 - value (BigDecimal) - сумма;
 - currency (Currency) - валюта.
 
 Значения `SavePaymentMethod`:
-- ON - Сохранить платёжный метод для проведения рекуррентных платежей. Пользователю будут доступны только способы оплаты, поддерживающие сохранение. При первой оплате на экране выбранного способа оплаты будет отображено сообщение о том, что платёжный метод будет сохранён. 
+- ON - Сохранить платёжный метод для проведения рекуррентных платежей. Пользователю будут доступны только способы оплаты, поддерживающие сохранение. При первой оплате на экране выбранного способа оплаты будет отображено сообщение о том, что платёжный метод будет сохранён.
 - OFF - Не сохранять платёжный метод.
-- USER_SELECTS - Пользователь выбирает, сохранять платёжный метод или нет. Если метод можно сохранить, на экране экране выбранного способа оплаты появится переключатель. 
-Подробнее про рекуррентные платежи можно прочитать в разделе [Рекуррентные платежи](#рекуррентные-платежи).
-  
+- USER_SELECTS - Пользователь выбирает, сохранять платёжный метод или нет. Если метод можно сохранить, на экране экране выбранного способа оплаты появится переключатель.
+  Подробнее про рекуррентные платежи можно прочитать в разделе [Рекуррентные платежи](#рекуррентные-платежи).
+
 Значения `PaymentMethodType`:
 - YOO_MONEY - оплата произведена с кошелька ЮMoney;
 - BANK_CARD - оплата произведена с банковской карты;
@@ -315,7 +315,7 @@ class MyActivity extends AppCompatActivity {
 ### Запуск токенизации кошельком ЮMoney
 
 > Если среди платёжных методов есть кошелёк ЮMoney, необходимо зарегистрировать приложение и получить `authCenterClientId`.
-В остальных случаях этот шаг можно пропустить. 
+В остальных случаях этот шаг можно пропустить.
 
 Если вы ранее уже регистрировали приложение для **oAuth-авторизации**, то список ваших приложений можно найти на странице https://yookassa.ru/oauth/v2/client
 Если вы ещё не регистрировали приложение для **oAuth-авторизации**, то нужно выполнить следующие инструкции.
@@ -422,7 +422,7 @@ android {
 
 ```kotlin
 class MyActivity: Activity() {
-    
+
     private fun startSberPayTokenize() {
         val paymentParameters = PaymentParameters(
             amount = Amount(BigDecimal.valueOf(10.0), Currency.getInstance("RUB")),
@@ -446,7 +446,7 @@ class MyActivity: Activity() {
 
 ```java
 public class MyActivity extends Activity {
-    
+
     private void startSberPayTokenize() {
         Set<PaymentMethodType> paymentMethodTypes = new HashSet<PaymentMethodType>(){{
             add(PaymentMethodType.SBERBANK); // выбранный способ оплаты - SberPay
@@ -587,7 +587,7 @@ class MyActivity extends AppCompatActivity {
 
 ```kotlin
 class MyActivity: Activity() {
-    
+
     private fun startSberPayTokenize() {
         val paymentParameters = PaymentParameters(
             amount = Amount(BigDecimal.valueOf(10.0), Currency.getInstance("RUB")),
@@ -660,7 +660,7 @@ class MyActivity extends AppCompatActivity {
 
 ```kotlin
 class MyActivity: Activity() {
-    
+
     private fun startGooglePayTokenize() {
         val paymentParameters = PaymentParameters(
             amount = Amount(BigDecimal.valueOf(10.0), Currency.getInstance("RUB")),
@@ -746,8 +746,8 @@ class MyActivity extends AppCompatActivity {
 * ON - Сохранить платёжный метод для проведения рекуррентных платежей. Пользователю будут доступны только способы оплаты, поддерживающие сохранение. При первой оплате на экране выбранного способа оплаты будет отображено сообщение о том, что платёжный метод будет сохранён.
 * OFF - Не сохранять платёжный метод.
 * USER_SELECTS - Пользователь выбирает, сохранять платёжный метод или нет. Если метод можно сохранить, на экране выбранного способа оплаты появится переключатель.
-Подробнее про рекуррентные платежи можно прочитать в разделе [Рекуррентные платежи](#рекуррентные-платежи).
-  
+  Подробнее про рекуррентные платежи можно прочитать в разделе [Рекуррентные платежи](#рекуррентные-платежи).
+
 <details open>
   <summary>Kotlin</summary>
 
@@ -776,7 +776,7 @@ class MyActivity : AppCompatActivity() {
 
 ```java
 class MyActivity extends AppCompatActivity {
-    
+
     void startSavedCardTokenize() {
         SavedBankCardPaymentParameters parameters = new SavedBankCardPaymentParameters(
                 new Amount(BigDecimal.TEN, Currency.getInstance("RUB")),
@@ -849,24 +849,24 @@ class MainActivity : AppCompatActivity() {
 ```java
 public final class MainActivity extends AppCompatActivity {
 
-     @Override
-        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-            super.onActivityResult(requestCode, resultCode, data);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-            if (requestCode == REQUEST_CODE_TOKENIZE) {
-                switch (resultCode) {
-                    case RESULT_OK:
-                        // successful tokenization
-                        TokenizationResult result = Checkout.createTokenizationResult(data);
+        if (requestCode == REQUEST_CODE_TOKENIZE) {
+            switch (resultCode) {
+                case RESULT_OK:
+                    // successful tokenization
+                    TokenizationResult result = Checkout.createTokenizationResult(data);
                         ...
-                        break;
-                    case RESULT_CANCELED:
-                        // user canceled tokenization
+                    break;
+                case RESULT_CANCELED:
+                    // user canceled tokenization
                         ...
-                        break;
-                }
+                    break;
             }
         }
+    }
 }
 ```
 </details>
@@ -919,7 +919,7 @@ class MyActivity : AppCompatActivity() {
                     // Процесс подтверждения через SberPay завершён, нет информации о том, завершился процесс с успехом или нет
                     // Рекомендуется запросить статус платежа
                     return
-                } 
+                }
                 RESULT_CANCELED -> return // Экран подтверждения через SberPay был закрыт
                 Checkout.RESULT_ERROR -> {
                     // Во время подтверждения через SberPay произошла какая-то ошибка (нет соединения или что-то еще)
@@ -1071,8 +1071,8 @@ class MyActivity extends AppCompatActivity {
 ## Привязанная карта
 
 Для того, чтобы после токенизации банковской картой эта банковская карта привязалась и отобразилась у пользователя в списке методов оплаты, необходимо в метод для токенизации (см. [Запуск токенизации банковской картой](#запуск-токенизации-банковской-картой)) передать опциональный параметр `customerId`. Карта привязывается исключительно тогда, когда пользователь дает согласие на ее привязку.
-- customerId (String) - уникальный идентификатор покупателя в вашей системе, например, электронная почта или номер телефона. Есть ограничение на длину - не более 200 символов. 
-**Убедитесь, что customerId относится к пользователю, который хочет совершить покупку. Например, используйте двухфакторную аутентификацию. Если передать неверный идентификатор, пользователь сможет выбрать для оплаты чужие банковские карты.**
+- customerId (String) - уникальный идентификатор покупателя в вашей системе, например, электронная почта или номер телефона. Есть ограничение на длину - не более 200 символов.
+  **Убедитесь, что customerId относится к пользователю, который хочет совершить покупку. Например, используйте двухфакторную аутентификацию. Если передать неверный идентификатор, пользователь сможет выбрать для оплаты чужие банковские карты.**
 
 Таким образом, метод для проведения токенизации банковской карты с привязкой этой банковской карты выглядит слкдующим образом:
 
@@ -1130,7 +1130,7 @@ class MyActivity extends AppCompatActivity {
 ```
 </details>
 
-Для того, чтобы посмотреть, как будет выглядеть привязанная карта на экране списка методов оплаты, можно воспользоваться тестовым режимом. 
+Для того, чтобы посмотреть, как будет выглядеть привязанная карта на экране списка методов оплаты, можно воспользоваться тестовым режимом.
 Необходимо задать в параметре `linkedCardsCount` объекта `MockConfiguration` количество карт и вызвать метод `createTokenizeIntent`. Подробнее можно почитать в разделе [Настройка логирования и mock режима](#настройка-логирования-и-mock-режима)
 
 ## Рекуррентные платежи
@@ -1141,9 +1141,9 @@ class MyActivity extends AppCompatActivity {
 
 Для включения автоплатежа, нужно при [токенизации](#токенизация) передать в параметр `savePaymentMethod` одно из значений:
 - `SavePaymentMethod.ON` - сохранить платёжный метод для проведения рекуррентных платежей. Пользователю будут доступны только способы оплаты, поддерживающие сохранение. На экране выбранного способа оплаты будет отображено сообщение о том, что платёжный метод будет сохранён.<br/>
-![SavePaymentMethod.ON](assets/images/recurrent-payments/save-payment-method-on.png)
+  ![SavePaymentMethod.ON](assets/images/recurrent-payments/save-payment-method-on.png)
 - `SavePaymentMethod.USER_SELECTS` - пользователь выбирает, сохранять платёжный метод или нет. Если метод можно сохранить, на экране выбранного способа оплаты появится переключатель.<br/>
-![SavePaymentMethod.USER_SELECTS](assets/images/recurrent-payments/save-payment-method-user-selects.png)
+  ![SavePaymentMethod.USER_SELECTS](assets/images/recurrent-payments/save-payment-method-user-selects.png)
 
 <details open>
   <summary>Kotlin</summary>
@@ -1287,10 +1287,10 @@ class MyActivity extends AppCompatActivity {
 
     void startTokenize() {
         MockConfiguration mockConfiguration = new MockConfiguration(
-            true, // completeWithError - возвращать всегда при токенизации ошибку
-            true, // paymentAuthPassed - авторизован пользователь или нет, для оплаты кошельком 
-            3,// linkedCardsCount - количество карт, привязанных к кошельку пользователя;
-            new Amount(BigDecimal.ONE, Currency.getInstance("RUB")) // serviceFee - комиссия, которая будет отображена на экране выбранного способа оплаты
+                true, // completeWithError - возвращать всегда при токенизации ошибку
+                true, // paymentAuthPassed - авторизован пользователь или нет, для оплаты кошельком 
+                3,// linkedCardsCount - количество карт, привязанных к кошельку пользователя;
+                new Amount(BigDecimal.ONE, Currency.getInstance("RUB")) // serviceFee - комиссия, которая будет отображена на экране выбранного способа оплаты
         );
         TestParameters testParameters = new TestParameters(
                 true, // showLogs - включить/выключить отображение логов sdk
@@ -1333,7 +1333,7 @@ class MyActivity : AppCompatActivity() {
     fun tokenizeCustomUiParameters() {
         val paymentParameters = PaymentParameters(...)
         val uiParameters = UiParameters(
-            showLogo = true, 
+            showLogo = true,
             colorScheme = ColorScheme(Color.rgb(0, 114, 245))
         ) // передаем флаг true для того, чтобы логотип ЮKassa отобразился на экране списка способов оплаты, передаем ColorScheme, в котором находится кастомный цвет
         val intent = createTokenizeIntent(
@@ -1352,13 +1352,13 @@ class MyActivity : AppCompatActivity() {
 
 ```java
 class MyActivity extends AppCompatActivity {
-    
+
     void tokenizeCustomUiParameters() {
-        PaymentParameters paymentParameters = new PaymentParameters(...); 
+        PaymentParameters paymentParameters = new PaymentParameters(...);
         UiParameters uiParameters = new UiParameters(true, new ColorScheme(Color.rgb(0, 114, 245))); // передаем флаг true для того, чтобы логотип ЮKassa отобразился на экране списка способов оплаты, передаем ColorScheme, в котором находится кастомный цвет
         Intent intent = Checkout.createTokenizeIntent(
-                this, 
-                paymentParameters, 
+                this,
+                paymentParameters,
                 null, // параметры для тестового режима - включить логирование/использовать mock-данные
                 uiParameters
         );
@@ -1416,7 +1416,7 @@ class ScanBankCardActivity : Activity() {
 Java:
 ```java
 class ScanBankCardActivity extends Activity {
-    
+
     private void onScanningDone(final String cardNumber, final int expirationMonth, final int expirationYear) {
         final Intent result = Checkout.createScanBankCardResult(cardNumber, expirationMonth, expirationYear);
         setResult(Activity.RESULT_OK, result);
@@ -1435,7 +1435,7 @@ class ScanBankCardActivity extends Activity {
 
 ```kotlin
 class ScanBankCardActivity : Activity() {
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ActivityCompat.requestPermissions(this, arrayOf(permission.CAMERA), REQUEST_CODE)
@@ -1467,7 +1467,7 @@ class ScanBankCardActivity : Activity() {
             if (data != null && data.hasExtra(CardIOActivity.EXTRA_SCAN_RESULT)) {
                 val scanResult: CreditCard = requireNotNull(data.getParcelableExtra(CardIOActivity.EXTRA_SCAN_RESULT))
                 val cardNumber = scanResult.formattedCardNumber
-                if (scanResult.isExpiryValid && scanResult.redactedCardNumber != null 
+                if (scanResult.isExpiryValid && scanResult.redactedCardNumber != null
                     && scanResult.redactedCardNumber.isNotEmpty()
                 ) {
                     val scanBankCardResult = createScanBankCardIntent(
