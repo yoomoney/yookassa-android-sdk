@@ -32,10 +32,14 @@
 -keep class ru.yoomoney.sdk.auth.ProcessType** { *; }
 -keep class ru.yoomoney.sdk.kassa.payments.Checkout { *; }
 -keep class ru.yoomoney.sdk.kassa.payments.ui.** { *; }
+-keep class androidx.lifecycle.YooKassaKeyedFactory { *; }
 -keep class androidx.lifecycle.ViewModelKeyedFactory { *; }
+-keep class androidx.lifecycle.YooKassaViewModelProvider { *; }
 
 -keeppackagenames ru.yoomoney.sdk.kassa.payments.**
 -keeppackagenames ru.yoomoney.sdk.kassa.payments
+
+-keep class ru.yoomoney.sdk.tmx.* { *; }
 
 -dontwarn javax.annotation.Nullable
 -dontwarn org.conscrypt.OpenSSLProvider
@@ -69,5 +73,4 @@
 -keepclassmembers,allowobfuscation class * {
   @com.google.gson.annotations.SerializedName <fields>;
 }
-
 ##---------------End: proguard configuration for Gson  ----------

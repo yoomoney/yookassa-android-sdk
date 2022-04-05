@@ -1,6 +1,6 @@
 /*
  * The MIT License (MIT)
- * Copyright © 2020 NBCO YooMoney LLC
+ * Copyright © 2022 NBCO YooMoney LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
  * associated documentation files (the “Software”), to deal in the Software without restriction, including
@@ -19,18 +19,37 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package ru.yoomoney.sdk.kassa.payments.utils
+package androidx.lifecycle
 
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.YooKassaViewModelProvider
+import android.util.Log
 
-internal inline fun <reified T : ViewModel> Fragment.viewModel(
-    key: String,
-    noinline viewModelFactory: () -> ViewModelProvider.Factory
-): Lazy<T> {
-    return lazy {
-        YooKassaViewModelProvider(this.viewModelStore, viewModelFactory()).get(key, T::class.java)
+internal class YooKassaViewModelProvider(
+    private val store: ViewModelStore,
+    private val factory: Factory
+): ViewModelProvider(store, factory) {
+
+    override fun <T : ViewModel> get(key: String, modelClass: Class<T>): T {
+        var viewModel = store[key]
+        if (modelClass.isInstance(viewModel)) {
+            (factory as? OnRequeryFactory)?.onRequery(viewModel)
+            @Suppress("UNCHECKED_CAST")
+            return viewModel as T
+        } else {
+            @Suppress("ControlFlowWithEmptyBody")
+            if (viewModel != null) {
+                Log.d(
+                    this::class.toString(),
+                    "ViewModel already exists: $viewModel, but does not conform class: $modelClass"
+                )
+            }
+        }
+
+        viewModel = if (factory is YooKassaKeyedFactory) {
+            factory.create(key, modelClass)
+        } else {
+            factory.create(modelClass)
+        }
+        store.put(key, viewModel)
+        return viewModel
     }
 }

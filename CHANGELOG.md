@@ -5,6 +5,10 @@
 ### NEXT_VERSION_DESCRIPTION_BEGIN
 ### NEXT_VERSION_DESCRIPTION_END
 
+## [6.5.2] (05-04-2022)
+
+- Solved the problem with YooMoney tokenization
+
 ## [6.5.1] (23-03-2022)
 
 - Solved the problem with launching sample application

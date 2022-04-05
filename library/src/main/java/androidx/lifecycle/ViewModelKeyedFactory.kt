@@ -1,6 +1,6 @@
 /*
  * The MIT License (MIT)
- * Copyright © 2020 NBCO YooMoney LLC
+ * Copyright © 2022 NBCO YooMoney LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
  * associated documentation files (the “Software”), to deal in the Software without restriction, including
@@ -25,7 +25,7 @@ import javax.inject.Provider
 
 internal class ViewModelKeyedFactory(
     private val creators: Map<String, @JvmSuppressWildcards Provider<ViewModel>>
-) : ViewModelProvider.KeyedFactory() {
+) : YooKassaKeyedFactory() {
 
     override fun <T : ViewModel?> create(key: String, modelClass: Class<T>): T {
         val creator = creators[key] ?: error("unknown model class $modelClass")
